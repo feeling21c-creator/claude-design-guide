@@ -1656,6 +1656,73 @@ function fallbackCopy(t){try{const ta=document.createElement('textarea');ta.valu
 
  refreshBadge();
 
+ /* ===== 시작 메뉴 (좌측) — 첫 화면 옵션을 언제든 다시 열기 (되돌아가기) ===== */
+ (function startMenu(){
+  var s2=ce('style'); s2.textContent=`
+  #p2-startBtn{position:fixed;left:12px;top:56px;z-index:1490;display:inline-flex;align-items:center;gap:7px;background:var(--p2a);color:#fff;border:none;border-radius:999px;padding:10px 15px;font:inherit;font-weight:800;font-size:13.5px;cursor:pointer;box-shadow:0 8px 22px #0007;font-family:inherit;min-height:44px}
+  #p2-startBtn .e{font-size:15px}
+  .p2-lmask{position:fixed;inset:0;z-index:1500;background:rgba(0,0,0,.55);opacity:0;pointer-events:none;transition:opacity .2s}
+  .p2-lmask.on{opacity:1;pointer-events:auto}
+  .p2-lpanel{position:fixed;top:0;left:0;bottom:0;width:min(360px,90vw);z-index:1501;background:#141416;border-right:1px solid #2a2a30;transform:translateX(-100%);transition:transform .24s;display:flex;flex-direction:column;font-family:inherit}
+  .p2-lpanel.on{transform:none}
+  .p2-lpanel .ph{display:flex;align-items:center;gap:10px;padding:16px 18px;border-bottom:1px solid #2a2a30}
+  .p2-lpanel .ph h2{font-size:16px;font-weight:900;color:#fff;margin:0}
+  .p2-lpanel .ph .x{margin-left:auto;background:transparent;border:1px solid #3a3a42;color:#cfcfd4;border-radius:10px;min-width:40px;min-height:40px;font-size:15px;cursor:pointer}
+  .p2-lpanel .pb{flex:1;overflow:auto;padding:16px 18px 30px}
+  .p2-lbtn{display:flex;align-items:center;gap:11px;width:100%;text-align:left;background:#1c1c20;border:1px solid #2a2a30;border-radius:12px;padding:13px 14px;margin-bottom:9px;color:#eaeaf0;font:inherit;font-size:14.5px;font-weight:800;cursor:pointer;font-family:inherit;min-height:52px}
+  .p2-lbtn.primary{background:var(--p2a);border-color:var(--p2a);color:#fff}
+  .p2-lbtn .e{font-size:18px;flex:none}
+  .p2-lbtn small{display:block;font-size:11.5px;font-weight:600;color:var(--tx2);margin-top:2px}
+  .p2-lbtn.primary small{color:rgba(255,255,255,.85)}
+  .p2-lsec{font-size:12px;font-weight:800;color:var(--p2ink);margin:16px 0 8px}
+  .p2-lgoal{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .p2-lgoal button{display:flex;flex-direction:column;gap:2px;min-height:60px;padding:10px 11px;border-radius:11px;border:1px solid #2a2a30;background:#161618;color:#eaeaf0;cursor:pointer;font-family:inherit;text-align:left}
+  .p2-lgoal button .e{font-size:17px}
+  .p2-lgoal button .g{font-size:13px;font-weight:800}
+  .p2-lgoal button .d{font-size:10.5px;color:var(--tx2)}
+  @media(max-width:480px){#p2-startBtn{top:auto;bottom:74px;left:12px;padding:9px 13px}.p2-lgoal{grid-template-columns:1fr 1fr}}
+  `;
+  document.head.appendChild(s2);
+  var btn=ce('button'); btn.id='p2-startBtn'; btn.type='button'; btn.setAttribute('aria-haspopup','dialog'); btn.setAttribute('aria-label','시작 메뉴 열기 (첫 화면·실습·둘러보기·가이드)'); btn.innerHTML='<span class="e">🏠</span>시작 메뉴';
+  document.body.appendChild(btn);
+  var lmask=ce('div','p2-lmask'), lpanel=ce('div','p2-lpanel');
+  lpanel.setAttribute('role','dialog'); lpanel.setAttribute('aria-modal','true'); lpanel.setAttribute('aria-label','시작 메뉴');
+  document.body.appendChild(lmask); document.body.appendChild(lpanel);
+  var lLast=null;
+  function goalButtons(){ return CATS.filter(function(c){return c.id!=='all';}).map(function(c){ return '<button type="button" data-cat="'+c.id+'" aria-label="'+c.ko+' 템플릿 보기"><span class="e">'+c.emo+'</span><span class="g">'+c.ko+'</span><span class="d">'+c.q+'</span></button>'; }).join(''); }
+  function renderL(){
+   lpanel.innerHTML='<div class="ph"><h2>🏠 시작 메뉴</h2><button class="x" type="button" aria-label="닫기">✕</button></div><div class="pb">'
+    +'<button class="p2-lbtn primary" data-act="practice"><span class="e">🎬</span><span>쉬운 실습 해보기<small>슬라이드 6장으로 따라하기</small></span></button>'
+    +'<button class="p2-lbtn" data-act="tour"><span class="e">🧭</span><span>화면 단계별로 둘러보기<small>어디가 무엇인지 하나씩</small></span></button>'
+    +'<button class="p2-lbtn" data-act="guide"><span class="e">📘</span><span>작업 가이드<small>실제 작업하는 법·복붙 프롬프트</small></span></button>'
+    +'<button class="p2-lbtn" data-act="intro"><span class="e">🏠</span><span>첫(안내) 화면 다시 보기<small>처음 시작 화면으로 되돌아가기</small></span></button>'
+    +'<div class="p2-lsec">무엇을 만들고 싶으세요? — 목적으로 시작</div>'
+    +'<div class="p2-lgoal">'+goalButtons()+'</div>'
+    +'</div>';
+   lpanel.querySelector('.x').onclick=closeL;
+   lpanel.querySelector('.pb').addEventListener('click',function(e){
+    var b=e.target.closest('button'); if(!b)return;
+    var act=b.getAttribute('data-act');
+    if(act){ closeL();
+     if(act==='practice'){ var ip=$('#introPractice'); if(ip)ip.click(); }
+     else if(act==='tour'){ startTour(); }
+     else if(act==='guide'){ try{openGuide();}catch(e2){} }
+     else if(act==='intro'){ var iv=$('#intro'); if(iv)iv.classList.remove('hide'); }
+     return; }
+    var cat=b.getAttribute('data-cat');
+    if(cat){ closeL(); var iv=$('#intro'); if(iv)iv.classList.add('hide'); switchTab('templates'); var fb=$('#p2-tfilter'); if(fb){var chip=fb.querySelector('.p2-chip[data-cat="'+cat+'"]'); if(chip)chip.click();} var tv=$('#v-templates'); if(tv)tv.scrollIntoView({behavior:REDUCE?'auto':'smooth'}); announce(b.querySelector('.g').textContent+' 템플릿을 보여드려요'); }
+   });
+  }
+  function openL(){ lLast=document.activeElement; renderL(); lmask.classList.add('on'); lpanel.classList.add('on'); document.addEventListener('keydown',lKey,true); var x=lpanel.querySelector('.x'); if(x)setTimeout(function(){x.focus();},60); announce('시작 메뉴를 열었어요'); }
+  function closeL(){ lmask.classList.remove('on'); lpanel.classList.remove('on'); document.removeEventListener('keydown',lKey,true); try{if(lLast&&lLast.focus)lLast.focus();}catch(e){} }
+  function lKey(e){ if(e.key==='Escape'){e.preventDefault();closeL();} else if(e.key==='Tab'){ var f=$all('button',lpanel).filter(function(el){return el.offsetParent!==null&&!el.disabled;}); if(!f.length)return; var first=f[0],last=f[f.length-1]; if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();} else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();} } }
+  btn.onclick=openL; lmask.onclick=closeL;
+  /* intro(첫 화면)가 열려 있으면 버튼 숨김 — 닫히면 표시 */
+  function syncBtn(){ var iv=$('#intro'); var introOpen = iv && !iv.classList.contains('hide'); btn.style.display = introOpen ? 'none' : 'inline-flex'; }
+  syncBtn();
+  try{ var mo=new MutationObserver(syncBtn); var iv=$('#intro'); if(iv)mo.observe(iv,{attributes:true,attributeFilter:['class']}); }catch(e){}
+ })();
+
  /* 실습 완료/변경 시 진도 갱신 반영 (주기 확인 — 가벼움) */
  var lastPractice=practiceDone();
  setInterval(function(){ var now=practiceDone(); if(now!==lastPractice){ lastPractice=now; refreshBadge(); } },1500);
