@@ -687,7 +687,7 @@ document.querySelectorAll('.tab').forEach(t=>t.onclick=()=>{
 
 /* tooltip */
 const tip=document.getElementById('tip');
-function showTip(el){const d=INFO[el.dataset.k];if(!d)return;
+function showTip(el){if(window.__prActive)return;const d=INFO[el.dataset.k];if(!d)return;
  tip.innerHTML=`<div class="en">${d.en}</div><div class="ko">${d.ko}</div><div class="fn">${d.fn}</div>${(d.steps||el.dataset.pop)?'<div class="hint">클릭 → '+(el.dataset.pop?'메뉴 열기':'사용 순서 보기')+'</div>':''}`;
  tip.classList.add('show');const r=el.getBoundingClientRect();tip.style.visibility='hidden';tip.style.left='0';tip.style.top='0';
  const tw=tip.offsetWidth,th=tip.offsetHeight;let l=r.left+r.width/2-tw/2;l=Math.max(10,Math.min(l,innerWidth-tw-10));
@@ -750,15 +750,15 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeDrawer();hideP
 
 /* wire .ix */
 function wire(el){
- el.addEventListener('mouseenter',()=>showTip(el));
+ el.addEventListener('mouseenter',()=>{if(window.__prActive)return;showTip(el);});
  el.addEventListener('mouseleave',hideTip);
- el.addEventListener('click',e=>{e.stopPropagation();hideTip();
+ el.addEventListener('click',e=>{e.stopPropagation();hideTip();if(window.__prActive)return; /* 실습 중에는 앱 드로어·팝업 열지 않음 */
   if(el.dataset.pop){if(popFor===el){hidePop();}else{showPop(el);}}
   else{hidePop();openDrawer(el.dataset.k);}});
 }
 document.querySelectorAll('.ix').forEach(wire);
 // project row ⋯ (rows 2,3 without data-k) also open more popover
-document.querySelectorAll('.ac [data-pop="more"]').forEach(el=>{el.addEventListener('click',e=>{e.stopPropagation();(popFor===el)?hidePop():showPop(el);});});
+document.querySelectorAll('.ac [data-pop="more"]').forEach(el=>{el.addEventListener('click',e=>{e.stopPropagation();if(window.__prActive)return;(popFor===el)?hidePop():showPop(el);});});
 document.addEventListener('click',()=>{hidePop();});
 
 /* intro / controls */
@@ -1013,6 +1013,7 @@ function fallbackCopy(t){try{const ta=document.createElement('textarea');ta.valu
   idx=i; acted=false; confirming=false; inHowto=false;
   if(idx===3){ /* 입력 단계 진입 시 타이핑 준비 */ }
   clearTimers();
+  try{closeDrawer();hidePop();hideTip();}catch(e){} /* 열려 있던 앱 드로어·팝업 정리 */
   // spot targets
   if(idx===0)spotOn('[data-k="ds"]');
   else if(idx===1)spotOn('[data-k="tmpl"]');
@@ -1170,6 +1171,7 @@ function fallbackCopy(t){try{const ta=document.createElement('textarea');ta.valu
  }
  function start(){
   if(active)return; active=true; window.__prActive=true;
+  try{closeDrawer();hidePop();hideTip();}catch(e){}
   lastFocus=document.activeElement;
   try{ if(intro)intro.classList.add('hide'); }catch(e){}
   try{ if(guidebd)guidebd.classList.remove('show'); }catch(e){}
