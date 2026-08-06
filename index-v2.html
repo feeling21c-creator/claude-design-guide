@@ -930,7 +930,8 @@ function fallbackCopy(t){try{const ta=document.createElement('textarea');ta.valu
   var extra='';
   if(idx===2){ extra='<div style="font-size:12.5px;color:var(--tx2);margin:2px 0 8px">첨부 예시: <b>리비안디자인 로고</b> · <b>거실 시공 사진 3장</b> · <b>고객 요구사항 PDF</b></div>'; }
   var hint='';
-  if(showAct&&actLabel){ hint='<div class="pr-hint">👇 아래 주황색 <b>['+actLabel+']</b> 버튼을 누르면 자동으로 진행돼요.</div>'; }
+  if(idx<=2&&acted){ hint='<div class="pr-hint">✓ 적용됐어요! 잠시 후 <b>다음 단계</b>로 넘어가요…</div>'; }
+  else if(showAct&&actLabel){ hint='<div class="pr-hint">👇 아래 주황색 <b>['+actLabel+']</b> 버튼을 누르세요. <b>누르면 곧바로 다음 단계</b>로 넘어가요.</div>'; }
   else if(idx===3&&typed){ hint='<div class="pr-hint">👇 강조된 전송 <b>↑</b> 버튼, 또는 아래 <b>[전송하기 ↑]</b>를 누르세요.</div>'; }
   else if(idx===4){ hint='<div class="pr-hint">⏳ 만드는 과정을 보여주는 중이에요… (실제 생성은 하지 않아요)</div>'; }
   else if(idx===5){ hint='<div class="pr-hint">👉 오른쪽에 만들어진 제안서를 확인하고 아래 <b>[다음]</b>을 누르세요.</div>'; }
@@ -1031,7 +1032,10 @@ function fallbackCopy(t){try{const ta=document.createElement('textarea');ta.valu
   else if(idx===1){ setChip('tmpl','UI mockups'); acted=true; announce('템플릿이 UI mockups 로 설정됐어요.'); }
   else if(idx===2){ addAttachChips(); acted=true; announce('예제 자료 3건이 첨부됐어요.'); }
   else if(idx===3){ typePrompt(); return; }
-  coach.innerHTML=coachHTML(); focusMain();
+  coach.innerHTML=coachHTML();
+  if(idx<=2){ /* 선택하면 곧바로 다음 단계로 자동 이동 (사용자가 [다음]을 따로 누르지 않아도 됨) */
+   var cur=idx; T(function(){ if(active&&acted&&idx===cur) go(cur+1); }, 1000); }
+  else focusMain();
  }
 
  function addAttachChips(){
