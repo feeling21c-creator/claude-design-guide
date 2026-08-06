@@ -893,7 +893,7 @@ function fallbackCopy(t){try{const ta=document.createElement('textarea');ta.valu
  var reduce=false; try{reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;}catch(e){}
  var active=false, idx=0, lastFocus=null, voiceOn=false, timers=[];
  var acted=false, typed=false, genDone=false, edits={a:false,b:false,c:false}, verifyN=0;
- var confirming=false;
+ var confirming=false, inHowto=false;
  var origDS=null, origTMPL=null, origPh=null, origPhColor=null;
  var dim, stage, coach, live, sendHandler=null;
  var STEPS=[
@@ -1009,7 +1009,7 @@ function fallbackCopy(t){try{const ta=document.createElement('textarea');ta.valu
 
  function go(i){
   if(i<0)i=0; if(i>8)return complete();
-  idx=i; acted=false; confirming=false;
+  idx=i; acted=false; confirming=false; inHowto=false;
   if(idx===3){ /* 입력 단계 진입 시 타이핑 준비 */ }
   clearTimers();
   // spot targets
@@ -1108,7 +1108,7 @@ function fallbackCopy(t){try{const ta=document.createElement('textarea');ta.valu
 
  function onKey(e){
   if(!active)return;
-  if(e.key==='Escape'){ e.preventDefault(); if(confirming){ go(idx); } else askEnd(); return; }
+  if(e.key==='Escape'){ e.preventDefault(); if(confirming){ confirming=false; if(inHowto)showHowto(); else go(idx); } else askEnd(); return; }
   if(e.key==='Tab'){ /* 간단 포커스 트랩: 실습 UI 밖으로 못 나가게 */
    var f=[]; [coach,stage].forEach(function(r){ if(r)f=f.concat([].slice.call(r.querySelectorAll('button,input,[tabindex]:not([tabindex="-1"])'))); });
    f=f.filter(function(el){return el.offsetParent!==null && !el.disabled;});
@@ -1120,12 +1120,13 @@ function fallbackCopy(t){try{const ta=document.createElement('textarea');ta.valu
 
  function coachClick(e){
   var b=e.target.closest('button'); if(!b)return;
+  if(b.classList.contains('prBegin')){ go(0); return; }
   if(b.classList.contains('prPrev')){ if(idx>0)go(idx-1); return; }
   if(b.classList.contains('prAct')){ doAct(); return; }
   if(b.classList.contains('prNext')&&!b.classList.contains('prYes')){ if(canNext())go(idx+1); return; }
   if(b.classList.contains('prVoice')){ voiceOn=!voiceOn; if(!voiceOn)prStop(); else prSpeak(STEPS[idx].t+'. '+STEPS[idx].g); b.classList.toggle('on',voiceOn); b.setAttribute('aria-pressed',voiceOn); return; }
   if(b.classList.contains('prEnd')){ if(idx>8||document.querySelector('#pr-done-badge')&&stage.querySelector('.prAgain')){ end(); } else askEnd(); return; }
-  if(b.classList.contains('prCancel')){ go(idx); return; }
+  if(b.classList.contains('prCancel')){ if(inHowto)showHowto(); else go(idx); return; }
   if(b.classList.contains('prYes')){ end(); return; }
  }
  function stageClick(e){
@@ -1142,6 +1143,27 @@ function fallbackCopy(t){try{const ta=document.createElement('textarea');ta.valu
 
  function resetState(){ idx=0; acted=false; typed=false; genDone=false; edits={a:false,b:false,c:false}; verifyN=0; confirming=false; chat=[]; result={title:'집이 다시 설레는 공간이 되도록',process:3,ctaTop:false,ctaBig:false}; pushChat(true,PROMPT); pushChat(false,'요청하신 순서대로 원페이지 제안서 초안을 만들었어요. 오른쪽에서 확인하세요.'); }
 
+ function showHowto(){
+  inHowto=true; spotOff(); detachSend(); clearTimers();
+  stage.style.display='flex';
+  stage.innerHTML='<div style="width:100%;max-width:600px">'
+   +'<div class="pr-badge" style="margin-bottom:10px">교육용 시뮬레이션</div>'
+   +'<h2 class="pr-h">🎬 5분 실습 · 이렇게 진행돼요</h2>'
+   +'<p style="color:var(--tx2);font-size:14.5px;line-height:1.65;margin:0 0 14px">화면을 직접 누르지 않아도 돼요. <b style="color:#fff">아래 안내 바</b>가 한 단계씩 이끌어 줍니다. (총 9단계 · 약 5분)</p>'
+   +'<div style="background:#141416;border:1px solid var(--line2);border-radius:14px;padding:6px 14px;text-align:left">'
+    +'<div style="padding:11px 2px;border-bottom:1px solid var(--line);font-size:14px;color:var(--tx2);line-height:1.55"><b style="color:#fff">1 ·</b> 각 단계에서 <b style="color:var(--accent-ink)">아래 주황색 버튼</b>(예: “Organic 선택”)을 누르면 자동으로 진행돼요.</div>'
+    +'<div style="padding:11px 2px;border-bottom:1px solid var(--line);font-size:14px;color:var(--tx2);line-height:1.55"><b style="color:#fff">2 ·</b> <b>[다음 →]</b> 으로 넘어가고 <b>[← 이전]</b> 으로 돌아갑니다.</div>'
+    +'<div style="padding:11px 2px;border-bottom:1px solid var(--line);font-size:14px;color:var(--tx2);line-height:1.55"><b style="color:#fff">3 ·</b> 소리로 듣고 싶으면 <b>[🔊 음성]</b>, 그만두려면 <b>[✕ 종료]</b>.</div>'
+    +'<div style="padding:11px 2px;font-size:14px;color:var(--tx2);line-height:1.55"><b style="color:#fff">4 ·</b> 마지막엔 “첫 프로젝트 완성” 화면이 나와요.</div>'
+   +'</div>'
+   +'<div style="margin-top:16px;font-size:12.5px;color:var(--mut)">👇 아래에 이런 안내 바가 나타나요 (여기 주황 버튼을 누르며 진행)</div>'
+   +'<div class="pr-btns" style="margin-top:8px;pointer-events:none;opacity:.95"><span class="prPrev" style="min-height:44px;border-radius:11px;padding:10px 16px;border:1px solid var(--line2);background:var(--panel);color:var(--mut);font-weight:800;font-size:14px">← 이전</span><span class="prAct" style="min-height:44px;border-radius:11px;padding:10px 16px;background:var(--accent);color:#fff;font-weight:800;font-size:14px">Organic 선택</span><span class="prNext" style="min-height:44px;border-radius:11px;padding:10px 16px;border:1px solid var(--line2);background:var(--panel);color:var(--mut);font-weight:800;font-size:14px">다음 →</span></div>'
+   +'</div>';
+  coach.innerHTML='<div class="pr-inner"><div class="pr-top"><span class="pr-badge">시작 안내</span><span class="pr-prog">실습 이용 방법</span></div><div class="pr-guide">준비되면 아래 버튼을 눌러 시작하세요. 언제든 [종료]로 나갈 수 있어요.</div><div class="pr-btns"><button type="button" class="prBegin prAct" aria-label="실습 시작하기">🎬 실습 시작하기 →</button><button type="button" class="prVoice'+(voiceOn?' on':'')+'" aria-pressed="'+voiceOn+'" aria-label="음성 안내 켜고 끄기">🔊 음성</button><button type="button" class="prEnd" aria-label="닫기" style="margin-left:auto">✕ 닫기</button></div></div>';
+  announce('5분 실습 이용 안내. 아래 안내 바가 한 단계씩 이끌어 줍니다. 준비되면 실습 시작하기 버튼을 누르세요.');
+  prStop(); prSpeak('5분 실습 이용 안내입니다. 화면을 직접 누르지 않아도 돼요. 아래 안내 바가 한 단계씩 이끌어 줍니다. 각 단계에서 아래 주황색 버튼을 누르면 진행돼요. 준비되면 실습 시작하기를 누르세요.');
+  var beg=coach.querySelector('.prBegin'); T(function(){beg&&beg.focus();},60);
+ }
  function start(){
   if(active)return; active=true; window.__prActive=true;
   lastFocus=document.activeElement;
@@ -1154,7 +1176,7 @@ function fallbackCopy(t){try{const ta=document.createElement('textarea');ta.valu
   coach=document.createElement('div'); coach.className='pr-coach'; coach.setAttribute('role','region'); coach.setAttribute('aria-label','실습 안내'); coach.addEventListener('click',coachClick); document.body.appendChild(coach);
   live=document.createElement('div'); live.setAttribute('aria-live','polite'); live.style.cssText='position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)'; coach.appendChild(live);
   document.addEventListener('keydown',onKey,true);
-  go(0);
+  showHowto();
  }
  function restart(){ resetState(); go(0); }
 
