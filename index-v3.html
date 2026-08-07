@@ -458,6 +458,14 @@ button:focus-visible{outline:3px solid #eaa588;outline-offset:2px}
   s.setProperty('opacity','1','important');
   s.setProperty('visibility','visible','important');
   s.setProperty('transform','none','important');
+  if(window.innerWidth<=640){ /* 모바일: 상단 우측 겹침 방지 → 하단 중앙으로 */
+   s.setProperty('top','auto','important');
+   s.setProperty('right','auto','important');
+   s.setProperty('bottom','6px','important');
+   s.setProperty('left','50%','important');
+   s.setProperty('transform','translateX(-50%)','important');
+   s.setProperty('font-size','10px','important');
+  }
  }
  ensure();
  setInterval(ensure,700);
@@ -1278,6 +1286,11 @@ function fallbackCopy(t){try{const ta=document.createElement('textarea');ta.valu
   .prow .ac{gap:8px}
   .p2-search input{min-height:44px}
   .p2-search .p2-search-x{min-width:44px;min-height:44px}
+  /* 하단 플로팅 정리: 학습 현황(우)만 노출, 가이드·자동읽기·힌트·안내는 시작 메뉴 패널로 이동 */
+  .help{left:auto;right:12px;bottom:12px;gap:6px;flex-wrap:nowrap;justify-content:flex-end}
+  #openGuide,#tVoice,#tHints,#reopen{display:none !important}
+  .main{padding-bottom:90px}
+  .cend{margin-left:0}
  }
  `;
  var st=ce('style'); st.id='p2-css'; st.textContent=css; document.head.appendChild(st);
@@ -1693,7 +1706,7 @@ function fallbackCopy(t){try{const ta=document.createElement('textarea');ta.valu
   .p2-lgoal button .e{font-size:17px}
   .p2-lgoal button .g{font-size:13px;font-weight:800}
   .p2-lgoal button .d{font-size:10.5px;color:var(--tx2)}
-  @media(max-width:480px){#p2-startBtn{top:auto;bottom:74px;left:12px;padding:9px 13px}.p2-lgoal{grid-template-columns:1fr 1fr}}
+  @media(max-width:640px){#p2-startBtn{top:auto;bottom:12px;left:12px;padding:10px 14px}.p2-lgoal{grid-template-columns:1fr 1fr}}
   `;
   document.head.appendChild(s2);
   var btn=ce('button'); btn.id='p2-startBtn'; btn.type='button'; btn.setAttribute('aria-haspopup','dialog'); btn.setAttribute('aria-label','시작 메뉴 열기 (첫 화면·실습·둘러보기·가이드)'); btn.innerHTML='<span class="e">🏠</span>시작 메뉴';
@@ -1709,6 +1722,9 @@ function fallbackCopy(t){try{const ta=document.createElement('textarea');ta.valu
     +'<button class="p2-lbtn" data-act="tour"><span class="e">🧭</span><span>화면 단계별로 둘러보기<small>어디가 무엇인지 하나씩</small></span></button>'
     +'<button class="p2-lbtn" data-act="guide"><span class="e">📘</span><span>작업 가이드<small>실제 작업하는 법·복붙 프롬프트</small></span></button>'
     +'<button class="p2-lbtn" data-act="intro"><span class="e">🏠</span><span>첫(안내) 화면 다시 보기<small>처음 시작 화면으로 되돌아가기</small></span></button>'
+    +'<div class="p2-lsec">설정</div>'
+    +'<button class="p2-lbtn" data-act="voice"><span class="e">🔊</span><span>설명 자동읽기 — <small id="p2-voiceState" style="display:inline">끔</small></span></button>'
+    +'<button class="p2-lbtn" data-act="hints"><span class="e">💡</span><span>힌트 테두리 — <small id="p2-hintState" style="display:inline">켬</small></span></button>'
     +'<div class="p2-lsec">무엇을 만들고 싶으세요? — 목적으로 시작</div>'
     +'<div class="p2-lgoal">'+goalButtons()+'</div>'
     +'</div>';
@@ -1716,6 +1732,8 @@ function fallbackCopy(t){try{const ta=document.createElement('textarea');ta.valu
    lpanel.querySelector('.pb').addEventListener('click',function(e){
     var b=e.target.closest('button'); if(!b)return;
     var act=b.getAttribute('data-act');
+    if(act==='voice'){ var tv=document.getElementById('tVoice'); if(tv)tv.click(); updateSettingLabels(); return; }
+    if(act==='hints'){ var th=document.getElementById('tHints'); if(th)th.click(); updateSettingLabels(); return; }
     if(act){ closeL();
      if(act==='practice'){ var ip=$('#introPractice'); if(ip)ip.click(); }
      else if(act==='tour'){ startTour(); }
@@ -1725,6 +1743,13 @@ function fallbackCopy(t){try{const ta=document.createElement('textarea');ta.valu
     var cat=b.getAttribute('data-cat');
     if(cat){ closeL(); var iv=$('#intro'); if(iv)iv.classList.add('hide'); switchTab('templates'); var fb=$('#p2-tfilter'); if(fb){var chip=fb.querySelector('.p2-chip[data-cat="'+cat+'"]'); if(chip)chip.click();} var tv=$('#v-templates'); if(tv)tv.scrollIntoView({behavior:REDUCE?'auto':'smooth'}); announce(b.querySelector('.g').textContent+' 템플릿을 보여드려요'); }
    });
+   updateSettingLabels();
+  }
+  function updateSettingLabels(){
+   var vs=document.getElementById('p2-voiceState'); var tv=document.getElementById('tVoice');
+   if(vs)vs.textContent=(tv&&tv.classList.contains('von'))?'켬':'끔';
+   var hsl=document.getElementById('p2-hintState');
+   if(hsl)hsl.textContent=document.body.classList.contains('hints')?'켬':'끔';
   }
   function openL(){ lLast=document.activeElement; renderL(); lmask.classList.add('on'); lpanel.classList.add('on'); document.addEventListener('keydown',lKey,true); var x=lpanel.querySelector('.x'); if(x)setTimeout(function(){x.focus();},60); announce('시작 메뉴를 열었어요'); }
   function closeL(){ lmask.classList.remove('on'); lpanel.classList.remove('on'); document.removeEventListener('keydown',lKey,true); try{if(lLast&&lLast.focus)lLast.focus();}catch(e){} }
