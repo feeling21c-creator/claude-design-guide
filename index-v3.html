@@ -1264,7 +1264,20 @@ function fallbackCopy(t){try{const ta=document.createElement('textarea');ta.valu
  @media(max-width:480px){
   .p2-goal{grid-template-columns:1fr}
   .p2-tour-pop{max-width:88vw}
-  .ix{min-height:32px}
+ }
+ /* 모바일 터치 영역 44px 이상 확보 (기존 데스크톱 룩 유지, 좁은 폭에서만) */
+ @media(max-width:640px){
+  .tab{min-height:44px;display:inline-flex;align-items:center;padding:9px 14px}
+  .ib{width:44px;height:44px}
+  .send{width:44px;height:44px}
+  .chip{min-height:44px}
+  .help button{min-height:44px}
+  #p2-openPanel{min-height:44px}
+  .wn,.av,.search,.star,.vtg{min-height:44px;display:inline-flex;align-items:center}
+  .prow .ac > *{min-width:44px;min-height:44px;display:inline-flex;align-items:center;justify-content:center}
+  .prow .ac{gap:8px}
+  .p2-search input{min-height:44px}
+  .p2-search .p2-search-x{min-width:44px;min-height:44px}
  }
  `;
  var st=ce('style'); st.id='p2-css'; st.textContent=css; document.head.appendChild(st);
