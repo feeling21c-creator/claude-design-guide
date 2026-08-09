@@ -223,13 +223,14 @@ a{color:var(--accent-ink)}
 
 <div class="app">
  <aside class="side" id="side">
-  <div class="sbrand"><div class="lg">◍</div><div class="nm">ChatGPT</div></div>
-  <div class="sitem ix" data-k="newchat"><span class="i">✏️</span> 새 채팅</div>
-  <div class="sitem ix" data-k="search"><span class="i">🔍</span> 채팅 검색</div>
-  <div class="sitem ix" data-k="library"><span class="i">🖼</span> 라이브러리</div>
-  <div class="sitem ix" data-k="gpts"><span class="i">▤</span> GPT 탐색</div>
+  <div class="sbrand"><div class="lg">◍</div><div class="nm">ChatGPT</div><span class="sp" style="flex:1"></span><span class="sicon ix" data-k="search" aria-label="채팅 검색">🔍</span><span class="sicon ix" data-k="sidetoggle" aria-label="사이드바 접기">▢</span></div>
+  <div class="sitem ix" data-k="newchat"><span class="i">✎</span> 새 채팅</div>
+  <div class="sitem ix" data-k="library"><span class="i">▤</span> 라이브러리</div>
   <div class="sitem ix" data-k="projects"><span class="i">📁</span> 프로젝트</div>
-  <div class="ssec">최근 대화</div>
+  <div class="sitem ix" data-k="reserve"><span class="i">◷</span> 예약</div>
+  <div class="sitem ix" data-k="plugins"><span class="i">◎</span> 플러그인</div>
+  <div class="sitem ix" data-k="more2"><span class="i">⋯</span> 더 보기</div>
+  <div class="ssec">최근 ›</div>
   <div class="schat ix" data-k="hist1">📧 거래처 안내 이메일 초안</div>
   <div class="schat ix" data-k="hist2">📝 회의록 요약해줘</div>
   <div class="schat">🖼 인테리어 무드보드 이미지</div>
@@ -241,7 +242,8 @@ a{color:var(--accent-ink)}
  <div class="main">
   <div class="topbar">
    <button class="ib menub" id="menub" aria-label="메뉴 열기" style="border-radius:9px">☰</button>
-   <button class="mchip ix" data-k="model" data-pop="model">ChatGPT <span style="color:var(--mut);font-size:13px">5 ⌄</span></button>
+   <span class="sp"></span>
+   <span class="cw ix" data-k="chatwork" role="group" aria-label="Chat / Work 전환"><span class="cwb" data-cw="chat">Chat</span><span class="cwb on" data-cw="work">Work</span></span>
    <span class="sp"></span>
    <button class="tbtn ix" data-k="share">↗ 공유</button>
    <button class="av ix" data-k="account">R</button>
@@ -257,29 +259,30 @@ a{color:var(--accent-ink)}
   <div class="wrap">
    <!-- HOME -->
    <section class="view on" id="v-home">
-    <div class="hero"><h1>무엇을 도와드릴까요?</h1><p>아래 입력창에 <b>그냥 말하듯이</b> 적으면 돼요. 어렵게 생각하지 마세요.</p></div>
-    <div class="chatex">
-     <div class="bub me">거래처에 보낼 정중한 안내 이메일 초안 써줘. 다음 주 미팅 일정 조율 내용으로.</div>
-     <div class="bub ai">안녕하세요, 아래와 같이 초안을 작성했어요.<br><b>제목:</b> 다음 주 미팅 일정 조율 요청 …<br>(본문 예시가 이어집니다) — 마음에 안 들면 “더 짧게”, “친근하게”처럼 고쳐 말하면 바로 바뀌어요.</div>
-    </div>
+    <div class="hero" id="heroBox"><h1 id="heroH">어떤 작업을 시작할까요?</h1><p>아래 입력창에 <b>그냥 말하듯이</b> 적으면 돼요. 위 <b>Chat / Work</b>와 아래 <b>프로젝트·플러그인·데스크톱 앱</b>이 무엇인지도 눌러보며 배워요.</p></div>
     <div class="composer">
-     <div class="ph ix" id="ph" data-k="input">무엇이든 물어보거나 시켜보세요</div>
+     <div class="ph ix" id="ph" data-k="input">무엇이든 작업하세요</div>
      <div class="crow">
       <span class="ib ix" data-k="plus" data-pop="plus">＋</span>
       <span class="ib ix" data-k="tools" data-pop="tools">🧰 <span class="t">도구</span></span>
       <span class="cend">
+       <span class="mchip2 ix" data-k="model">5 Sol <span style="color:var(--mut)">⌄</span></span>
        <span class="ib ix" data-k="voice">🎤</span>
        <span class="send ix" data-k="send">↑</span>
       </span>
      </div>
-     <div class="tools">
-      <span class="ib ix" data-k="tsearch">🌐 <span class="t">웹 검색</span></span>
-      <span class="ib ix" data-k="timage">🎨 <span class="t">이미지</span></span>
-      <span class="ib ix" data-k="tcanvas">🖊 <span class="t">캔버스</span></span>
-      <span class="ib ix" data-k="tstudy">🎓 <span class="t">공부</span></span>
-     </div>
     </div>
-    <p class="sub-t" style="text-align:center;margin-top:14px">위 요소에 <b>마우스를 올리면</b> 한글 설명이, <b>누르면</b> 사용 순서·시뮬레이션이 나와요.</p>
+    <div class="cbar">
+     <span class="cb ix" data-k="projsel">📁 프로젝트 선택</span>
+     <span class="cb ix" data-k="plugins">◎ 플러그인 <b>＋Ⓒ</b></span>
+     <span class="cbend"><span class="cb ix" data-k="desktop">🖥 데스크톱 앱 열기</span></span>
+    </div>
+    <div class="sugs">
+     <div class="sug ix" data-k="sug1"><span class="si">🔵</span> 내가 쓰는 AI 도구의 요금·한도·플랜이 바뀌면 알려줘</div>
+     <div class="sug ix" data-k="sug2"><span class="si">💬</span> <b>(슬랙)</b> 내 할 일 정리해줘</div>
+     <div class="sug ix" data-k="sug3"><span class="si">✉️</span> <b>(지메일)</b> 후속 이메일 초안을 작성해줘</div>
+    </div>
+    <p class="sub-t" style="text-align:center;margin-top:18px">위 어느 요소든 <b>마우스를 올리면</b> 한글 설명이, <b>누르면</b> 상세 설명 + 실제 예시가 나와요. (모바일은 탭)</p>
    </section>
 
    <!-- USES -->
@@ -318,7 +321,6 @@ a{color:var(--accent-ink)}
 <div class="help">
  <button id="openGuide" style="background:var(--accent);color:#fff;border-color:var(--accent)">📘 작업 가이드</button>
  <button id="tVoice">🔊 설명 자동읽기 끔</button>
- <button id="tHints">? 안내</button>
  <button id="reopen">🏠 처음 화면</button>
 </div>
 <div class="simbadge">🧪 교육용 시뮬레이션 · 실제 ChatGPT 아님</div>
@@ -330,7 +332,7 @@ a{color:var(--accent-ink)}
 
 <script>
 /* ===== 제작자 표시 (자동 복원) ===== */
-(function(){var TXT='© 리비안디자인 · Lucas 제작';var ID='__rdai_credit__';
+(function(){var TXT='© 리비안디자인 루카스 · AI 강의용 제작';var ID='__rdai_credit__';
  function ensure(){var el=document.getElementById(ID);if(!el){el=document.createElement('div');el.id=ID;document.documentElement.appendChild(el);}if(el.textContent!==TXT)el.textContent=TXT;var s=el.style;
   s.setProperty('position','fixed','important');s.setProperty('top','8px','important');s.setProperty('right','12px','important');s.setProperty('z-index','2147483647','important');s.setProperty('padding','4px 9px','important');s.setProperty('font','700 11px "Pretendard",system-ui,sans-serif','important');s.setProperty('color','rgba(255,255,255,.7)','important');s.setProperty('background','rgba(18,18,20,.6)','important');s.setProperty('border','1px solid rgba(255,255,255,.14)','important');s.setProperty('border-radius','999px','important');s.setProperty('pointer-events','none','important');s.setProperty('white-space','nowrap','important');s.setProperty('display','block','important');s.setProperty('opacity','1','important');s.setProperty('transform','none','important');
   if(window.innerWidth<=640){s.setProperty('top','auto','important');s.setProperty('right','auto','important');s.setProperty('bottom','6px','important');s.setProperty('left','50%','important');s.setProperty('transform','translateX(-50%)','important');s.setProperty('font-size','10px','important');}}
@@ -357,7 +359,7 @@ function showGate(){if(document.getElementById('__g__'))return;var g=document.cr
  +'<div id="__ge" role="alert" style="color:#ff8a6a;font-size:12.5px;margin-top:7px;min-height:16px"></div>'
  +'<button id="__gg" type="button" style="width:100%;margin-top:2px;background:#10a37f;color:#fff;border:none;border-radius:12px;padding:14px;font:inherit;font-size:15px;font-weight:800;cursor:pointer">참여 코드로 시작하기</button>'
  +'<div style="font-size:12px;color:#8e8e8e;background:#171717;border:1px solid #3a3a3a;border-radius:10px;padding:10px 12px;margin-top:12px;line-height:1.55">교육자료 열람용 간단 확인입니다. 회원 로그인·강력한 보안이 아닙니다.</div>'
- +'<div style="font-size:11.5px;color:#8e8e8e;margin-top:12px;text-align:center;line-height:1.6">무단 전달·재공유 금지 · 최초 인증 후 72시간 열람<br>© 리비안디자인 · Lucas 제작</div></div>';
+ +'<div style="font-size:11.5px;color:#8e8e8e;margin-top:12px;text-align:center;line-height:1.6">무단 전달·재공유 금지 · 최초 인증 후 72시간 열람<br><b style="color:#5fd3b2">리비안디자인 루카스</b>가 <b style="color:#fff">AI 강의용</b>으로 제작한 자료입니다</div></div>';
  document.documentElement.appendChild(g);var cd=g.querySelector('#__gc'),err=g.querySelector('#__ge'),go=g.querySelector('#__gg');
  function submit(){if((cd.value||'').trim()!==ACCESS_CODE){err.textContent='참여 코드를 다시 확인해 주세요';cd.focus();return;}grantOnce();if(g.parentNode)g.parentNode.removeChild(g);}
  go.addEventListener('click',submit);cd.addEventListener('keydown',function(e){if(e.key==='Enter')submit();});setTimeout(function(){try{cd.focus();cd.select();}catch(e){}},50);}
@@ -557,8 +559,7 @@ setInterval(function(){if(window.__prActive||tip.classList.contains('show')||pop
 /* 컨트롤 */
 var intro=null; /* (이 파일은 인트로 모달 대신 홈 탭이 시작 화면) */
 var tv=$('#tVoice');tv.onclick=function(){autoVoice=!autoVoice;tv.classList.toggle('von',autoVoice);tv.textContent=autoVoice?'🔊 설명 자동읽기 켬':'🔊 설명 자동읽기 끔';if(!autoVoice)stopVoice();else if(drawer.classList.contains('show'))speak(curSay);};
-$('#tHints').onclick=function(){alert('사용법: 화면 요소에 마우스를 올리면 한글 설명, 누르면 사용 순서·시뮬레이션이 나옵니다. 모바일은 탭하세요. 아래 📘 작업 가이드에서 전체 흐름과 프롬프트 예시를 볼 수 있어요.');};
-$('#reopen').onclick=function(){$('.tab[data-tab="home"]').click();window.scrollTo(0,0);};
+/* #reopen(처음 화면)은 아래 확장 스크립트에서 안내(인트로) 화면과 연결됨 */
 
 /* ===================== 작업 가이드 ===================== */
 var pbox=function(t){return '<div class="pbox"><button class="copy">복사</button><span class="ptext">'+esc(t)+'</span></div>';};
@@ -924,6 +925,128 @@ document.addEventListener('click',function(e){if(e.target.closest&&e.target.clos
  document.querySelectorAll('.tab').forEach(function(t){t.setAttribute('role','tab');t.setAttribute('tabindex','0');
   t.addEventListener('click',function(){var v=t.dataset.tab;document.querySelectorAll('.tab').forEach(function(x){x.classList.toggle('on',x===t);x.setAttribute('aria-selected',x===t?'true':'false');});VIEWS.forEach(function(kk){var el=document.getElementById('v-'+kk);if(el)el.classList.toggle('on',kk===v);});try{document.querySelector('.wrap').scrollTop=0;}catch(e){}});
   t.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();t.click();}});});
+})();
+</script>
+
+<script>
+/* ===================== 실제 화면 요소 설명 + 안내(처음) 화면 ===================== */
+(function(){
+ 'use strict';
+ var css=document.createElement('style');css.textContent=''
+ +'.sbrand .sp{flex:1}.sicon{cursor:pointer;color:var(--tx2);font-size:14px;padding:4px 6px;border-radius:8px}.sicon:hover{background:var(--panel)}'
+ +'.cw{display:inline-flex;background:var(--panel);border:1px solid var(--line2);border-radius:999px;padding:3px;cursor:pointer}'
+ +'.cwb{border:none;background:transparent;color:var(--tx2);font:inherit;font-size:14px;font-weight:700;padding:6px 18px;border-radius:999px;cursor:pointer;min-height:34px}'
+ +'.cwb.on{background:var(--panel2);color:#fff}'
+ +'.mchip2{display:inline-flex;align-items:center;gap:4px;background:transparent;border:none;color:var(--tx);font-weight:700;font-size:13.5px;cursor:pointer;padding:6px 8px;border-radius:8px}.mchip2:hover{background:var(--panel)}'
+ +'.cbar{max-width:760px;margin:8px auto 0;display:flex;align-items:center;gap:12px;padding:6px 6px;flex-wrap:wrap;background:var(--panel2);border:1px solid var(--line);border-radius:14px}'
+ +'.cb{display:inline-flex;align-items:center;gap:6px;color:var(--tx2);font-size:13px;cursor:pointer;border-radius:8px;padding:7px 9px;min-height:40px}.cb:hover{color:var(--tx);background:var(--panel)}.cb b{color:var(--accent-ink)}'
+ +'.cbend{margin-left:auto}'
+ +'.sugs{max-width:760px;margin:14px auto 0;display:flex;flex-direction:column}'
+ +'.sug{display:flex;align-items:center;gap:12px;padding:13px 10px;border-radius:10px;cursor:pointer;color:var(--tx);font-size:14.5px;border-bottom:1px solid var(--line)}.sug:hover{background:var(--panel)}.sug .si{font-size:15px}'
+ +'@media(max-width:640px){.cbar{gap:6px}.cb{font-size:12px}.cwb{padding:6px 14px}}'
+ /* 안내(처음) 화면 */
+ +'.introov{position:fixed;inset:0;z-index:1800;background:rgba(8,8,9,.72);backdrop-filter:blur(3px);display:grid;place-items:center;padding:18px;overflow:auto}'
+ +'.introov.hide{display:none}'
+ +'.introbox{width:100%;max-width:520px;background:#1a1a1a;border:1px solid #3a3a3a;border-radius:20px;padding:26px 24px;box-shadow:0 24px 70px #000b}'
+ +'.introbox .k{display:inline-block;font-size:11px;font-weight:800;color:#5fd3b2;background:#0f2b23;border:1px solid #1a7f64;border-radius:999px;padding:4px 11px}'
+ +'.introbox h1{font-size:23px;margin:12px 0 4px}'
+ +'.introbox .by{font-size:13px;color:#b4b4b4;line-height:1.6}.introbox .by b{color:#5fd3b2}'
+ +'.introbox p.d{font-size:14px;color:#cfcfcf;line-height:1.7;margin:14px 0}'
+ +'.introbox .go{display:block;width:100%;margin-top:10px;border:none;border-radius:13px;padding:14px;font:inherit;font-size:15px;font-weight:800;cursor:pointer;text-align:center}'
+ +'.introbox .go.p{background:var(--accent);color:#fff}.introbox .go.s{background:transparent;color:var(--tx);border:1px solid var(--line2)}'
+ +'.introbox .grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}'
+ +'.introbox .grid2 .go{margin-top:0}'
+ +'.introbox .mini{font-size:11.5px;color:#8e8e8e;margin-top:14px;text-align:center;line-height:1.6}';
+ document.head.appendChild(css);
+
+ /* Chat/Work 시각 토글(실제감) — 클릭 시 선택 표시 (설명 드로어는 .ix 로 함께 열림) */
+ document.querySelectorAll('.cwb').forEach(function(btn){btn.addEventListener('click',function(e){document.querySelectorAll('.cwb').forEach(function(x){x.classList.toggle('on',x===btn);});var work=btn.getAttribute('data-cw')==='work';var h=document.getElementById('heroH');if(h)h.textContent=work?'어떤 작업을 시작할까요?':'무엇을 도와드릴까요?';var ph=document.getElementById('ph');if(ph)ph.textContent=work?'무엇이든 작업하세요':'무엇이든 물어보세요';var sg=document.querySelector('.sugs');if(sg)sg.style.display=work?'flex':'none';var cb=document.querySelector('.cbar');if(cb)cb.style.display=work?'flex':'none';});});
+
+ /* 새 요소 설명 (깊게 + 인테리어 실제 예시) */
+ var add={
+  chatwork:{en:'Chat / Work',ko:'Chat / Work 모드',fn:'위쪽의 <b>Chat / Work</b>는 ChatGPT를 쓰는 두 가지 모드예요.\n· <b>Chat</b>: 평범한 질문·대화·글쓰기.\n· <b>Work</b>: 내 앱·자료(드라이브·지메일·슬랙 등)와 <b>연결해 실제 업무를 대신 처리</b>하고, 여러 단계를 이어서 해줘요. (제공·이름 확인 필요)',
+   when:'단순 질문이면 Chat, 내 자료·앱과 엮어 실제 일 처리를 시키려면 Work.',
+   how:'상단에서 Chat/Work를 눌러 전환. Work에선 아래에 프로젝트·플러그인·추천 작업이 함께 보여요.',
+   caution:'Work는 <b>연결 권한</b>이 필요하고 자동 실행 위험이 있어요. 결제·발송처럼 되돌리기 어려운 건 확인 후.',
+   sc:'인테리어 업무를 Chat / Work로 나눠 해볼게요.',
+   run:[{t:'Chat 모드',me:'상담 감사 문자 3버전 써줘.',ai:'문자 3개를 바로 만들어줘요(일반 대화).'},{t:'Work 모드',me:'지메일에서 오늘 온 상담 문의 메일 3건을 정리하고, 각각 후속 답장 초안까지 만들어줘.',ai:'(연결된 지메일에서) 문의 3건 요약 + 후속 답장 초안 3개를 만들어줘요. ※ 발송 전 사람이 확인.'}]},
+  projsel:{en:'Select project',ko:'프로젝트 선택',fn:'지금 이 대화를 <b>특정 프로젝트(폴더)에 넣어</b> 그 프로젝트의 지침·자료를 함께 쓰는 버튼이에요.',
+   when:'진행 중인 고객·현장 폴더 안에서 대화하고 싶을 때.',
+   how:'‘프로젝트 선택’을 눌러 폴더를 고르면, 이후 답이 그 폴더의 지침·자료를 반영해요.',
+   caution:'엉뚱한 프로젝트를 고르면 다른 고객 기준이 섞여요. 선택한 프로젝트를 꼭 확인.',
+   sc:'“○○아파트 34평 리모델링” 프로젝트를 선택하고 물어볼게요.',
+   run:[{t:'1 · 프로젝트 선택',me:'프로젝트 선택 → “○○아파트 34평 리모델링”'},{t:'2 · 그 폴더 기준으로 답함',me:'주방 자재 추천해줘',ai:'(그 프로젝트의 예산 4,500만·우드톤·반려묘 기준으로) 주방 자재 추천 3안을 정리해줘요.'}]},
+  plugins:{en:'Plugins / connectors',ko:'플러그인 · 커넥터',fn:'<b>플러그인·커넥터</b>는 외부 앱·기능을 ChatGPT에 붙여 <b>능력을 확장</b>하는 거예요. ‘＋Ⓒ’는 연결된 앱 아이콘이에요. 드라이브·지메일·슬랙·캘린더 등과 연결해요.',
+   when:'내 드라이브 문서·지메일·일정과 엮어 일할 때.',
+   how:'‘플러그인/＋’을 눌러 원하는 앱을 연결·허용 → 대화에서 그 앱 자료를 참고시켜요.',
+   caution:'연결은 <b>내 데이터 접근 권한</b>을 줘요. 필요한 것만, 안 쓰면 해제. 회사 계정은 관리자 정책.',
+   sc:'구글 드라이브를 연결해 견적 문서를 점검해 볼게요.',
+   run:[{t:'1 · 플러그인/＋ → 구글 드라이브 연결·허용'},{t:'2 · 대화에서 사용',me:'드라이브의 “○○아파트_견적_v3” 요약하고 빠진 항목 짚어줘',ai:'요약(총액·항목 수) + 누락 의심(조명·입주청소) 표시. 미확정 값은 “확인 필요”.'}]},
+  desktop:{en:'Open desktop app',ko:'데스크톱 앱 열기',fn:'<b>데스크톱 앱 열기</b>는 ChatGPT를 <b>PC 전용 앱</b>으로 실행하는 거예요. 화면 옆에 띄워 다른 프로그램과 나란히 쓰고, (Mac 등에선) <b>회의 녹음·요약</b> 같은 기능도 있어요. (플랫폼·기능 확인 필요)',
+   when:'PC에서 도면·문서를 보며 옆에 띄워 작업할 때, 회의를 녹음·정리할 때.',
+   how:'‘데스크톱 앱 열기’를 누르거나 공식 사이트에서 앱을 내려받아 설치.',
+   caution:'앱 설치·권한(마이크 등)은 회사 정책·보안 확인. 녹음은 참석자 동의 필요.',
+   sc:'현장 미팅을 데스크톱 앱으로 정리해 볼게요.',
+   run:[{t:'1 · PC 앱 실행',me:'앱을 열어 도면 옆에 나란히 배치'},{t:'2 · 활용',me:'(회의 녹음 후) 방금 미팅 내용을 요약하고 할 일로 정리해줘',ai:'회의 요약 + 할 일 목록(담당·기한). ※ 녹음은 동의 후.'}]},
+  sug1:{en:'Suggested task',ko:'추천 작업 · 요금/한도 모니터링',fn:'입력창 아래 문장들은 <b>Work 모드가 내 상황에 맞춰 제안하는 “바로 시킬 수 있는 일”</b>이에요. 이 예시는 “내가 쓰는 AI 도구의 요금·한도·플랜이 바뀌면 알려줘” 라는 <b>자동 모니터링</b> 요청이에요.',
+   when:'구독 도구가 많아 요금·정책 변동을 놓치기 쉬울 때.',
+   how:'문장을 누르면 그대로 요청돼요. (웹 검색·예약과 연계돼 주기적으로 확인)',
+   caution:'실제 청구·한도는 <b>각 서비스에서 직접 확인</b>이 정확해요.',
+   sc:'우리 회사가 쓰는 도구 요금 변동을 자동으로 챙겨 볼게요.',
+   run:[{t:'요청',me:'내가 쓰는 AI 도구들의 요금·사용 한도·플랜이 바뀌면 정리해서 알려줘.',ai:'변동이 감지되면 “무엇이·언제·얼마로 바뀜”을 요약해 알려줘요. ※ 최종 금액은 각 서비스 확인.'}]},
+  sug2:{en:'Suggested task',ko:'추천 작업 · 슬랙 할 일 정리',fn:'추천 작업 예시 ②. <b>슬랙</b> 같은 협업 앱과 연결해 나에게 온 요청·멘션을 모아 <b>할 일 목록</b>으로 정리해줘요.',
+   when:'슬랙 알림이 많아 할 일이 흩어질 때.',
+   how:'슬랙을 연결한 뒤 문장을 누르면 오늘 할 일을 모아줘요.',
+   caution:'업무 채널의 <b>민감 내용</b> 취급에 주의. 회사 정책 확인.',
+   sc:'슬랙에서 오늘 할 일을 모아 볼게요.',
+   run:[{t:'요청',me:'(슬랙 연결) 오늘 나에게 온 요청·멘션을 모아 할 일 목록으로 정리해줘.',ai:'멘션·DM을 훑어 할 일 목록(우선순위·기한)으로 정리해줘요.'}]},
+  sug3:{en:'Suggested task',ko:'추천 작업 · 지메일 후속 답장',fn:'추천 작업 예시 ③. <b>지메일</b>과 연결해 답장이 필요한 메일의 <b>후속 초안</b>을 만들어줘요.',
+   when:'상담 문의 메일에 빠르게 후속 답장을 보낼 때.',
+   how:'지메일 연결 후 문장을 누르면 해당 메일 맥락의 답장 초안을 만들어줘요.',
+   caution:'발송 전 <b>내용·수신자·개인정보</b>를 꼭 확인.',
+   sc:'상담 문의 메일에 후속 답장을 만들어 볼게요.',
+   run:[{t:'요청',me:'(지메일 연결) 어제 온 상담 문의 메일에 대한 후속 답장 초안을 정중하게 작성해줘.',ai:'해당 메일 맥락을 반영한 정중한 답장 초안을 만들어줘요(확정 금액은 제외, 실측 후 안내로).'}]},
+  more2:{en:'More',ko:'더 보기',fn:'<b>더 보기</b>는 사이드바에 다 안 보이는 나머지 메뉴를 여는 곳이에요. <b>GPT 탐색·나만의 GPT·Codex·설정(개인 맞춤)·데이터 관리</b> 등이 여기서 접근돼요. (계정·플랜에 따라 항목이 달라요 · 확인 필요)',
+   when:'자주 안 쓰지만 필요한 설정·기능을 찾을 때.',
+   how:'‘더 보기’를 눌러 목록에서 원하는 항목으로 이동.',
+   sc:'더 보기에서 설정으로 들어가 볼게요.',
+   run:[{t:'예',me:'더 보기 → 설정 → 개인 맞춤 → 맞춤 지침',ai:'맞춤 지침·메모리·데이터 관리 등 세부 설정으로 이동해요.'}]},
+  sidetoggle:{en:'Toggle sidebar',ko:'사이드바 접기/펴기',fn:'왼쪽 <b>사이드바를 접거나 펴는</b> 버튼이에요. 화면을 넓게 쓰고 싶을 때 접어요.',how:'아이콘을 눌러 접기/펴기.'},
+  newchat2:{}
+ };
+ for(var k in add){ if(add[k]&&add[k].en) INFO[k]=add[k]; }
+ /* 예약 = 작업(f-tasks) 깊은 내용 재사용 */
+ if(INFO['f-tasks']){ var t={};for(var x in INFO['f-tasks'])t[x]=INFO['f-tasks'][x]; t.ko='예약 (작업 · 반복 자동 실행)'; INFO['reserve']=t; }
+ /* 검색/새채팅/라이브러리 살짝 심화 */
+ if(INFO['search'])INFO['search'].when='예전 대화를 이름·내용으로 찾을 때.';
+ if(INFO['library'])INFO['library'].when='ChatGPT로 만든 이미지가 모여요.';
+
+ /* 새 .ix 요소 wire (호버·클릭·접근성) — 중복 방지 위해 아직 안 붙은 것만 */
+ document.querySelectorAll('.ix').forEach(function(el){ if(!el.__wired && typeof wire==='function'){ /* wire는 첫 스크립트에서 이미 붙었으므로 여기선 생략 */ } });
+
+ /* ===== 안내(처음) 화면 ===== */
+ var ov=document.createElement('div');ov.className='introov';ov.id='introov';ov.setAttribute('role','dialog');ov.setAttribute('aria-modal','true');ov.setAttribute('aria-label','안내');
+ ov.innerHTML='<div class="introbox">'
+  +'<span class="k">교육용 시뮬레이션</span>'
+  +'<h1>ChatGPT 한글 사용설명서</h1>'
+  +'<div class="by"><b>리비안디자인 루카스</b>가 <b style="color:#fff">AI 강의용</b>으로 제작한 자료입니다.</div>'
+  +'<p class="d">이 화면은 실제 ChatGPT를 <b>교육용으로 재현</b>한 것이에요. 화면의 어느 요소든 <b>마우스를 올리면 한글 설명</b>, <b>누르면 상세 설명 + 인테리어 실제 예시</b>가 나옵니다. (모바일은 탭)</p>'
+  +'<button class="go p" data-a="features">🧭 핵심 기능부터 보기</button>'
+  +'<div class="grid2"><button class="go s" data-a="practice">🎬 첫 대화 따라하기</button><button class="go s" data-a="guide">📘 작업 가이드</button></div>'
+  +'<button class="go s" data-a="close" style="margin-top:8px">👀 그냥 화면 둘러보기</button>'
+  +'<div class="mini">🔒 지정된 분만 보시는 자료 · 무단 전달·재공유 금지 · 72시간 열람<br>© 리비안디자인 루카스 · AI 강의용 제작 · 무단 변경 금지</div>'
+  +'</div>';
+ document.body.appendChild(ov);
+ function closeIntro(){ov.classList.add('hide');}
+ function openIntro(){ov.classList.remove('hide');}
+ ov.addEventListener('click',function(e){ if(e.target===ov){closeIntro();return;} var b=e.target.closest('button[data-a]'); if(!b)return; var a=b.getAttribute('data-a'); closeIntro();
+  if(a==='features'){var t=document.querySelector('.tab[data-tab="features"]');if(t)t.click();}
+  else if(a==='practice'){ if(window.startPractice)startPractice(); }
+  else if(a==='guide'){ try{openGuide();}catch(e2){} }
+ });
+ document.addEventListener('keydown',function(e){ if(e.key==='Escape'&&!ov.classList.contains('hide'))closeIntro(); });
+ var rob=document.getElementById('reopen'); if(rob)rob.onclick=openIntro;
+ /* 최초 로드시 안내 화면 표시(게이트가 위에서 덮고 있다가 통과하면 보임) */
 })();
 </script>
 
