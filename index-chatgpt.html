@@ -622,193 +622,282 @@ document.addEventListener('click',function(e){if(e.target.closest&&e.target.clos
 </script>
 
 <script>
-/* ===================== 핵심 기능(깊은 설명 + 시뮬레이션) 확장 ===================== */
+/* ===================== 핵심 기능(깊은 설명 + 실제로 해보기 시뮬레이션) 확장 ===================== */
 (function(){
  'use strict';
  var esc2=function(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');};
- /* 각 기능: fn(개요) / when(이럴 때) / how(하는 법) / caution(주의) / sim{say,result,refine} 또는 demo[](설정 흐름) / steps */
+ /* 각 기능: fn / when / how / caution / sc(시나리오) + run[{t,me,ai}](실제 진행) / steps */
  var FEATURES=[
-  {k:'f-model',emo:'🧠',en:'Model picker',ko:'모델 선택 (똑똑함·속도)',
-   fn:'답을 만드는 AI의 “두뇌”를 고르는 곳이에요. 지금은 GPT-5 계열이 기본이고, 빠르게 답하는 모델과 더 오래 “생각(reasoning)”하는 모델이 나뉘어요. (모델 이름·종류는 자주 바뀌니 화면에서 확인 필요)',
-   when:'평소엔 기본값 그대로면 충분해요. <b>복잡한 분석·코딩·논리 문제</b>는 “더 생각하는(Thinking)” 모델이 정확하고, <b>간단한 대화·초안</b>은 빠른 모델이 편해요.',
-   how:'입력창 위(또는 대화 상단)의 모델 이름을 눌러 목록에서 골라요. 대화 도중에도 바꿀 수 있어요.',
-   caution:'더 똑똑한 모델은 <b>느리고 사용량 제한</b>이 있을 수 있어요(플랜별 상이 · 확인 필요). 답이 얕으면 “더 깊이 생각해서 다시”라고 요청하거나 Thinking 모델로 바꿔요.',
-   sim:{say:'(어려운 문제라 Thinking 모델로 바꾼 뒤) 이 3개 견적서를 비교해서 가장 합리적인 걸 이유와 함께 골라줘.',result:'각 견적의 항목·총액·리스크를 단계적으로 비교한 뒤, 근거를 들어 추천안을 제시해요.',refine:['표로 한눈에 정리','비교 결과를 항목·금액·장단점 표로 다시 정리해줘요']},
-   steps:['작업 난이도에 맞게 모델을 골라요','간단하면 기본, 어려우면 Thinking','답이 얕으면 “더 깊이 생각해서 다시”라고 해요']},
-
-  {k:'f-search',emo:'🌐',en:'Web search',ko:'웹 검색 (최신 정보)',
-   fn:'인터넷에서 <b>최신 정보</b>를 찾아 <b>출처 링크</b>와 함께 답해요. 모델이 학습하지 못한 최근 소식·가격·법규를 채워줘요.',
-   when:'요금·뉴스·트렌드·영업시간처럼 <b>바뀌는 정보</b>를 물을 때는 반드시 켜세요. 안 켜면 예전 정보로 답할 수 있어요.',
-   how:'입력창의 🌐(도구 → 웹 검색)을 켜고 질문해요. 답에 달린 출처를 눌러 원문을 확인해요.',
-   caution:'검색해도 <b>출처가 부정확</b>하거나 요약이 틀릴 수 있어요. 중요한 수치·인용은 출처 원문에서 직접 확인하세요.',
-   sim:{say:'(웹 검색 켜고) 2026년 소형 아파트 인테리어 자재 트렌드 3가지를 국내 기준으로, 출처와 함께 알려줘.',result:'최신 트렌드 3가지 요약 + 각 항목의 출처 링크가 나와요.',refine:['국내 시공 사례 위주로','해외 말고 국내 사례·브랜드 중심으로 다시 정리해줘요']},
-   steps:['🌐 웹 검색을 켜요','바뀌는 정보를 구체적으로 물어요','출처를 눌러 원문을 확인해요']},
-
-  {k:'f-deep',emo:'📊',en:'Deep research',ko:'딥리서치 (깊은 조사 리포트)',
-   fn:'여러 자료를 <b>스스로 찾아 읽고</b> 비교·정리한 <b>리포트</b>를 만들어줘요. 수 분~수십 분 걸리지만, 얕은 검색보다 훨씬 깊어요. (플랜별 제공·횟수 상이 · 확인 필요)',
-   when:'경쟁사 비교, 시장 조사, 자료 조사처럼 <b>여러 출처를 종합</b>해야 할 때. “한 페이지로 정리해줘” 같은 리서치 업무에 좋아요.',
-   how:'도구에서 딥리서치를 켜고 조사 주제를 자세히 적어요. 진행되는 동안 다른 일을 해도 되고, 끝나면 알림이 와요.',
-   caution:'조사에 <b>시간이 걸리고 사용량을 많이</b> 써요. 결과의 숫자·사실은 <b>반드시 원자료로 검증</b>하세요. 최신성도 100%는 아니에요.',
-   sim:{say:'경쟁 인테리어 업체 5곳의 강점·약점·가격대·후기 요약을 조사해서 비교표와 한 줄 총평이 있는 리포트로 만들어줘.',result:'여러 사이트를 조사한 뒤 5개 업체 비교표 + 요약 리포트 + 출처가 나와요.',refine:['우리와 겹치는 포지션만','우리 타깃과 겹치는 업체만 골라 다시 비교해줘요']},
-   steps:['조사 주제를 구체적으로 적어요','딥리서치를 켜고 기다려요','표·요약을 받고 숫자는 직접 검증해요']},
-
-  {k:'f-image',emo:'🎨',en:'Image generation',ko:'이미지 생성·편집',
-   fn:'말로 설명하면 <b>그림을 만들고</b>, 만든 이미지를 <b>부분만 고쳐</b>주기도 해요. 무드보드·썸네일·포스터·컨셉 이미지에 좋아요.',
-   when:'고객 제안용 컨셉 이미지, SNS 카드, 행사 포스터가 필요할 때. 사진을 올려 “이 느낌으로” 변형도 돼요.',
-   how:'“~그려줘/만들어줘”라고 하거나 도구에서 🎨를 켜요. 나온 이미지에 “조명만 더 따뜻하게”처럼 부분 수정을 요청해요.',
-   caution:'글자·로고·정확한 도면은 어긋날 수 있어요. <b>상표·실제 인물</b> 생성은 피하고, 최종물은 사람이 검수하세요. 저작권·상업적 사용 조건은 확인 필요.',
-   sim:{say:'따뜻한 우드톤의 미니멀 거실 무드보드 이미지 만들어줘. 아이보리·오크, 자연광, 식물 조금, 정사각형.',result:'설명한 분위기의 이미지가 생성돼요.',refine:['소파를 패브릭으로','같은 구도에서 소파만 패브릭 재질로 바꿔 다시 만들어줘요']},
-   steps:['분위기·색·재질·구도를 구체적으로 적어요','🎨 이미지를 켜거나 “그려줘”라고 해요','“~부분만 바꿔”로 다듬어요']},
-
-  {k:'f-canvas',emo:'🖊',en:'Canvas',ko:'캔버스 (문서·코드 편집기)',
-   fn:'긴 글이나 코드를 <b>옆 편집 화면</b>에서 같이 고치는 작업실이에요. 대화로 다 지우고 다시 쓰는 대신, <b>일부만 콕 집어</b> 수정할 수 있어요.',
-   when:'제안서·블로그 글·긴 문서, 또는 코드를 <b>여러 번 다듬을 때</b>. 문단 단위로 톤·길이를 바꾸기 좋아요.',
-   how:'도구에서 🖊 캔버스를 켜고 글/코드를 만들면 오른쪽에 편집기가 열려요. 고칠 부분을 드래그해 “이 부분만 ~하게”라고 요청해요.',
-   caution:'긴 문서는 <b>버전 관리</b>에 주의(중요한 버전은 따로 저장). 자동 편집이 의도와 다르면 “원래대로 되돌려줘”라고 하세요.',
-   sim:{say:'(캔버스로) 회사 소개 한 페이지 초안 써줘. 그다음 두 번째 문단만 더 따뜻한 톤으로 바꿔줘.',result:'오른쪽 캔버스에 초안이 뜨고, 지정한 문단만 톤이 바뀌어요.',refine:['제목 3개 후보 제안','상단에 어울리는 제목 후보 3개를 달아줘요']},
-   steps:['🖊 캔버스를 켜고 글/코드를 만들어요','고칠 부분을 지정해요','부분만 수정·되돌리기를 반복해요']},
-
-  {k:'f-data',emo:'📈',en:'Data analysis',ko:'데이터 분석 (파일·표·차트)',
-   fn:'엑셀·CSV를 올리면 <b>계산·정렬·차트</b>를 만들고, 뒤에서 실제로 <b>코드를 돌려</b> 결과를 내줘요. 매출·설문·재고 같은 숫자를 보기 좋게 정리해요.',
-   when:'월별 매출 추이, 설문 집계, 견적 합계 검증처럼 <b>숫자를 다뤄야</b> 할 때.',
-   how:'＋ 로 파일을 올리고 “월별 매출 차트 그리고 특이점 짚어줘”처럼 요청해요. 표·그래프·요약을 받고 필요하면 파일로 내려받아요.',
-   caution:'<b>합계·평균이 맞는지 원자료와 대조</b>하세요. 결측치·단위 오류가 있으면 결과가 틀려요. 민감한 개인정보가 든 파일은 올리지 마세요.',
-   sim:{say:'(매출 엑셀 올리고) 월별 매출 추이를 막대그래프로 그리고, 급감한 달과 이유 후보를 짚어줘.',result:'막대그래프 + 급감 구간 표시 + 원인 후보 요약이 나와요.',refine:['상위 3개 품목만','매출 상위 3개 품목만 따로 표로 정리해줘요']},
-   steps:['＋ 로 엑셀·CSV를 올려요','계산·차트를 말로 요청해요','합계·수치를 원자료와 대조해요']},
-
-  {k:'f-study',emo:'🎓',en:'Study mode',ko:'공부 모드',
-   fn:'정답만 툭 주지 않고 <b>단계적으로 질문하며 이해</b>를 돕는 학습 방식이에요. 개념·시험 준비·새 도구 익히기에 좋아요.',
-   when:'“그냥 답” 말고 <b>제대로 이해</b>하고 싶을 때. 직원 교육 자료를 만들 때도 유용해요.',
-   how:'도구에서 🎓 공부를 켜고 배우고 싶은 주제를 말해요. ChatGPT가 질문을 던지면 답하며 익혀요.',
-   caution:'설명이 항상 정확하진 않아요. 시험·자격 관련은 <b>공식 교재로 교차 확인</b>하세요.',
-   sim:{say:'(공부 모드) “디자인 시스템”이 뭔지 인테리어 사장님 눈높이로, 질문을 던지며 이해시켜줘.',result:'쉬운 비유로 설명하고, 중간중간 “이건 왜일까요?” 하고 물으며 진행해요.',refine:['3줄 요약으로 마무리','마지막에 핵심만 3줄로 정리해줘요']},
-   steps:['🎓 공부 모드를 켜요','주제와 원하는 눈높이를 말해요','질문에 답하며 익히고 요약을 받아요']},
-
-  {k:'f-voice',emo:'🎙',en:'Voice mode',ko:'음성 모드 (말로 대화)',
-   fn:'<b>말로 묻고 말로 답</b>을 듣는 기능이에요. 자연스러운 대화형(고급 음성)으로, 중간에 끼어들어 방향을 바꿀 수도 있어요.',
-   when:'운전·이동·요리처럼 <b>손이 바쁠 때</b>, 또는 브레인스토밍을 편하게 말로 하고 싶을 때.',
-   how:'입력창의 🎤(또는 음성 아이콘)을 눌러요. 평소 말하듯 물어보고, 답을 들으며 이어가요. 대화는 텍스트로도 남아요.',
-   caution:'시끄러운 곳에선 <b>인식 오류</b>가 생겨요. 숫자·고유명사는 화면 텍스트로 확인하세요. 민감한 대화는 주변을 조심하세요.',
-   sim:{say:'(음성 모드에서) 오늘 상담 준비할 것 3가지만 말로 알려줘.',result:'음성으로 3가지를 짚어주고, 이어서 “첫 번째 자세히”라고 하면 계속돼요.',refine:['천천히 다시','같은 내용을 더 천천히 또박또박 말해줘요']},
-   steps:['🎤 음성 모드를 켜요','평소처럼 말로 물어봐요','중요한 건 텍스트로도 확인해요']},
-
-  {k:'f-codex',emo:'🤖',en:'Codex (coding agent)',ko:'Codex (코딩 에이전트)',
-   fn:'개발 작업을 <b>대신 해주는 코딩 에이전트</b>예요. 원하는 작업을 글로 맡기면, <b>격리된 클라우드 작업실에서 코드를 고치고 테스트</b>한 뒤 결과(변경 묶음·PR)를 만들어 와요. 개발자용 고급 기능이에요. (플랜: 대개 Pro·Team·Enterprise 등 · 확인 필요)',
-   when:'GitHub에 <b>코드 저장소</b>가 있고, “이 라이브러리 버전 올려줘”, “이 버그 고쳐줘”, “테스트 추가해줘” 같은 <b>명확히 정의된 작업</b>을 맡길 때. 개발을 안 하면 지금은 안 써도 돼요.',
-   how:'ChatGPT의 Codex에서 GitHub 계정·저장소를 연결하고, 작업을 문장으로 설명해요. Codex가 백그라운드에서 작업해 <b>Pull Request</b>를 올리면, 개발자가 검토·병합해요. (터미널용 CLI·에디터 확장도 있음 · 확인 필요)',
-   caution:'<b>실시간 개입이 어렵고</b>, 결과 코드는 반드시 <b>사람이 리뷰·테스트</b>해야 해요. 저장소 접근 권한을 주므로 <b>민감한 비공개 코드</b>는 신중히. 인터넷이 차단된 샌드박스라 외부 호출은 제한돼요.',
-   sim:{say:'우리 견적 계산 웹앱 저장소에서 낡은 라이브러리(lodash)를 최신 방식으로 바꾸고, 테스트 통과시킨 뒤 PR 올려줘.',result:'저장소를 복제 → 여러 파일 수정 → 테스트 실행 → 통과하면 변경 내용과 설명이 담긴 Pull Request를 올려줘요.',refine:['영향 범위 요약도','PR 설명에 무엇이 왜 바뀌었는지 요약을 넣어줘요']},
-   steps:['GitHub 저장소를 Codex에 연결해요','고칠 작업을 “무엇을·어디서”로 명확히 맡겨요','올라온 PR을 개발자가 검토·병합해요']},
-
-  {k:'f-gptbuild',emo:'🧩',en:'Build a GPT',ko:'나만의 GPT 만들기',
-   fn:'특정 업무에 맞춘 <b>나만의 ChatGPT</b>를 만들어요. 말투·규칙·참고자료를 미리 넣어두면, 매번 설명 안 해도 그 방식대로 답해요.',
-   when:'반복 업무(견적 문의 응대, 블로그 초안, 상담 정리)를 <b>일정한 기준</b>으로 처리하고 싶을 때. 직원과 공유해 같은 품질로 쓰게 할 수도 있어요.',
-   how:'GPT 탐색 → “만들기”에서 이름·설명·지침을 적고, 참고 파일(브랜드 가이드 등)을 올려요. 필요하면 링크로 공유해요.',
-   caution:'올린 <b>참고 파일에 민감정보가 없는지</b> 확인하고, 공유 범위(나만/링크/공개)를 신중히 정하세요. 지침이 두루뭉술하면 결과도 흔들려요.',
-   demo:['GPT 탐색 → “＋ 만들기”를 눌러요','이름·설명을 적어요 (예: “리비안 견적 응대 도우미”)','지침을 적어요: 누구를 돕는지 · 말투 · 꼭 지킬 규칙(가격은 임의로 만들지 않기 등)','참고 파일을 올려요 (브랜드 가이드·자주 묻는 질문)','테스트로 몇 번 대화해 보고 지침을 다듬어요','저장하고 공유 범위를 정해요'],
-   steps:['만들 GPT의 목적·말투·규칙을 정해요','지침과 참고 파일을 넣어요','테스트하며 지침을 다듬어 공유해요']},
-
-  {k:'f-projects',emo:'📁',en:'Projects',ko:'프로젝트 (대화·파일 묶기)',
-   fn:'관련된 <b>대화·파일·지침을 한 폴더</b>로 묶는 작업 공간이에요. 프로젝트 안에서 나눈 대화는 그 맥락과 자료를 공유해요.',
-   when:'한 고객·한 현장·한 캠페인처럼 <b>주제가 이어지는 일</b>을 모아둘 때. 매번 배경 설명을 반복하지 않아도 돼요.',
-   how:'사이드바에서 프로젝트를 만들고, 관련 대화를 그 안에서 시작해요. 공통 지침과 참고 파일을 프로젝트에 올려두면 모든 대화에 적용돼요.',
-   caution:'프로젝트별로 <b>파일·지침이 섞이지 않게</b> 정리하세요. 민감 자료를 올릴 땐 공유 여부를 확인하세요.',
-   demo:['사이드바 “프로젝트”에서 새 프로젝트를 만들어요','이름을 정해요 (예: “○○아파트 리모델링”)','공통 지침과 참고 파일(도면·요구사항)을 올려요','관련 질문은 그 프로젝트 안에서 이어가요','대화가 배경을 기억한 채 진행돼요'],
-   steps:['주제별로 프로젝트를 만들어요','공통 지침·파일을 올려둬요','관련 대화를 그 안에서 이어가요']},
-
-  {k:'f-tasks',emo:'⏰',en:'Tasks / scheduled',ko:'작업 (예약·자동 실행)',
-   fn:'정해진 시간에 <b>스스로 실행</b>되는 예약 작업이에요. “매주 월요일 아침에 이번 주 인테리어 트렌드 정리해줘”처럼 <b>반복 알림·리서치</b>를 맡길 수 있어요. (제공 여부·이름 확인 필요)',
-   when:'주간 리포트, 정기 리마인더, 아침 브리핑처럼 <b>반복되는 일</b>을 자동화하고 싶을 때.',
-   how:'대화에서 “매주 월요일 9시에 ~해줘”라고 예약하거나 작업 메뉴에서 만들어요. 실행되면 알림으로 결과가 와요.',
-   caution:'자동 결과도 <b>사실 검증이 필요</b>해요. 너무 많은 예약은 알림 피로를 줘요. 외부로 <b>발송</b>하는 자동화는 내용 확인 후 보내세요.',
-   demo:['대화에서 반복 일정을 말해요 (예: “매주 월 9시 트렌드 요약”)','반복 주기·시간을 확인해요','예약이 등록되면 목록에서 관리해요','정해진 시간에 결과 알림이 와요','필요 없으면 언제든 끄거나 지워요'],
-   steps:['반복하고 싶은 일을 정해요','시간·주기를 넣어 예약해요','받은 결과를 검토하고 조정해요']},
+  {k:'f-projects',emo:'📁',en:'Projects',ko:'프로젝트 (한 건을 폴더로 관리)',
+   fn:'하나의 일(고객·현장·캠페인)을 <b>전용 폴더</b>로 만들고, 그 안에 <b>공통 지침 + 참고 파일</b>을 넣어두는 작업 공간이에요. 그 폴더 안에서 나눈 <b>모든 대화가 같은 배경·규칙을 기억</b>합니다.',
+   when:'한 고객의 리모델링처럼 <b>여러 번에 걸쳐 이어지는 일</b>. 매번 “예산 얼마, 취향 뭐, 반려동물 있음…”을 다시 설명하기 싫을 때.',
+   how:'사이드바 “프로젝트”→＋로 폴더를 만들고, <b>프로젝트 지침</b>(이 건의 규칙)과 <b>참고 파일</b>(도면·요구사항)을 올려요. 이후 관련 질문은 그 폴더 안에서 이어가요.',
+   caution:'프로젝트마다 <b>파일·지침이 섞이지 않게</b> 분리하세요. 도면·개인정보는 공유 범위를 확인하고, 다른 고객 자료를 같은 폴더에 넣지 마세요.',
+   sc:'예시로 <b>“○○아파트 34평 리모델링”</b> 프로젝트를 실제로 만들어 진행해 볼게요.',
+   run:[
+    {t:'1 · 프로젝트 폴더 만들기',me:'사이드바 프로젝트 → ＋ 새 프로젝트 → 이름: “○○아파트 34평 리모델링”'},
+    {t:'2 · 프로젝트 지침 넣기 (가장 중요)',me:'이 프로젝트의 모든 답은 아래 고객 기준을 반드시 지켜줘.\n· 고객: 30대 부부, 반려묘 1마리\n· 예산: 4,500만원 (초과 금지)\n· 취향: 따뜻한 우드톤, 미니멀\n· 일정: 6월 입주\n· 규칙: 가격·자재 품번은 내가 올린 자료에만 근거, 임의로 지어내지 말 것'},
+    {t:'3 · 참고 파일 올리기',me:'＋ 첨부: 도면.pdf · 현장사진 5장 · 고객요구사항.docx'},
+    {t:'4 · 폴더 안에서 그냥 물어봐요',me:'거실 가구 배치안 3개 제안해줘.'},
+    {t:'✅ 결과 — 지침·자료를 이미 반영해서 답함',ai:'예산 4,500만원과 우드톤·반려묘를 반영한 거실 배치 3안입니다.\n\n① 벽면 TV + 3인 패브릭 소파(긁힘에 강한 소재) + 낮은 수납장\n② ㄱ자 배치 + 캣워크 선반(반려묘 동선) + 러그\n③ 미니멀 로우 가구 + 간접조명 + 우드 슬랫 벽\n\n※ 예산 초과 항목 없음. 자재 품번은 올려주신 자료 기준이며, 미확정 값은 “확인 필요”로 표시했어요.'},
+    {t:'이어서 — 배경을 다시 설명 안 해도 됨',me:'그럼 위 ②안 기준으로 고객 발송용 제안서 초안 써줘.',ai:'(같은 프로젝트라 예산·취향·일정을 그대로 유지한 제안서 초안을 생성 — 표지→고객 고민→②안 설명→예상 일정→상담 안내)'}
+   ],
+   steps:['고객·현장별로 프로젝트 폴더를 만들어요','지침(예산·취향·규칙)과 참고 파일을 올려둬요','그 안에서 배치·견적·제안서를 이어서 물어봐요']},
 
   {k:'f-custom',emo:'⚙️',en:'Custom instructions',ko:'맞춤 지침 (개인 맞춤 설정)',
-   fn:'ChatGPT가 <b>모든 대화에서 기억할 나의 정보와 답변 방식</b>을 미리 설정하는 곳이에요. 한 번 넣으면 매번 “나는 인테리어 사장인데…”를 반복하지 않아도 돼요.',
-   when:'항상 <b>같은 배경·같은 말투</b>로 답을 받고 싶을 때. 예: “나는 리비안디자인 대표, 답은 한국어로 결론부터, 표를 잘 써줘.”',
-   how:'설정 → 개인 맞춤 설정(Personalization) → 맞춤 지침에서 두 칸을 채워요: ① <b>나에 대해</b>(직업·상황·목표) ② <b>답변 방식</b>(말투·길이·형식). 별명·전문 분야·성향도 넣을 수 있어요.',
-   caution:'너무 많은 규칙은 오히려 혼란을 줘요(핵심만). <b>민감한 개인정보</b>는 넣지 말고, 공용 기기라면 설정 노출에 주의하세요.',
-   demo:['설정 → 개인 맞춤 설정 → 맞춤 지침을 열어요','“나에 대해”: 직업·상황·자주 하는 일 (예: 인테리어 대표, 제안서·상담 정리 자주 함)','“답변 방식”: 한국어, 결론부터, 표·체크리스트 선호, 과장 금지','저장하면 이후 모든 새 대화에 자동 적용돼요','안 맞으면 언제든 수정·해제할 수 있어요'],
-   steps:['설정 → 개인 맞춤 설정 → 맞춤 지침','나에 대해 + 답변 방식을 적어요','저장하고 대화하며 미세 조정해요']},
+   fn:'ChatGPT가 <b>모든 대화에서 기억할 “나에 대한 정보 + 답변 방식”</b>을 미리 설정하는 곳이에요. 프로젝트가 “한 건 전용”이라면, 맞춤 지침은 <b>내 계정 전체에 항상 적용</b>돼요.',
+   when:'항상 같은 배경·같은 말투로 답을 받고 싶을 때. 예: “나는 인테리어 대표, 결론부터 표로, 가격은 확인 필요 표시.”',
+   how:'설정 → 개인 맞춤(Personalization) → 맞춤 지침에서 ①나에 대해 ②답변 방식 두 칸을 채워요.',
+   caution:'규칙이 너무 많으면 오히려 흔들려요(핵심만). <b>민감 개인정보는 넣지 말고</b>, 공용 기기면 설정 노출 주의.',
+   sc:'<b>리비안디자인 대표님용 맞춤 지침</b>을 실제로 설정해 볼게요. (이후 모든 새 대화에 자동 적용)',
+   run:[
+    {t:'1 · 설정 → 개인 맞춤 → 맞춤 지침 열기',me:'좌측 하단 “설정 · 개인 맞춤” 클릭'},
+    {t:'2 · “나에 대해” 칸',me:'저는 인테리어 회사 “리비안디자인” 대표입니다. 아파트 리모델링 위주로 제안서·견적·상담정리·SNS 콘텐츠를 자주 만듭니다.'},
+    {t:'3 · “답변 방식” 칸',me:'한국어로, 결론부터. 표·체크리스트를 잘 써줘. 가격·수치는 임의로 만들지 말고 “확인 필요”로 표시. 과장 광고 문구는 쓰지 마.'},
+    {t:'✅ 결과 — 아무 새 대화에서나',me:'봄 상담 이벤트 홍보 문구 만들어줘.',ai:'(맞춤 지침 자동 반영 — 결론부터, 과장 배제)\n추천 문구 3가지:\n1) “봄맞이 무료 현장 상담 — 우리 집에 맞는 리모델링부터 확인하세요”\n2) …\n3) …\n※ 할인율·기간 등 확정값은 “확인 필요”.'}
+   ],
+   steps:['설정 → 개인 맞춤 → 맞춤 지침','나에 대해 + 답변 방식을 적어요','저장 후 대화하며 미세 조정해요']},
 
-  {k:'f-memory',emo:'🧠',en:'Memory',ko:'메모리 (기억)',
-   fn:'대화 속에서 알게 된 <b>내 정보·선호를 스스로 기억</b>해, 다음 대화에도 반영하는 기능이에요. 맞춤 지침이 “고정 설정”이라면, 메모리는 “대화하며 쌓이는 기억”이에요.',
-   when:'자주 쓰는 브랜드 톤·고객 유형·선호 형식을 <b>매번 설명하기 귀찮을 때</b>. “앞으로 견적은 항상 표로” 같은 걸 기억시켜요.',
-   how:'“이건 기억해줘”라고 하면 저장되고, “그건 잊어줘”라고 하면 지워져요. 설정 → 개인 맞춤 설정 → 메모리에서 <b>저장된 기억을 보고 삭제</b>할 수 있어요. “참고 안 함”으로 끌 수도 있어요.',
-   caution:'원치 않는 정보가 기억될 수 있으니 <b>가끔 메모리를 점검·정리</b>하세요. 민감정보는 기억시키지 말고, 공용 계정이면 특히 주의. 완전히 새 맥락엔 <b>임시 채팅</b>을 쓰세요.',
-   demo:['대화 중 “앞으로 견적은 항상 표로 줘”라고 말해요','ChatGPT가 “기억했어요”라고 저장해요','다음 대화부터 자동으로 표로 정리해줘요','설정 → 메모리에서 저장된 기억을 확인해요','필요 없으면 “잊어줘” 또는 목록에서 삭제해요'],
-   steps:['기억시키고 싶은 걸 말해요 (“기억해줘”)','설정 → 메모리에서 목록을 관리해요','필요 없는 기억은 삭제·해제해요']},
+  {k:'f-memory',emo:'🧠',en:'Memory',ko:'메모리 (대화하며 쌓이는 기억)',
+   fn:'대화 중 알게 된 <b>내 선호를 스스로 기억</b>해 다음 대화에도 반영해요. 맞춤 지침이 “고정 설정”이라면, 메모리는 <b>말하는 대로 쌓이는 기억</b>이에요.',
+   when:'자주 쓰는 형식·톤·규칙을 매번 말하기 귀찮을 때.',
+   how:'“이건 기억해줘”라고 하면 저장, “잊어줘”면 삭제. 설정 → 개인 맞춤 → 메모리에서 목록을 보고 지울 수 있어요.',
+   caution:'원치 않는 정보가 기억될 수 있으니 <b>가끔 점검·정리</b>하세요. 민감정보는 기억시키지 말고, 완전히 새 맥락엔 <b>임시 채팅</b>을 쓰세요.',
+   sc:'자주 반복하는 요청을 <b>기억</b>시켜 볼게요.',
+   run:[
+    {t:'1 · 대화 중 기억시키기',me:'앞으로 내가 견적 물으면 항상 “기본 / 추천 / 프리미엄” 3단계 비교표로 줘. 기억해줘.'},
+    {t:'2 · ChatGPT가 저장',ai:'기억했어요. 앞으로 견적 요청은 3단계 비교표로 정리할게요.'},
+    {t:'✅ 결과 — 다음 새 대화에서 자동 적용',me:'주방 리모델링 견적 정리해줘.',ai:'(기억 반영)\n| 항목 | 기본 | 추천 | 프리미엄 |\n| 상판 | PT상판 | 세라믹 | 천연석 |\n| 수납 | 기성 | 부분맞춤 | 풀맞춤 |\n| 예상범위 | … | … | … |\n※ 금액은 자재·현장에 따라 확인 필요.'},
+    {t:'관리',me:'설정 → 메모리에서 저장된 기억 확인 → 필요 없으면 “잊어줘” 또는 삭제'}
+   ],
+   steps:['“기억해줘”로 저장','설정 → 메모리에서 목록 관리','필요 없는 기억은 삭제·해제']},
+
+  {k:'f-gptbuild',emo:'🧩',en:'Build a GPT',ko:'나만의 GPT 만들기',
+   fn:'특정 업무에 맞춘 <b>나만의 ChatGPT</b>를 만들어요. 말투·규칙·참고자료를 미리 넣어두면 매번 설명 없이 그 방식대로 답하고, 직원과 공유해 <b>같은 품질</b>로 쓰게 할 수 있어요.',
+   when:'반복 업무(문의 1차 응대, 블로그 초안, 상담 정리)를 일정 기준으로 처리하고 싶을 때.',
+   how:'GPT 탐색 → 만들기에서 이름·설명·지침을 적고 참고 파일을 올려요. 링크로 공유해요.',
+   caution:'올린 <b>참고 파일에 민감정보가 없는지</b> 확인하고, 공유 범위(나만/링크/공개)를 신중히.',
+   sc:'<b>“리비안 견적 응대 도우미” GPT</b>를 실제로 만들어 볼게요.',
+   run:[
+    {t:'1 · GPT 탐색 → ＋ 만들기',me:'이름: 리비안 견적 응대 도우미\n설명: 인테리어 문의에 정중히 1차 응대'},
+    {t:'2 · 지침 넣기',me:'너는 리비안디자인 상담 도우미다. 문의가 오면 (1) 정중히 인사 (2) 평형·예산·희망 시기를 되묻고 (3) 대략의 방향만 제시 (4) 정확한 견적은 현장 실측 후 안내한다고 말해라. 확정 금액은 절대 말하지 마라.'},
+    {t:'3 · 참고 파일 올리기',me:'＋ 브랜드가이드.pdf · 자주묻는질문.docx'},
+    {t:'✅ 결과 — 손님이 물으면',me:'34평인데 전체 리모델링 얼마예요?',ai:'안녕하세요, 리비안디자인입니다 😊\n34평 전체 리모델링은 범위(부분/전체·자재 등급)에 따라 차이가 큽니다. 먼저 생각하시는 예산 범위와 희망 입주 시기를 알려주시겠어요? 정확한 견적은 현장 실측 후 상세히 안내드립니다.\n(지침대로 확정 금액은 제시하지 않음)'},
+    {t:'공유',me:'저장 → 링크로 직원과 공유 → 누가 응대해도 같은 기준'}
+   ],
+   steps:['목적·말투·규칙을 정해요','지침·참고 파일을 넣어요','테스트 후 다듬어 공유해요']},
+
+  {k:'f-tasks',emo:'⏰',en:'Tasks / scheduled',ko:'작업 (예약·자동 실행)',
+   fn:'정해진 시간에 <b>스스로 실행</b>되는 예약 작업이에요. 주간 브리핑·정기 리마인더를 맡길 수 있어요. (제공 여부·이름 확인 필요)',
+   when:'매주 반복되는 정보 정리·알림을 자동화하고 싶을 때.',
+   how:'대화에서 “매주 월 9시에 ~해줘”로 예약하거나 작업 메뉴에서 만들어요. 실행되면 알림으로 결과가 와요.',
+   caution:'자동 결과도 <b>사실 검증 필요</b>. 외부 발송 자동화는 내용 확인 후 보내세요.',
+   sc:'<b>매주 월요일 아침 인테리어 트렌드 브리핑</b>을 예약해 볼게요.',
+   run:[
+    {t:'1 · 예약 만들기',me:'매주 월요일 오전 9시에, 이번 주 국내 아파트 인테리어 트렌드 3가지를 출처와 함께 정리해서 알려줘.'},
+    {t:'2 · 등록 확인',ai:'매주 월 09:00 반복 작업으로 등록했어요. 실행되면 알림으로 결과를 보내드릴게요.'},
+    {t:'✅ 결과 — 월요일 아침 자동 도착',ai:'[이번 주 인테리어 트렌드]\n1) 우드+스톤 믹스 마감 인기 (출처)\n2) 반려동물 특화 바닥재 문의 증가 (출처)\n3) 소형 평형 붙박이 수납 (출처)\n※ 시세·수치는 확인 필요.'}
+   ],
+   steps:['반복할 일을 정해요','시간·주기로 예약해요','받은 결과를 검토·조정해요']},
+
+  {k:'f-deep',emo:'📊',en:'Deep research',ko:'딥리서치 (깊은 조사 리포트)',
+   fn:'여러 자료를 <b>스스로 찾아 읽고</b> 비교·정리한 <b>리포트</b>를 만들어줘요. 얕은 검색보다 깊지만 시간이 걸려요. (플랜별 제공·횟수 확인 필요)',
+   when:'경쟁사 비교·시장 조사처럼 여러 출처를 종합해야 할 때.',
+   how:'도구에서 딥리서치를 켜고 주제를 자세히 적어요. 끝나면 리포트가 와요.',
+   caution:'시간·사용량이 많고, 숫자·사실은 <b>반드시 원자료로 검증</b>.',
+   sc:'<b>경쟁 인테리어 업체 5곳</b>을 조사해 비교 리포트를 만들어 볼게요.',
+   run:[
+    {t:'1 · 딥리서치 켜고 요청',me:'우리 지역 인테리어 업체 5곳의 주력 스타일·강점·대략 가격대·후기 요약을 조사해서 비교표와 총평으로 정리해줘.'},
+    {t:'2 · 조사 진행(수 분)',ai:'여러 사이트를 조사 중… 완료. 아래 리포트입니다.'},
+    {t:'✅ 결과 — 비교표 + 총평',ai:'| 업체 | 주력 스타일 | 강점 | 가격대(추정) | 후기 요약 |\n| A | 모던 | 시공 속도 | 중상 | 빠르지만 디테일 아쉽 |\n| B | 우드·내추럴 | 마감 디테일 | 중 | 재방문 많음 |\n| C | 럭셔리 | 자재 | 상 | 고가 |\n| D | 반려동물 특화 | 기능성 | 중 | 만족도 높음 |\n| E | 저가 | 가격 | 하 | AS 불만 |\n\n총평: 우리(우드톤·반려동물 특화)와 겹치는 곳은 B·D. 차별점은 “상담정리+제안서 완성도”로 잡으면 좋아요.\n※ 가격대는 추정치, 반드시 직접 확인.'}
+   ],
+   steps:['주제를 구체적으로 적어요','딥리서치 켜고 기다려요','표·총평을 받고 숫자는 검증']},
+
+  {k:'f-data',emo:'📈',en:'Data analysis',ko:'데이터 분석 (파일·표·차트)',
+   fn:'엑셀·CSV를 올리면 <b>계산·차트·요약</b>을 만들어줘요(뒤에서 실제 코드 실행). 매출·상담·재고 숫자를 보기 좋게 정리해요.',
+   when:'월별 상담·계약 추이, 견적 합계 검증처럼 숫자를 다룰 때.',
+   how:'＋ 로 파일을 올리고 “~차트 그리고 특이점 짚어줘”처럼 요청해요.',
+   caution:'합계·평균을 <b>원자료와 대조</b>. 개인정보가 든 파일은 올리지 마세요.',
+   sc:'<b>지난 1년 상담→계약 데이터</b>를 올려 분석해 볼게요.',
+   run:[
+    {t:'1 · 파일 올리고 요청',me:'(상담일지.xlsx 업로드) 월별 상담수와 계약 전환율을 그래프로 그리고, 전환율이 낮은 달과 이유 후보를 짚어줘.'},
+    {t:'✅ 결과 — 그래프 + 인사이트',ai:'월별 상담수(막대)·전환율(선) 그래프 생성.\n· 전환율 최저: 2월(11%) → 명절·비수기 추정\n· 최고: 5월(31%) → 봄 이사철\n제안: 2월엔 재상담 리마인드/프로모션 집중.'},
+    {t:'다듬기',me:'계약 단가 상위 3개 유형만 표로',ai:'| 유형 | 계약수 | 평균단가(확인 필요) |\n| 전체 리모델링 | 12 | … |\n| 주방+욕실 | 9 | … |\n| 부분(도배·바닥) | 21 | … |'}
+   ],
+   steps:['＋ 로 엑셀·CSV를 올려요','계산·차트를 말로 요청','합계·수치는 원자료와 대조']},
+
+  {k:'f-image',emo:'🎨',en:'Image generation',ko:'이미지 생성·편집',
+   fn:'말로 설명하면 <b>그림을 만들고</b>, 만든 이미지를 <b>부분만 고쳐</b>줘요. 무드보드·썸네일·포스터에 좋아요.',
+   when:'고객 제안용 컨셉 이미지, SNS 카드가 필요할 때.',
+   how:'“~그려줘”라고 하거나 🎨를 켜요. “조명만 더 따뜻하게”처럼 부분 수정.',
+   caution:'글자·로고·정확 도면은 어긋날 수 있어요. <b>상표·실제 인물</b>은 피하고 최종물은 사람이 검수. 상업적 사용 조건 확인 필요.',
+   sc:'<b>고객 제안용 거실 무드보드</b>를 만들고 다듬어 볼게요.',
+   run:[
+    {t:'1 · 요청',me:'34평 아파트 거실, 따뜻한 우드톤 미니멀 무드보드. 오크+아이보리, 자연광, 반려묘 고려한 낮은 가구, 정사각형.'},
+    {t:'2 · 결과 이미지',ai:'🖼 설명한 분위기의 거실 이미지가 생성돼요.'},
+    {t:'3 · 부분 수정',me:'소파를 긁힘에 강한 패브릭으로 바꾸고 러그는 빼줘.',ai:'🖼 소파 재질 변경 + 러그 제거된 새 이미지가 나와요.'}
+   ],
+   steps:['분위기·색·재질·구도를 구체적으로','🎨 켜거나 “그려줘”','“~부분만 바꿔”로 다듬기']},
+
+  {k:'f-canvas',emo:'🖊',en:'Canvas',ko:'캔버스 (문서·코드 편집기)',
+   fn:'긴 글·코드를 <b>옆 편집 화면</b>에서 같이 고치는 작업실. 대화로 다 지우는 대신 <b>일부만 콕 집어</b> 수정해요.',
+   when:'제안서·블로그·긴 문서, 코드를 여러 번 다듬을 때.',
+   how:'🖊 캔버스를 켜고 만들면 오른쪽 편집기가 열려요. 고칠 부분을 지정해 요청.',
+   caution:'중요한 버전은 따로 저장. 잘못 바뀌면 “되돌려줘”.',
+   sc:'<b>회사 소개 한 페이지</b>를 캔버스에서 다듬어 볼게요.',
+   run:[
+    {t:'1 · 캔버스로 초안',me:'(캔버스) 리비안디자인 회사 소개 한 페이지 초안. 강점 3개·시공 과정 4단계·상담 안내 포함.'},
+    {t:'2 · 오른쪽 편집기에 생성',ai:'📄 제목 / 강점 3 / 과정 4단계 / 상담 CTA 초안이 캔버스에 표시돼요.'},
+    {t:'3 · 부분만 수정',me:'두 번째 문단만 더 따뜻한 톤으로, 상단에 제목 후보 3개 달아줘.',ai:'해당 문단 톤만 바뀌고, 상단에 제목 후보 3개가 추가돼요(나머지는 그대로).'}
+   ],
+   steps:['🖊 캔버스로 글/코드 생성','고칠 부분을 지정','부분 수정·되돌리기 반복']},
+
+  {k:'f-search',emo:'🌐',en:'Web search',ko:'웹 검색 (최신 정보)',
+   fn:'인터넷에서 <b>최신 정보</b>를 찾아 <b>출처</b>와 함께 답해요. 바뀌는 정보를 채워줘요.',
+   when:'시세·뉴스·트렌드처럼 바뀌는 정보를 물을 때는 꼭 켜요.',
+   how:'🌐 웹 검색을 켜고 질문 → 출처를 눌러 원문 확인.',
+   caution:'검색해도 요약이 틀릴 수 있어요. 수치·인용은 출처 원문에서 확인.',
+   sc:'<b>요즘 인기 마감재 시세</b>를 최신으로 확인해 볼게요.',
+   run:[
+    {t:'1 · 검색 켜고 질문',me:'(웹 검색) 2026년 국내 강마루 vs 강화마루 장단점과 대략 시공 단가대를 출처와 함께 알려줘.'},
+    {t:'✅ 결과 + 출처',ai:'· 강마루: 내구·복원력 좋음, 단가 높음\n· 강화마루: 저렴·시공 빠름, 습기 약함\n· 대략 ㎡당 단가대: …(출처 링크)\n※ 시세는 지역·시기별로 다르니 실제 견적으로 확인 필요.'}
+   ],
+   steps:['🌐 검색을 켜요','바뀌는 정보를 구체적으로','출처로 원문 확인']},
+
+  {k:'f-study',emo:'🎓',en:'Study mode',ko:'공부 모드',
+   fn:'정답만 주지 않고 <b>질문하며 이해</b>를 돕는 학습 방식. 직원 교육·개념 공부에 좋아요.',
+   when:'“그냥 답” 말고 제대로 이해하고 싶을 때.',
+   how:'🎓 공부를 켜고 주제·눈높이를 말해요.',
+   caution:'설명이 항상 정확하진 않아요. 중요한 건 교차 확인.',
+   sc:'<b>직원 교육용으로 “디자인 시스템” 개념</b>을 익혀 볼게요.',
+   run:[
+    {t:'1 · 공부 켜고 요청',me:'(공부) “디자인 시스템”을 인테리어 실무자 눈높이로, 질문을 던지며 이해시켜줘.'},
+    {t:'2 · 단계 학습',ai:'질문: 매번 색·서체를 새로 고르면 뭐가 불편할까요?\n(“통일이 안 돼요” 라고 답하면)\n맞아요. 그래서 브랜드 색·글꼴·버튼 모양 같은 규칙을 한 번 정해두는 게 디자인 시스템이에요…'},
+    {t:'마무리',me:'핵심 3줄 요약',ai:'1) 반복 결정을 규칙으로 2) 결과물이 통일됨 3) 직원 협업이 쉬워짐'}
+   ],
+   steps:['🎓 공부 켜기','주제·눈높이 말하기','질문에 답하며 요약 받기']},
+
+  {k:'f-voice',emo:'🎙',en:'Voice mode',ko:'음성 모드 (말로 대화)',
+   fn:'<b>말로 묻고 말로 답</b>을 듣는 기능. 중간에 끼어들어 방향을 바꿀 수도 있어요.',
+   when:'운전·이동·현장처럼 손이 바쁠 때.',
+   how:'🎤 를 눌러 평소처럼 말해요. 대화는 텍스트로도 남아요.',
+   caution:'시끄러우면 인식 오류. 숫자·고유명사는 화면으로 확인.',
+   sc:'<b>현장 이동 중 손 안 대고 상담 준비</b>를 해볼게요.',
+   run:[
+    {t:'1 · 음성 모드',me:'🎤 (말로) 오늘 34평 리모델링 상담 준비할 것 3가지만 알려줘.'},
+    {t:'✅ 음성 답변',ai:'첫째 예산 범위 확인, 둘째 반려동물·생활패턴 질문, 셋째 우드톤 레퍼런스 이미지 3장 준비. (음성으로 안내, 텍스트로도 남음)'},
+    {t:'이어서',me:'첫 번째 자세히',ai:'예산은 총액과 “꼭 하고 싶은 것 우선순위”를 함께 물으면 조율이 쉬워요…'}
+   ],
+   steps:['🎤 음성 모드 켜기','평소처럼 말로 물어보기','중요한 건 텍스트로 확인']},
+
+  {k:'f-codex',emo:'🤖',en:'Codex (coding agent)',ko:'Codex (코딩 에이전트 · 개발자용)',
+   fn:'개발 작업을 <b>대신 해주는 코딩 에이전트</b>. 작업을 글로 맡기면 <b>격리된 클라우드에서 코드를 고치고 테스트</b>한 뒤 결과(PR)를 만들어 와요. (플랜: 대개 Pro·Team·Enterprise · 확인 필요)',
+   when:'GitHub 저장소가 있고 “이 기능 추가/버그 수정/테스트 추가” 같은 <b>명확한 작업</b>을 맡길 때. 개발 안 하면 지금은 안 써도 돼요.',
+   how:'Codex에 GitHub 저장소를 연결하고 작업을 설명 → 백그라운드 작업 후 Pull Request 생성 → 개발자가 검토·병합.',
+   caution:'<b>결과 코드는 사람이 반드시 리뷰·테스트</b>. 저장소 접근 권한을 주니 민감 코드는 신중히.',
+   sc:'<b>“평수·단가 → 견적 자동계산” 웹앱</b> 저장소를 개선해 볼게요. (개발자용)',
+   run:[
+    {t:'1 · 저장소 연결 + 작업 지시',me:'견적계산 웹앱 저장소에서 “부가세 10% 자동 포함” 기능을 추가하고, 테스트 통과 후 PR 올려줘.'},
+    {t:'2 · Codex가 백그라운드 작업',ai:'저장소 복제 → 계산 로직 수정 → 테스트 실행(통과) → 새 브랜치에 Pull Request 생성.'},
+    {t:'✅ 결과 — PR',ai:'PR “부가세 자동 포함”: 변경 파일 2개, 테스트 5/5 통과, 변경 요약 포함. 개발자가 검토 후 병합하면 반영돼요.'}
+   ],
+   steps:['GitHub 저장소를 연결','작업을 “무엇을·어디서” 명확히','올라온 PR을 검토·병합']},
+
+  {k:'f-model',emo:'🧠',en:'Model picker',ko:'모델 선택 (속도 vs 깊이)',
+   fn:'답을 만드는 AI의 “두뇌”를 고르는 곳. <b>빠른 모델</b>과 <b>더 오래 생각하는 모델</b>이 있어요. (이름·종류는 자주 바뀜 · 확인 필요)',
+   when:'간단한 문구는 빠른 모델, 복잡한 분석·비교·코딩은 생각하는 모델.',
+   how:'상단 모델 이름을 눌러 선택(대화 중에도 변경).',
+   caution:'똑똑한 모델은 <b>느리고 사용량 제한</b>이 있을 수 있어요(플랜별).',
+   sc:'<b>작업 난이도에 따라 모델을 바꿔</b> 볼게요.',
+   run:[
+    {t:'간단 작업 (기본 모델)',me:'상담 감사 문자 3버전 써줘.',ai:'짧은 감사 문자 3개가 즉시 생성돼요.'},
+    {t:'복잡 작업 (생각하는 모델로 변경)',me:'이 견적 3개를 조건별로 비교해 가장 합리적인 걸 근거와 함께 골라줘.',ai:'각 견적의 항목·리스크를 단계적으로 비교한 뒤 추천안 + 근거를 제시해요.'}
+   ],
+   steps:['간단하면 기본, 어려우면 생각하는 모델','대화 중에도 바꿀 수 있어요','답이 얕으면 “더 깊이 생각해서 다시”']},
 
   {k:'f-apps',emo:'🔌',en:'Apps / connectors',ko:'앱 연결 (커넥터)',
-   fn:'구글 드라이브·Gmail·캘린더·GitHub 같은 <b>외부 앱을 연결</b>해, 그 안의 파일·일정·메일을 ChatGPT가 참고하게 해요. (연결 가능한 앱·플랜 확인 필요)',
-   when:'드라이브 문서를 요약, 캘린더 일정 정리, 메일 초안처럼 <b>내 자료·서비스와 연결</b>해 일할 때.',
-   how:'설정 → 연결된 앱(커넥터)에서 원하는 앱을 연결·허용해요. 그다음 대화에서 “드라이브의 ○○ 문서 요약해줘”처럼 요청해요.',
-   caution:'연결은 <b>내 데이터 접근 권한</b>을 주는 거예요. 필요한 앱만 연결하고, <b>권한 범위</b>를 확인하세요. 회사 계정은 관리자 정책을 따라요. 안 쓰면 연결을 해제하세요.',
-   demo:['설정 → 연결된 앱을 열어요','필요한 앱(예: 구글 드라이브)만 연결·허용해요','대화에서 “드라이브의 견적 문서 요약해줘”라고 해요','접근 범위와 결과를 확인해요','더 안 쓰면 연결을 해제해요'],
-   steps:['필요한 앱만 설정에서 연결해요','대화에서 그 자료를 참고시켜요','권한을 점검하고 안 쓰면 해제해요']},
+   fn:'구글 드라이브·Gmail·캘린더 같은 <b>외부 앱을 연결</b>해 그 안의 파일·일정을 참고하게 해요. (연결 가능 앱·플랜 확인 필요)',
+   when:'드라이브 문서 요약, 캘린더 정리처럼 내 자료와 연결해 일할 때.',
+   how:'설정 → 연결된 앱에서 연결·허용 → 대화에서 “드라이브의 ○○ 요약해줘”.',
+   caution:'연결은 <b>내 데이터 접근 권한</b>을 주는 것. 필요한 앱만, 안 쓰면 해제. 회사 계정은 관리자 정책.',
+   sc:'<b>구글 드라이브의 견적 문서</b>를 연결해 점검해 볼게요.',
+   run:[
+    {t:'1 · 앱 연결',me:'설정 → 연결된 앱 → 구글 드라이브 연결·허용'},
+    {t:'2 · 대화에서 사용',me:'드라이브의 “○○아파트_견적_v3” 문서 핵심만 요약하고 빠진 항목 있으면 짚어줘.',ai:'요약: 총액 약 4,480만원, 항목 12개…\n누락 의심: 조명 공사·입주청소 미포함 — 확인 필요.'}
+   ],
+   steps:['필요한 앱만 연결','대화에서 그 자료 참고','권한 점검·미사용 시 해제']},
 
   {k:'f-temp',emo:'🕶',en:'Temporary chat',ko:'임시 채팅 (기록 안 남김)',
-   fn:'이 대화를 <b>기록·메모리에 남기지 않는</b> 일회성 모드예요. 끝나면 사라져 개인 정보나 실험적 질문에 부담이 없어요.',
-   when:'민감한 주제, 한 번만 쓸 질문, 메모리에 남기고 싶지 않은 대화일 때.',
-   how:'새 채팅에서 임시 채팅(시크릿 아이콘)을 켜고 대화해요. 창을 닫으면 내용이 남지 않아요.',
-   caution:'임시 채팅은 <b>기록이 안 남아 나중에 못 찾아요</b>(중요하면 따로 저장). 임시라도 <b>민감정보 입력은 여전히 지양</b>하세요.',
-   demo:['새 채팅에서 “임시 채팅”을 켜요','평소처럼 질문해요','이 대화는 기록·메모리에 저장되지 않아요','필요한 답은 직접 복사해 보관해요','창을 닫으면 대화가 사라져요'],
-   steps:['임시 채팅을 켜요','일회성·민감 질문을 해요','필요한 내용만 따로 저장해요']},
+   fn:'이 대화를 <b>기록·메모리에 남기지 않는</b> 일회성 모드. 끝나면 사라져 민감한 질문에 부담이 적어요.',
+   when:'한 번만 쓸 질문, 메모리에 남기고 싶지 않은 대화.',
+   how:'새 채팅에서 임시 채팅을 켜요. 창을 닫으면 남지 않아요.',
+   caution:'기록이 안 남아 <b>나중에 못 찾아요</b>(필요하면 복사). 임시라도 민감정보 입력은 지양.',
+   sc:'<b>기록에 남기고 싶지 않은 계약 문구 검토</b>를 임시로 해볼게요.',
+   run:[
+    {t:'1 · 임시 채팅 켜기',me:'새 채팅 → 임시 채팅(시크릿) 켜기'},
+    {t:'2 · 일회성 질문',me:'이 하도급 계약 문구에서 우리에게 불리할 수 있는 조항만 쉬운 말로 짚어줘.',ai:'주의 조항 3가지: ① 지연 배상 … ② 하자 책임 기간 … ③ 대금 지급 시점 …\n※ 임시 채팅이라 저장되지 않아요. 필요한 내용은 복사해 두세요. (법적 판단은 전문가 확인)'}
+   ],
+   steps:['임시 채팅 켜기','일회성·민감 질문','필요한 답만 복사 보관']},
 
   {k:'f-datacontrol',emo:'🔒',en:'Data controls',ko:'데이터 관리 (학습·기록)',
-   fn:'내 대화가 <b>모델 개선(학습)에 쓰이는지</b>, 채팅 <b>기록을 남길지</b>를 정하는 설정이에요. 개인정보·보안이 걱정될 때 꼭 챙길 곳이에요.',
-   when:'업무·민감 자료를 다룰 때, 회사 정책이 있을 때. 학습에 안 쓰이게 하고 싶을 때.',
-   how:'설정 → 데이터 관리(Data controls)에서 “모델 개선에 사용” 여부를 끄거나, 기록/내보내기/삭제를 관리해요.',
-   caution:'설정을 꺼도 <b>민감정보 입력은 지양</b>하는 게 안전해요. 회사 계정은 <b>관리자 정책</b>이 우선일 수 있어요(확인 필요). 삭제는 되돌리기 어려워요.',
-   demo:['설정 → 데이터 관리를 열어요','“모델 개선에 사용” 여부를 선택해요','채팅 기록·내보내기·삭제를 관리해요','민감 작업엔 임시 채팅을 함께 써요','회사 계정이면 관리자 정책을 확인해요'],
-   steps:['설정 → 데이터 관리를 확인해요','학습 사용·기록 여부를 정해요','민감 작업은 임시 채팅을 병행해요']},
+   fn:'내 대화가 <b>모델 개선에 쓰이는지</b>, 채팅 <b>기록을 남길지</b>를 정하는 설정. 개인정보·보안이 걱정될 때 챙길 곳.',
+   when:'업무·민감 자료를 다룰 때, 회사 정책이 있을 때.',
+   how:'설정 → 데이터 관리에서 “모델 개선에 사용” 여부·기록·삭제를 관리.',
+   caution:'꺼도 민감정보 입력은 지양. 회사 계정은 <b>관리자 정책 우선</b>(확인 필요). 삭제는 되돌리기 어려움.',
+   sc:'<b>업무 자료 보호를 위해 데이터 설정</b>을 점검해 볼게요.',
+   run:[
+    {t:'1 · 설정 → 데이터 관리',me:'“모델 개선에 사용” 끄기 / 채팅 기록·내보내기 확인'},
+    {t:'✅ 결과',ai:'대화가 모델 학습에 사용되지 않도록 설정됐어요(선택 시). 민감 작업은 임시 채팅을 함께 쓰면 더 안전해요.'},
+    {t:'참고',me:'회사(Team·Enterprise) 계정이면 관리자 정책이 우선일 수 있어요 — 확인 필요'}
+   ],
+   steps:['설정 → 데이터 관리 확인','학습 사용·기록 여부 선택','민감 작업은 임시 채팅 병행']},
 
   {k:'f-agent',emo:'🕹',en:'Agent mode',ko:'에이전트 모드 (여러 단계 대신 실행)',
-   fn:'웹을 <b>직접 돌아다니며 여러 단계 작업</b>을 대신 수행하는 모드예요. 검색·양식 입력·정리까지 이어서 처리해요. (제공 여부·이름·범위 확인 필요)',
-   when:'“여러 사이트를 비교해 표로”, “양식 채우기”처럼 <b>손이 많이 가는 반복 웹 작업</b>을 맡길 때.',
-   how:'에이전트/작업 기능을 켜고 목표를 구체적으로 지시해요. 중요한 단계에서는 <b>확인을 요청</b>하도록 하세요.',
-   caution:'자동 실행은 <b>실수·오작동 위험</b>이 있어요. 결제·전송·삭제처럼 되돌리기 어려운 행동은 <b>사람이 직접</b> 하거나 승인 단계를 두세요. 로그인·개인정보 취급에 주의.',
-   sim:{say:'인테리어 자재 3곳 가격을 찾아 표로 비교해줘. 결제나 가입은 하지 말고 결과만.',result:'여러 사이트를 훑어 가격·조건을 표로 정리해줘요(민감 행동은 하지 않음).',refine:['재고 여부 열 추가','표에 재고/배송 가능 여부 열을 추가해줘요']},
-   steps:['목표를 구체적으로, 하지 말 것도 함께 적어요','되돌리기 어려운 행동은 사람이 해요','결과를 검토하고 확정해요']}
+   fn:'웹을 <b>직접 돌아다니며 여러 단계 작업</b>을 대신 수행해요. 검색·양식 입력·정리까지 이어서. (제공 여부·이름·범위 확인 필요)',
+   when:'여러 사이트를 비교해 표로 만들기처럼 손이 많이 가는 반복 웹 작업.',
+   how:'에이전트 기능을 켜고 목표를 구체적으로. 중요한 단계엔 확인을 요청하게 하세요.',
+   caution:'자동 실행은 <b>실수 위험</b>. 결제·전송·삭제 같은 되돌리기 어려운 행동은 <b>사람이 직접</b>. 로그인·개인정보 주의.',
+   sc:'<b>강마루 3개 브랜드 가격을 비교</b>해 표로(결제·가입 없이) 만들어 볼게요.',
+   run:[
+    {t:'1 · 목표 + 금지 지시',me:'강마루 3개 브랜드의 가격·재고를 사이트에서 찾아 표로 비교해줘. 결제나 회원가입은 하지 마.'},
+    {t:'2 · 진행',ai:'세 사이트를 차례로 확인 중… (민감 행동은 수행하지 않음)'},
+    {t:'✅ 결과',ai:'| 브랜드 | 단가(추정) | 재고 | 배송 |\n| A | … | 있음 | 2~3일 |\n| B | … | 있음 | 당일 |\n| C | … | 품절 | - |\n추천: 가격·재고 균형은 B. ※ 가격은 변동, 실제 주문 시 확인.'}
+   ],
+   steps:['목표와 “하지 말 것”을 함께 지시','되돌리기 어려운 행동은 사람이','결과를 검토·확정']}
  ];
 
- /* INFO 병합 (호버·검색·드로어에서 동작) */
- FEATURES.forEach(function(f){ INFO[f.k]={en:f.en,ko:f.ko,fn:f.fn,when:f.when,how:f.how,caution:f.caution,sim:f.sim,demo:f.demo,steps:f.steps,emo:f.emo}; });
+ /* INFO 병합 */
+ FEATURES.forEach(function(f){ INFO[f.k]={en:f.en,ko:f.ko,fn:f.fn,when:f.when,how:f.how,caution:f.caution,sc:f.sc,run:f.run,steps:f.steps,emo:f.emo}; });
+ /* 사이드바·컴포저의 얕은 항목을 깊은 기능과 연결(별칭) */
+ function alias(base,feat){ if(INFO[feat]){ var d={};for(var x in INFO[feat])d[x]=INFO[feat][x]; INFO[base]=d; } }
+ alias('projects','f-projects'); alias('voice','f-voice'); alias('tsearch','f-search'); alias('timage','f-image'); alias('tcanvas','f-canvas'); alias('tstudy','f-study'); alias('model','f-model');
 
- /* 기존 핵심 요소 설명 심화 (when/how/caution 추가) */
- function deepen(k,o){var d=INFO[k];if(d){for(var x in o)d[x]=o[x];}}
- deepen('input',{when:'모든 작업의 출발점. <b>구체적으로</b> 적을수록 좋은 답이 나와요.',how:'누구에게·무엇을·어떤 톤·분량을 적고 Enter 또는 ↑. 참고 자료는 ＋로 첨부.',caution:'주민번호·카드번호 등 <b>민감정보는 넣지 마세요</b>.'});
- deepen('plus',{when:'손그림·사진·PDF·엑셀을 참고시킬 때.',how:'＋ → 사진/파일/앱 연결에서 선택.',caution:'개인정보·계약 원본·기밀은 <b>가리거나 요약</b>해서.'});
- deepen('tools',{when:'답 만드는 방식을 바꿀 때(검색·이미지·캔버스·공부·딥리서치).',how:'🧰 도구에서 필요한 기능을 켠 뒤 요청.',caution:'도구마다 <b>사용량·속도</b>가 달라요(플랜별 상이).'});
- deepen('model',{when:'어려운 작업엔 더 생각하는 모델, 간단하면 기본.',how:'모델 이름을 눌러 선택(대화 중에도 변경).',caution:'모델 이름·종류는 <b>자주 바뀜(확인 필요)</b>.'});
-
- /* 리치 드로어 렌더러 (when/how/caution/sim/demo) */
+ /* 리치 드로어 렌더러 (when/how/caution + 실제로 해보기 run) */
  window.openDrawer=function(k){var d=INFO[k];if(!d)return;stopVoice();clearSim();
   document.getElementById('dEn').textContent=d.en;document.getElementById('dKo').textContent=d.ko;
   var b='<p class="fn">'+d.fn+'</p>';
   if(d.when)b+='<h4>이럴 때 써요</h4><div class="fn">'+d.when+'</div>';
   if(d.how)b+='<h4>하는 법</h4><div class="fn">'+d.how+'</div>';
   if(d.list){b+='<h4>이 안에 있는 것들</h4><div class="dlist">'+d.list.map(function(x){return '<div class="di"><div class="die">'+x.en+'</div><div class="did">'+x.d+'</div></div>';}).join('')+'</div>';}
-  /* 시뮬레이션: 프롬프트형(sim/say) */
-  var sim=d.sim||(d.say?{say:d.say,result:d.ans,refine:d.refine}:null);
+  /* 실제로 해보기 (run) — 인테리어 예시로 진행 과정 + 결과값 */
+  if(d.run){b+='<div class="exhd"><h4 style="margin:0">🏗 실제로 해보기 (인테리어 예시)</h4></div>';if(d.sc)b+='<div class="fn" style="color:var(--tx2);margin-bottom:10px">'+d.sc+'</div>';b+='<div class="simwrap">'+d.run.map(function(s){var h='<div class="runstep"><div class="rt">'+s.t+'</div>';if(s.me)h+='<div class="rbub me2">'+esc2(s.me)+'</div>';if(s.ai)h+='<div class="rbub ai2">'+esc2(s.ai)+'</div>';return h+'</div>';}).join('')+'</div>';}
+  /* 프롬프트형 시뮬(활용법 등) */
+  var sim=(!d.run&&d.say)?{say:d.say,result:d.ans,refine:d.refine}:null;
   if(sim&&sim.say){b+='<div class="exhd"><h4 style="margin:0">사용 시뮬레이션</h4><button class="simbtn" id="simBtn">▶ 다시 재생</button></div><div class="simwrap" id="simWrap">';
-   b+='<div class="simline"><span class="stag">1 · 이렇게 적어요</span><div class="sbub" data-full="'+esc2(sim.say)+'">'+esc2(sim.say)+'</div></div>';
-   b+='<div class="sarrow">↓ ↑ 보내면</div>';
-   b+='<div class="simline"><span class="stag">2 · 이렇게 돼요</span><div class="sbub ai">'+esc2(sim.result||'')+'</div></div>';
-   if(sim.refine){b+='<div class="sarrow">↓ 고쳐 말하면</div><div class="simline"><span class="stag">3 · 이렇게 바꿔 말하면</span><div class="sbub" data-full="'+esc2(sim.refine[0])+'">'+esc2(sim.refine[0])+'</div></div><div class="simline"><span class="stag">4 · 이렇게 바뀌어요</span><div class="sbub ai">'+esc2(sim.refine[1])+'</div></div>';}
+   b+='<div class="simline"><span class="stag">1 · 이렇게 적어요</span><div class="sbub" data-full="'+esc2(sim.say)+'">'+esc2(sim.say)+'</div></div><div class="sarrow">↓ ↑ 보내면</div><div class="simline"><span class="stag">2 · 이렇게 돼요</span><div class="sbub ai">'+esc2(sim.result||'')+'</div></div>';
+   if(sim.refine)b+='<div class="sarrow">↓ 고쳐 말하면</div><div class="simline"><span class="stag">3 · 이렇게 바꿔 말하면</span><div class="sbub" data-full="'+esc2(sim.refine[0])+'">'+esc2(sim.refine[0])+'</div></div><div class="simline"><span class="stag">4 · 이렇게 바뀌어요</span><div class="sbub ai">'+esc2(sim.refine[1])+'</div></div>';
    b+='</div>';}
-  /* 시뮬레이션: 설정형(demo) */
-  if(d.demo){b+='<div class="exhd"><h4 style="margin:0">설정 시뮬레이션 (따라하는 화면)</h4></div><div class="simwrap">'+d.demo.map(function(s,i){return '<div class="simline" style="opacity:1;display:flex;gap:10px;align-items:flex-start;margin:6px 0"><span style="flex:none;width:24px;height:24px;border-radius:50%;background:#10a37f;color:#fff;font-weight:800;display:grid;place-items:center;font-size:12px">'+(i+1)+'</span><div class="sbub" style="flex:1">'+s+'</div></div>';}).join('')+'</div>';}
   if(d.caution)b+='<div class="warn"><b>⚠️ 주의:</b> '+d.caution+'</div>';
   if(k==='plus'){b+='<div class="warn"><b>첨부 전 확인:</b> 민감 자료는 꼭 필요한 부분만, 가리거나 요약해서. (교육용 시뮬레이션)</div>';}
-  if(d.steps)b+='<h4>혼자 해보기 (따라하기)</h4><ol class="st">'+d.steps.map(function(s){return '<li>'+s+'</li>';}).join('')+'</ol>';
+  if(d.steps)b+='<h4>한 줄 정리 (따라하기)</h4><ol class="st">'+d.steps.map(function(s){return '<li>'+s+'</li>';}).join('')+'</ol>';
   document.getElementById('dBody').innerHTML=b;curSay=buildSay(d);drawer.classList.add('show');bd.classList.add('show');
   var sb=document.getElementById('simBtn');if(sb)sb.onclick=playSim;if(sim&&sim.say)simTimers.push(setTimeout(playSim,240));if(autoVoice)speak(curSay);
   setTimeout(function(){try{document.getElementById('dCl').focus();}catch(e){}},40);
   try{if(window.markSeen)window.markSeen(k);}catch(e){}};
- /* buildSay 확장(when/how 포함) */
- var _buildSay=buildSay;window.buildSay=buildSay=function(d){var s=d.en+'. 우리말로 '+d.ko+'. '+String(d.fn).replace(/<[^>]+>/g,' ')+' ';if(d.when)s+='이럴 때 써요. '+String(d.when).replace(/<[^>]+>/g,' ')+' ';if(d.how)s+='하는 법. '+String(d.how).replace(/<[^>]+>/g,' ')+' ';var sim=d.sim||(d.say?{say:d.say,result:d.ans,refine:d.refine}:null);if(sim&&sim.say){s+='예시. '+String(sim.say).replace(/<[^>]+>/g,' ')+'. 그러면 '+String(sim.result||'').replace(/<[^>]+>/g,' ')+'. ';}if(d.caution)s+='주의. '+String(d.caution).replace(/<[^>]+>/g,' ')+' ';return s;};
+ window.buildSay=buildSay=function(d){var st=function(h){return String(h).replace(/<[^>]+>/g,' ').replace(/\n/g,' ');};var s=d.en+'. 우리말로 '+d.ko+'. '+st(d.fn)+' ';if(d.when)s+='이럴 때 써요. '+st(d.when)+' ';if(d.how)s+='하는 법. '+st(d.how)+' ';if(d.run){s+='실제 예시. ';d.run.forEach(function(r){s+=st(r.t)+'. '+(r.me?st(r.me)+'. ':'')+(r.ai?st(r.ai)+'. ':'');});}if(d.caution)s+='주의. '+st(d.caution)+' ';return s;};
+
+ /* 스타일(실제로 해보기 버블) */
+ var s2=document.createElement('style');s2.textContent='.runstep{margin:12px 0;padding-bottom:10px;border-bottom:1px dashed #3a3a3a}.runstep:last-child{border-bottom:none}.runstep .rt{font-size:12px;font-weight:800;color:#5fd3b2;margin-bottom:7px}.rbub{border-radius:12px;padding:10px 12px;font-size:13.5px;line-height:1.6;white-space:pre-wrap;margin:5px 0}.rbub.me2{background:#2f2f2f;border:1px solid #454545;color:#ececec}.rbub.ai2{background:rgba(16,163,127,.10);border:1px solid rgba(16,163,127,.32);color:#eaf7f2}';document.head.appendChild(s2);
 
  /* 새 탭 + 뷰(핵심 기능) */
  var tabs=document.querySelector('.tabs');
@@ -816,34 +905,27 @@ document.addEventListener('click',function(e){if(e.target.closest&&e.target.clos
  tabs.insertBefore(ftab, tabs.querySelector('[data-tab="gpts"]'));
  var wrap=document.querySelector('.wrap');
  var fview=document.createElement('section');fview.className='view';fview.id='v-features';
- fview.innerHTML='<div class="sect-t">핵심 기능 · 깊게 알아보기</div><div class="sub-t">각 기능을 누르면 <b>깊은 설명 + 사용 시뮬레이션</b>이 나와요. (기능·요금·이름은 자주 바뀌어 “확인 필요”로 표기)</div><div id="fsearch"></div><div class="grid" id="fg"></div>';
- /* 최근 대화 뷰 앞에 삽입 */
+ fview.innerHTML='<div class="sect-t">핵심 기능 · 실제로 해보며 배우기</div><div class="sub-t">각 기능을 누르면 <b>깊은 설명 + 인테리어 예시로 실제 진행하는 시뮬레이션(결과값 포함)</b>이 나와요. (기능·요금·이름은 자주 바뀌어 “확인 필요” 표기)</div><div id="fsearch"></div><div class="grid" id="fg"></div>';
  wrap.insertBefore(fview, document.getElementById('v-gpts'));
  document.getElementById('fg').innerHTML=FEATURES.map(function(f){return '<div class="card ix" data-k="'+f.k+'"><div class="ic">'+f.emo+'</div><div class="cn">'+f.ko+'</div><div class="cd">'+String(f.fn).replace(/<[^>]+>/g,'').split('.')[0]+'.</div></div>';}).join('');
 
- /* 사이드바에 Codex · 설정(개인화) 추가 */
+ /* 사이드바 Codex · 설정 추가 */
  var side=document.querySelector('#side');
  var proj=side.querySelector('[data-k="projects"]');
  function sItem(k,icon,label){var e=document.createElement('div');e.className='sitem ix';e.dataset.k=k;e.innerHTML='<span class="i">'+icon+'</span> '+label;return e;}
- var codexItem=sItem('f-codex','🤖','Codex');var setItem=sItem('f-custom','⚙️','설정 · 개인 맞춤');
- if(proj&&proj.parentNode){proj.parentNode.insertBefore(codexItem,proj.nextSibling);}
- var foot=side.querySelector('.sfoot');if(foot)foot.insertBefore(setItem,foot.firstChild);
+ if(proj&&proj.parentNode)proj.parentNode.insertBefore(sItem('f-codex','🤖','Codex'),proj.nextSibling);
+ var foot=side.querySelector('.sfoot');if(foot)foot.insertBefore(sItem('f-custom','⚙️','설정 · 개인 맞춤'),foot.firstChild);
 
- /* 새 요소 wire + 검색 + 통합 탭 전환 */
- function wireEl(el){if(typeof wire==='function')wire(el);}
- document.querySelectorAll('#fg .card, #side [data-k="f-codex"], #side [data-k="f-custom"]').forEach(wireEl);
- /* 기능 검색 */
- (function(){var w=document.createElement('div');w.className='p2-search';var s=document.createElement('span');s.className='ic';s.textContent='🔎';w.appendChild(s);var inp=document.createElement('input');inp.type='search';inp.placeholder='기능 검색 (예: 메모리, 맞춤, Codex, 캔버스…)';inp.setAttribute('aria-label','기능 검색');w.appendChild(inp);var x=document.createElement('button');x.className='x';x.textContent='✕';x.type='button';w.appendChild(x);
+ document.querySelectorAll('#fg .card, #side [data-k="f-codex"], #side [data-k="f-custom"]').forEach(function(el){if(typeof wire==='function')wire(el);});
+ (function(){var w=document.createElement('div');w.className='p2-search';var s=document.createElement('span');s.className='ic';s.textContent='🔎';w.appendChild(s);var inp=document.createElement('input');inp.type='search';inp.placeholder='기능 검색 (예: 프로젝트, 메모리, 맞춤, Codex…)';inp.setAttribute('aria-label','기능 검색');w.appendChild(inp);var x=document.createElement('button');x.className='x';x.textContent='✕';x.type='button';w.appendChild(x);
   function run(){var q=(inp.value||'').trim().toLowerCase();document.querySelectorAll('#fg .card').forEach(function(c){var t=(c.textContent||'').toLowerCase();c.style.display=(!q||t.indexOf(q)>-1)?'':'none';});}
   inp.addEventListener('input',run);x.addEventListener('click',function(){inp.value='';run();inp.focus();});document.getElementById('fsearch').appendChild(w);})();
- /* 통합 탭 전환(features 포함) — 모든 탭에 리스너 추가, 마지막에 실행되어 최종 상태 결정 */
  var VIEWS=['home','uses','features','gpts','recent'];
  document.querySelectorAll('.tab').forEach(function(t){t.setAttribute('role','tab');t.setAttribute('tabindex','0');
-  t.addEventListener('click',function(){var v=t.dataset.tab;document.querySelectorAll('.tab').forEach(function(x){x.classList.toggle('on',x===t);x.setAttribute('aria-selected',x===t?'true':'false');});VIEWS.forEach(function(k){var el=document.getElementById('v-'+k);if(el)el.classList.toggle('on',k===v);});try{document.querySelector('.wrap').scrollTop=0;}catch(e){}});
+  t.addEventListener('click',function(){var v=t.dataset.tab;document.querySelectorAll('.tab').forEach(function(x){x.classList.toggle('on',x===t);x.setAttribute('aria-selected',x===t?'true':'false');});VIEWS.forEach(function(kk){var el=document.getElementById('v-'+kk);if(el)el.classList.toggle('on',kk===v);});try{document.querySelector('.wrap').scrollTop=0;}catch(e){}});
   t.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();t.click();}});});
 })();
 </script>
-
 
 <!-- ===================== PHASE 학습 모듈 (진도·즐겨찾기·퀴즈·목적필터·검색·시작메뉴) ===================== -->
 <script>
