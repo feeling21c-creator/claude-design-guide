@@ -338,9 +338,8 @@ a{color:var(--accent-ink)}
 var ACCESS_DURATION_MS=72*60*60*1000,ACCESS_CODE='1111',OWNER_KEY='rdai-lucas-keep',ACCESS_LS='__rdai_cg_access__',OWNER_LS='__rdai_cg_owner__';
 var KAKAO_LINK='https://open.kakao.com/o/sG8NU2Hi';           /* 연장 요청 카카오 오픈채팅 */
 var EXT_DAYS=7, EXT_MS=EXT_DAYS*24*60*60*1000;                /* 연장 1회 = 7일 */
-var EXT_CODES={'2026-08':'RDFJV2','2026-09':'RDPD8M','2026-10':'RD72P3','2026-11':'RDN47K','2026-12':'RDGDFH','2027-01':'RDXXPX','2027-02':'RDY9AW','2027-03':'RDY4YE','2027-04':'RD3RTW','2027-05':'RDJC7E','2027-06':'RD2D2C','2027-07':'RDRQW3','2027-08':'RD3UGV','2027-09':'RD4X7C'};
-function curMonthKey(){var d=new Date();return d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2);}
-function validExtCode(v){v=(v||'').trim().toUpperCase();var c=EXT_CODES[curMonthKey()];return !!c&&v===c;}
+var EXT_CODE='4421';                                          /* 연장 코드 (고정) */
+function validExtCode(v){return (v||'').trim()===EXT_CODE;}
 function extendAccess(){try{localStorage.setItem(ACCESS_LS,JSON.stringify({startedAt:Date.now(),expiresAt:Date.now()+EXT_MS,extended:true}));}catch(e){}}
 var __owner=false;(function(){try{var h=(location.hash||'').replace(/^#/,'');if(h===OWNER_KEY||(location.search||'').indexOf('owner='+OWNER_KEY)>-1){__owner=true;localStorage.setItem(OWNER_LS,'1');}else if(localStorage.getItem(OWNER_LS)==='1')__owner=true;}catch(e){}})();
 function getRec(){try{return JSON.parse(localStorage.getItem(ACCESS_LS)||'null');}catch(e){return null;}}
@@ -350,12 +349,12 @@ function showExpired(){if(document.getElementById('__x__'))return;var d=document
  d.innerHTML='<div style="width:100%;max-width:400px;background:#212121;border:1px solid #3a3a3a;border-radius:18px;padding:26px 24px;box-shadow:0 20px 60px #000a">'
   +'<div style="font-size:44px">⏳</div>'
   +'<div style="font-size:21px;font-weight:800;margin:8px 0 6px;color:#fff">열람 기간이 종료되었어요</div>'
-  +'<div style="font-size:14px;color:#b4b4b4;line-height:1.7">계속 보시려면 아래 버튼으로 <b style="color:#fff">루카스에게 연장을 요청</b>하세요.<br>요청하시면 <b style="color:#5fd3b2">이번 달 연장 코드</b>를 알려드려요. (코드 입력 시 <b style="color:#fff">'+EXT_DAYS+'일</b> 더 열람)</div>'
+  +'<div style="font-size:14px;color:#b4b4b4;line-height:1.7">계속 보시려면 아래 버튼으로 <b style="color:#fff">루카스에게 연장을 요청</b>하세요.<br>요청하시면 <b style="color:#5fd3b2">연장 코드</b>를 알려드려요. (코드 입력 시 <b style="color:#fff">'+EXT_DAYS+'일</b> 더 열람)</div>'
   +'<a href="'+KAKAO_LINK+'" target="_blank" rel="noopener" style="display:block;margin:18px 0 6px;background:#FEE500;color:#191600;border-radius:12px;padding:14px;font-size:15px;font-weight:800;text-decoration:none">💬 카카오톡으로 연장 요청하기</a>'
   +'<div style="font-size:12px;color:#8e8e8e;margin-bottom:14px">채팅방에서 <b style="color:#b4b4b4">성함 · 소속(기수)</b>을 남겨 주세요.</div>'
   +'<div style="border-top:1px solid #3a3a3a;margin:6px 0 14px"></div>'
   +'<div style="font-size:12.5px;color:#5fd3b2;font-weight:800;margin-bottom:8px">🔑 연장 코드 입력</div>'
-  +'<input id="__xc" type="text" autocomplete="off" aria-label="연장 코드" placeholder="예: RD●●●●" style="width:100%;box-sizing:border-box;background:#171717;border:1px solid #3a3a3a;border-radius:11px;padding:13px;color:#ececec;font-size:17px;font-weight:800;letter-spacing:3px;text-align:center;text-transform:uppercase;outline:none">'
+  +'<input id="__xc" type="text" autocomplete="off" aria-label="연장 코드" placeholder="연장 코드 입력" style="width:100%;box-sizing:border-box;background:#171717;border:1px solid #3a3a3a;border-radius:11px;padding:13px;color:#ececec;font-size:18px;font-weight:800;letter-spacing:4px;text-align:center;outline:none">'
   +'<div id="__xe" role="alert" style="color:#ff8a6a;font-size:12.5px;margin-top:7px;min-height:16px"></div>'
   +'<button id="__xg" type="button" style="width:100%;background:#10a37f;color:#fff;border:none;border-radius:12px;padding:14px;font:inherit;font-size:15px;font-weight:800;cursor:pointer">연장 코드로 계속하기</button>'
   +'<div style="font-size:11.5px;color:#8e8e8e;margin-top:14px;line-height:1.6">ChatGPT 한글 교육자료 · <b style="color:#5fd3b2">리비안디자인 루카스</b> · AI 강의용</div>'
