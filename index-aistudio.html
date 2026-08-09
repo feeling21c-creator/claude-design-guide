@@ -1,0 +1,1377 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Google AI Studio 인터랙티브 한글 사용설명서 · 리비안디자인</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<style>
+:root{
+ --bg:#212121;--bg2:#171717;--panel:#2a2a2a;--panel2:#303030;--line:#3a3a3a;--line2:#454545;
+ --tx:#ececec;--tx2:#b4b4b4;--mut:#8e8e8e;--mut2:#6e6e6e;
+ --accent:#10a37f;--accent2:#1a7f64;--accent-soft:#0f2b23;--accent-ink:#5fd3b2;--chip:#2f2f2f;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--bg);color:var(--tx);font-family:"Pretendard",system-ui,-apple-system,sans-serif;font-size:15px;line-height:1.5;-webkit-text-size-adjust:100%}
+.app{display:flex;min-height:100vh}
+/* sidebar */
+.side{width:260px;flex:none;background:var(--bg2);border-right:1px solid var(--line);display:flex;flex-direction:column;padding:10px 8px;gap:2px}
+.sbrand{display:flex;align-items:center;gap:9px;padding:8px 8px 12px}
+.sbrand .lg{width:26px;height:26px;border-radius:50%;background:conic-gradient(from 180deg,#10a37f,#1fb98a,#10a37f);display:grid;place-items:center;color:#fff;font-weight:900;font-size:14px}
+.sbrand .nm{font-weight:700;font-size:15px}
+.sitem{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:9px;color:var(--tx);font-size:14px;cursor:pointer}
+.sitem:hover{background:var(--panel)}
+.sitem .i{width:18px;text-align:center;opacity:.9}
+.ssec{font-size:11px;color:var(--mut);font-weight:700;padding:12px 10px 5px;letter-spacing:.3px}
+.schat{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:9px;color:var(--tx2);font-size:13.5px;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.schat:hover{background:var(--panel)}
+.sfoot{margin-top:auto;border-top:1px solid var(--line);padding-top:8px}
+/* main */
+.main{flex:1;display:flex;flex-direction:column;min-width:0}
+.topbar{display:flex;align-items:center;gap:10px;padding:11px 16px;border-bottom:1px solid var(--line)}
+.topbar .mchip{display:inline-flex;align-items:center;gap:6px;background:transparent;border:none;color:var(--tx);font-weight:700;font-size:16px;cursor:pointer;padding:6px 8px;border-radius:8px}
+.topbar .mchip:hover{background:var(--panel)}
+.topbar .sp{flex:1}
+.topbar .tbtn{display:inline-flex;align-items:center;gap:6px;background:var(--panel);border:1px solid var(--line2);color:var(--tx);border-radius:999px;padding:7px 13px;font-size:13px;font-weight:600;cursor:pointer}
+.topbar .av{width:30px;height:30px;border-radius:50%;background:#c95;display:grid;place-items:center;color:#fff;font-weight:800;font-size:13px;cursor:pointer}
+/* tabs */
+.tabs{display:flex;align-items:center;gap:4px;padding:12px 16px 0;flex-wrap:wrap}
+.tab{font-size:14px;font-weight:600;color:var(--mut);padding:8px 14px;border-radius:9px;cursor:pointer;background:transparent;border:none;font-family:inherit}
+.tab.on{background:var(--panel);color:var(--tx)}
+.wrap{flex:1;overflow:auto;padding:8px 16px 40px;max-width:900px;width:100%;margin:0 auto}
+/* chat home */
+.hero{text-align:center;padding:26px 10px 14px}
+.hero h1{font-size:24px;font-weight:800;margin:0 0 6px}
+.hero p{color:var(--tx2);font-size:14.5px;margin:0}
+.chatex{display:flex;flex-direction:column;gap:10px;max-width:640px;margin:14px auto 0}
+.bub{max-width:82%;padding:11px 14px;border-radius:16px;font-size:14.5px;line-height:1.55}
+.bub.me{align-self:flex-end;background:var(--panel2);border:1px solid var(--line)}
+.bub.ai{align-self:flex-start;background:transparent;border:1px solid var(--line);border-radius:16px}
+.bub.ai b{color:var(--accent-ink)}
+/* composer */
+.composer{max-width:760px;margin:16px auto 0;background:var(--panel2);border:1px solid var(--line2);border-radius:26px;padding:12px 14px}
+.ph{color:var(--mut);font-size:15px;min-height:24px;padding:2px 2px 10px;transition:opacity .3s}
+.crow{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.ib{min-width:38px;height:38px;border-radius:999px;background:var(--chip);border:1px solid var(--line2);display:inline-flex;align-items:center;justify-content:center;color:var(--tx2);font-size:17px;cursor:pointer;padding:0 10px;gap:6px}
+.ib .t{font-size:13px;font-weight:600}
+.cend{margin-left:auto;display:flex;align-items:center;gap:8px}
+.send{width:38px;height:38px;border-radius:999px;background:var(--tx);display:grid;place-items:center;color:#111;font-size:18px;cursor:pointer}
+.tools{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}
+/* cards */
+.sect-t{font-size:15px;font-weight:800;margin:16px 0 4px}
+.sub-t{font-size:13px;color:var(--mut);margin:0 0 12px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
+.card{background:var(--panel);border:1px solid var(--line2);border-radius:14px;padding:14px;cursor:pointer;transition:border-color .15s}
+.card:hover{border-color:var(--accent)}
+.card .ic{width:40px;height:40px;border-radius:11px;background:var(--accent-soft);display:grid;place-items:center;font-size:20px;margin-bottom:9px}
+.card .cn{font-weight:800;font-size:15px}
+.card .cd{font-size:12.5px;color:var(--tx2);margin-top:3px;line-height:1.5}
+.card .cat{display:inline-block;margin-top:8px;font-size:10.5px;font-weight:800;color:var(--accent-ink);background:rgba(16,163,127,.14);border:1px solid rgba(16,163,127,.35);border-radius:999px;padding:2px 8px}
+/* gpt row */
+.gpt{display:flex;align-items:center;gap:12px;background:var(--panel);border:1px solid var(--line2);border-radius:14px;padding:12px 14px;cursor:pointer;margin-bottom:10px}
+.gpt:hover{border-color:var(--accent)}
+.gpt .av{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;font-size:22px;flex:none}
+.gpt .gn{font-weight:800;font-size:15px}
+.gpt .gd{font-size:12.5px;color:var(--tx2);margin-top:2px}
+/* chat rows (recent) */
+.crow2{display:flex;align-items:center;gap:12px;padding:12px 6px;border-bottom:1px solid var(--line);cursor:pointer}
+.crow2:hover{background:var(--panel)}
+.crow2 .ci{width:34px;height:34px;border-radius:9px;background:var(--panel2);display:grid;place-items:center;font-size:16px;flex:none}
+.crow2 .cn{font-weight:700;font-size:14px}
+.crow2 .cs{font-size:12px;color:var(--mut)}
+.crow2 .clv{margin-left:auto;font-size:12px;color:var(--mut)}
+/* filter + search */
+.p2-filter{display:flex;gap:8px;flex-wrap:wrap;margin:4px 0 14px}
+.p2-chip{display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:8px 14px;border-radius:999px;border:1px solid var(--line2);background:var(--panel);color:var(--tx2);font:inherit;font-size:13.5px;font-weight:800;cursor:pointer;font-family:inherit}
+.p2-chip .e{font-size:15px}
+.p2-chip.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+.p2-search{display:flex;align-items:center;gap:8px;background:var(--panel);border:1px solid var(--line2);border-radius:12px;padding:6px 10px;margin:2px 0 14px;max-width:460px}
+.p2-search .ic{font-size:14px;opacity:.7}
+.p2-search input{flex:1;background:transparent;border:none;outline:none;color:var(--tx);font:inherit;font-size:14px;min-height:34px}
+.p2-search .x{background:transparent;border:none;color:var(--mut);cursor:pointer;font-size:14px;min-width:34px;min-height:34px}
+/* tooltip */
+.tip{position:fixed;z-index:1200;max-width:300px;background:#0d0d0d;border:1px solid var(--line2);border-radius:12px;padding:12px 13px;box-shadow:0 14px 40px #000a;pointer-events:none;opacity:0;transition:opacity .12s;font-size:13px}
+.tip.show{opacity:1}
+.tip .en{font-weight:800;font-size:14px}
+.tip .ko{font-size:13px;color:var(--accent-ink);font-weight:700;margin-top:2px}
+.tip .fn{font-size:12.5px;color:var(--tx2);margin-top:7px;line-height:1.5}
+.tip .hint{margin-top:8px;font-size:11.5px;color:var(--accent-ink);font-weight:700}
+/* popover */
+.pop{position:fixed;z-index:1250;min-width:240px;max-width:320px;background:#0d0d0d;border:1px solid var(--line2);border-radius:12px;padding:6px;box-shadow:0 14px 40px #000b;opacity:0;pointer-events:none;transition:opacity .12s;max-height:70vh;overflow:auto}
+.pop.show{opacity:1;pointer-events:auto}
+.pop .grp{font-size:11px;color:var(--mut);font-weight:800;padding:8px 10px 4px}
+.pop .opt{display:flex;justify-content:space-between;gap:10px;padding:9px 10px;border-radius:8px;font-size:13.5px;cursor:default}
+.pop .opt:hover{background:var(--panel)}
+.pop .opt .kr{color:var(--mut);font-size:12px}
+.pop .opt.sel{background:var(--accent-soft)}
+.pop .sep{height:1px;background:var(--line);margin:5px 0}
+/* drawer */
+.bd{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:1300;opacity:0;pointer-events:none;transition:opacity .2s}
+.bd.show{opacity:1;pointer-events:auto}
+.drawer{position:fixed;top:0;right:0;bottom:0;width:min(460px,94vw);z-index:1301;background:var(--bg);border-left:1px solid var(--line2);transform:translateX(100%);transition:transform .24s;display:flex;flex-direction:column}
+.drawer.show{transform:none}
+.dh{display:flex;align-items:center;gap:8px;padding:16px 18px;border-bottom:1px solid var(--line)}
+.dh .en{font-size:20px;font-weight:800}
+.dh .ko{font-size:13px;color:var(--accent-ink);font-weight:700}
+.dh .sp{flex:1}
+.dvo{height:34px;padding:0 12px;border-radius:9px;border:1px solid var(--accent);background:rgba(16,163,127,.16);color:var(--accent-ink);cursor:pointer;font:inherit;font-size:13px;font-weight:800}
+.dcl{height:34px;min-width:34px;border-radius:9px;border:1px solid var(--line2);background:transparent;color:var(--tx2);cursor:pointer;font-size:15px}
+.db{padding:16px 18px 40px;overflow:auto}
+.db .fn{font-size:14px;line-height:1.7;color:var(--tx)}
+.db h4{font-size:13px;font-weight:800;color:var(--accent-ink);margin:18px 0 8px}
+.db .st{margin:0;padding-left:20px}
+.db .st li{margin:6px 0;font-size:13.5px;line-height:1.5}
+.db .dlist .di{border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin-bottom:8px}
+.db .die{font-size:13px;font-weight:800}
+.db .dik{font-size:11.5px;color:var(--accent-ink);font-weight:700;margin-left:4px}
+.db .did{font-size:12.5px;color:var(--tx2);margin-top:4px;line-height:1.5}
+.simwrap{border:1px solid var(--line);border-radius:12px;padding:12px;background:var(--bg2)}
+.exhd{display:flex;align-items:center;justify-content:space-between;margin:18px 0 8px}
+.simbtn{background:var(--panel);border:1px solid var(--line2);color:var(--tx2);border-radius:8px;padding:6px 11px;font:inherit;font-size:12px;font-weight:700;cursor:pointer}
+.simline{margin:4px 0}
+.simline.shid{opacity:0}
+.stag{display:inline-block;font-size:11px;font-weight:800;color:var(--accent-ink);margin-bottom:5px}
+.sbub{background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:10px 12px;font-size:13.5px;white-space:pre-wrap}
+.sbub.ai{background:transparent}
+.sarrow{color:var(--mut);font-size:12px;text-align:center;margin:8px 0}
+.excap{font-size:12.5px;color:var(--tx2);margin:6px 0 0;line-height:1.5}
+.warn{background:rgba(224,138,106,.09);border:1px solid rgba(224,138,106,.32);border-radius:11px;padding:11px 13px;font-size:12.8px;line-height:1.6;color:#ffcbb9;margin-top:12px}
+.warn b{color:#fff}
+/* help bar */
+.help{position:fixed;right:16px;bottom:16px;z-index:70;display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.help button{background:var(--panel);border:1px solid var(--line2);color:var(--tx2);border-radius:999px;padding:10px 14px;font:inherit;font-size:13px;font-weight:700;cursor:pointer}
+.help button.von,.help #p2-openPanel .pct{color:var(--accent-ink)}
+.simbadge{position:fixed;bottom:14px;left:14px;z-index:70;background:rgba(20,20,20,.9);border:1px solid var(--line2);border-radius:99px;padding:6px 12px;font-size:12px;color:var(--accent-ink);font-weight:700}
+/* guide */
+.guidebd{position:fixed;inset:0;z-index:1400;background:var(--bg);transform:translateY(100%);transition:transform .28s;display:flex;flex-direction:column}
+.guidebd.show{transform:none}
+.gtop{display:flex;align-items:center;gap:10px;padding:13px 16px;border-bottom:1px solid var(--line)}
+.gtop .gt{font-weight:800}
+.gtop .gtk{font-size:12px;color:var(--mut)}
+.gtop .sp{flex:1}
+.gtop button{background:var(--panel);border:1px solid var(--line2);color:var(--tx);border-radius:9px;padding:8px 12px;font:inherit;font-size:13px;font-weight:700;cursor:pointer}
+.guide{overflow:auto;padding:18px 16px 60px;max-width:820px;margin:0 auto;width:100%}
+.ghero{background:linear-gradient(160deg,var(--accent-soft),var(--panel));border:1px solid var(--line2);border-radius:16px;padding:20px}
+.ghero .k{font-size:12px;font-weight:800;letter-spacing:2px;color:var(--accent-ink)}
+.ghero h1{font-size:22px;margin:6px 0 8px}
+.ghero p{color:var(--tx2);font-size:14px;line-height:1.7;margin:0}
+.pr-start{background:var(--accent);color:#fff;border:none;border-radius:12px;padding:13px 18px;font:inherit;font-size:15px;font-weight:800;cursor:pointer}
+.gtoc{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0}
+.gtoc a{font-size:12.5px;color:var(--accent-ink);background:var(--panel);border:1px solid var(--line2);border-radius:999px;padding:6px 12px;text-decoration:none}
+.gsec{margin-top:26px}
+.gnum{font-size:11px;font-weight:800;color:var(--accent-ink);letter-spacing:1px}
+.gsh{display:flex;align-items:center;gap:10px;margin:4px 0 12px}
+.gsh h2{font-size:18px;margin:0}
+.lis{background:var(--panel);border:1px solid var(--line2);color:var(--tx);border-radius:8px;padding:6px 11px;font:inherit;font-size:12.5px;font-weight:700;cursor:pointer}
+.flow{display:flex;flex-direction:column;gap:10px;margin:12px 0}
+.flow .step{display:flex;gap:12px;background:var(--panel);border:1px solid var(--line2);border-radius:12px;padding:13px 14px}
+.flow .n{width:30px;height:30px;flex:none;border-radius:50%;background:var(--accent);color:#fff;font-weight:800;display:grid;place-items:center}
+.flow .tt2{font-weight:800;font-size:14.5px}
+.flow .ds2{font-size:13px;color:var(--tx2);margin-top:2px}
+.rec{background:var(--panel);border:1px solid var(--line2);border-radius:14px;padding:16px;margin:12px 0}
+.rec .rtag{font-size:11px;font-weight:800;color:#fff;background:var(--accent);border-radius:999px;padding:3px 10px}
+.rec h3{margin:8px 0 4px;font-size:16px}
+.rec .goal{font-size:12.5px;color:var(--tx2);margin:0 0 10px}
+.rlab{font-size:12px;font-weight:800;color:var(--accent-ink);margin:12px 0 6px}
+.pbox{position:relative;background:var(--bg2);border:1px solid var(--line2);border-radius:10px;padding:12px 12px 12px;font-size:13px;line-height:1.6;color:var(--tx)}
+.pbox .copy{position:absolute;top:8px;right:8px;background:var(--panel);border:1px solid var(--line2);color:var(--tx2);border-radius:7px;padding:5px 10px;font:inherit;font-size:11.5px;font-weight:700;cursor:pointer}
+.pbox .copy.done{color:var(--accent-ink);border-color:var(--accent)}
+.pbox .ptext{display:block;padding-right:52px;white-space:pre-wrap}
+.rnext{display:flex;flex-direction:column;gap:6px}
+.rnext .ri{background:var(--bg2);border:1px solid var(--line);border-radius:8px;padding:8px 11px;font-size:12.5px;color:var(--tx2)}
+.out{display:inline-block;margin-top:10px;font-size:12.5px;font-weight:700;color:var(--accent-ink)}
+.formula{background:var(--accent-soft);border:1px solid var(--line2);border-radius:12px;padding:14px;text-align:center;font-size:14px;line-height:1.9;margin:6px 0 14px}
+.formula em{font-style:normal;font-weight:800;color:var(--accent-ink)}
+.cmp{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:6px 0 14px}
+.cc{border-radius:12px;padding:12px;font-size:13px;line-height:1.55}
+.cc.bad{background:rgba(224,106,106,.08);border:1px solid rgba(224,106,106,.3)}
+.cc.good{background:rgba(16,163,127,.08);border:1px solid rgba(16,163,127,.3)}
+.cc .cl{font-weight:800;margin-bottom:5px}
+.tips{display:flex;flex-direction:column;gap:9px;margin:6px 0}
+.tp{display:flex;gap:11px;background:var(--panel);border:1px solid var(--line2);border-radius:12px;padding:12px 13px;font-size:13.5px;line-height:1.55}
+.tp .ic2{font-size:18px;flex:none}
+.gcta{background:var(--accent);color:#fff;border:none;border-radius:12px;padding:13px 18px;font:inherit;font-size:15px;font-weight:800;cursor:pointer;margin-top:18px}
+a{color:var(--accent-ink)}
+/* mobile */
+@media(max-width:820px){
+ .side{position:fixed;left:0;top:0;bottom:0;z-index:1100;transform:translateX(-100%);transition:transform .22s}
+ .side.open{transform:translateX(0)}
+ .sbackdrop{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:1099;opacity:0;pointer-events:none;transition:opacity .2s}
+ .sbackdrop.on{opacity:1;pointer-events:auto}
+ .menub{display:inline-flex}
+}
+@media(min-width:821px){.menub{display:none}}
+@media(max-width:640px){
+ .wrap{padding:8px 12px 96px}
+ .hero h1{font-size:20px}
+ .grid{grid-template-columns:1fr}
+ .cmp{grid-template-columns:1fr}
+ .tab{min-height:44px;display:inline-flex;align-items:center}
+ .ib{min-height:44px;min-width:44px}
+ .send{width:44px;height:44px}
+ .help{left:auto;right:12px;bottom:12px;flex-wrap:nowrap}
+ #openGuide,#tVoice,#tHints,#reopen{display:none!important}
+ .simbadge{display:none}
+ .cend{margin-left:0}
+ .p2-search input{min-height:44px}
+}
+</style>
+</head>
+<body>
+
+<div class="app">
+ <aside class="side" id="side">
+  <div class="sbrand"><div class="lg">🧪</div><div class="nm">AI Studio</div><span class="sp" style="flex:1"></span><span class="sicon ix" data-k="search" aria-label="검색">🔍</span><span class="sicon ix" data-k="sidetoggle" aria-label="사이드바 접기">▢</span></div>
+  <div class="sitem ix" data-k="newchat"><span class="i">✎</span> 새 프롬프트</div>
+  <div class="sitem ix" data-k="library"><span class="i">💾</span> 저장된 프롬프트</div>
+  <div class="sitem ix" data-k="projects"><span class="i">🧱</span> 빌드 (앱 만들기)</div>
+  <div class="sitem ix" data-k="reserve"><span class="i">🗂</span> 프롬프트 갤러리</div>
+  <div class="sitem ix" data-k="more2"><span class="i">⋯</span> 더 보기</div>
+  <div class="ssec">최근 작업 ›</div>
+  <div class="schat ix" data-k="hist1">📌 리비안 상담 응대 프롬프트</div>
+  <div class="schat ix" data-k="hist2">🍌 봄 상담 포스터 (나노바나나 프로)</div>
+  <div class="schat">🧱 AI 교육 SaaS 신청 앱 (Build)</div>
+  <div class="schat">🎬 시공 전/후 홍보 영상 (Veo)</div>
+  <div class="sfoot"><div class="sitem ix" data-k="account"><span class="i">🔑</span> 내 계정 · API 키</div></div>
+ </aside>
+ <div class="sbackdrop" id="sbackdrop"></div>
+
+ <div class="main">
+  <div class="topbar">
+   <button class="ib menub" id="menub" aria-label="메뉴 열기" style="border-radius:9px">☰</button>
+   <span class="sp"></span>
+   <span class="cw ix" data-k="chatwork" role="group" aria-label="채팅 / 빌드 전환"><span class="cwb on" data-cw="chat">채팅</span><span class="cwb" data-cw="work">빌드</span></span>
+   <span class="sp"></span>
+  </div>
+
+  <div class="tabs">
+   <button class="tab on" data-tab="home">홈 · 플레이그라운드</button>
+   <button class="tab" data-tab="uses">활용법</button>
+   <button class="tab" data-tab="gpts">모델 · 미디어</button>
+   <button class="tab" data-tab="recent">최근 작업</button>
+  </div>
+
+  <div class="wrap">
+   <!-- HOME -->
+   <section class="view on" id="v-home">
+    <div class="hero" id="heroBox"><h1 id="heroH">무엇을 시험해볼까요?</h1><p>여기는 AI를 <b>시험하고·다듬고·앱까지 만드는 작업대</b>예요. 아래 <b>시스템 명령·온도·도구·코드/API</b>가 무엇인지 눌러보며 배워요.</p></div>
+    <div class="composer">
+     <div class="ph ix" id="ph" data-k="input">프롬프트를 입력하고 ▶ 실행하세요 (＋로 첨부)</div>
+     <div class="crow">
+      <span class="ib ix" data-k="plus" data-pop="plus">＋</span>
+      <span class="ib ix" data-k="tools" data-pop="tools">🧰 <span class="t">도구</span></span>
+      <span class="cend">
+       <span class="mchip2 ix" data-k="model">3.1 Pro <span style="color:var(--mut)">⌄</span></span>
+       <span class="ib ix" data-k="voice">🎤</span>
+       <span class="send ix" data-k="send">▶</span>
+      </span>
+     </div>
+    </div>
+    <div class="cbar">
+     <span class="cb ix" data-k="projsel">📌 시스템 명령</span>
+     <span class="cb ix" data-k="plugins">🎚 온도 · 생각 수준</span>
+     <span class="cbend"><span class="cb ix" data-k="desktop">🔑 코드 가져오기 · API 키</span></span>
+    </div>
+    <div class="sugs">
+     <div class="sug ix" data-k="sug1"><span class="si">📌</span> “34평 얼마예요?”에 확정 금액 없이 답하는 응대 문장 만들어줘</div>
+     <div class="sug ix" data-k="sug2"><span class="si">🍌</span> “봄맞이 무료 상담” 문구가 또렷한 포스터를 만들어줘 (나노바나나 프로)</div>
+     <div class="sug ix" data-k="sug3"><span class="si">🧱</span> AI 교육 SaaS 수강 신청 앱을 만들어줘 (Build)</div>
+    </div>
+    <p class="sub-t" style="text-align:center;margin-top:18px">위 어느 요소든 <b>마우스를 올리면</b> 한글 설명이, <b>누르면</b> 상세 설명 + 실제 예시가 나와요. (모바일은 탭)</p>
+   </section>
+
+   <!-- USES -->
+   <section class="view" id="v-uses">
+    <div class="sect-t">활용법 · AI 스튜디오로 하는 것들</div>
+    <div class="sub-t">“무엇을 하고 싶은지”로 골라보세요. (프롬프트 실험·나노바나나·Veo·Lyria·Build·API 포함)</div>
+    <div id="usefilter"></div>
+    <div id="usesearch"></div>
+    <div class="grid" id="ug"></div>
+   </section>
+
+   <!-- GPTS → 모델·미디어 -->
+   <section class="view" id="v-gpts">
+    <div class="sect-t">모델 · 미디어 · 나노바나나 Pro · Veo · Lyria · 생각 수준</div>
+    <div class="sub-t">각 모델·기능이 어떤 일에 맞는지 눌러보며 익혀요. (모델명·요금은 자주 바뀌어 “확인 필요”)</div>
+    <div id="gsearch"></div>
+    <div id="gg"></div>
+   </section>
+
+   <!-- RECENT -->
+   <section class="view" id="v-recent">
+    <div class="sect-t">최근 작업 · 이렇게 쌓여요</div>
+    <div class="sub-t">한 주제당 작업 하나. 이어서 고치면 흐름과 톤을 기억해요.</div>
+    <div id="rsearch"></div>
+    <div id="rg"></div>
+   </section>
+  </div>
+ </div>
+</div>
+
+<div class="tip" id="tip"></div>
+<div class="pop" id="pop"></div>
+<div class="bd" id="bd"></div>
+<aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-label="설명"><div class="dh"><div><div class="en" id="dEn"></div><div class="ko" id="dKo"></div></div><span class="sp"></span><button class="dvo" id="dVo">🔊 듣기</button><button class="dcl" id="dCl" aria-label="닫기">✕</button></div><div class="db" id="dBody"></div></aside>
+
+<div class="help">
+ <button id="openGuide" style="background:var(--accent);color:#fff;border-color:var(--accent)">📘 작업 가이드</button>
+ <button id="tVoice">🔊 설명 자동읽기 끔</button>
+ <button id="reopen">🏠 처음 화면</button>
+</div>
+<div class="guidebd" id="guidebd">
+ <div class="gtop"><span class="gt">📘 작업 가이드</span><span class="gtk">AI 스튜디오로 실제 만드는 법 + 잘 시키는 법</span><span class="sp"></span><button id="guideVoice">🔊 자동읽기 끔</button><button id="guideClose">✕ 화면으로</button></div>
+ <div class="guide" id="guideBody"></div>
+</div>
+
+<script>
+/* ===== 제작자 표시 (자동 복원) ===== */
+(function(){var TXT='© 리비안디자인 루카스 · AI 강의용 제작';var ID='__rdai_credit__';
+ function ensure(){var el=document.getElementById(ID);if(!el){el=document.createElement('div');el.id=ID;document.documentElement.appendChild(el);}if(el.textContent!==TXT)el.textContent=TXT;var s=el.style;
+  s.setProperty('position','fixed','important');s.setProperty('top','8px','important');s.setProperty('right','12px','important');s.setProperty('z-index','2147483647','important');s.setProperty('padding','4px 9px','important');s.setProperty('font','700 11px "Pretendard",system-ui,sans-serif','important');s.setProperty('color','rgba(255,255,255,.7)','important');s.setProperty('background','rgba(18,18,20,.6)','important');s.setProperty('border','1px solid rgba(255,255,255,.14)','important');s.setProperty('border-radius','999px','important');s.setProperty('pointer-events','none','important');s.setProperty('white-space','nowrap','important');s.setProperty('display','block','important');s.setProperty('opacity','1','important');s.setProperty('transform','none','important');
+  if(window.innerWidth<=640){s.setProperty('top','auto','important');s.setProperty('right','auto','important');s.setProperty('bottom','6px','important');s.setProperty('left','50%','important');s.setProperty('transform','translateX(-50%)','important');s.setProperty('font-size','10px','important');}}
+ ensure();setInterval(ensure,700);try{new MutationObserver(function(){if(!document.getElementById(ID))ensure();}).observe(document.documentElement,{childList:true,subtree:true});}catch(e){}})();
+
+/* ===== 참여 코드 + 72시간 (소유자 예외) — 실제 보안 아님 ===== */
+var ACCESS_DURATION_MS=72*60*60*1000,ACCESS_CODE='1111',OWNER_KEY='rdai-lucas-keep',ACCESS_LS='__rdai_cg_access__',OWNER_LS='__rdai_cg_owner__';
+var KAKAO_LINK='https://open.kakao.com/o/sG8NU2Hi';           /* 연장 요청 카카오 오픈채팅 */
+var EXT_DAYS=7, EXT_MS=EXT_DAYS*24*60*60*1000;                /* 연장 1회 = 7일 */
+var EXT_CODE='4421';                                          /* 연장 코드 (고정) */
+function validExtCode(v){return (v||'').trim()===EXT_CODE;}
+function extendAccess(){try{localStorage.setItem(ACCESS_LS,JSON.stringify({startedAt:Date.now(),expiresAt:Date.now()+EXT_MS,extended:true}));}catch(e){}}
+var __owner=false;(function(){try{var h=(location.hash||'').replace(/^#/,'');if(h===OWNER_KEY||(location.search||'').indexOf('owner='+OWNER_KEY)>-1){__owner=true;localStorage.setItem(OWNER_LS,'1');}else if(localStorage.getItem(OWNER_LS)==='1')__owner=true;}catch(e){}})();
+function getRec(){try{return JSON.parse(localStorage.getItem(ACCESS_LS)||'null');}catch(e){return null;}}
+function expired(r){if(!r||!r.startedAt)return true;if(r.expiresAt)return Date.now()>=r.expiresAt;return Date.now()-r.startedAt>=ACCESS_DURATION_MS;}
+function grantOnce(){try{if(!getRec())localStorage.setItem(ACCESS_LS,JSON.stringify({startedAt:Date.now()}));}catch(e){}}
+function showExpired(){if(document.getElementById('__x__'))return;var d=document.createElement('div');d.id='__x__';d.setAttribute('role','alert');d.setAttribute('style','position:fixed;inset:0;z-index:2100000000;background:#171717;color:#ececec;display:flex;align-items:center;justify-content:center;text-align:center;padding:20px;font-family:Pretendard,system-ui,sans-serif;overflow:auto');
+ d.innerHTML='<div style="width:100%;max-width:400px;background:#212121;border:1px solid #3a3a3a;border-radius:18px;padding:26px 24px;box-shadow:0 20px 60px #000a">'
+  +'<div style="font-size:44px">⏳</div>'
+  +'<div style="font-size:21px;font-weight:800;margin:8px 0 6px;color:#fff">열람 기간이 종료되었어요</div>'
+  +'<div style="font-size:14px;color:#b4b4b4;line-height:1.7">계속 보시려면 아래 버튼으로 <b style="color:#fff">루카스에게 연장을 요청</b>하세요.<br>요청하시면 <b style="color:#5fd3b2">연장 코드</b>를 알려드려요. (코드 입력 시 <b style="color:#fff">'+EXT_DAYS+'일</b> 더 열람)</div>'
+  +'<a href="'+KAKAO_LINK+'" target="_blank" rel="noopener" style="display:block;margin:18px 0 6px;background:#FEE500;color:#191600;border-radius:12px;padding:14px;font-size:15px;font-weight:800;text-decoration:none">💬 카카오톡으로 연장 요청하기</a>'
+  +'<div style="font-size:12px;color:#8e8e8e;margin-bottom:14px">채팅방에서 <b style="color:#b4b4b4">성함 · 소속(기수)</b>을 남겨 주세요.</div>'
+  +'<div style="border-top:1px solid #3a3a3a;margin:6px 0 14px"></div>'
+  +'<div style="font-size:12.5px;color:#5fd3b2;font-weight:800;margin-bottom:8px">🔑 연장 코드 입력</div>'
+  +'<input id="__xc" type="text" autocomplete="off" aria-label="연장 코드" placeholder="연장 코드 입력" style="width:100%;box-sizing:border-box;background:#171717;border:1px solid #3a3a3a;border-radius:11px;padding:13px;color:#ececec;font-size:18px;font-weight:800;letter-spacing:4px;text-align:center;outline:none">'
+  +'<div id="__xe" role="alert" style="color:#ff8a6a;font-size:12.5px;margin-top:7px;min-height:16px"></div>'
+  +'<button id="__xg" type="button" style="width:100%;background:#10a37f;color:#fff;border:none;border-radius:12px;padding:14px;font:inherit;font-size:15px;font-weight:800;cursor:pointer">연장 코드로 계속하기</button>'
+  +'<div style="font-size:11.5px;color:#8e8e8e;margin-top:14px;line-height:1.6">AI Studio 한글 교육자료 · <b style="color:#5fd3b2">리비안디자인 루카스</b> · AI 강의용</div>'
+  +'</div>';
+ document.documentElement.appendChild(d);
+ var xc=d.querySelector('#__xc'),xe=d.querySelector('#__xe'),xg=d.querySelector('#__xg');
+ function ext(){if(!validExtCode(xc.value)){xe.textContent='코드가 맞지 않아요. 이번 달 코드를 다시 확인해 주세요.';xc.focus();xc.select();return;}extendAccess();xe.style.color='#5fd3b2';xe.textContent='연장 완료! 잠시 후 다시 열립니다…';setTimeout(function(){location.reload();},700);}
+ xg.addEventListener('click',ext);xc.addEventListener('keydown',function(e){if(e.key==='Enter')ext();});setTimeout(function(){try{xc.focus();}catch(e){}},50);}
+function showGate(){if(document.getElementById('__g__'))return;var g=document.createElement('div');g.id='__g__';g.setAttribute('role','dialog');g.setAttribute('aria-modal','true');g.setAttribute('aria-label','참여 코드 입력');g.setAttribute('style','position:fixed;inset:0;z-index:2000000000;background:#171717;display:flex;align-items:center;justify-content:center;padding:20px;font-family:Pretendard,system-ui,sans-serif;overflow:auto');
+ g.innerHTML='<div style="width:100%;max-width:400px;background:#212121;border:1px solid #3a3a3a;border-radius:18px;padding:26px 24px;box-shadow:0 20px 60px #000a">'
+ +'<div style="display:inline-block;font-size:11px;font-weight:800;color:#5fd3b2;background:#0f2b23;border:1px solid #1a7f64;border-radius:999px;padding:4px 10px;margin-bottom:12px">교육용 시뮬레이션</div>'
+ +'<div style="font-size:22px;font-weight:800;color:#fff">Google AI Studio 한글 사용설명서</div>'
+ +'<div style="font-size:13px;color:#5fd3b2;font-weight:700;margin-top:4px">리비안디자인 · 인터랙티브 교육자료</div>'
+ +'<div style="font-size:13.5px;color:#b4b4b4;line-height:1.65;margin:16px 0 12px">이 자료는 Google AI Studio 사용법을 연습하는 <b style="color:#fff">교육용 시뮬레이션</b>입니다. 참여 코드를 입력하면 이 기기에서 <b style="color:#fff">72시간</b> 열람할 수 있습니다.</div>'
+ +'<div style="text-align:center;background:#0f1a17;border:1px solid #1a7f64;border-radius:14px;padding:14px 12px;margin:14px 0 12px">'
+ +'<div style="font-size:12.5px;color:#5fd3b2;font-weight:800">🔑 참여 코드</div>'
+ +'<div style="font-size:40px;font-weight:900;letter-spacing:12px;color:#fff;margin-top:6px">1111</div>'
+ +'<div style="font-size:12px;color:#b4b4b4;margin-top:4px">아래 칸에 이미 입력돼 있어요 · 그대로 <b style="color:#fff">시작</b>을 누르세요</div></div>'
+ +'<input id="__gc" type="text" inputmode="numeric" autocomplete="off" aria-label="참여 코드" value="1111" style="width:100%;box-sizing:border-box;background:#171717;border:1px solid #3a3a3a;border-radius:11px;padding:13px;color:#ececec;font-size:18px;font-weight:800;letter-spacing:4px;text-align:center;outline:none">'
+ +'<div id="__ge" role="alert" style="color:#ff8a6a;font-size:12.5px;margin-top:7px;min-height:16px"></div>'
+ +'<button id="__gg" type="button" style="width:100%;margin-top:2px;background:#10a37f;color:#fff;border:none;border-radius:12px;padding:14px;font:inherit;font-size:15px;font-weight:800;cursor:pointer">참여 코드로 시작하기</button>'
+ +'<div style="font-size:12px;color:#8e8e8e;background:#171717;border:1px solid #3a3a3a;border-radius:10px;padding:10px 12px;margin-top:12px;line-height:1.55">교육자료 열람용 간단 확인입니다. 회원 로그인·강력한 보안이 아닙니다.</div>'
+ +'<div style="font-size:11.5px;color:#8e8e8e;margin-top:12px;text-align:center;line-height:1.6">무단 전달·재공유 금지 · 최초 인증 후 72시간 열람<br><b style="color:#5fd3b2">리비안디자인 루카스</b>가 <b style="color:#fff">AI 강의용</b>으로 제작한 자료입니다</div></div>';
+ document.documentElement.appendChild(g);var cd=g.querySelector('#__gc'),err=g.querySelector('#__ge'),go=g.querySelector('#__gg');
+ function submit(){if((cd.value||'').trim()!==ACCESS_CODE){err.textContent='참여 코드를 다시 확인해 주세요';cd.focus();return;}grantOnce();if(g.parentNode)g.parentNode.removeChild(g);}
+ go.addEventListener('click',submit);cd.addEventListener('keydown',function(e){if(e.key==='Enter')submit();});setTimeout(function(){try{cd.focus();cd.select();}catch(e){}},50);}
+(function(){if(__owner)return;var r=getRec();if(r&&expired(r)){showExpired();return;}if(!r||!r.startedAt)showGate();})();
+
+/* ===================== 데이터 (Google AI Studio) ===================== */
+var CATS=[
+ {id:'all',ko:'전체',emo:'▦'},
+ {id:'prompt',ko:'프롬프트·실험',emo:'🧪',q:'요청 문장 다듬고 시험'},
+ {id:'media',ko:'이미지·영상·음악',emo:'🎨',q:'나노바나나·Veo·Lyria'},
+ {id:'build',ko:'앱 만들기',emo:'🧱',q:'말로 앱 만들기(Build)'},
+ {id:'connect',ko:'내 서비스 연결',emo:'🔌',q:'API 키·코드 가져오기'},
+ {id:'research',ko:'검색·데이터',emo:'🔎',q:'최신정보·계산'}
+];
+/* 활용법 · AI 스튜디오로 하는 것 (리비안 예시) */
+var USES=[
+ {k:'u0',cat:'prompt',emo:'🧪',en:'Refine prompt',ko:'요청 문장(프롬프트) 다듬기',fn:'AI 스튜디오는 <b>요청 문장을 이리저리 시험해 보는 작업대</b>예요. 설정을 바꿔가며 가장 좋은 답이 나오는 문장을 찾아요.',say:'상담 문의에 답하는 문장을 시험해줘: “34평 얼마예요?”에 정중히 답하되 확정 금액은 말하지 말 것.',ans:'여러 버전의 응대 문장이 나오고, 설정을 바꿔가며 가장 자연스러운 걸 고를 수 있어요.',refine:['더 따뜻하게','같은 규칙으로 더 따뜻한 말투 버전도 보여줘요'],steps:['원하는 답을 문장으로 적어요','▶ 실행으로 결과를 봐요','설정·문장을 바꿔 비교해요']},
+ {k:'u1',cat:'prompt',emo:'📌',en:'System instructions',ko:'시스템 명령으로 규칙 고정',fn:'매번 반복할 <b>“항상 지킬 규칙”</b>을 위에 한 번 적어두면, 이후 모든 답이 그 규칙을 지켜요. (예: 확정 금액 금지)',say:'(시스템 명령) 너는 리비안 상담 도우미다. 정중히 인사→예산·시기 되묻기→방향만 제시. 확정 금액은 말하지 마라.',ans:'이후 어떤 문의를 넣어도 그 규칙대로 응대해요.',refine:['표로 답하게','규칙에 “가능하면 표로 정리”를 추가해줘요'],steps:['위 “시스템 명령” 칸에 규칙을 적어요','아래에 실제 문의를 넣어요','규칙을 지키는지 확인해요']},
+ {k:'u2',cat:'media',emo:'🍌',en:'Nano Banana Pro',ko:'고화질 이미지 (나노바나나 프로)',fn:'<b>글자까지 또렷한 2K/4K 고화질 이미지</b>를 만들어요. 인쇄용 제안 표지·간판 시안에 좋아요.',say:'“리비안디자인 · 봄맞이 무료 상담” 문구가 또렷하게 들어간 인쇄용 포스터를 우드톤으로 만들어줘.',ans:'글자가 또렷한 고화질 포스터 이미지가 나와요.',refine:['세로형도','같은 디자인의 세로형(인스타 스토리) 버전도 만들어줘요'],steps:['문구·분위기·용도를 적어요','고화질로 받아요','비율·문구를 바꿔 다듬어요']},
+ {k:'u3',cat:'media',emo:'🎬',en:'Veo',ko:'영상 만들기 (Veo 3.1)',fn:'소리(음성·립싱크)까지 있는 <b>짧은 영상</b>을 만들고 고해상도로 키울 수 있어요.',say:'리모델링 전/후를 보여주는 15초 홍보 영상을 만들어줘. 우드톤 거실, 잔잔한 배경음, 마지막에 로고.',ans:'전/후 전환 + 배경음이 있는 15초 영상이 나와요.',refine:['자막 추가','“설레는 우리 집” 자막을 넣어줘요'],steps:['장면·분위기·길이를 적어요','영상을 받아요','자막·해상도를 조절해요']},
+ {k:'u4',cat:'media',emo:'🎵',en:'Lyria',ko:'배경 음악 만들기 (Lyria)',fn:'홍보 영상·매장에 쓸 <b>배경 음악</b>을 만들어줘요(최대 몇 분). 저작권 걱정 적은 자체 음악.',say:'따뜻하고 잔잔한 인테리어 홍보 영상용 배경 음악을 40초로 만들어줘.',ans:'설명한 분위기의 배경 음악 클립이 나와요.',refine:['더 밝게','조금 더 밝고 경쾌하게 다시 만들어줘요'],steps:['분위기·길이·용도를 적어요','음악을 받아요','밝기·템포를 조절해요']},
+ {k:'u5',cat:'research',emo:'🔎',en:'Search grounding',ko:'구글 검색 연결(최신 정보)',fn:'<b>구글 검색을 켜면</b> 최신 정보를 찾아 출처와 함께 답해요. 요금·트렌드처럼 바뀌는 정보에 켜세요.',say:'(검색 켜고) 2026년 국내 아파트 인테리어 자재 트렌드 3가지를 출처와 함께 알려줘.',ans:'최신 트렌드 + 출처가 나와요.',refine:['국내 브랜드 위주','국내 브랜드 사례 중심으로 다시 정리해줘요'],steps:['검색(그라운딩)을 켜요','찾을 내용을 물어요','출처를 확인해요']},
+ {k:'u6',cat:'build',emo:'🧱',en:'Build app',ko:'말로 앱 만들기 (Build)',fn:'말로 설명하면 <b>실제 도는 앱</b>을 만들어줘요(Build 모드). 루카스님의 <b>AI 교육 SaaS</b> 화면을 코드 몰라도.',say:'AI 교육 SaaS 수강 신청 앱을 만들어줘. 이름·연락처·희망 강의를 받고 신청하면 확인 메시지가 뜨게.',ans:'입력 폼 + “신청 완료” 안내가 있는 실제 동작 앱이 나와요.',refine:['버튼 우드톤','신청 버튼 색만 브랜드 우드톤으로 바꿔줘요'],steps:['만들 앱을 쉽게 설명','미리보기로 확인','“~만 바꿔”로 다듬어요']},
+ {k:'u7',cat:'connect',emo:'🔑',en:'Get code / API key',ko:'코드 가져오기 · API 키',fn:'여기서 <b>잘 된 설정을 내 서비스로 옮기는</b> 곳이에요. “코드 가져오기”로 설정을 복사하고, <b>API 키</b>는 내 프로그램이 AI를 쓰게 해주는 열쇠예요.',say:'방금 만든 상담 응대 설정을 내 웹사이트에 넣고 싶어. 코드로 내보내줘.',ans:'현재 모델·시스템 명령·설정이 그대로 담긴 코드와 사용 방법이 나와요.',refine:['키는 안전하게','API 키는 화면에 노출되지 않게 서버에 두라고 안내해줘요'],steps:['설정을 완성해요','“코드 가져오기”로 복사','API 키는 안전하게 보관(개발자와)']},
+ {k:'u8',cat:'research',emo:'🧮',en:'Code execution',ko:'계산·데이터 처리 (코드 실행)',fn:'뒤에서 <b>실제 계산 코드를 돌려</b> 표·통계·수식을 정확히 처리해요. 견적 합계·전환율 계산 등.',say:'(상담일지 붙여넣고) 월별 상담수와 계약 전환율을 계산해서 표로 정리해줘.',ans:'실제 계산으로 월별 표 + 전환율이 정확히 나와요.',refine:['평균도','아래에 전체 평균 전환율도 계산해 붙여줘요'],steps:['데이터를 넣어요','무엇을 계산할지 말해요','결과를 원자료와 대조해요']},
+ {k:'u9',cat:'prompt',emo:'🧾',en:'Structured output',ko:'정해진 형식으로 받기(구조화)',fn:'답을 <b>항상 정해진 형식(표·항목)</b>으로 받게 설정해요. 여러 문의를 같은 틀로 정리할 때 좋아요.',say:'상담 문의를 넣으면 항상 “평형 / 예산 / 희망시기 / 핵심요청”의 표로만 정리해줘.',ans:'어떤 문의를 넣어도 그 네 칸 표로만 정리돼요.',refine:['우선순위 열 추가','표에 “우선순위” 열을 하나 더 넣어줘요'],steps:['원하는 형식(칸)을 정해요','문의를 넣어요','늘 같은 틀로 받아요']},
+ {k:'u10',cat:'media',emo:'🖼',en:'Edit image',ko:'이미지 편집·합성',fn:'만든 이미지나 올린 사진을 <b>부분만 고치거나 합성</b>해요. 현장 사진에 가구를 얹어보기 등.',say:'(빈 거실 사진 올리고) 여기에 우드톤 3인 소파와 낮은 수납장을 자연스럽게 배치해줘.',ans:'올린 사진에 가구가 얹힌 합성 이미지가 나와요.',refine:['조명 따뜻하게','전체 조명을 조금 더 따뜻하게 다시 해줘요'],steps:['사진을 올려요','무엇을 더할지 말해요','부분만 다듬어요']},
+ {k:'u11',cat:'prompt',emo:'🎙',en:'Stream test',ko:'실시간 음성 테스트 (Stream)',fn:'말로 묻고 답하는 <b>실시간 음성·영상 대화</b>를 시험해봐요. 현장에서 쓸 음성 도우미를 미리 테스트.',say:'(스트림) 현장에서 “이 벽 철거해도 되나?” 물으면 주의사항을 말로 답하게 시험해줘.',ans:'음성으로 주의사항(내력벽 확인 등)을 답하는 흐름을 테스트해요.',refine:['더 짧게','답을 15초 이내로 짧게 하도록 조정해줘요'],steps:['스트림(Live)을 켜요','말로 물어봐요','답 길이·말투를 조정해요']},
+ {k:'u12',cat:'research',emo:'📎',en:'Analyze file',ko:'자료 첨부해 분석',fn:'PDF·이미지·표를 올려 <b>내용을 분석·요약</b>시켜요. 계약서·자재표 검토에.',say:'(견적서 PDF 올리고) 빠진 항목과 비정상적으로 비싼 항목이 있는지 봐줘.',ans:'문서를 읽고 누락·이상 항목을 짚어줘요.',refine:['근거도','왜 이상하다고 봤는지 근거도 한 줄씩 붙여줘요'],steps:['＋ 로 자료를 올려요','무엇을 봐줄지 물어요','중요한 건 원문 확인']}
+];
+/* AI 스튜디오 모델·미디어 6 (GPT 탐색 자리) */
+var GPTS=[
+ {emo:'🧠',bg:'#1a56db',n:'Gemini 3.1 Pro',d:'복잡한 설계·리서치용 똑똑한 모델.',fn:'깊이 사고하는 대표 모델. 제안 논리·긴 정리에. 리비안: 제안·리서치에. (모델명 확인 필요)'},
+ {emo:'⚡',bg:'#0e7490',n:'Gemini 3.5 Flash',d:'빠르고 저렴한 모델.',fn:'빠른 응답·대량 처리에. 리비안: 간단 응대·요약에.'},
+ {emo:'🍌',bg:'#a16207',n:'Nano Banana Pro',d:'2K/4K 고화질·글자 또렷한 이미지.',fn:'인쇄용 포스터·간판 시안처럼 글자가 중요한 이미지에. 리비안: 상담 포스터·브랜드 비주얼.'},
+ {emo:'🎬',bg:'#6d28d9',n:'Veo 3.1',d:'소리·립싱크 있는 영상.',fn:'짧은 홍보 영상·SNS 릴스에. 리비안: 시공 전/후 클립.'},
+ {emo:'🎵',bg:'#be185d',n:'Lyria',d:'배경 음악·노래 생성.',fn:'홍보 영상·매장 배경 음악에. 리비안: 자체 배경음(저작권 걱정↓).'},
+ {emo:'🧩',bg:'#374151',n:'생각 수준 · Deep Think',d:'더 오래 생각하게 하는 설정.',fn:'어려운 문제엔 “생각 수준”을 높여요. 리비안: 복잡한 견적 로직에. (제공 여부 확인 필요)'}
+];
+/* 최근 작업 예시 */
+var RECENTS=[
+ {emo:'📌',n:'리비안 상담 응대 프롬프트',s:'프롬프트·시스템 명령',lv:'2시간 전'},
+ {emo:'🍌',n:'봄 상담 포스터 (나노바나나 프로)',s:'이미지',lv:'어제'},
+ {emo:'🧱',n:'AI 교육 SaaS 신청 앱 (Build)',s:'앱 만들기',lv:'6월 4일'},
+ {emo:'🎬',n:'시공 전/후 홍보 영상 (Veo)',s:'영상',lv:'6월 2일'}
+];
+/* 요소 설명 (AI 스튜디오 화면 요소) */
+var INFO={
+ newchat:{en:'New prompt',ko:'새 프롬프트',fn:'새 실험을 처음부터 시작해요. 주제가 바뀌면 새로 시작하면 깔끔해요.'},
+ search:{en:'Search',ko:'검색',fn:'예전에 저장한 프롬프트·실험을 이름으로 찾아요.'},
+ library:{en:'Saved prompts',ko:'저장된 프롬프트 (라이브러리)',fn:'잘 된 요청 설정을 <b>저장해두고 다시 꺼내 쓰는</b> 곳이에요. “리비안 상담 응대”처럼 저장해요.'},
+ gpts:{en:'Models & media',ko:'모델·미디어',fn:'AI 스튜디오의 대표 모델과 생성 기능(나노바나나 프로·Veo·Lyria)을 모아 본 곳이에요.'},
+ projects:{en:'Build',ko:'빌드 (말로 앱 만들기)',fn:'말로 설명하면 <b>실제 도는 앱</b>을 만들어주는 모드예요. AI 교육 SaaS 화면을 코드 없이 시제품으로.'},
+ account:{en:'Account · API',ko:'내 계정 · API 키',fn:'로그인·요금·<b>API 키</b>를 관리하는 곳이에요. API 키는 내 프로그램이 AI를 쓰게 해주는 열쇠예요. (무료 한도·요금 확인 필요)'},
+ model:{en:'Model',ko:'모델 (똑똑함 선택)',fn:'답을 만드는 모델 종류예요. 똑똑한 Pro·빠른 Flash·이미지용 나노바나나 등. (모델명은 자주 바뀜 · 확인 필요)'},
+ share:{en:'Get code',ko:'코드 가져오기 · 공유',fn:'여기서 잘 된 <b>설정을 내 서비스로 옮기는</b> 코드를 받아요. 개발자에게 그대로 넘기면 돼요.'},
+ input:{en:'Prompt',ko:'프롬프트 입력 (제일 중요)',fn:'무엇을 시킬지 <b>말하듯 적는 칸</b>이에요. 여기가 제일 중요해요. 위 “시스템 명령”과 함께 쓰면 더 정확해요.',
+   say:'상담 온 고객에게 보낼 감사 문자 3가지 버전 써줘. 따뜻하지만 부담스럽지 않게.',
+   ans:'톤이 다른 3가지 문자 초안이 나와요.',
+   refine:['이모지 하나씩','문장 끝에 이모지를 하나씩만 붙여줘요'],
+   steps:['무엇을 시킬지 적어요','▶ 실행으로 결과를 봐요','설정·문장을 바꿔 비교해요']},
+ plus:{en:'Attach (+)',ko:'첨부 (＋)',fn:'사진·파일·오디오를 올려 참고시키는 곳이에요. 현장 사진·PDF·표를 올려요.',
+   list:[{en:'🖼 이미지',ko:'',d:'현장 사진·레퍼런스를 올려 분석·편집해요.'},
+    {en:'📄 파일',ko:'',d:'PDF·표·문서를 올려 요약·분석해요.'},
+    {en:'🎧 오디오',ko:'',d:'녹음을 올려 받아쓰기·요약해요.'}],
+   say:'(견적서 PDF 올리고) 빠진 항목이 있는지 봐줘.',
+   ans:'파일을 읽고 누락 가능 항목을 짚어줘요.',
+   refine:['총액 검산','합계가 맞는지 계산해줘요'],
+   steps:['＋ 로 파일을 골라요','“이거 참고해서 ~” 라고 말해요','민감정보는 가려 올려요']},
+ tools:{en:'Tools',ko:'도구 (기능 켜기)',fn:'답을 만드는 방식을 바꾸는 도구예요. <b>구글 검색(그라운딩)·코드 실행·구조화 출력</b> 등을 켤 수 있어요.',
+   steps:['🧰 도구를 눌러요','필요한 기능을 켜요','그 상태로 요청을 적어요']},
+ voice:{en:'Stream (Live)',ko:'스트림 (실시간 음성)',fn:'말로 묻고 답하는 <b>실시간 음성·영상 대화</b>를 시험하는 곳이에요. 현장용 음성 도우미를 미리 테스트해요.',steps:['🎤 스트림을 켜요','말로 물어봐요','답 길이·말투를 조정']},
+ send:{en:'Run (▶)',ko:'실행 (▶)',fn:'적은 프롬프트를 <b>실행해 결과를 보는</b> 버튼이에요.',
+   say:'우리 회사 인스타 소개 문구 3개 만들어줘. 우드톤 브랜드.',
+   ans:'짧은 소개 문구 3개가 나와요.',
+   refine:['해시태그도','각 문구에 해시태그 3개씩 붙여줘요'],
+   steps:['프롬프트를 적어요','▶ 실행을 눌러요','설정을 바꿔 다시 실행']},
+ tsearch:{en:'Search grounding',ko:'구글 검색 연결',fn:'최신 정보를 검색해 출처와 함께 답하게 켜요.',steps:['검색을 켜요','물어봐요','출처를 확인해요']},
+ timage:{en:'Nano Banana Pro',ko:'이미지 (나노바나나 프로)',fn:'글자 또렷한 고화질 이미지를 만들어요.',steps:['이미지를 켜요','문구·분위기를 적어요','“~만 바꿔”로 다듬어요']},
+ tcanvas:{en:'Code execution',ko:'코드 실행 (계산)',fn:'실제 계산 코드를 돌려 표·통계를 정확히 처리해요.',steps:['코드 실행을 켜요','데이터·계산을 말해요','결과를 대조해요']},
+ tstudy:{en:'Structured output',ko:'구조화 출력',fn:'답을 항상 정해진 형식(표·항목)으로 받게 해요.',steps:['형식을 정해요','요청을 넣어요','같은 틀로 받아요']},
+ hist1:{en:'Recent prompt',ko:'최근 작업',fn:'예전에 저장한 실험이에요. 누르면 이어서 계속 다듬을 수 있어요.'},
+ hist2:{en:'Recent prompt',ko:'최근 작업',fn:'예전 실험을 이어가는 곳이에요.'}
+};
+var POP={
+ model:{h:'<div class="opt sel">Gemini 3.1 Pro <span class="kr">기본 · 똑똑함</span></div><div class="opt">Gemini 3.5 Flash <span class="kr">빠름</span></div><div class="opt">Nano Banana Pro <span class="kr">이미지</span></div><div class="grp">참고</div><div class="opt" style="cursor:default">모델 이름은 자주 바뀌어요 <span class="kr">확인 필요</span></div>'},
+ plus:{h:'<div class="grp">올리기</div><div class="opt">🖼 이미지 <span class="kr">현장·레퍼런스</span></div><div class="opt">📄 파일 <span class="kr">PDF·표·문서</span></div><div class="opt">🎧 오디오 <span class="kr">녹음</span></div>'},
+ tools:{h:'<div class="grp">도구 켜기</div><div class="opt">🔎 구글 검색(그라운딩) <span class="kr">최신 정보</span></div><div class="opt">🧮 코드 실행 <span class="kr">계산·데이터</span></div><div class="opt">🧾 구조화 출력 <span class="kr">정해진 형식</span></div><div class="opt">🍌 이미지(나노바나나) <span class="kr">고화질</span></div><div class="opt">🎬 영상(Veo) <span class="kr">소리 포함</span></div></div>'}
+};
+INFO['model'].list=null;
+/* USES → INFO */
+USES.forEach(function(u){INFO[u.k]={en:u.en,ko:u.ko,fn:u.fn,say:u.say,ans:u.ans,refine:u.refine,steps:u.steps,emo:u.emo,cat:u.cat};});
+GPTS.forEach(function(g,i){INFO['g'+i]={en:g.n,ko:g.n,fn:g.fn,steps:['이 모델·기능을 골라요','원하는 작업을 요청','필요 시 다른 걸로 바꿔요']};});
+
+/* ===================== 렌더 ===================== */
+function $(s,r){return (r||document).querySelector(s);}
+function $all(s,r){return [].slice.call((r||document).querySelectorAll(s));}
+function ce(t,c,x){var e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e;}
+var catOf={}; CATS.forEach(function(c){if(c.id!=='all')catOf[c.id]=c;});
+
+/* 활용법 카드 */
+$('#ug').innerHTML=USES.map(function(u){var c=catOf[u.cat];
+ return '<div class="card ix" data-k="'+u.k+'" data-cat="'+u.cat+'"><div class="ic">'+u.emo+'</div><div class="cn">'+u.ko+'</div><div class="cd">'+u.fn.split('.')[0]+'.</div><div class="cat">'+c.emo+' '+c.ko+'</div></div>';
+}).join('');
+/* GPT */
+$('#gg').innerHTML=GPTS.map(function(g,i){return '<div class="gpt ix" data-k="g'+i+'"><div class="av" style="background:'+g.bg+'">'+g.emo+'</div><div><div class="gn">'+g.n+'</div><div class="gd">'+g.d+'</div></div></div>';}).join('');
+/* 최근 */
+$('#rg').innerHTML=RECENTS.map(function(r,i){return '<div class="crow2'+(i<2?' ix':'')+'"'+(i<2?(' data-k="hist'+(i+1)+'"'):'')+'><div class="ci">'+r.emo+'</div><div><div class="cn">'+r.n+'</div><div class="cs">'+r.s+'</div></div><div class="clv">'+r.lv+'</div></div>';}).join('');
+
+/* 탭 전환 */
+$all('.tab').forEach(function(t){t.setAttribute('role','tab');t.setAttribute('tabindex','0');
+ function act(){$all('.tab').forEach(function(x){x.classList.toggle('on',x===t);x.setAttribute('aria-selected',x===t?'true':'false');});var v=t.dataset.tab;['home','uses','gpts','recent'].forEach(function(k){$('#v-'+k).classList.toggle('on',k===v);});hidePop();hideTip();$('.wrap').scrollTop=0;}
+ t.addEventListener('click',act);t.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();act();}});});
+$all('.view').forEach(function(v){if(v.id!=='v-home')v.classList.remove('on');});
+document.querySelector('#v-home').classList.add('on');
+var vstyle=document.createElement('style');vstyle.textContent='.view{display:none}.view.on{display:block}';document.head.appendChild(vstyle);
+
+/* 사이드바 모바일 */
+var side=$('#side'),sbd=$('#sbackdrop');
+function openSide(){side.classList.add('open');sbd.classList.add('on');}
+function closeSide(){side.classList.remove('open');sbd.classList.remove('on');}
+$('#menub').addEventListener('click',openSide);sbd.addEventListener('click',closeSide);
+document.addEventListener('keydown',function(e){if(e.key==='Escape')closeSide();});
+$all('#side .sitem, #side .schat').forEach(function(el){el.addEventListener('click',function(){if(window.innerWidth<=820)closeSide();});});
+
+/* 툴팁 */
+var tip=$('#tip');
+function showTip(el){if(window.__prActive)return;var d=INFO[el.dataset.k];if(!d)return;
+ tip.innerHTML='<div class="en">'+d.en+'</div><div class="ko">'+d.ko+'</div><div class="fn">'+d.fn+'</div>'+((d.steps||el.dataset.pop)?'<div class="hint">클릭 → '+(el.dataset.pop?'메뉴 열기':'사용 순서·시뮬레이션')+'</div>':'');
+ tip.classList.add('show');var r=el.getBoundingClientRect();tip.style.visibility='hidden';tip.style.left='0';tip.style.top='0';
+ var tw=tip.offsetWidth,th=tip.offsetHeight;var l=Math.max(10,Math.min(r.left+r.width/2-tw/2,innerWidth-tw-10));var tp=r.top-th-10;if(tp<10)tp=r.bottom+10;
+ tip.style.left=l+'px';tip.style.top=tp+'px';tip.style.visibility='visible';}
+function hideTip(){tip.classList.remove('show');}
+/* 팝오버 */
+var pop=$('#pop'),popFor=null;
+function showPop(el){var d=POP[el.dataset.pop];if(!d)return;pop.innerHTML=d.h;pop.classList.add('show');var r=el.getBoundingClientRect();pop.style.visibility='hidden';pop.style.left='0';pop.style.top='0';var pw=pop.offsetWidth;var l=r.left;if(l+pw>innerWidth-10)l=innerWidth-pw-10;pop.style.left=Math.max(10,l)+'px';var tp=r.bottom+8;if(tp+pop.offsetHeight>innerHeight-10)tp=Math.max(10,r.top-pop.offsetHeight-8);pop.style.top=tp+'px';pop.style.visibility='visible';popFor=el;}
+function hidePop(){pop.classList.remove('show');popFor=null;}
+
+/* TTS */
+var autoVoice=false,curSay='';
+function koVoice(){var vs=(window.speechSynthesis&&speechSynthesis.getVoices())||[];return vs.filter(function(v){return (v.lang||'').toLowerCase().indexOf('ko')===0;})[0]||null;}
+if(window.speechSynthesis){try{speechSynthesis.getVoices();speechSynthesis.onvoiceschanged=koVoice;}catch(e){}}
+function setPlaying(on){var b=$('#dVo');if(b){b.textContent=on?'⏸ 멈추기':'🔊 듣기';}}
+function stopVoice(){try{speechSynthesis&&speechSynthesis.cancel();}catch(e){}setPlaying(false);}
+function speak(t){if(!window.speechSynthesis||!t)return;try{speechSynthesis.cancel();var u=new SpeechSynthesisUtterance(t);var v=koVoice();if(v)u.voice=v;u.lang='ko-KR';u.rate=.98;u.onend=function(){setPlaying(false);};speechSynthesis.speak(u);setPlaying(true);}catch(e){}}
+var strip=function(h){return String(h).replace(/<[^>]+>/g,' ').replace(/\s+/g,' ').trim();};
+function buildSay(d){var s=d.en+'. 우리말로 '+d.ko+'. '+d.fn+' ';if(d.say){s+='사용 예시. 이렇게 적어요. '+strip(d.say)+'. 보내면, '+strip(d.ans||'')+'. ';if(d.refine)s+='고쳐 말하기. '+strip(d.refine[0])+'. 그러면 '+strip(d.refine[1])+'. ';}if(d.steps)s+='따라하기. '+d.steps.map(function(x,i){return (i+1)+'번, '+strip(x);}).join('. ')+'.';return s;}
+
+/* 드로어 + 시뮬레이션 */
+var bd=$('#bd'),drawer=$('#drawer'),simTimers=[];
+function clearSim(){simTimers.forEach(clearTimeout);simTimers=[];}
+function typeBub(el,done){var full=el.getAttribute('data-full')||el.textContent;el.textContent='';var j=0;(function t(){el.textContent=full.slice(0,j);j++;if(j<=full.length)simTimers.push(setTimeout(t,20));else done&&done();})();}
+function playSim(){var w=$('#simWrap');if(!w)return;clearSim();var lines=[].slice.call(w.children);lines.forEach(function(l){l.classList.add('shid');});var i=0;(function next(){if(i>=lines.length)return;var l=lines[i];l.classList.remove('shid');var bub=l.querySelector&&l.querySelector('.sbub[data-full]');if(bub)typeBub(bub,function(){i++;simTimers.push(setTimeout(next,420));});else{i++;simTimers.push(setTimeout(next,460));}})();}
+var lastTrig=null;
+function openDrawer(k){var d=INFO[k];if(!d)return;stopVoice();clearSim();$('#dEn').textContent=d.en;$('#dKo').textContent=d.ko;
+ var b='<p class="fn">'+d.fn+'</p>';
+ if(d.list){b+='<h4>이 안에 있는 것들</h4><div class="dlist">'+d.list.map(function(x){return '<div class="di"><div class="die">'+x.en+'</div><div class="did">'+x.d+'</div></div>';}).join('')+'</div>';}
+ if(d.say){b+='<div class="exhd"><h4 style="margin:0">실제 사용 시뮬레이션</h4><button class="simbtn" id="simBtn">▶ 다시 재생</button></div><div class="simwrap" id="simWrap">';
+  b+='<div class="simline"><span class="stag">1 · 이렇게 적어요</span><div class="sbub" data-full="'+esc(d.say)+'">'+esc(d.say)+'</div></div>';
+  b+='<div class="sarrow">↓ ↑ 보내면</div>';
+  b+='<div class="simline"><span class="stag">2 · 이렇게 답해요</span><div class="sbub ai">'+esc(d.ans||'')+'</div></div>';
+  if(d.refine){b+='<div class="sarrow">↓ 마음에 안 들면 고쳐 말해요</div>';b+='<div class="simline"><span class="stag">3 · 이렇게 바꿔 말하면</span><div class="sbub" data-full="'+esc(d.refine[0])+'">'+esc(d.refine[0])+'</div></div>';b+='<div class="simline"><span class="stag">4 · 이렇게 바뀌어요</span><div class="sbub ai">'+esc(d.refine[1])+'</div></div>';}
+  b+='</div>';}
+ if(k==='plus'){b+='<div class="warn"><b>⚠️ 첨부 전 확인:</b> 고객 개인정보·계약서·기밀 자료는 <b>꼭 필요한 부분만, 가리거나 요약</b>해서 올리세요. (이 화면은 실제 업로드되지 않는 교육용)</div>';}
+ if(d.steps)b+='<h4>혼자 해보기 (따라하기)</h4><ol class="st">'+d.steps.map(function(s){return '<li>'+s+'</li>';}).join('')+'</ol>';
+ $('#dBody').innerHTML=b;curSay=buildSay(d);drawer.classList.add('show');bd.classList.add('show');
+ var sb=$('#simBtn');if(sb)sb.onclick=playSim;if(d.say)simTimers.push(setTimeout(playSim,240));if(autoVoice)speak(curSay);
+ setTimeout(function(){try{$('#dCl').focus();}catch(e){}},40);
+ try{markSeen(k);}catch(e){}}
+function closeDrawer(){stopVoice();clearSim();drawer.classList.remove('show');bd.classList.remove('show');try{if(lastTrig&&lastTrig.focus)lastTrig.focus();}catch(e){}}
+$('#dCl').onclick=closeDrawer;bd.onclick=closeDrawer;
+$('#dVo').onclick=function(){if($('#dVo').textContent.indexOf('멈추')>-1)stopVoice();else speak(curSay);};
+document.addEventListener('keydown',function(e){if(e.key==='Escape'){closeDrawer();hidePop();}});
+var esc=function(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');};
+
+/* wire .ix (호버·클릭·키보드·접근성) */
+function wire(el){
+ if(!el.hasAttribute('role'))el.setAttribute('role','button');
+ if(!el.hasAttribute('tabindex'))el.setAttribute('tabindex','0');
+ var d=INFO[el.dataset.k];
+ if(el.dataset.pop){el.setAttribute('aria-haspopup','true');el.setAttribute('aria-expanded','false');}
+ if(d&&!el.getAttribute('aria-label'))el.setAttribute('aria-label',(d.ko||d.en)+' — '+(el.dataset.pop?'메뉴 열기':'설명 보기'));
+ el.addEventListener('mouseenter',function(){if(window.__prActive)return;showTip(el);});
+ el.addEventListener('mouseleave',hideTip);
+ el.addEventListener('click',function(e){e.stopPropagation();hideTip();if(window.__prActive)return;lastTrig=el;
+  if(el.dataset.pop){if(popFor===el){hidePop();el.setAttribute('aria-expanded','false');}else{$all('[aria-haspopup]').forEach(function(x){x.setAttribute('aria-expanded','false');});showPop(el);el.setAttribute('aria-expanded','true');}}
+  else{hidePop();openDrawer(el.dataset.k);}});
+ el.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();el.click();}});
+}
+$all('.ix').forEach(wire);
+document.addEventListener('click',function(){hidePop();});
+
+/* 자리표시 회전 */
+var ph=$('#ph');var PHS=['무엇이든 물어보거나 시켜보세요','거래처에 보낼 이메일 초안 써줘','이 회의록을 5줄로 요약해줘','따뜻한 우드톤 거실 이미지 만들어줘'];var pi=0;
+setInterval(function(){if(window.__prActive||tip.classList.contains('show')||pop.classList.contains('show'))return;pi=(pi+1)%PHS.length;ph.style.opacity='0';setTimeout(function(){ph.textContent=PHS[pi];ph.style.opacity='1';},300);},3600);
+
+/* 컨트롤 */
+var intro=null; /* (이 파일은 인트로 모달 대신 홈 탭이 시작 화면) */
+var tv=$('#tVoice');tv.onclick=function(){autoVoice=!autoVoice;tv.classList.toggle('von',autoVoice);tv.textContent=autoVoice?'🔊 설명 자동읽기 켬':'🔊 설명 자동읽기 끔';if(!autoVoice)stopVoice();else if(drawer.classList.contains('show'))speak(curSay);};
+/* #reopen(처음 화면)은 아래 확장 스크립트에서 안내(인트로) 화면과 연결됨 */
+
+/* ===================== 작업 가이드 ===================== */
+var pbox=function(t){return '<div class="pbox"><button class="copy">복사</button><span class="ptext">'+esc(t)+'</span></div>';};
+var VERIFIED='2026-08-07';
+var HERO='<div class="ghero"><div class="k">START HERE · 대전제</div><h1>AI 스튜디오는 “AI를 시험·완성해 내 서비스에 붙이는” 작업대예요</h1><p>어렵게 생각하지 마세요. <b>무엇을 원하는지 구체적으로 말하고 → 나온 답을 보고 고쳐 말하기</b>를 반복하면 돼요. 아래 순서대로만 하면 됩니다.</p><button class="pr-start" id="guidePractice" type="button" style="margin-top:16px">🎬 첫 대화 따라하기</button></div>';
+var FLOW=[
+ {t:'무엇을 원하는지 한 문장으로 정해요',d:'예: “거래처에 보낼 정중한 안내 이메일”. 결과의 종류(글·요약·이미지·표)를 먼저 떠올려요.'},
+ {t:'구체적으로 말해요',d:'누구에게 · 무엇을 · 어떤 톤 · 얼마나(길이)까지. 참고할 사진·문서가 있으면 ＋ 로 첨부해요.'},
+ {t:'필요하면 도구를 켜요',d:'최신 정보면 🌐 웹 검색, 그림이면 🎨 이미지, 긴 글·코드면 🖊 캔버스.'},
+ {t:'나온 답을 보고 “고쳐 말하기”를 반복해요',d:'“더 짧게”, “표로”, “친근하게”처럼 하나씩 바꿔 말하면 점점 좋아져요.'},
+ {t:'중요한 정보는 꼭 직접 확인해요',d:'AI 스튜디오의 결과도 가끔 그럴듯하게 틀릴 수 있어요. 숫자·자재·규격은 반드시 직접 확인하세요. API 키는 절대 노출하지 마세요.'}
+];
+var GUIDE=[
+ {id:'g1',num:'PART 1',title:'큰 그림 — 전체 흐름 5단계',
+  voice:'큰 그림. 챗지피티는 말로 시키면 대신 해주는 에이아이예요. 흐름은 다섯 단계. 무엇을 원하는지 정하고, 구체적으로 말하고, 필요하면 도구를 켜고, 나온 답을 고쳐 말하기를 반복하고, 중요한 정보는 꼭 직접 확인해요.',
+  html:'<p>AI 스튜디오로 하는 <b>모든 작업</b>은 아래 5단계면 충분해요.</p><div class="flow">'+FLOW.map(function(f,i){return '<div class="step"><div class="n">'+(i+1)+'</div><div><div class="tt2">'+f.t+'</div><div class="ds2">'+f.d+'</div></div></div>';}).join('')+'</div><p style="margin-top:12px"><b>잘 되는 일:</b> 프롬프트 실험·시스템 명령·이미지(나노바나나 Pro)·영상(Veo)·음악(Lyria)·앱 만들기(Build)·코드·API 연결. &nbsp;<b>조심할 것:</b> 자재·치수·가격 등 정확한 수치(직접 확인 필요).</p>'},
+ {id:'g2',num:'PART 2',title:'실전 레시피 — 복붙 요청 문장',
+  voice:'실전 레시피. 이메일 초안, 긴 글 요약, 이미지 만들기, 문서 질문 네 가지예요. 요청 문장를 복사해 붙여넣고, 나온 뒤 고쳐 말하면 됩니다.',
+  html:'<p>아래 <b>요청 문장 상자</b>를 복사해 입력창에 붙여넣고 ↑ 를 누르세요. 나온 뒤엔 “다듬는 말”로 고치면 돼요.</p>'
+   +'<div class="rec"><span class="rtag">레시피 ①</span><h3>거래처 안내 이메일</h3><p class="goal">목표: 바로 보낼 정중한 이메일. 준비물: 없음.</p><div class="rlab">복사해 붙여넣기</div>'+pbox('거래처에 보낼 정중한 안내 이메일을 써줘. 내용은 다음 주 미팅 일정을 화·수 오후로 조율하고 싶다는 것. 제목도 만들어주고, 3문단으로, 너무 딱딱하지 않게 정중하게.')+'<div class="rlab">이렇게 다듬어요</div><div class="rnext"><div class="ri">“더 짧고 친근하게”</div><div class="ri">“마지막에 연락처 넣어줘”</div></div><span class="out">복사 → 메일에 붙여넣어 발송</span></div>'
+   +'<div class="rec"><span class="rtag">레시피 ②</span><h3>긴 글·회의록 요약</h3><p class="goal">목표: 핵심만 빠르게. 준비물: 요약할 글.</p><div class="rlab">복사해 붙여넣기</div>'+pbox('아래 회의록을 5줄로 핵심 요약하고, 결정사항과 할 일(담당자 포함)을 나눠서 정리해줘. 마지막에 다음 회의 때 확인할 것 3가지도 뽑아줘.\n\n(여기에 회의록을 붙여넣기)')+'<div class="rlab">이렇게 다듬어요</div><div class="rnext"><div class="ri">“할 일을 표로 정리해줘”</div><div class="ri">“존댓말 공지 형태로 바꿔줘”</div></div><span class="out">복사 → 카톡·메일 공유</span></div>'
+   +'<div class="rec"><span class="rtag">레시피 ③</span><h3>이미지 만들기 (무드보드)</h3><p class="goal">목표: 컨셉 이미지. 준비물: 없음.</p><div class="rlab">복사해 붙여넣기</div>'+pbox('따뜻한 우드톤의 미니멀 거실 인테리어 무드보드 이미지를 만들어줘. 자연광이 들어오고, 아이보리와 오크 우드 톤, 식물 조금, 아늑한 느낌. 정사각형 구도로.')+'<div class="rlab">이렇게 다듬어요</div><div class="rnext"><div class="ri">“조명을 더 아늑하게”</div><div class="ri">“소파를 패브릭으로 바꿔줘”</div></div><span class="out">이미지 저장 → 고객 제안·SNS</span></div>'
+   +'<div class="rec"><span class="rtag">레시피 ④</span><h3>문서(PDF) 요약·질문</h3><p class="goal">목표: 긴 문서 빠르게 파악. 준비물: PDF·워드.</p><div class="rlab">＋ 로 문서 올린 뒤 붙여넣기</div>'+pbox('방금 올린 문서를 한 페이지로 요약해줘. 그리고 내가 꼭 알아야 할 주의사항이나 리스크가 있으면 쉬운 말로 3가지 짚어줘. 애매한 부분은 “확인 필요”라고 표시해줘.')+'<div class="rlab">이렇게 다듬어요</div><div class="rnext"><div class="ri">“○○ 부분만 더 자세히”</div><div class="ri">원문 조항도 함께 확인</div></div><span class="out">중요 내용은 원문 대조</span></div>'},
+ {id:'g3',num:'PART 3',title:'잘 시키는 법 — 요청 문장 공식 & 요령',
+  voice:'잘 시키는 법. 공식은 누구에게, 무엇을, 어떤 톤으로, 얼마나. 이 네 가지를 넣으세요. 그리고 한 번에 다 고치려 하지 말고 하나씩 고쳐 말하세요. 참고 자료를 붙이면 정확도가 올라가요.',
+  html:'<div class="rlab" style="margin-top:0">좋은 요청 문장 공식</div><div class="formula"><em>누구에게</em> + <em>무엇을</em> + <em>어떤 톤·형식</em> + <em>분량</em> ( + 참고 자료 첨부 )</div>'
+   +'<div class="cmp"><div class="cc bad"><div class="cl">✕ 두루뭉술</div>“이메일 써줘”<br><span style="opacity:.8;font-size:12.5px">→ 밋밋하고 다시 시켜야 함</span></div><div class="cc good"><div class="cl">✓ 잘 되는 예</div>“거래처에 미팅 일정 조율 이메일. 정중하게, 3문단, 제목 포함”<br><span style="opacity:.8;font-size:12.5px">→ 바로 쓸 수 있음</span></div></div>'
+   +'<div class="rlab">결과를 끌어올리는 5가지</div><div class="tips">'
+   +'<div class="tp"><span class="ic2">🧩</span><div><b>하나씩 고쳐 말하기.</b> “제목만 더 짧게” → 보고 → 다음. 이 반복이 핵심이에요.</div></div>'
+   +'<div class="tp"><span class="ic2">📎</span><div><b>참고 자료 붙이기.</b> ＋ 로 사진·문서를 올리고 “이거 참고해서”라고 하면 정확해져요.</div></div>'
+   +'<div class="tp"><span class="ic2">🌐</span><div><b>최신 정보는 검색 켜기.</b> 요금·뉴스·트렌드는 🌐 웹 검색을 켜야 정확해요.</div></div>'
+   +'<div class="tp"><span class="ic2">🔢</span><div><b>숫자·사실은 직접 확인.</b> 그럴듯하게 틀릴 수 있어요(사실이 아닌 내용을 사실처럼 자신있게 말하는 경우). 특히 가격·법규·인용은 검증하세요.</div></div>'
+   +'<div class="tp"><span class="ic2">🔒</span><div><b>민감정보는 넣지 않기.</b> 주민번호·카드번호·기밀은 붙여넣지 마세요.</div></div>'
+   +'</div><div class="warn"><b>자주 하는 실수:</b> ① 너무 짧게 시켜 밋밋함 → 공식대로. ② 한 번에 다 갈아엎기 → 하나씩. ③ 답을 그대로 믿기 → 직접 확인.</div>'},
+ {id:'g4',num:'PART 4',title:'안전·정확성 — 꼭 지킬 것',
+  voice:'안전과 정확성. 챗지피티는 가끔 그럴듯하게 틀린 답을 해요. 숫자와 사실은 반드시 확인하세요. 개인정보와 기밀은 넣지 말고, 공유할 땐 개인정보가 없는지 확인하세요.',
+  html:'<div class="tips">'
+   +'<div class="tp"><span class="ic2">⚠️</span><div><b>사실이 아닌 내용을 사실처럼 자신있게 말하는 경우.</b> 없는 사실·잘못된 숫자·가짜 출처를 만들 수 있어요. 중요한 건 <b>원자료로 검증</b>하세요.</div></div>'
+   +'<div class="tp"><span class="ic2">🔒</span><div><b>개인정보·기밀 금지.</b> 고객 개인정보, 계약 원본, 비밀번호는 넣지 마세요. 꼭 필요하면 가리고 요약해서.</div></div>'
+   +'<div class="tp"><span class="ic2">🌐</span><div><b>최신성.</b> 모델은 최신 정보를 모를 수 있어요. 요금·뉴스·법규는 검색을 켜고 출처를 확인하세요.</div></div>'
+   +'<div class="tp"><span class="ic2">↗</span><div><b>공유 주의.</b> 대화를 링크로 공유하면 그 내용이 열려요. 개인정보가 없는지 보고 공유하세요.</div></div>'
+   +'</div><div class="warn"><b>확인 필요 안내:</b> 요금제·모델 종류·기능은 자주 바뀌고 실제 화면과 다를 수 있어요. 결정 전 <b>공식 도움말</b>을 확인하세요. (이 자료 최종 확인일: '+VERIFIED+')</div>'
+   +'<div class="rlab">공식 도움말</div><p style="font-size:13px;line-height:1.9">· <a href="https://ai.google.dev/" target="_blank" rel="noopener">AI Studio 문서 (ai.google.dev)</a><br>· <a href="https://aistudio.google.com/" target="_blank" rel="noopener">Google AI Studio (aistudio.google.com)</a></p>'
+   +'<button class="gcta" id="guideToHome">이제 화면에서 직접 눌러보기 →</button>'}
+];
+$('#guideBody').innerHTML=HERO+'<div class="gtoc">'+GUIDE.map(function(s){return '<a href="#'+s.id+'">'+s.title.split(' — ')[0]+'</a>';}).join('')+'</div>'+GUIDE.map(function(s){return '<section class="gsec" id="'+s.id+'"><div class="gnum">'+s.num+'</div><div class="gsh"><h2>'+s.title+'</h2><button class="lis" data-say="'+esc(s.voice)+'">🔊 듣기</button></div>'+s.html+'</section>';}).join('');
+var guidebd=$('#guidebd');
+function openGuide(){guidebd.classList.add('show');guidebd.scrollTop=0;}
+function closeGuide(){try{speechSynthesis.cancel();}catch(e){}guidebd.classList.remove('show');}
+$('#openGuide').onclick=openGuide;$('#guideClose').onclick=closeGuide;
+var gBtn=null;
+function gSpeak(t,btn){if(!window.speechSynthesis)return;try{speechSynthesis.cancel();}catch(e){}if(gBtn){gBtn.textContent='🔊 듣기';}var u=new SpeechSynthesisUtterance(t);var v=koVoice();if(v)u.voice=v;u.lang='ko-KR';u.rate=.98;u.onend=function(){btn.textContent='🔊 듣기';gBtn=null;};speechSynthesis.speak(u);btn.textContent='⏸ 멈추기';gBtn=btn;}
+guidebd.addEventListener('click',function(e){
+ var lis=e.target.closest('.lis');if(lis){if(gBtn===lis){try{speechSynthesis.cancel();}catch(e2){}lis.textContent='🔊 듣기';gBtn=null;}else gSpeak(lis.dataset.say,lis);return;}
+ var a=e.target.closest('.gtoc a');if(a){e.preventDefault();var el=$(a.getAttribute('href'));if(el)el.scrollIntoView({behavior:'smooth'});return;}
+ var cp=e.target.closest('.copy');if(cp){var t=cp.parentElement.querySelector('.ptext').textContent;var done=function(){cp.textContent='✓ 복사됨';cp.classList.add('done');setTimeout(function(){cp.textContent='복사';cp.classList.remove('done');},1500);};if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(t).then(done).catch(function(){fallbackCopy(t);done();});else{fallbackCopy(t);done();}return;}
+ if(e.target.closest('#guideToHome')){closeGuide();$('.tab[data-tab="home"]').click();return;}
+});
+function fallbackCopy(t){try{var ta=document.createElement('textarea');ta.value=t;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);}catch(e){}}
+document.addEventListener('click',function(e){if(e.target.closest&&e.target.closest('#guidePractice')){closeGuide();startPractice();}});
+</script>
+
+<script>
+/* ===================== 핵심 기능(깊은 설명 + 실제로 해보기 시뮬레이션) 확장 ===================== */
+(function(){
+ 'use strict';
+ var esc2=function(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');};
+ /* 각 기능: fn / when / how / caution / sc(시나리오) + run[{t,me,ai}](실제 진행) / steps */
+ var FEATURES=[
+  {k:'f-projects',emo:'🧱',en:'Build',ko:'빌드 (말로 앱 만들기)',
+   fn:'말로 설명하면 <b>실제 도는 앱·화면</b>을 만들어주는 모드예요(개발 몰라도 OK). 미리보기로 바로 확인하고 “~만 바꿔”로 다듬어요.',
+   when:'루카스님의 <b>AI 교육 SaaS</b> 수강 페이지·상담 예약 앱처럼 <b>진짜 동작하는 화면</b>이 필요할 때.',
+   how:'Build(빌드)에서 만들 앱을 설명하면 화면이 생겨요. 미리보기로 확인하고 부분만 고쳐요.',
+   caution:'실서비스로 쓰려면 <b>보안·결제·개인정보</b>는 전문가 검토가 필요해요(확인 필요).',
+   sc:'<b>AI 교육 SaaS 수강 신청 앱</b>을 만들어 볼게요.',
+   run:[
+    {t:'1 · 앱 설명',me:'AI 교육 SaaS 수강 신청 앱을 만들어줘. 이름·연락처·희망 강의를 받고 신청하면 확인 메시지가 뜨게. 차분한 웜그레이.',ai:'입력 폼 + “신청 완료” 안내가 있는 실제 동작 앱이 미리보기로 나와요.'},
+    {t:'2 · 부분 수정',me:'신청 버튼 색을 브랜드 우드톤으로.',ai:'버튼 색만 바뀐 결과가 나와요.'},
+    {t:'3 · 내보내기',me:'이 앱을 코드로 내보내줘.',ai:'그대로 쓸 수 있는 코드와 실행 방법이 나와요(개발자에게 전달).'}
+   ],
+   steps:['만들 앱을 쉽게 설명','미리보기로 확인','부분만 고치고 코드로 내보내요']},
+
+  {k:'f-custom',emo:'📌',en:'System instructions',ko:'시스템 명령 (규칙 고정)',
+   fn:'매번 반복할 <b>“항상 지킬 규칙”</b>을 맨 위에 한 번 적어두는 곳이에요. 이후 모든 답이 그 규칙을 지켜요. (역할·말투·금지사항)',
+   when:'“확정 금액 금지”, “결론부터 표로”처럼 <b>매번 지켜야 할 규칙</b>이 있을 때.',
+   how:'화면 위 “시스템 명령” 칸에 규칙을 적고, 아래에 실제 요청을 넣어요.',
+   caution:'규칙이 너무 많으면 흔들려요(핵심만). 민감정보는 넣지 마세요.',
+   sc:'<b>리비안 상담 응대 규칙</b>을 시스템 명령으로 고정해 볼게요.',
+   run:[
+    {t:'1 · 시스템 명령 적기',me:'너는 리비안 상담 도우미다. 정중히 인사→평형·예산·시기 되묻기→방향만 제시. 확정 금액은 말하지 마라. 한국어, 결론부터.'},
+    {t:'2 · 실제 문의 넣기',me:'34평인데 전체 리모델링 얼마예요?',ai:'안녕하세요, 리비안디자인입니다 😊 범위·자재 등급에 따라 차이가 커요. 예산·입주 시기를 알려주시면 방향을 잡아드릴게요. 정확한 견적은 현장 실측 후 안내드립니다.'}
+   ],
+   steps:['위 “시스템 명령”에 규칙을 적어요','아래에 실제 요청을 넣어요','규칙을 지키는지 확인']},
+
+  {k:'f-image',emo:'🍌',en:'Nano Banana Pro',ko:'고화질 이미지 (나노바나나 프로)',
+   fn:'<b>글자까지 또렷한 2K/4K 고화질 이미지</b>를 만들어요. 인쇄용 제안 표지·포스터·간판 시안에 좋아요. 사진 편집·합성도 가능.',
+   when:'문구가 또렷해야 하는 <b>인쇄물·간판</b>, 현장 사진에 가구 얹어보기.',
+   how:'문구·분위기·용도를 적어 요청해요. 사진을 올려 “여기에 ~ 넣어줘”로 합성.',
+   caution:'실제 제품·상표·인물은 피하고, 최종물은 사람이 검수. 상업적 사용 조건 확인.',
+   sc:'<b>상담 이벤트 포스터</b>를 만들어 볼게요.',
+   run:[
+    {t:'1 · 요청',me:'“리비안디자인 · 봄맞이 무료 상담” 문구가 또렷한 인쇄용 포스터를 우드톤으로 만들어줘.',ai:'글자가 또렷한 고화질 포스터가 나와요.'},
+    {t:'2 · 사진 합성',me:'(빈 거실 사진 올리고) 여기에 우드톤 3인 소파를 자연스럽게 배치해줘.',ai:'올린 사진에 가구가 얹힌 합성 이미지가 나와요.'}
+   ],
+   steps:['문구·분위기·용도를 적어요','고화질로 받아요','사진 합성·부분 수정']},
+
+  {k:'f-tasks',emo:'🎬',en:'Veo',ko:'영상 만들기 (Veo 3.1)',
+   fn:'소리(음성·립싱크)까지 있는 <b>짧은 영상</b>을 만들고 고해상도로 키워요. 시공 전/후·홍보 릴스에.',
+   when:'인테리어 <b>전/후 변화</b>나 과정을 짧은 영상으로 보여줄 때.',
+   how:'장면·분위기·길이를 적어 요청. 자막·배경음도 요청 가능.',
+   caution:'영상은 <b>실제 시공물과 다를 수 있어요</b>. “예시” 표기 권장. 사용량·요금 확인.',
+   sc:'<b>전/후 15초 홍보 영상</b>을 만들어 볼게요.',
+   run:[
+    {t:'1 · 요청',me:'리모델링 전/후를 보여주는 15초 홍보 영상. 우드톤 거실, 잔잔한 배경음.',ai:'전/후 전환 + 배경음이 있는 15초 영상이 나와요.'},
+    {t:'2 · 자막',me:'“설레는 우리 집” 자막을 넣어줘.',ai:'자막이 들어간 새 영상이 나와요.'}
+   ],
+   steps:['장면·분위기·길이를 적어요','영상을 받아요','자막·해상도를 조절']},
+
+  {k:'f-study',emo:'🎵',en:'Lyria audio',ko:'배경 음악 (Lyria)',
+   fn:'홍보 영상·매장에 쓸 <b>배경 음악·노래</b>를 만들어줘요. 저작권 걱정이 적은 자체 음악.',
+   when:'홍보 영상 BGM, 매장 분위기 음악이 필요할 때.',
+   how:'분위기·길이·용도를 적어 요청해요.',
+   caution:'상업적 사용 조건은 <b>확인 필요</b>. 매장 사용 시 라이선스 점검.',
+   sc:'<b>홍보 영상용 배경 음악</b>을 만들어 볼게요.',
+   run:[
+    {t:'1 · 요청',me:'따뜻하고 잔잔한 인테리어 홍보 영상용 배경 음악을 40초로 만들어줘.',ai:'설명한 분위기의 배경 음악 클립이 나와요.'},
+    {t:'2 · 조절',me:'조금 더 밝고 경쾌하게.',ai:'밝은 버전으로 다시 만들어줘요.'}
+   ],
+   steps:['분위기·길이·용도를 적어요','음악을 받아요','밝기·템포를 조절']},
+
+  {k:'f-search',emo:'🔎',en:'Search grounding',ko:'구글 검색 연결 (그라운딩)',
+   fn:'<b>구글 검색을 켜면</b> 최신 정보를 찾아 <b>출처와 함께</b> 답해요. AI가 모르는 최신 정보의 빈틈을 메워줘요.',
+   when:'요금·트렌드·시세처럼 <b>바뀌는 정보</b>가 필요할 때.',
+   how:'도구에서 “구글 검색(그라운딩)”을 켜고 물어봐요.',
+   caution:'검색 결과도 <b>사실 검증 필요</b>. 출처를 눌러 원문 확인.',
+   sc:'<b>최신 자재 트렌드</b>를 검색해 볼게요.',
+   run:[
+    {t:'1 · 검색 켜고 요청',me:'2026년 국내 아파트 인테리어 자재 트렌드 3가지를 출처와 함께 알려줘.',ai:'최신 트렌드 + 출처 링크가 나와요.'},
+    {t:'2 · 좁히기',me:'국내 브랜드 사례 위주로.',ai:'국내 브랜드 중심으로 다시 정리해줘요.'}
+   ],
+   steps:['검색(그라운딩)을 켜요','찾을 내용을 물어요','출처로 검증해요']},
+
+  {k:'f-data',emo:'🧮',en:'Code execution',ko:'계산·데이터 (코드 실행)',
+   fn:'뒤에서 <b>실제 계산 코드를 돌려</b> 표·통계·수식을 정확히 처리해요. 견적 합계·전환율 계산에 좋아요.',
+   when:'숫자를 <b>정확히 계산</b>하거나 표로 정리할 때.',
+   how:'도구에서 “코드 실행”을 켜고 데이터·계산을 말해요.',
+   caution:'결과는 <b>원자료와 대조</b>. 개인정보 데이터는 주의.',
+   sc:'<b>상담 데이터로 전환율</b>을 계산해 볼게요.',
+   run:[
+    {t:'1 · 요청',me:'(상담일지 붙여넣고) 월별 상담수와 계약 전환율을 계산해 표로 정리해줘.',ai:'실제 계산으로 월별 표 + 전환율이 정확히 나와요.'},
+    {t:'2 · 추가',me:'전체 평균 전환율도 계산해 붙여줘.',ai:'아래에 평균 전환율이 더해져요.'}
+   ],
+   steps:['코드 실행을 켜요','데이터·계산을 말해요','원자료와 대조']},
+
+  {k:'f-canvas',emo:'🔑',en:'Get code · API key',ko:'코드 가져오기 · API 키',
+   fn:'여기서 잘 된 <b>설정을 내 서비스로 옮기는</b> 곳이에요. “코드 가져오기”로 설정을 복사하고, <b>API 키</b>는 내 프로그램이 AI를 쓰게 해주는 열쇠예요.',
+   when:'AI 스튜디오에서 완성한 응대·기능을 <b>내 웹사이트·앱(AI 교육 SaaS)</b>에 넣을 때.',
+   how:'“코드 가져오기”로 현재 설정을 복사해요. API 키는 계정에서 발급받아 개발자에게 안전하게 전달.',
+   caution:'<b>API 키는 절대 화면·공개 코드에 노출하지 마세요.</b> 서버에 두고 개발자와 다뤄요. (요금·한도 확인 필요)',
+   sc:'완성한 상담 응대 설정을 <b>내 서비스로 옮겨</b> 볼게요.',
+   run:[
+    {t:'1 · 코드 가져오기',me:'방금 만든 상담 응대 설정을 내 웹사이트에 넣게 코드로 내보내줘.',ai:'현재 모델·시스템 명령·설정이 담긴 코드와 사용 방법이 나와요.'},
+    {t:'2 · 키 안전 안내',ai:'API 키는 화면에 노출하지 말고 서버에 두라고 안내해요. (개발자에게 전달)'}
+   ],
+   steps:['설정을 완성해요','“코드 가져오기”로 복사','API 키는 안전하게(개발자와)']},
+
+  {k:'f-voice',emo:'🎙',en:'Stream (Live)',ko:'스트림 (실시간 음성·영상)',
+   fn:'말로 묻고 답하는 <b>실시간 음성·영상 대화</b>를 시험하는 곳이에요. 현장에서 쓸 음성 도우미를 미리 테스트해요.',
+   when:'현장용 <b>음성 도우미</b>(“이 벽 철거해도 되나?”)를 만들기 전 시험할 때.',
+   how:'🎤 스트림(Live)을 켜고 말해요. 카메라로 현장을 보여줄 수도.',
+   caution:'현장 촬영 시 <b>타인·개인정보</b> 주의. 음성 답도 사실 확인.',
+   sc:'<b>현장 음성 도우미</b>를 시험해 볼게요.',
+   run:[
+    {t:'1 · 스트림 켜기',me:'🎤 스트림(Live) 시작'},
+    {t:'2 · 시험',me:'(음성) 이 벽 철거해도 되는지 확인할 것 3가지 말로 알려줘.',ai:'음성으로 내력벽 확인 등 주의사항을 답해요(길이·말투 조정 가능).'}
+   ],
+   steps:['🎤 스트림을 켜요','말로(카메라로) 물어봐요','답 길이·말투를 조정']},
+
+  {k:'f-model',emo:'🎚',en:'Model & settings',ko:'모델 · 온도 · 생각 수준',
+   fn:'답을 만드는 <b>모델과 세부 설정</b>을 고르는 곳이에요. <b>온도</b>는 답의 자유로움(낮으면 일관, 높으면 창의), <b>생각 수준</b>은 얼마나 깊이 고민할지예요.',
+   when:'일관된 응대는 온도 낮게, 아이디어 뽑기는 온도 높게. 어려운 문제는 생각 수준 높게.',
+   how:'모델을 고르고 온도·생각 수준을 슬라이더로 조절해요. 보통 기본값이면 충분.',
+   caution:'모델명·설정은 <b>자주 바뀌어요</b>(확인 필요).',
+   sc:'상황에 맞게 <b>모델·설정</b>을 골라 볼게요.',
+   run:[
+    {t:'일관되게(응대)',me:'온도 0.3 · 상담 응대 문장을 만들어줘.',ai:'톤이 안정적인 일관된 응대가 나와요.'},
+    {t:'창의적으로(이름)',me:'온도 1.2 · 이벤트 이름 10개 뽑아줘.',ai:'다양하고 창의적인 이름이 나와요.'}
+   ],
+   steps:['모델을 골라요','온도·생각 수준을 조절','기본값도 충분해요']},
+
+  {k:'f-gptbuild',emo:'🧾',en:'Structured output',ko:'구조화 출력 (정해진 형식)',
+   fn:'답을 <b>항상 정해진 형식(표·항목)</b>으로 받게 설정해요. 여러 문의를 <b>같은 틀</b>로 정리할 때 좋아요.',
+   when:'상담 문의를 늘 같은 표로 정리하거나, 데이터로 넘길 때.',
+   how:'원하는 형식(칸)을 정하고 요청해요. 이후 답이 늘 그 틀로 나와요.',
+   caution:'형식이 너무 복잡하면 오히려 불안정. 핵심 칸만.',
+   sc:'상담 문의를 <b>항상 같은 표</b>로 받게 해볼게요.',
+   run:[
+    {t:'1 · 형식 지정',me:'상담 문의를 넣으면 항상 “평형 / 예산 / 희망시기 / 핵심요청” 표로만 정리해줘.'},
+    {t:'2 · 문의 넣기',me:'“34평인데 6월 입주 목표, 주방·거실 위주, 예산 5천 정도요”',ai:'| 평형 | 예산 | 희망시기 | 핵심요청 |\n| 34평 | 약 5,000만(확인 필요) | 6월 | 주방·거실 |'}
+   ],
+   steps:['원하는 형식(칸)을 정해요','문의를 넣어요','늘 같은 틀로 받아요']},
+
+  {k:'f-memory',emo:'💾',en:'Save & history',ko:'저장 · 히스토리',
+   fn:'잘 된 실험(프롬프트+설정)을 <b>저장</b>해두고 다시 꺼내 쓰는 곳이에요. 예전 작업 기록도 남아요.',
+   when:'“리비안 상담 응대”처럼 잘 된 설정을 <b>재사용</b>할 때.',
+   how:'저장 버튼으로 이름을 붙여 저장하고, 라이브러리에서 다시 열어요.',
+   caution:'저장물에 <b>고객 개인정보</b>가 남지 않게 확인.',
+   sc:'잘 된 설정을 저장해 재사용해 볼게요.',
+   run:[
+    {t:'1 · 저장',me:'이 상담 응대 설정을 “리비안 상담 응대”로 저장'},
+    {t:'2 · 재사용',me:'(다음에) “리비안 상담 응대” 열어서 새 문의 넣기',ai:'저장한 규칙·설정 그대로 이어서 응대해요.'}
+   ],
+   steps:['잘 된 설정을 저장','라이브러리에서 다시 열어요','고객 정보는 비워 저장']},
+
+  {k:'f-codex',emo:'💻',en:'Build a SaaS',ko:'AI 교육 SaaS 만들기 (심화)',
+   fn:'Build로 만든 화면을 <b>실제 서비스처럼</b> 다듬는 과정이에요. 여러 화면을 잇고, 오류를 고치고, 코드로 내보내 개발자에게 넘겨요.',
+   when:'AI 교육 SaaS를 <b>시제품에서 실제 서비스</b>로 키워갈 때.',
+   how:'화면을 하나씩 만들어 잇고, 안 되는 부분은 “이거 왜 안 되지?”로 고쳐요. 완성되면 코드로 내보내요.',
+   caution:'실서비스는 <b>보안·결제·개인정보</b> 전문가 검토 필수(확인 필요).',
+   sc:'<b>수강생 관리 화면</b>까지 이어 만들어 볼게요.',
+   run:[
+    {t:'1 · 화면 추가',me:'신청 앱에 “수강생 목록·진도율” 관리 화면을 추가해줘.',ai:'강의 목록 + 진도율 카드가 있는 관리 화면이 더해져요.'},
+    {t:'2 · 오류 고치기',me:'(오류 메시지) 이거 왜 안 되지?',ai:'원인을 짚고 고친 결과를 다시 줘요.'},
+    {t:'3 · 내보내기',me:'전체를 코드로 내보내줘.',ai:'개발자에게 넘길 코드와 설명이 나와요. ※ 실서비스 전 검토.'}
+   ],
+   steps:['화면을 하나씩 이어 만들어요','오류는 메시지로 고쳐요','코드로 내보내 개발자와']}
+ ];
+
+ /* INFO 병합 */
+ FEATURES.forEach(function(f){ INFO[f.k]={en:f.en,ko:f.ko,fn:f.fn,when:f.when,how:f.how,caution:f.caution,sc:f.sc,run:f.run,steps:f.steps,emo:f.emo}; });
+ /* 사이드바·컴포저의 얕은 항목을 깊은 기능과 연결(별칭) */
+ function alias(base,feat){ if(INFO[feat]){ var d={};for(var x in INFO[feat])d[x]=INFO[feat][x]; INFO[base]=d; } }
+ alias('projects','f-projects'); alias('voice','f-voice'); alias('model','f-model');
+
+ /* 리치 드로어 렌더러 (when/how/caution + 실제로 해보기 run) */
+ window.openDrawer=function(k){var d=INFO[k];if(!d)return;stopVoice();clearSim();
+  document.getElementById('dEn').textContent=d.en;document.getElementById('dKo').textContent=d.ko;
+  var b='<p class="fn">'+d.fn+'</p>';
+  if(d.when)b+='<h4>이럴 때 써요</h4><div class="fn">'+d.when+'</div>';
+  if(d.how)b+='<h4>하는 법</h4><div class="fn">'+d.how+'</div>';
+  if(d.list){b+='<h4>이 안에 있는 것들</h4><div class="dlist">'+d.list.map(function(x){return '<div class="di"><div class="die">'+x.en+'</div><div class="did">'+x.d+'</div></div>';}).join('')+'</div>';}
+  /* 실제로 해보기 (run) — 인테리어 예시로 진행 과정 + 결과값 */
+  if(d.run){b+='<div class="exhd"><h4 style="margin:0">🏗 실제로 해보기 (인테리어 예시)</h4></div>';if(d.sc)b+='<div class="fn" style="color:var(--tx2);margin-bottom:10px">'+d.sc+'</div>';b+='<div class="simwrap">'+d.run.map(function(s){var h='<div class="runstep"><div class="rt">'+s.t+'</div>';if(s.me)h+='<div class="rbub me2">'+esc2(s.me)+'</div>';if(s.ai)h+='<div class="rbub ai2">'+esc2(s.ai)+'</div>';return h+'</div>';}).join('')+'</div>';}
+  /* 요청 문장형 시뮬(활용법 등) */
+  var sim=(!d.run&&d.say)?{say:d.say,result:d.ans,refine:d.refine}:null;
+  if(sim&&sim.say){b+='<div class="exhd"><h4 style="margin:0">사용 시뮬레이션</h4><button class="simbtn" id="simBtn">▶ 다시 재생</button></div><div class="simwrap" id="simWrap">';
+   b+='<div class="simline"><span class="stag">1 · 이렇게 적어요</span><div class="sbub" data-full="'+esc2(sim.say)+'">'+esc2(sim.say)+'</div></div><div class="sarrow">↓ ↑ 보내면</div><div class="simline"><span class="stag">2 · 이렇게 돼요</span><div class="sbub ai">'+esc2(sim.result||'')+'</div></div>';
+   if(sim.refine)b+='<div class="sarrow">↓ 고쳐 말하면</div><div class="simline"><span class="stag">3 · 이렇게 바꿔 말하면</span><div class="sbub" data-full="'+esc2(sim.refine[0])+'">'+esc2(sim.refine[0])+'</div></div><div class="simline"><span class="stag">4 · 이렇게 바뀌어요</span><div class="sbub ai">'+esc2(sim.refine[1])+'</div></div>';
+   b+='</div>';}
+  if(d.caution)b+='<div class="warn"><b>⚠️ 주의:</b> '+d.caution+'</div>';
+  if(k==='plus'){b+='<div class="warn"><b>첨부 전 확인:</b> 민감 자료는 꼭 필요한 부분만, 가리거나 요약해서. (교육용 시뮬레이션)</div>';}
+  if(d.steps)b+='<h4>한 줄 정리 (따라하기)</h4><ol class="st">'+d.steps.map(function(s){return '<li>'+s+'</li>';}).join('')+'</ol>';
+  document.getElementById('dBody').innerHTML=b;curSay=buildSay(d);drawer.classList.add('show');bd.classList.add('show');
+  var sb=document.getElementById('simBtn');if(sb)sb.onclick=playSim;if(sim&&sim.say)simTimers.push(setTimeout(playSim,240));if(autoVoice)speak(curSay);
+  setTimeout(function(){try{document.getElementById('dCl').focus();}catch(e){}},40);
+  try{if(window.markSeen)window.markSeen(k);}catch(e){}};
+ window.buildSay=buildSay=function(d){var st=function(h){return String(h).replace(/<[^>]+>/g,' ').replace(/\n/g,' ');};var s=d.en+'. 우리말로 '+d.ko+'. '+st(d.fn)+' ';if(d.when)s+='이럴 때 써요. '+st(d.when)+' ';if(d.how)s+='하는 법. '+st(d.how)+' ';if(d.run){s+='실제 예시. ';d.run.forEach(function(r){s+=st(r.t)+'. '+(r.me?st(r.me)+'. ':'')+(r.ai?st(r.ai)+'. ':'');});}if(d.caution)s+='주의. '+st(d.caution)+' ';return s;};
+
+ /* 스타일(실제로 해보기 버블) */
+ var s2=document.createElement('style');s2.textContent='.runstep{margin:12px 0;padding-bottom:10px;border-bottom:1px dashed #3a3a3a}.runstep:last-child{border-bottom:none}.runstep .rt{font-size:12px;font-weight:800;color:#5fd3b2;margin-bottom:7px}.rbub{border-radius:12px;padding:10px 12px;font-size:13.5px;line-height:1.6;white-space:pre-wrap;margin:5px 0}.rbub.me2{background:#2f2f2f;border:1px solid #454545;color:#ececec}.rbub.ai2{background:rgba(16,163,127,.10);border:1px solid rgba(16,163,127,.32);color:#eaf7f2}';document.head.appendChild(s2);
+
+ /* 새 탭 + 뷰(핵심 기능) */
+ var tabs=document.querySelector('.tabs');
+ var ftab=document.createElement('button');ftab.className='tab';ftab.dataset.tab='features';ftab.textContent='핵심 기능';
+ tabs.insertBefore(ftab, tabs.querySelector('[data-tab="gpts"]'));
+ var wrap=document.querySelector('.wrap');
+ var fview=document.createElement('section');fview.className='view';fview.id='v-features';
+ fview.innerHTML='<div class="sect-t">핵심 기능 · 실제로 해보며 배우기</div><div class="sub-t">각 기능을 누르면 <b>깊은 설명 + 인테리어 예시로 실제 진행하는 시뮬레이션(결과값 포함)</b>이 나와요. (기능·요금·이름은 자주 바뀌어 “확인 필요” 표기)</div><div id="fsearch"></div><div class="grid" id="fg"></div>';
+ wrap.insertBefore(fview, document.getElementById('v-gpts'));
+ document.getElementById('fg').innerHTML=FEATURES.map(function(f){return '<div class="card ix" data-k="'+f.k+'"><div class="ic">'+f.emo+'</div><div class="cn">'+f.ko+'</div><div class="cd">'+String(f.fn).replace(/<[^>]+>/g,'').split('.')[0]+'.</div></div>';}).join('');
+
+ /* 사이드바 Codex · 설정 추가 */
+ var side=document.querySelector('#side');
+ var proj=side.querySelector('[data-k="projects"]');
+ function sItem(k,icon,label){var e=document.createElement('div');e.className='sitem ix';e.dataset.k=k;e.innerHTML='<span class="i">'+icon+'</span> '+label;return e;}
+ if(proj&&proj.parentNode)proj.parentNode.insertBefore(sItem('f-codex','🧱','AI SaaS 만들기'),proj.nextSibling);
+ var foot=side.querySelector('.sfoot');if(foot)foot.insertBefore(sItem('f-custom','📌','시스템 명령'),foot.firstChild);
+
+ document.querySelectorAll('#fg .card, #side [data-k="f-codex"], #side [data-k="f-custom"]').forEach(function(el){if(typeof wire==='function')wire(el);});
+ (function(){var w=document.createElement('div');w.className='p2-search';var s=document.createElement('span');s.className='ic';s.textContent='🔎';w.appendChild(s);var inp=document.createElement('input');inp.type='search';inp.placeholder='기능 검색 (예: 프로젝트, 메모리, 맞춤, Codex…)';inp.setAttribute('aria-label','기능 검색');w.appendChild(inp);var x=document.createElement('button');x.className='x';x.textContent='✕';x.type='button';w.appendChild(x);
+  function run(){var q=(inp.value||'').trim().toLowerCase();document.querySelectorAll('#fg .card').forEach(function(c){var t=(c.textContent||'').toLowerCase();c.style.display=(!q||t.indexOf(q)>-1)?'':'none';});}
+  inp.addEventListener('input',run);x.addEventListener('click',function(){inp.value='';run();inp.focus();});document.getElementById('fsearch').appendChild(w);})();
+ var VIEWS=['home','uses','features','gpts','recent'];
+ document.querySelectorAll('.tab').forEach(function(t){t.setAttribute('role','tab');t.setAttribute('tabindex','0');
+  t.addEventListener('click',function(){var v=t.dataset.tab;document.querySelectorAll('.tab').forEach(function(x){x.classList.toggle('on',x===t);x.setAttribute('aria-selected',x===t?'true':'false');});VIEWS.forEach(function(kk){var el=document.getElementById('v-'+kk);if(el)el.classList.toggle('on',kk===v);});try{document.querySelector('.wrap').scrollTop=0;}catch(e){}});
+  t.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();t.click();}});});
+})();
+</script>
+
+<script>
+/* ===================== 실제 화면 요소 설명 + 안내(처음) 화면 ===================== */
+(function(){
+ 'use strict';
+ var css=document.createElement('style');css.textContent=''
+ +'.sbrand .sp{flex:1}.sicon{cursor:pointer;color:var(--tx2);font-size:14px;padding:4px 6px;border-radius:8px}.sicon:hover{background:var(--panel)}'
+ +'.cw{display:inline-flex;background:var(--panel);border:1px solid var(--line2);border-radius:999px;padding:3px;cursor:pointer}'
+ +'.cwb{border:none;background:transparent;color:var(--tx2);font:inherit;font-size:14px;font-weight:700;padding:6px 18px;border-radius:999px;cursor:pointer;min-height:34px}'
+ +'.cwb.on{background:var(--panel2);color:#fff}'
+ +'.mchip2{display:inline-flex;align-items:center;gap:4px;background:transparent;border:none;color:var(--tx);font-weight:700;font-size:13.5px;cursor:pointer;padding:6px 8px;border-radius:8px}.mchip2:hover{background:var(--panel)}'
+ +'.cbar{max-width:760px;margin:8px auto 0;display:flex;align-items:center;gap:12px;padding:6px 6px;flex-wrap:wrap;background:var(--panel2);border:1px solid var(--line);border-radius:14px}'
+ +'.cb{display:inline-flex;align-items:center;gap:6px;color:var(--tx2);font-size:13px;cursor:pointer;border-radius:8px;padding:7px 9px;min-height:40px}.cb:hover{color:var(--tx);background:var(--panel)}.cb b{color:var(--accent-ink)}'
+ +'.cbend{margin-left:auto}'
+ +'.sugs{max-width:760px;margin:14px auto 0;display:flex;flex-direction:column}'
+ +'.sug{display:flex;align-items:center;gap:12px;padding:13px 10px;border-radius:10px;cursor:pointer;color:var(--tx);font-size:14.5px;border-bottom:1px solid var(--line)}.sug:hover{background:var(--panel)}.sug .si{font-size:15px}'
+ +'@media(max-width:640px){.cbar{gap:6px}.cb{font-size:12px}.cwb{padding:6px 14px}}'
+ /* 안내(처음) 화면 */
+ +'.introov{position:fixed;inset:0;z-index:1800;background:rgba(8,8,9,.72);backdrop-filter:blur(3px);display:grid;place-items:center;padding:18px;overflow:auto}'
+ +'.introov.hide{display:none}'
+ +'.introbox{width:100%;max-width:520px;background:#1a1a1a;border:1px solid #3a3a3a;border-radius:20px;padding:26px 24px;box-shadow:0 24px 70px #000b}'
+ +'.introbox .k{display:inline-block;font-size:11px;font-weight:800;color:#5fd3b2;background:#0f2b23;border:1px solid #1a7f64;border-radius:999px;padding:4px 11px}'
+ +'.introbox h1{font-size:23px;margin:12px 0 4px}'
+ +'.introbox .by{font-size:13px;color:#b4b4b4;line-height:1.6}.introbox .by b{color:#5fd3b2}'
+ +'.introbox p.d{font-size:14px;color:#cfcfcf;line-height:1.7;margin:14px 0}'
+ +'.introbox .go{display:block;width:100%;margin-top:10px;border:none;border-radius:13px;padding:14px;font:inherit;font-size:15px;font-weight:800;cursor:pointer;text-align:center}'
+ +'.introbox .go.p{background:var(--accent);color:#fff}.introbox .go.s{background:transparent;color:var(--tx);border:1px solid var(--line2)}'
+ +'.introbox .grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}'
+ +'.introbox .grid2 .go{margin-top:0}'
+ +'.introbox .mini{font-size:11.5px;color:#8e8e8e;margin-top:14px;text-align:center;line-height:1.6}'
+ +'.introbox .glab{font-size:12.5px;font-weight:800;color:#5fd3b2;margin:16px 0 8px}'
+ +'.introbox .ggoal{display:grid;grid-template-columns:1fr 1fr;gap:8px}'
+ +'.introbox .ggo{display:flex;flex-direction:column;gap:2px;min-height:58px;padding:10px 11px;border-radius:11px;border:1px solid #3a3a3a;background:#212121;color:#ececec;cursor:pointer;text-align:left}'
+ +'.introbox .ggo .e{font-size:16px}.introbox .ggo .g{font-size:13px;font-weight:800}.introbox .ggo .d2{font-size:10.5px;color:#b4b4b4}';
+ document.head.appendChild(css);
+
+ /* Chat/Work 시각 토글(실제감) — 클릭 시 선택 표시 (설명 드로어는 .ix 로 함께 열림) */
+ document.querySelectorAll('.cwb').forEach(function(btn){btn.addEventListener('click',function(e){document.querySelectorAll('.cwb').forEach(function(x){x.classList.toggle('on',x===btn);});var work=btn.getAttribute('data-cw')==='work';var h=document.getElementById('heroH');if(h)h.textContent=work?'무엇을 만들까요? (빌드)':'무엇을 시험해볼까요?';var ph=document.getElementById('ph');if(ph)ph.textContent=work?'만들 앱·화면을 설명하세요 (빌드)':'프롬프트를 입력하고 ▶ 실행하세요';var sg=document.querySelector('.sugs');if(sg)sg.style.display=work?'flex':'none';var cb=document.querySelector('.cbar');if(cb)cb.style.display=work?'flex':'none';});});
+
+ /* 새 요소 설명 (깊게 + 인테리어 실제 예시) */
+ var add={
+  chatwork:{en:'Chat / Build',ko:'채팅 / 빌드 모드',fn:'위쪽의 <b>채팅 / 빌드</b>는 AI 스튜디오를 쓰는 두 가지 방식이에요.\n· <b>채팅</b>: 프롬프트(요청 문장)를 <b>시험·비교</b>하는 작업대.\n· <b>빌드</b>: 말로 설명해 <b>실제 도는 앱</b>을 만드는 모드. (음성 실시간은 “스트림”)',
+   when:'요청 문장을 다듬으면 채팅, <b>앱·화면</b>을 만들면 빌드.',
+   how:'상단에서 채팅/빌드를 눌러 전환. 채팅에선 아래에 설정·도구가 보여요.',
+   caution:'빌드로 만든 앱을 실서비스로 쓰려면 <b>보안·개인정보</b> 검토 필요(확인 필요).',
+   sc:'상담 응대는 채팅, SaaS 화면은 빌드로 해볼게요.',
+   run:[{t:'채팅 모드',me:'상담 응대 문장을 시험해줘(확정 금액 금지).',ai:'여러 응대 버전이 나오고 설정을 바꿔 비교해요.'},{t:'빌드 모드',me:'AI 교육 SaaS 신청 앱을 만들어줘.',ai:'실제 동작하는 신청 앱이 미리보기로 나와요.'}]},
+  projsel:{en:'System instructions',ko:'시스템 명령 (규칙 고정)',fn:'맨 위에 <b>“항상 지킬 규칙”</b>을 적어두는 칸이에요. 이후 모든 답이 그 규칙을 지켜요.',
+   when:'“확정 금액 금지·결론부터”처럼 매번 지킬 규칙이 있을 때.',
+   how:'“시스템 명령” 칸에 규칙을 적고 아래에 요청을 넣어요.',
+   caution:'핵심 규칙만. 민감정보는 넣지 마세요.',
+   sc:'상담 응대 규칙을 고정해 볼게요.',
+   run:[{t:'1 · 규칙 적기',me:'너는 리비안 상담 도우미다. 예산·시기 되묻고 방향만 제시. 확정 금액 금지.'},{t:'2 · 요청',me:'34평 얼마예요?',ai:'규칙대로 되묻고 방향만 제시, 확정 금액은 말하지 않아요.'}]},
+  plugins:{en:'Temperature',ko:'온도 · 생각 수준',fn:'<b>온도</b>는 답의 자유로움(낮으면 일관, 높으면 창의), <b>생각 수준</b>은 얼마나 깊이 고민할지예요. 보통 기본값이면 충분.',
+   when:'일관된 응대는 온도 낮게, 아이디어는 높게. 어려운 문제는 생각 수준 높게.',
+   how:'슬라이더로 온도·생각 수준을 조절해요.',
+   caution:'너무 높으면 엉뚱해질 수 있어요.',
+   sc:'상황에 맞게 온도를 조절해 볼게요.',
+   run:[{t:'일관되게',me:'온도 0.3 · 상담 응대 문장',ai:'톤이 안정적인 응대가 나와요.'},{t:'창의적으로',me:'온도 1.2 · 이벤트 이름 10개',ai:'다양한 이름이 나와요.'}]},
+  desktop:{en:'Get code / API key',ko:'코드 가져오기 · API 키',fn:'잘 된 설정을 <b>내 서비스로 옮기는</b> 곳이에요. “코드 가져오기”로 복사하고, <b>API 키</b>는 내 프로그램이 AI를 쓰게 해주는 열쇠예요.',
+   when:'완성한 응대·기능을 <b>내 웹사이트·앱(AI 교육 SaaS)</b>에 넣을 때.',
+   how:'“코드 가져오기”로 설정을 복사하고, API 키는 발급받아 개발자에게 안전히 전달.',
+   caution:'<b>API 키는 화면·공개 코드에 노출 금지.</b> 서버에 두고 개발자와 다뤄요. (요금·한도 확인 필요)',
+   sc:'설정을 내 서비스로 옮겨 볼게요.',
+   run:[{t:'1 · 코드 가져오기',me:'이 설정을 내 웹사이트에 넣게 코드로 내보내줘.',ai:'모델·시스템 명령·설정이 담긴 코드와 사용법이 나와요.'},{t:'2 · 키 안내',ai:'API 키는 노출하지 말고 서버에 두라고 안내해요.'}]},
+  sug1:{en:'Suggested',ko:'추천 · 상담 응대 프롬프트',fn:'입력창 아래 문장들은 <b>바로 눌러 시작할 수 있는 예시</b>예요. 이 예시는 상담 응대 프롬프트를 시험하는 요청이에요.',
+   when:'응대 문장을 다듬을 때.',
+   how:'문장을 누르면 그대로 실행돼요.',
+   sc:'상담 응대를 시험해 볼게요.',
+   run:[{t:'요청',me:'“34평 얼마예요?”에 확정 금액 없이 정중히 답하는 문장 3버전 만들어줘.',ai:'톤이 다른 응대 3버전이 나와요.'}]},
+  sug2:{en:'Suggested',ko:'추천 · 포스터 (나노바나나 프로)',fn:'추천 예시 ②. 나노바나나 프로로 <b>글자 또렷한 인쇄용 포스터</b>를 만드는 요청이에요.',
+   when:'상담 이벤트 포스터·간판 시안이 필요할 때.',
+   how:'문장을 누르면 이미지 생성이 시작돼요.',
+   sc:'상담 포스터를 만들어 볼게요.',
+   run:[{t:'요청',me:'“봄맞이 무료 상담” 문구가 또렷한 인쇄용 포스터를 우드톤으로 만들어줘.',ai:'글자가 또렷한 고화질 포스터가 나와요.'}]},
+  sug3:{en:'Suggested',ko:'추천 · 앱 만들기 (Build)',fn:'추천 예시 ③. Build로 <b>AI 교육 SaaS 신청 앱</b>을 만드는 요청이에요.',
+   when:'실제 동작하는 화면이 필요할 때.',
+   how:'문장을 누르면 앱 생성이 시작돼요.',
+   caution:'실서비스 전 보안·개인정보 검토 필요.',
+   sc:'AI 교육 SaaS 신청 앱을 만들어 볼게요.',
+   run:[{t:'요청',me:'AI 교육 SaaS 수강 신청 앱을 만들어줘. 이름·연락처·희망 강의를 받고 신청하면 확인 메시지가 뜨게.',ai:'입력 폼 + “신청 완료” 안내가 있는 앱이 미리보기로 나와요.'}]},
+  more2:{en:'More',ko:'더 보기',fn:'<b>더 보기</b>는 사이드바에 다 안 보이는 나머지 메뉴를 여는 곳이에요. <b>저장된 프롬프트·빌드·프롬프트 갤러리·설정·API 키</b> 등이 여기서 접근돼요. (확인 필요)',
+   when:'자주 안 쓰지만 필요한 기능·설정을 찾을 때.',
+   how:'‘더 보기’를 눌러 이동.',
+   sc:'더 보기에서 API 키로 가볼게요.',
+   run:[{t:'예',me:'더 보기 → API 키 발급',ai:'API 키 발급·관리 화면으로 이동해요.'}]},
+  sidetoggle:{en:'Toggle sidebar',ko:'사이드바 접기/펴기',fn:'왼쪽 <b>사이드바를 접거나 펴는</b> 버튼이에요. 결과·미리보기를 <b>넓게</b> 볼 때 접어요.',
+   how:'아이콘을 눌러 접기/펴기.',
+   sc:'미리보기를 넓게 보려고 접었다 펴볼게요.',
+   run:[{t:'1 · 접기',me:'아이콘 클릭',ai:'메뉴가 접혀 미리보기가 넓게 보여요.'},{t:'2 · 펴기',me:'다시 클릭',ai:'메뉴가 다시 나와요.'}]},
+  newchat2:{}
+ };
+  for(var k in add){ if(add[k]&&add[k].en) INFO[k]=add[k]; }
+ /* 프롬프트 갤러리(사이드바) 설명 */
+ INFO['reserve']={en:'Prompt gallery',ko:'프롬프트 갤러리 (예시 시작하기)',fn:'남들이 잘 만든 <b>예시 프롬프트·시작 앱</b>을 모아둔 곳이에요. 비슷한 걸 골라 내 것으로 바꾸면 빠르게 시작해요.',
+   when:'무엇부터 시작할지 막막할 때, 검증된 예시로 출발.',
+   how:'갤러리에서 비슷한 예시를 열어 내용만 내 상황으로 바꿔요.',
+   caution:'예시의 값·설정은 <b>내 상황에 맞게</b> 바꾸세요.',
+   sc:'응대 예시를 골라 리비안용으로 바꿔 볼게요.',
+   run:[{t:'1 · 예시 고르기',me:'갤러리 → “고객 응대 챗봇” 예시 열기'},{t:'2 · 내 것으로',me:'이 예시를 리비안 상담 기준(확정 금액 금지)으로 바꿔줘',ai:'예시 구조를 유지한 채 리비안 규칙으로 바뀐 프롬프트가 나와요.'}],
+   steps:['비슷한 예시를 골라요','내 상황으로 바꿔요','바로 시작해요']};
+ if(INFO['search'])INFO['search'].when='예전에 만든 디자인·프로젝트를 이름으로 찾을 때.';
+
+ /* 새 .ix 요소 wire (호버·클릭·접근성) — 중복 방지 위해 아직 안 붙은 것만 */
+ document.querySelectorAll('.ix').forEach(function(el){ if(!el.__wired && typeof wire==='function'){ /* wire는 첫 스크립트에서 이미 붙었으므로 여기선 생략 */ } });
+
+ /* ===== 안내(처음) 화면 ===== */
+ var ov=document.createElement('div');ov.className='introov';ov.id='introov';ov.setAttribute('role','dialog');ov.setAttribute('aria-modal','true');ov.setAttribute('aria-label','안내');
+ ov.innerHTML='<div class="introbox">'
+  +'<span class="k">교육용 시뮬레이션</span>'
+  +'<h1>Google AI Studio 한글 사용설명서</h1>'
+  +'<div class="by"><b>리비안디자인 루카스</b>가 <b style="color:#fff">AI 강의용</b>으로 제작한 자료입니다.</div>'
+  +'<p class="d">이 화면은 실제 <b>Google AI Studio</b>를 <b>교육용으로 재현</b>한 것이에요. AI를 <b>시험하고·다듬고·앱까지 만드는 작업대</b>예요. 어느 요소든 <b>올리면 한글 설명</b>, <b>누르면 상세 설명 + 리비안 실제 예시</b>가 나옵니다. (모바일은 탭)</p>'
+  +'<button class="go p" data-a="practice">🎬 첫 대화 따라하기</button>'
+  +'<div class="grid2"><button class="go s" data-a="close">🧭 화면 둘러보기</button><button class="go s" data-a="guide">📘 작업 가이드</button></div>'
+  +'<div class="glab">또는 — 무엇을 하고 싶으세요? 목적으로 바로 시작</div>'
+  +'<div class="ggoal">'+CATS.filter(function(c){return c.id!=='all';}).map(function(c){return '<button class="ggo" data-cat="'+c.id+'"><span class="e">'+c.emo+'</span><span class="g">'+c.ko+'</span><span class="d2">'+c.q+'</span></button>';}).join('')+'</div>'
+  +'<div class="mini">🔒 지정된 분만 보시는 자료 · 무단 전달·재공유 금지 · 72시간 열람<br>© 리비안디자인 루카스 · AI 강의용 제작 · 무단 변경 금지</div>'
+  +'</div>';
+ document.body.appendChild(ov);
+ function closeIntro(){ov.classList.add('hide');}
+ function openIntro(){ov.classList.remove('hide');}
+ ov.addEventListener('click',function(e){ if(e.target===ov){closeIntro();return;}
+  var gb=e.target.closest('button[data-cat]'); if(gb){ closeIntro(); var tu=document.querySelector('.tab[data-tab="uses"]'); if(tu)tu.click(); var chip=document.querySelector('.p2-chip[data-cat="'+gb.getAttribute('data-cat')+'"]'); if(chip)chip.click(); return; }
+  var b=e.target.closest('button[data-a]'); if(!b)return; var a=b.getAttribute('data-a'); closeIntro();
+  if(a==='features'){var t=document.querySelector('.tab[data-tab="features"]');if(t)t.click();}
+  else if(a==='practice'){ if(window.startPractice)startPractice(); }
+  else if(a==='guide'){ try{openGuide();}catch(e2){} }
+ });
+ document.addEventListener('keydown',function(e){ if(e.key==='Escape'&&!ov.classList.contains('hide'))closeIntro(); });
+ var rob=document.getElementById('reopen'); if(rob)rob.onclick=openIntro;
+ /* 최초 로드시 안내 화면 표시(게이트가 위에서 덮고 있다가 통과하면 보임) */
+})();
+</script>
+
+<!-- ===================== PHASE 학습 모듈 (진도·즐겨찾기·퀴즈·목적필터·검색·시작메뉴) ===================== -->
+<script>
+(function(){
+ 'use strict';
+ function $(s,r){return (r||document).querySelector(s);}function $all(s,r){return [].slice.call((r||document).querySelectorAll(s));}
+ function ce(t,c,x){var e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e;}
+ function lsGet(k,d){try{var v=localStorage.getItem(k);return v==null?d:JSON.parse(v);}catch(e){return d;}}
+ function lsSet(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
+ var REDUCE=false;try{REDUCE=matchMedia('(prefers-reduced-motion: reduce)').matches;}catch(e){}
+ var live=ce('div');live.setAttribute('aria-live','polite');live.style.cssText='position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)';document.body.appendChild(live);
+ function announce(m){live.textContent='';setTimeout(function(){live.textContent=m;},30);}
+
+ /* 목적 필터 + 검색 (활용법) */
+ function applyFilter(cat){var n=0;$all('#ug .card').forEach(function(c){var show=cat==='all'||c.dataset.cat===cat;c.style.display=show?'':'none';if(show)n++;});return n;}
+ var fbar=ce('div','p2-filter');fbar.setAttribute('role','group');fbar.setAttribute('aria-label','활용법 목적별 고르기');
+ CATS.forEach(function(c){var b=ce('button','p2-chip'+(c.id==='all'?' on':''));b.type='button';b.dataset.cat=c.id;b.setAttribute('aria-pressed',c.id==='all'?'true':'false');b.innerHTML='<span class="e">'+c.emo+'</span>'+c.ko;
+  b.addEventListener('click',function(){$all('.p2-chip',fbar).forEach(function(x){var on=x===b;x.classList.toggle('on',on);x.setAttribute('aria-pressed',on?'true':'false');});var s=$('#usesearch input');if(s)s.value='';var n=applyFilter(c.id);announce(c.ko+' · '+n+'개');});
+  fbar.appendChild(b);});
+ $('#usefilter').appendChild(fbar);
+ function mkSearch(mount,getItems,ph){var w=ce('div','p2-search');w.appendChild(ce('span','ic','🔎'));var inp=ce('input');inp.type='search';inp.placeholder=ph;inp.setAttribute('aria-label',ph);w.appendChild(inp);var x=ce('button','x','✕');x.type='button';x.setAttribute('aria-label','지우기');w.appendChild(x);
+  function run(){var q=(inp.value||'').trim().toLowerCase();var n=0;getItems().forEach(function(it){var t=(it.textContent||'').toLowerCase();var show=!q||t.indexOf(q)>-1;it.style.display=show?'':'none';if(show)n++;});announce(q?('검색 '+n+'개'):'');}
+  inp.addEventListener('input',run);x.addEventListener('click',function(){inp.value='';run();inp.focus();});mount.appendChild(w);return run;}
+ mkSearch($('#usesearch'),function(){return $all('#ug .card');},'활용법 검색 (예: 이메일, 요약, 이미지, 번역…)');
+ mkSearch($('#gsearch'),function(){return $all('#gg .gpt');},'GPT 검색');
+ mkSearch($('#rsearch'),function(){return $all('#rg .crow2');},'대화 검색');
+
+ /* 학습 진도 */
+ var CORE=[['input','메시지 입력'],['plus','첨부(＋)'],['tools','도구'],['send','보내기'],['model','모델'],['voice','음성 모드']];
+ var LEARN=[];CORE.forEach(function(p){LEARN.push({key:p[0],label:p[1],group:'핵심 요소'});});
+ USES.forEach(function(u){LEARN.push({key:u.k,label:u.ko,group:'활용법 13'});});
+ GPTS.forEach(function(g,i){LEARN.push({key:'g'+i,label:g.n,group:'GPT 6'});});
+ var LK={};LEARN.forEach(function(o){LK[o.key]=o;});
+ function labelOf(k){return LK[k]?LK[k].label:k;}
+ var SEEN=lsGet('__cg_seen__',{}),FAV=lsGet('__cg_fav__',{}),RECENT=lsGet('__cg_recent__',[]),QUIZ=lsGet('__cg_quiz__',null);
+ function practiceDone(){try{return localStorage.getItem('__cg_practice__')==='1';}catch(e){return false;}}
+ window.markSeen=function(k){if(!LK[k])return;if(!SEEN[k]){SEEN[k]=true;lsSet('__cg_seen__',SEEN);announce(labelOf(k)+' 확인');}RECENT=RECENT.filter(function(x){return x!==k;});RECENT.unshift(k);if(RECENT.length>8)RECENT=RECENT.slice(0,8);lsSet('__cg_recent__',RECENT);refreshBadge();};
+ function toggleFav(k){if(FAV[k])delete FAV[k];else FAV[k]=true;lsSet('__cg_fav__',FAV);refreshBadge();}
+ function prog(){var s=0;LEARN.forEach(function(o){if(SEEN[o.key])s++;});var done=s+(practiceDone()?1:0)+((QUIZ&&QUIZ.done)?1:0);var total=LEARN.length+2;return {s:s,total:total,done:done,pct:Math.round(done/total*100)};}
+
+ var helpBar=$('.help');
+ var openBtn=ce('button');openBtn.id='p2-openPanel';openBtn.type='button';openBtn.setAttribute('aria-haspopup','dialog');
+ function refreshBadge(){var p=prog();openBtn.innerHTML='📊 학습 <span class="pct">'+p.pct+'%</span>';if(panel&&panel.classList.contains('on'))renderPanel();}
+ helpBar.insertBefore(openBtn,helpBar.firstChild);
+
+ var mask=ce('div','p2-mask'),panel=ce('div','p2-panel');
+ var pcss=ce('style');pcss.textContent='.p2-mask{position:fixed;inset:0;z-index:1500;background:rgba(0,0,0,.55);opacity:0;pointer-events:none;transition:opacity .2s}.p2-mask.on{opacity:1;pointer-events:auto}.p2-panel{position:fixed;top:0;right:0;bottom:0;width:min(420px,92vw);z-index:1501;background:#212121;border-left:1px solid #3a3a3a;transform:translateX(100%);transition:transform .24s;display:flex;flex-direction:column}.p2-panel.on{transform:none}.p2-panel .ph{display:flex;align-items:center;gap:10px;padding:16px 18px;border-bottom:1px solid #3a3a3a}.p2-panel .ph h2{font-size:17px;margin:0}.p2-panel .x{margin-left:auto;background:transparent;border:1px solid #454545;color:#b4b4b4;border-radius:10px;min-width:40px;min-height:40px;font-size:15px;cursor:pointer}.p2-panel .pb{flex:1;overflow:auto;padding:16px 18px 30px}.p2-prog{background:#2a2a2a;border:1px solid #3a3a3a;border-radius:14px;padding:14px 15px;margin-bottom:16px}.p2-prog .pt b{font-size:26px}.p2-prog .pt span{font-size:12.5px;color:#8e8e8e;margin-left:8px}.p2-bar{height:10px;border-radius:999px;background:#3a3a3a;overflow:hidden;margin-top:10px}.p2-bar i{display:block;height:100%;background:linear-gradient(90deg,#10a37f,#1fb98a)}.p2-mile{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}.p2-mile .m{flex:1;min-width:120px;background:#2a2a2a;border:1px solid #3a3a3a;border-radius:11px;padding:10px 11px}.p2-mile .l{font-size:12px;color:#8e8e8e}.p2-mile .s{font-size:13.5px;font-weight:800;margin-top:2px}.p2-mile .s.ok{color:#5fd3b2}.p2-mile button{margin-top:8px;width:100%;min-height:38px;border-radius:9px;border:none;background:#10a37f;color:#fff;font:inherit;font-weight:800;font-size:12.5px;cursor:pointer}.p2-sec-t{font-size:12.5px;font-weight:800;color:#5fd3b2;margin:18px 0 8px}.p2-item{display:flex;align-items:center;gap:10px;background:#2a2a2a;border:1px solid #3a3a3a;border-radius:10px;padding:9px 11px;margin-bottom:7px}.p2-item .nm{flex:1;font-size:13.5px;cursor:pointer}.p2-item .st{font-size:11px;font-weight:800;border-radius:999px;padding:3px 9px;white-space:nowrap}.p2-item .st.none{color:#8e8e8e;background:#333}.p2-item .st.seen{color:#7ab7ff;background:rgba(90,150,255,.14)}.p2-item .st.fav{color:#ffcf6a;background:rgba(255,190,70,.14)}.p2-item .fav{background:transparent;border:none;cursor:pointer;font-size:16px;min-width:34px;min-height:34px;color:#7a7a82}.p2-item .fav.on{color:#ffcf6a}.p2-recent span{display:inline-block;font-size:12px;background:#2a2a2a;border:1px solid #3a3a3a;border-radius:999px;padding:5px 10px;margin:0 6px 6px 0;color:#b4b4b4}.p2-quiz-mask{position:fixed;inset:0;z-index:1600;background:rgba(0,0,0,.6);display:flex;align-items:flex-start;justify-content:center;overflow:auto;padding:26px 14px}.p2-quiz{width:100%;max-width:560px;background:#212121;border:1px solid #3a3a3a;border-radius:18px;padding:20px}.p2-quiz h2{margin:0 0 4px}.p2-q{border:1px solid #3a3a3a;border-radius:12px;padding:13px 14px;margin-bottom:11px;background:#2a2a2a}.p2-q .qq{font-weight:800;margin-bottom:9px}.p2-q label{display:flex;gap:9px;padding:9px 10px;border:1px solid #3a3a3a;border-radius:9px;margin-bottom:6px;cursor:pointer;font-size:13.5px}.p2-q .ex{font-size:12.5px;line-height:1.6;margin-top:8px;padding:9px 11px;border-radius:9px;display:none}.p2-q.right .ex{display:block;background:rgba(16,163,127,.12);color:#9fe6cd;border:1px solid rgba(16,163,127,.3)}.p2-q.wrong .ex{display:block;background:rgba(255,138,106,.12);color:#ffb59c;border:1px solid rgba(255,138,106,.3)}.p2-q label.ans{border-color:#10a37f;background:rgba(16,163,127,.08)}.p2-q.wrong label.pick{border-color:#ff8a6a}.p2-quiz .qbtns{display:flex;gap:9px;margin-top:6px}.p2-quiz .qbtns button{flex:1;min-height:48px;border-radius:12px;font:inherit;font-weight:900;font-size:15px;cursor:pointer;border:none}.p2-quiz .submit{background:#10a37f;color:#fff}.p2-quiz .close{background:#2f2f2f;color:#ececec;border:1px solid #454545!important}.p2-quiz .score{text-align:center;font-weight:900;background:#2a2a2a;border:1px solid #3a3a3a;border-radius:12px;padding:12px;margin-bottom:12px;display:none}'
+ +'#p2-startBtn{position:fixed;left:12px;bottom:12px;z-index:1490;display:inline-flex;align-items:center;gap:7px;background:#10a37f;color:#fff;border:none;border-radius:999px;padding:10px 14px;font:inherit;font-weight:800;font-size:13.5px;cursor:pointer;box-shadow:0 8px 22px #0007;min-height:44px}@media(min-width:821px){#p2-startBtn{left:274px}}.p2-lpanel{position:fixed;top:0;left:0;bottom:0;width:min(360px,90vw);z-index:1501;background:#212121;border-right:1px solid #3a3a3a;transform:translateX(-100%);transition:transform .24s;display:flex;flex-direction:column}.p2-lpanel.on{transform:none}.p2-lpanel .ph{display:flex;align-items:center;gap:10px;padding:16px 18px;border-bottom:1px solid #3a3a3a}.p2-lpanel .ph h2{font-size:16px;margin:0}.p2-lpanel .x{margin-left:auto;background:transparent;border:1px solid #454545;color:#b4b4b4;border-radius:10px;min-width:40px;min-height:40px;font-size:15px;cursor:pointer}.p2-lpanel .pb{flex:1;overflow:auto;padding:16px 18px 30px}.p2-lbtn{display:flex;align-items:center;gap:11px;width:100%;text-align:left;background:#2a2a2a;border:1px solid #3a3a3a;border-radius:12px;padding:13px 14px;margin-bottom:9px;color:#ececec;font:inherit;font-size:14.5px;font-weight:800;cursor:pointer;min-height:52px}.p2-lbtn.primary{background:#10a37f;border-color:#10a37f;color:#fff}.p2-lbtn .e{font-size:18px;flex:none}.p2-lbtn small{display:block;font-size:11.5px;font-weight:600;color:#b4b4b4;margin-top:2px}.p2-lbtn.primary small{color:rgba(255,255,255,.85)}.p2-lsec{font-size:12px;font-weight:800;color:#5fd3b2;margin:16px 0 8px}.p2-lgoal{display:grid;grid-template-columns:1fr 1fr;gap:8px}.p2-lgoal button{display:flex;flex-direction:column;gap:2px;min-height:60px;padding:10px 11px;border-radius:11px;border:1px solid #3a3a3a;background:#2a2a2a;color:#ececec;cursor:pointer;text-align:left}.p2-lgoal .e{font-size:17px}.p2-lgoal .g{font-size:13px;font-weight:800}.p2-lgoal .d{font-size:10.5px;color:#b4b4b4}'
+ +'.ix:focus-visible,.tab:focus-visible,.p2-chip:focus-visible,button:focus-visible,[role=button]:focus-visible{outline:3px solid #5fd3b2;outline-offset:2px}@media(max-width:640px){.p2-lgoal{grid-template-columns:1fr 1fr}}';
+ document.head.appendChild(pcss);
+ panel.setAttribute('role','dialog');panel.setAttribute('aria-modal','true');panel.setAttribute('aria-label','학습 현황');
+ document.body.appendChild(mask);document.body.appendChild(panel);
+ var pLast=null;
+ function openPanel(){pLast=document.activeElement;renderPanel();mask.classList.add('on');panel.classList.add('on');document.addEventListener('keydown',pKey,true);var x=$('.p2-panel .x');if(x)setTimeout(function(){x.focus();},60);}
+ function closePanel(){mask.classList.remove('on');panel.classList.remove('on');document.removeEventListener('keydown',pKey,true);try{if(pLast&&pLast.focus)pLast.focus();}catch(e){}}
+ function pKey(e){if(e.key==='Escape'){e.preventDefault();closePanel();}else if(e.key==='Tab'){var f=$all('button,[tabindex]:not([tabindex="-1"])',panel).filter(function(el){return el.offsetParent!==null;});if(!f.length)return;var a=f[0],b=f[f.length-1];if(e.shiftKey&&document.activeElement===a){e.preventDefault();b.focus();}else if(!e.shiftKey&&document.activeElement===b){e.preventDefault();a.focus();}}}
+ openBtn.onclick=openPanel;mask.onclick=closePanel;
+ function chip(k){if(FAV[k])return '<span class="st fav">★ 즐겨찾기</span>';if(SEEN[k])return '<span class="st seen">확인함</span>';return '<span class="st none">아직 안 봄</span>';}
+ function renderPanel(){var p=prog();var groups={};LEARN.forEach(function(o){(groups[o.group]=groups[o.group]||[]).push(o);});
+  var h='<div class="p2-prog"><div class="pt"><b>'+p.pct+'%</b><span>학습 진도 · '+p.done+' / '+p.total+'</span></div><div class="p2-bar"><i style="width:'+p.pct+'%"></i></div><div class="p2-mile"><div class="m"><div class="l">첫 대화 따라하기</div><div class="s '+(practiceDone()?'ok':'')+'">'+(practiceDone()?'✓ 완료':'미완료')+'</div>'+(practiceDone()?'':'<button type="button" data-act="practice">시작</button>')+'</div><div class="m"><div class="l">검증 퀴즈</div><div class="s '+((QUIZ&&QUIZ.done)?'ok':'')+'">'+((QUIZ&&QUIZ.done)?('✓ '+QUIZ.score+'/'+QUIZ.total):'미완료')+'</div><button type="button" data-act="quiz">'+((QUIZ&&QUIZ.done)?'다시':'풀기')+'</button></div></div></div>';
+  Object.keys(groups).forEach(function(g){h+='<div class="p2-sec-t">'+g+'</div>';groups[g].forEach(function(o){h+='<div class="p2-item" data-key="'+o.key+'"><span class="nm" role="button" tabindex="0">'+o.label+'</span>'+chip(o.key)+'<button class="fav'+(FAV[o.key]?' on':'')+'" type="button" aria-label="'+o.label+' 즐겨찾기">'+(FAV[o.key]?'★':'☆')+'</button></div>';});});
+  var fk=Object.keys(FAV);h+='<div class="p2-sec-t">⭐ 즐겨찾기 ('+fk.length+')</div>'+(fk.length?'<div class="p2-recent">'+fk.map(function(k){return '<span>'+labelOf(k)+'</span>';}).join('')+'</div>':'<div style="font-size:12.5px;color:#8e8e8e">설명 창의 항목에서 ☆ 를 눌러 담아요.</div>');
+  h+='<div class="p2-sec-t">🕘 최근 학습</div>'+(RECENT.length?'<div class="p2-recent">'+RECENT.map(function(k){return '<span>'+labelOf(k)+'</span>';}).join('')+'</div>':'<div style="font-size:12.5px;color:#8e8e8e">아직 없음</div>');
+  panel.innerHTML='<div class="ph"><h2>📊 학습 현황</h2><button class="x" type="button" aria-label="닫기">✕</button></div><div class="pb">'+h+'</div>';
+  panel.querySelector('.x').onclick=closePanel;
+  panel.querySelector('.pb').addEventListener('click',function(e){var a=e.target.closest('button[data-act]');if(a){var act=a.getAttribute('data-act');closePanel();if(act==='practice')startPractice();if(act==='quiz')openQuiz();return;}var fb=e.target.closest('.p2-item .fav');if(fb){toggleFav(fb.closest('.p2-item').getAttribute('data-key'));renderPanel();return;}var nm=e.target.closest('.p2-item .nm');if(nm){var k=nm.closest('.p2-item').getAttribute('data-key');closePanel();openDrawer(k);return;}});
+  panel.querySelector('.pb').addEventListener('keydown',function(e){if((e.key==='Enter'||e.key===' ')&&e.target.classList.contains('nm')){e.preventDefault();e.target.click();}});}
+
+ /* 퀴즈 */
+ var QUESTIONS=[
+  {q:'AI 스튜디오를 가장 잘 쓰는 방법은?',opts:['한 번에 완벽하게 시킨다','구체적으로 시키고, 답을 보고 고쳐 말한다','짧게 한 단어만 넣는다'],a:1,ex:'구체적으로 시키고 고쳐 말하기를 반복하는 게 핵심이에요.'},
+  {q:'AI 스튜디오가 만든 수치·이미지는?',opts:['항상 정확하다','그럴듯해도 틀릴 수 있어 직접 확인한다','출처가 있으면 무조건 맞다'],a:1,ex:'사실이 아닌 내용을 사실처럼 자신있게 말하는 경우이 있을 수 있어요. 중요한 건 원자료로 검증하세요.'},
+  {q:'최신 정보(요금·뉴스·트렌드)를 물을 땐?',opts:['그냥 물어본다','🌐 웹 검색을 켜고 출처를 확인한다','이미지를 켠다'],a:1,ex:'바뀌는 정보는 웹 검색을 켜야 정확하고 출처도 확인할 수 있어요.'},
+  {q:'대화에 넣으면 안 되는 것은?',opts:['만들고 싶은 글의 주제','주민번호·카드번호 같은 민감정보','원하는 말투'],a:1,ex:'개인정보·기밀은 넣지 마세요. 꼭 필요하면 가리고 요약해서.'},
+  {q:'긴 PDF를 요약시키려면?',opts:['내용을 전부 타이핑한다','＋ 로 파일을 올리고 요약을 요청한다','불가능하다'],a:1,ex:'＋ 로 문서를 올리면 요약·질문이 가능해요. 중요한 건 원문도 확인하세요.'}
+ ];
+ var qMask=null,qLast=null;
+ function openQuiz(){qLast=document.activeElement;qMask=ce('div','p2-quiz-mask');var box=ce('div','p2-quiz');box.setAttribute('role','dialog');box.setAttribute('aria-modal','true');
+  box.innerHTML='<h2>✅ 검증 퀴즈 (5문항)</h2><div style="font-size:13px;color:#8e8e8e;margin-bottom:12px">제출하면 정답·해설이 표시되고 진도에 반영됩니다.</div><div class="score" id="qsc"></div>'+QUESTIONS.map(function(q,i){return '<div class="p2-q" data-i="'+i+'"><div class="qq">'+(i+1)+'. '+q.q+'</div>'+q.opts.map(function(o,j){return '<label data-j="'+j+'"><input type="radio" name="q'+i+'" value="'+j+'"><span>'+o+'</span></label>';}).join('')+'<div class="ex">'+q.ex+'</div></div>';}).join('')+'<div class="qbtns"><button class="close" type="button">닫기</button><button class="submit" type="button">제출하고 채점</button></div>';
+  qMask.appendChild(box);document.body.appendChild(qMask);
+  box.querySelector('.close').onclick=closeQuiz;box.querySelector('.submit').onclick=function(){grade(box);};
+  qMask.addEventListener('click',function(e){if(e.target===qMask)closeQuiz();});document.addEventListener('keydown',qKey,true);
+  var f=box.querySelector('input');if(f)setTimeout(function(){f.focus();},50);}
+ function qKey(e){if(e.key==='Escape'){e.preventDefault();closeQuiz();}}
+ function closeQuiz(){if(qMask&&qMask.parentNode)qMask.parentNode.removeChild(qMask);qMask=null;document.removeEventListener('keydown',qKey,true);try{if(qLast&&qLast.focus)qLast.focus();}catch(e){}}
+ function grade(box){var sc=0;QUESTIONS.forEach(function(q,i){var qe=box.querySelector('.p2-q[data-i="'+i+'"]');var p=qe.querySelector('input:checked');var pj=p?+p.value:-1;$all('label',qe).forEach(function(l){var j=+l.dataset.j;l.classList.remove('pick','ans');if(j===q.a)l.classList.add('ans');if(j===pj)l.classList.add('pick');});var ok=pj===q.a;if(ok)sc++;qe.classList.remove('right','wrong');qe.classList.add(ok?'right':'wrong');});
+  var s=box.querySelector('#qsc');s.style.display='block';s.textContent='점수: '+sc+' / '+QUESTIONS.length+(sc===QUESTIONS.length?' · 완벽해요! 🎉':' · 해설을 확인하세요.');QUIZ={done:true,score:sc,total:QUESTIONS.length};lsSet('__cg_quiz__',QUIZ);refreshBadge();announce('퀴즈 채점 완료 '+sc+'점');}
+
+ /* 첫 대화 따라하기 (간단 슬라이드) */
+ var swMask=null,swIdx=0,swLast=null;
+ var SLIDES=[
+  {b:'교육용 체험',h:'AI 스튜디오는 딱 3가지만 하면 돼요',sub:'“상담 응대 문장 다듬기”를 예로 보여드릴게요.',body:'<div style="display:flex;flex-direction:column;gap:10px;max-width:460px;margin:0 auto">'+row('1','무엇을 원하는지 말해요','“이런 걸 조사·만들어줘” 하고 문장으로')+row('2','↑ 로 보내요','그러면 AI 스튜디오가 만들어 줘요')+row('3','고쳐 말해요','“더 짧게” “친근하게” 처럼')+'</div>'},
+  {b:'1단계',h:'이렇게 문장으로 적어요',sub:'전문 용어 필요 없어요. 평소 말하듯이.',body:'<div style="background:#2a2a2a;border:1px solid #454545;border-radius:16px;padding:16px;max-width:540px;margin:0 auto"><div style="font-size:12.5px;color:#8e8e8e;margin-bottom:8px">💬 입력창</div><div style="font-size:14.5px;line-height:1.7">거래처에 보낼 <b>정중한 미팅 일정 조율 이메일</b> 써줘. <b>제목 포함, 3문단</b>, 너무 딱딱하지 않게.</div><div style="text-align:right;margin-top:12px"><span style="background:#ececec;color:#111;font-weight:800;border-radius:999px;padding:8px 14px">↑ 보내기</span></div></div><div style="max-width:500px;margin:14px auto 0;background:#2a2a2a;border:1px dashed #555;border-radius:12px;padding:12px 14px;font-size:13.5px;color:#d7d7dd">💡 공식: 누구에게 + 무엇을 + 톤/형식 + 분량</div>'},
+  {b:'2단계',h:'몇 초 뒤, 이렇게 답해요',sub:'직접 안 써도 돼요. 말한 대로 만들어 줍니다.',body:'<div style="max-width:520px;margin:0 auto;border:1px solid #3a3a3a;border-radius:16px;padding:16px;background:#1c1c1c;font-size:14px;line-height:1.7"><b style="color:#5fd3b2">제목:</b> 다음 주 미팅 일정 조율 요청<br><br>안녕하세요, ○○님. 늘 도움 주셔서 감사합니다.<br>다름이 아니라 다음 주 미팅 일정을 조율드리고자 연락드립니다. 화요일 또는 수요일 오후가 가능하실지요…<br><br>편하신 시간 알려주시면 맞추겠습니다. 감사합니다.</div>'},
+  {b:'3단계 · 핵심',h:'마음에 안 들면 고쳐 말해요',sub:'한 번에 완벽하지 않아요. 이 반복이 진짜 핵심이에요.',body:'<div style="max-width:520px;margin:0 auto;display:flex;flex-direction:column;gap:8px"><div style="align-self:flex-end;background:#2f2f2f;border:1px solid #454545;border-radius:14px;padding:10px 14px;font-size:14px">더 짧고 친근하게, 이모지 하나만</div><div style="border:1px solid #3a3a3a;border-radius:14px;padding:12px 14px;font-size:14px;line-height:1.6">○○님 안녕하세요 😊 다음 주 화·수 오후 중 미팅 가능하실까요? 편하신 시간 주시면 맞출게요!</div></div><div style="max-width:500px;margin:14px auto 0;background:#2a2a2a;border:1px dashed #555;border-radius:12px;padding:12px 14px;font-size:13.5px;color:#d7d7dd"><b>“더 짧게”, “표로”, “정중하게”</b> 처럼 한 가지씩 고쳐 말하면 그 부분만 바뀌어요.</div>'},
+  {b:'거의 다 왔어요',h:'보내기 전, 이것만 확인해요',sub:'AI 스튜디오 결과는 예시일 수 있어요. 특히 아래 3가지.',body:'<div style="max-width:500px;margin:0 auto;display:flex;flex-direction:column;gap:9px">'+ck('🔢','숫자·사실','가격·날짜·인용이 맞는지 직접 확인')+ck('🔒','개인정보','민감정보를 넣지 않았는지')+ck('🌐','최신 정보','바뀌는 정보는 검색으로 재확인')+'</div>'},
+  {b:'마지막',h:'복사해서 바로 쓰면 끝!',sub:'답을 복사해 메일·카톡·문서에 붙여넣으면 돼요.',body:'<div style="text-align:center"><div style="font-size:52px">🎉</div><div style="font-size:16px;font-weight:900;margin-top:4px">이게 전부예요!</div><div style="font-size:13.5px;color:#8e8e8e;margin-top:6px">말하고 → 만들고 → 고쳐 말하고 → 확인하고 → 복사</div></div>'}
+ ];
+ function row(n,t,d){return '<div style="display:flex;gap:13px;align-items:center;background:#2a2a2a;border:1px solid #3a3a3a;border-radius:14px;padding:15px 16px"><div style="width:34px;height:34px;flex:none;border-radius:50%;background:#10a37f;color:#fff;font-weight:900;display:grid;place-items:center">'+n+'</div><div><div style="font-size:15.5px;font-weight:800">'+t+'</div><div style="font-size:13px;color:#8e8e8e;margin-top:2px">'+d+'</div></div></div>';}
+ function ck(ic,t,d){return '<div style="display:flex;gap:12px;align-items:flex-start;background:#2a2a2a;border:1px solid #3a3a3a;border-radius:12px;padding:13px 15px"><div style="font-size:19px">'+ic+'</div><div style="font-size:14.5px;font-weight:800">'+t+'<small style="display:block;color:#8e8e8e;font-size:12.5px;margin-top:3px;font-weight:600">'+d+'</small></div></div>';}
+ var swcss=ce('style');swcss.textContent='.sw-ov{position:fixed;inset:0;z-index:3000;background:#171717;display:flex;flex-direction:column}.sw-scroll{flex:1;overflow:auto;display:flex;flex-direction:column;align-items:center;padding:26px 16px 22px}.sw-card{width:100%;max-width:640px}.sw-dots{display:flex;gap:7px;justify-content:center;margin:2px 0 6px}.sw-dot{width:9px;height:9px;border-radius:50%;background:#3a3a40}.sw-dot.on{background:#10a37f;transform:scale(1.25)}.sw-step{font-size:13px;color:#8e8e8e;text-align:center;margin-bottom:10px;font-weight:800}.sw-h{font-size:23px;font-weight:900;text-align:center;margin:2px 0 10px}.sw-sub{font-size:15px;color:#b4b4b4;text-align:center;margin:0 auto 18px;max-width:540px;line-height:1.7}.sw-bar{flex:none;background:#212121;border-top:1px solid #3a3a3a;padding:12px 14px calc(12px + env(safe-area-inset-bottom,0px))}.sw-bar .main{display:flex;gap:10px;max-width:640px;margin:0 auto}.sw-bar .main button{flex:1;min-height:54px;border-radius:14px;font:inherit;font-weight:900;font-size:16px;cursor:pointer;border:none}.sw-prev{background:#2f2f2f;color:#ececec;border:1px solid #454545!important}.sw-prev:disabled{opacity:.4}.sw-next{background:#10a37f;color:#fff}.sw-sub2{display:flex;gap:8px;justify-content:center;max-width:640px;margin:10px auto 0;flex-wrap:wrap}.sw-sub2 button{background:transparent;border:1px solid #454545;color:#8e8e8e;border-radius:999px;padding:8px 15px;font:inherit;font-size:12.5px;font-weight:800;cursor:pointer;min-height:40px}@media(max-width:480px){.sw-h{font-size:20px}}';document.head.appendChild(swcss);
+ window.startPractice=function(){if(swMask)return;swLast=document.activeElement;window.__prActive=true;swIdx=0;
+  swMask=ce('div','sw-ov');swMask.setAttribute('role','dialog');swMask.setAttribute('aria-modal','true');
+  var sc=ce('div','sw-scroll'),card=ce('div','sw-card'),bar=ce('div','sw-bar');sc.appendChild(card);swMask.appendChild(sc);swMask.appendChild(bar);document.body.appendChild(swMask);
+  function render(){var s=SLIDES[swIdx];var dots='';for(var i=0;i<SLIDES.length;i++)dots+='<span class="sw-dot'+(i===swIdx?' on':'')+'"></span>';card.innerHTML='<div class="sw-dots">'+dots+'</div><div class="sw-step">'+(swIdx+1)+' / '+SLIDES.length+' · '+s.b+'</div><h2 class="sw-h">'+s.h+'</h2><p class="sw-sub">'+s.sub+'</p><div>'+s.body+'</div>';
+   var last=swIdx===SLIDES.length-1;bar.innerHTML='<div class="main"><button class="sw-prev" type="button"'+(swIdx===0?' disabled':'')+'>← 이전</button><button class="sw-next" type="button">'+(last?'✓ 완료하고 닫기':'다음 →')+'</button></div><div class="sw-sub2"><button class="sw-home" type="button">🏠 처음으로</button><button class="sw-close" type="button">✕ 닫기</button></div>';
+   sc.scrollTop=0;bar.querySelector('.sw-prev').onclick=function(){if(swIdx>0){swIdx--;render();}};bar.querySelector('.sw-next').onclick=function(){if(last){try{localStorage.setItem('__cg_practice__','1');}catch(e){}refreshBadge();endP();}else{swIdx++;render();}};bar.querySelector('.sw-home').onclick=function(){swIdx=0;render();};bar.querySelector('.sw-close').onclick=endP;bar.querySelector('.sw-next').focus();}
+  function key(e){if(e.key==='Escape'){e.preventDefault();endP();}else if(e.key==='ArrowRight'&&swIdx<SLIDES.length-1){swIdx++;render();}else if(e.key==='ArrowLeft'&&swIdx>0){swIdx--;render();}}
+  window.__swKey=key;document.addEventListener('keydown',key,true);render();};
+ function endP(){window.__prActive=false;document.removeEventListener('keydown',window.__swKey,true);if(swMask&&swMask.parentNode)swMask.parentNode.removeChild(swMask);swMask=null;try{if(swLast&&swLast.focus)swLast.focus();}catch(e){}}
+
+ /* 시작 메뉴 (좌측) */
+ var sb=ce('button');sb.id='p2-startBtn';sb.type='button';sb.setAttribute('aria-haspopup','dialog');sb.innerHTML='<span class="e">🏠</span>시작 메뉴';document.body.appendChild(sb);
+ var lmask=ce('div','p2-mask'),lpanel=ce('div','p2-lpanel');lpanel.setAttribute('role','dialog');lpanel.setAttribute('aria-modal','true');lpanel.setAttribute('aria-label','시작 메뉴');document.body.appendChild(lmask);document.body.appendChild(lpanel);
+ var lLast=null;
+ function goalBtns(){return CATS.filter(function(c){return c.id!=='all';}).map(function(c){return '<button type="button" data-cat="'+c.id+'"><span class="e">'+c.emo+'</span><span class="g">'+c.ko+'</span><span class="d">'+c.q+'</span></button>';}).join('');}
+ function renderL(){lpanel.innerHTML='<div class="ph"><h2>🏠 시작 메뉴</h2><button class="x" type="button" aria-label="닫기">✕</button></div><div class="pb">'
+  +'<button class="p2-lbtn primary" data-act="practice"><span class="e">🎬</span><span>첫 대화 따라하기<small>슬라이드로 6장</small></span></button>'
+  +'<button class="p2-lbtn" data-act="guide"><span class="e">📘</span><span>작업 가이드<small>실제 쓰는 법·복붙 요청 문장</small></span></button>'
+  +'<button class="p2-lbtn" data-act="home"><span class="e">🏠</span><span>홈(대화) 화면으로<small>처음으로 돌아가기</small></span></button>'
+  +'<div class="p2-lsec">무엇을 하고 싶으세요? — 목적으로 시작</div><div class="p2-lgoal">'+goalBtns()+'</div></div>';
+  lpanel.querySelector('.x').onclick=closeL;
+  lpanel.querySelector('.pb').addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;var act=b.getAttribute('data-act');
+   if(act){closeL();if(act==='practice')startPractice();else if(act==='guide')openGuide();else if(act==='home'){$('.tab[data-tab="home"]').click();window.scrollTo(0,0);}return;}
+   var cat=b.getAttribute('data-cat');if(cat){closeL();$('.tab[data-tab="uses"]').click();var chip=$('.p2-chip[data-cat="'+cat+'"]');if(chip)chip.click();announce(b.querySelector('.g').textContent+' 활용법');}});}
+ function openL(){lLast=document.activeElement;renderL();lmask.classList.add('on');lpanel.classList.add('on');document.addEventListener('keydown',lKey,true);var x=lpanel.querySelector('.x');if(x)setTimeout(function(){x.focus();},60);}
+ function closeL(){lmask.classList.remove('on');lpanel.classList.remove('on');document.removeEventListener('keydown',lKey,true);try{if(lLast&&lLast.focus)lLast.focus();}catch(e){}}
+ function lKey(e){if(e.key==='Escape'){e.preventDefault();closeL();}}
+ sb.onclick=openL;lmask.onclick=closeL;
+
+ refreshBadge();
+ try{if(localStorage.getItem('__cg_practice__')==='1'){}}catch(e){}
+})();
+</script>
+<script>
+/* ===== 라이브러리 설명 강화 + 드로어 타이핑 애니메이션 ===== */
+(function(){
+ var esc=function(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');};
+ /* 라이브러리 깊은 설명 */
+INFO['library']={en:'Saved prompts',ko:'저장된 프롬프트 (라이브러리)',
+  fn:'잘 된 요청 설정(프롬프트+모델+시스템 명령)을 <b>저장해두고 다시 꺼내 쓰는</b> 곳이에요. “리비안 상담 응대”처럼 저장해요.',
+  when:'같은 설정을 <b>반복 사용</b>하거나 직원과 나눌 때.',
+  how:'저장 버튼으로 이름을 붙여 저장하고, 여기서 다시 열어 이어가요.',
+  caution:'저장물에 <b>고객 개인정보</b>가 남지 않게 비워 저장하세요.',
+  sc:'저장한 “리비안 상담 응대”를 다시 꺼내 볼게요.',
+  run:[
+   {t:'1 · 라이브러리 열기',me:'왼쪽 메뉴 → 저장된 프롬프트'},
+   {t:'2 · 저장한 설정 선택',me:'“리비안 상담 응대” 열기',ai:'저장했던 프롬프트·시스템 명령·설정이 그대로 불러와져요.'},
+   {t:'3 · 새 문의로 사용',me:'새 상담 문의를 넣어 실행',ai:'같은 규칙·설정으로 응대해요.'}
+  ],
+  steps:['잘 된 설정을 저장','라이브러리에서 다시 열어요','새 요청으로 재사용']};
+
+ var timers=[];function T(fn,ms){var t=setTimeout(fn,ms);timers.push(t);return t;}
+ function clearT(){timers.forEach(clearTimeout);timers=[];}
+ var reduce=false;try{reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;}catch(e){}
+ function typeHTML(el,html,speed,done){el.innerHTML='';var i=0,n=html.length,buf='';
+  function step(){ if(i>=n){el.innerHTML=html;if(done)done();return;}
+   var ch=html.charAt(i);
+   if(ch==='<'){var j=html.indexOf('>',i);if(j<0)j=n-1;buf+=html.slice(i,j+1);i=j+1;el.innerHTML=buf;step();return;}
+   if(ch==='&'){var kk=html.indexOf(';',i);if(kk>-1&&kk-i<8){buf+=html.slice(i,kk+1);i=kk+1;el.innerHTML=buf;T(step,speed);return;}}
+   buf+=ch;i++;el.innerHTML=buf;T(step,speed);}
+  step();}
+ function blocksFor(d){var B=[];
+  B.push('<p class="fn">'+d.fn+'</p>');
+  if(d.when)B.push('<h4>이럴 때 써요</h4><div class="fn">'+d.when+'</div>');
+  if(d.how)B.push('<h4>하는 법</h4><div class="fn">'+d.how+'</div>');
+  if(d.list)B.push('<h4>이 안에 있는 것들</h4><div class="dlist">'+d.list.map(function(x){return '<div class="di"><div class="die">'+x.en+'</div><div class="did">'+x.d+'</div></div>';}).join('')+'</div>');
+  if(d.run){B.push('<h4 style="margin-top:4px">🏗 실제로 해보기 (인테리어 예시)</h4>'+(d.sc?'<div class="fn" style="color:var(--tx2)">'+d.sc+'</div>':''));
+   d.run.forEach(function(s){var h='<div class="runstep"><div class="rt">'+s.t+'</div>';if(s.me)h+='<div class="rbub me2">'+esc(s.me)+'</div>';if(s.ai)h+='<div class="rbub ai2">'+esc(s.ai)+'</div>';B.push(h+'</div>');});}
+  var sim=(!d.run&&d.say)?{say:d.say,result:d.ans,refine:d.refine}:null;
+  if(sim){var h='<h4>사용 시뮬레이션</h4><div class="simwrap">';
+   h+='<div class="simline"><span class="stag">1 · 이렇게 적어요</span><div class="sbub">'+esc(sim.say)+'</div></div><div class="sarrow">↓ ↑ 보내면</div><div class="simline"><span class="stag">2 · 이렇게 돼요</span><div class="sbub ai">'+esc(sim.result||'')+'</div></div>';
+   if(sim.refine)h+='<div class="sarrow">↓ 고쳐 말하면</div><div class="simline"><span class="stag">3 · 이렇게 바꿔 말하면</span><div class="sbub">'+esc(sim.refine[0])+'</div></div><div class="simline"><span class="stag">4 · 이렇게 바뀌어요</span><div class="sbub ai">'+esc(sim.refine[1])+'</div></div>';
+   B.push(h+'</div>');}
+  if(d.caution)B.push('<div class="warn"><b>⚠️ 주의:</b> '+d.caution+'</div>');
+  if(d.steps)B.push('<h4>한 줄 정리 (따라하기)</h4><ol class="st">'+d.steps.map(function(s){return '<li>'+s+'</li>';}).join('')+'</ol>');
+  return B;}
+ var skipFn=null;
+ window.openDrawer=function(k){var d=INFO[k];if(!d)return;try{stopVoice();}catch(e){} clearT();
+  document.getElementById('dEn').textContent=d.en;document.getElementById('dKo').textContent=d.ko;
+  var body=document.getElementById('dBody');body.innerHTML='';
+  try{drawer.classList.add('show');bd.classList.add('show');}catch(e){}
+  try{curSay=buildSay(d);}catch(e){}
+  try{if(window.markSeen)window.markSeen(k);}catch(e){}
+  var blocks=blocksFor(d),idx=0,speed=reduce?0:8;
+  function finishAll(){clearT();body.innerHTML=blocks.join('');skipFn=null;body.onclick=null;}
+  skipFn=finishAll; body.onclick=function(){if(skipFn)skipFn();};
+  function next(){ if(idx>=blocks.length){skipFn=null;body.onclick=null;return;} var w=document.createElement('div');w.className='dblock';body.appendChild(w);
+   if(speed===0){w.innerHTML=blocks[idx];idx++;next();return;}
+   typeHTML(w,blocks[idx],speed,function(){ idx++; try{body.scrollTop=body.scrollHeight;}catch(e){} T(next,110); }); }
+  next();
+  setTimeout(function(){try{document.getElementById('dCl').focus();}catch(e){}},40);
+ };
+ /* 안내 캡션(한 번만): 클릭하면 전체 표시 */
+ var hintCss=document.createElement('style');hintCss.textContent='.dblock{animation:dbf .18s ease}@keyframes dbf{from{opacity:.2;transform:translateY(3px)}to{opacity:1;transform:none}}';document.head.appendChild(hintCss);
+})();
+</script>
+<script>
+/* ===== AI 스튜디오: 모든 요소에 실제 사용하는 것처럼 시뮬레이션 =====
+   리비안 인테리어 업무 기본, 코딩/앱은 'AI 교육 SaaS 구축'. */
+(function(){
+ 'use strict';
+ function set(k,o){ if(!INFO[k]) INFO[k]={}; for(var x in o){ INFO[k][x]=o[x]; } }
+
+ set('newchat',{en:'New prompt',ko:'새 프롬프트 (처음부터)',
+  fn:'지금 실험을 끝내고 <b>완전히 새로운 요청을 처음부터</b> 시작해요. 주제가 바뀌면 새로 시작하면 깔끔해요.',
+  when:'응대 실험을 하다가 이제 <b>포스터 만들기</b>처럼 전혀 다른 일을 할 때.',
+  how:'사이드바 <b>“새 프롬프트”</b>를 눌러요.',
+  caution:'이어서 다듬을 땐 같은 실험에서 하세요(설정이 이어져요).',
+  sc:'응대 실험을 끝내고 새 프롬프트로 포스터를 시작해 볼게요.',
+  run:[
+   {t:'1 · 새 프롬프트',me:'사이드바 “새 프롬프트”'},
+   {t:'2 · 새 주제',me:'“봄맞이 무료 상담” 포스터 문구 3개 만들어줘.',ai:'포스터용 짧은 문구 3개가 나와요.'},
+   {t:'3 · 이어서',me:'가장 나은 걸로 이미지도 만들어줘.',ai:'같은 실험에서 이어서 이미지를 만들어줘요.'}
+  ],
+  steps:['주제가 바뀌면 새 프롬프트','새 요청을 넣어요','이어서 다듬을 땐 같은 실험에서']});
+
+ set('search',{en:'Search',ko:'검색 (저장한 실험 찾기)',
+  fn:'예전에 <b>저장한 프롬프트·실험</b>을 이름으로 찾아요.',
+  when:'지난번 “리비안 상담 응대” 설정을 다시 열 때.',
+  how:'사이드바 <b>“검색”</b>에 키워드를 적어요.',
+  caution:'저장한 것 안에서만 찾아요.',
+  sc:'저장한 응대 설정을 검색해 볼게요.',
+  run:[
+   {t:'1 · 검색',me:'사이드바 “검색”'},
+   {t:'2 · 키워드',me:'상담 응대'},
+   {t:'3 · 열어서 이어가기',ai:'“리비안 상담 응대” 등이 떠요. 눌러 이어서 다듬어요.'}
+  ],
+  steps:['“검색”을 눌러요','키워드를 적어요','골라 이어가요']});
+
+ set('gpts',{en:'Models & media',ko:'모델 · 미디어',
+  fn:'AI 스튜디오의 <b>대표 모델(Pro·Flash)</b>과 <b>미디어 생성(나노바나나 프로·Veo·Lyria)</b>을 모아 본 곳이에요. 카드를 눌러 각각의 쓰임을 익혀요.',
+  when:'어떤 모델·기능이 어떤 일에 맞는지 고를 때.',
+  how:'“모델·미디어” 탭에서 카드를 눌러 설명과 예시를 봐요.',
+  caution:'모델 이름·요금은 <b>자주 바뀌어요</b>(확인 필요).',
+  sc:'포스터는 나노바나나, 응대는 Pro처럼 골라 써볼게요.',
+  run:[
+   {t:'이미지',me:'(나노바나나 프로) 상담 포스터 만들어줘',ai:'글자 또렷한 고화질 포스터가 나와요.'},
+   {t:'응대',me:'(3.1 Pro) 상담 응대 규칙을 탄탄하게 설계해줘',ai:'논리적인 응대 설정이 나와요.'}
+  ],
+  steps:['일에 맞는 모델·기능을 골라요','카드로 쓰임을 익혀요','필요 시 바꿔요']});
+
+ set('account',{en:'Account · API',ko:'내 계정 · API 키',
+  fn:'로그인·요금과 <b>API 키</b>를 관리하는 곳이에요. API 키는 <b>내 프로그램이 AI를 쓰게 해주는 열쇠</b>예요.',
+  when:'AI 교육 SaaS 같은 <b>내 서비스에 AI를 연결</b>할 때.',
+  how:'계정 → API 키 발급. 무료 한도·요금을 확인해요.',
+  caution:'<b>API 키는 절대 화면·공개 코드에 노출 금지.</b> 서버에 두고 개발자와 다뤄요. (요금·한도 확인 필요)',
+  sc:'내 서비스 연결용 API 키를 확인해 볼게요.',
+  run:[
+   {t:'1 · API 키 발급',me:'계정 → API 키 발급'},
+   {t:'2 · 안전 보관',ai:'키는 개발자에게 안전하게 전달하고 서버에 보관하라고 안내해요.'},
+   {t:'3 · 요금 확인',me:'무료 한도와 초과 시 요금을 확인',ai:'플랜별 한도·요금을 안내해요.(확인 필요)'}
+  ],
+  steps:['계정 → API 키 발급','키는 안전하게(개발자와)','요금·한도 확인']});
+
+ set('share',{en:'Get code',ko:'코드 가져오기 · 공유',
+  fn:'지금 설정을 <b>내 서비스로 옮기는 코드</b>를 받거나, 결과를 링크로 공유하는 곳이에요.',
+  when:'완성한 응대·기능을 <b>내 웹사이트·앱</b>에 넣을 때.',
+  how:'우측의 <b>“코드 가져오기”</b>로 현재 설정을 복사해요.',
+  caution:'코드에 <b>API 키를 그대로 넣지 마세요</b>(서버에 두기).',
+  sc:'응대 설정을 코드로 내보내 볼게요.',
+  run:[
+   {t:'1 · 코드 가져오기',me:'현재 설정을 내 사이트에 넣게 코드로 내보내줘',ai:'모델·시스템 명령·설정이 담긴 코드와 사용법이 나와요.'},
+   {t:'2 · 키 분리',ai:'API 키는 코드에 넣지 말고 서버에 두라고 안내해요.'}
+  ],
+  steps:['설정을 완성해요','“코드 가져오기”로 복사','키는 서버에(개발자와)']});
+
+ set('tools',{
+  sc:'도구를 켜서 실제 작업을 해볼게요.',
+  run:[
+   {t:'1 · 검색 🔎',me:'2026년 자재 트렌드를 출처와 함께 알려줘.',ai:'최신 정보 + 출처가 나와요.'},
+   {t:'2 · 코드 실행 🧮',me:'(상담 데이터) 월별 전환율을 계산해 표로.',ai:'실제 계산으로 정확한 표가 나와요.'},
+   {t:'3 · 구조화 🧾',me:'응대를 항상 “평형/예산/시기/요청” 표로만.',ai:'늘 같은 표로 정리돼요.'}
+  ]});
+
+ var recentSim={
+  fn:'예전에 저장한 <b>실험을 다시 열어 이어가는</b> 목록이에요. 설정을 기억한 채 계속 다듬을 수 있어요.',
+  when:'어제 만든 <b>응대 설정·앱</b>을 이어서 고칠 때.',
+  how:'사이드바 <b>“최근”</b>에서 하나를 눌러요.',
+  caution:'완전히 다른 새 일이면 “새 프롬프트”가 깔끔해요.',
+  sc:'어제 만든 <b>상담 응대 설정</b>을 이어서 다듬어 볼게요.',
+  run:[
+   {t:'1 · 최근 열기',me:'사이드바 최근 → “리비안 상담 응대 프롬프트”'},
+   {t:'2 · 이어서 수정',me:'규칙에 “가능하면 표로”를 추가해줘.',ai:'앞 설정을 유지한 채 규칙만 더해줘요.'},
+   {t:'3 · 코드로',me:'이 설정을 코드로 내보내줘.',ai:'내 서비스에 넣을 코드가 나와요.'}
+  ],
+  steps:['최근에서 하나를 눌러요','설정을 이어서 수정','새 일이면 “새 프롬프트”']};
+ set('hist1',{en:'Recent prompt',ko:'최근 작업 (이어가기)'}); set('hist1',recentSim);
+ set('hist2',{en:'Recent prompt',ko:'최근 작업 (이어가기)'}); set('hist2',recentSim);
+
+ set('sidetoggle',{en:'Toggle sidebar',ko:'사이드바 접기 / 펴기',
+  fn:'왼쪽 <b>사이드바를 접거나 펴는</b> 버튼이에요. 결과·미리보기를 <b>넓게</b> 볼 때 접어요.',
+  when:'만든 앱 미리보기나 이미지를 넓게 확인할 때.',
+  how:'상단 접기 아이콘을 눌러요.',
+  sc:'미리보기를 넓게 보려고 접었다 펴볼게요.',
+  run:[{t:'1 · 접기',me:'접기 아이콘 클릭',ai:'메뉴가 접혀 미리보기가 넓게 보여요.'},{t:'2 · 펴기',me:'다시 클릭',ai:'메뉴가 다시 나와요.'}],
+  steps:['넓게 볼 때 접어요','다시 눌러 펴요']});
+
+ /* 모델·미디어 6종 카드 */
+ function mSim(name,desc,rivian,ex,exR){return {
+  fn:'<b>'+name+'</b> — '+desc,
+  when:rivian,
+  how:'모델을 고르거나 해당 기능을 켠 뒤 요청하면 돼요.',
+  caution:'모델명·요금·제공 여부는 <b>자주 바뀌어요</b>(확인 필요).',
+  sc:'<b>'+name+'</b>으로 해볼게요.',
+  run:[{t:'요청',me:ex,ai:exR}],
+  steps:['이 모델·기능을 골라요','요청을 넣어요','결과를 확인·다듬어요']};}
+ set('g0',mSim('Gemini 3.1 Pro','복잡한 설계·리서치용 똑똑한 모델.','제안 논리·응대 규칙 설계에.','상담 응대 규칙을 논리적으로 설계해줘.','탄탄한 응대 설정이 나와요.'));
+ set('g1',mSim('Gemini 3.5 Flash','빠르고 저렴한 모델.','간단 응대·대량 처리에.','상담 감사 문자 3버전 빠르게 써줘.','짧은 문자 3개가 바로 나와요.'));
+ set('g2',mSim('Nano Banana Pro','2K/4K 고화질·글자 또렷한 이미지.','인쇄용 포스터·간판 시안에.','“봄맞이 무료 상담” 문구가 또렷한 포스터 만들어줘.','글자가 또렷한 고화질 포스터가 나와요.'));
+ set('g3',mSim('Veo 3.1','소리·립싱크 있는 영상.','시공 전/후·홍보 릴스에.','전/후 15초 홍보 영상 만들어줘.','소리까지 있는 15초 영상이 나와요.'));
+ set('g4',mSim('Lyria','배경 음악·노래 생성.','홍보 영상·매장 배경음에.','잔잔한 홍보 영상 배경음 40초 만들어줘.','설명한 분위기의 배경 음악이 나와요.'));
+ set('g5',mSim('생각 수준 · Deep Think','더 오래 생각하게 하는 설정.','복잡한 견적 로직 검토에.','평형·자재 등급별 견적 계산 로직을 꼼꼼히 설계해줘.','단계적으로 검토한 정교한 결과가 나와요.(확인 필요)'));
+})();
+</script>
+
+<script>
+/* ===== 🏆 리비안 베스트 활용 탭 (이 도구를 리비안디자인이 어떻게 쓰면 최고인가) ===== */
+(function(){
+ 'use strict';
+ var css=document.createElement('style');
+ css.textContent=''
+ +'#v-best .bhero{background:linear-gradient(135deg,rgba(16,163,127,.14),rgba(16,163,127,.04));border:1px solid rgba(16,163,127,.28);border-radius:16px;padding:20px 18px;margin-bottom:16px}'
+ +'#v-best .bhero .kk{display:inline-block;font-size:11px;font-weight:800;color:#5fd3b2;background:#0f2b23;border:1px solid #1a7f64;border-radius:999px;padding:4px 10px}'
+ +'#v-best .bhero h2{font-size:20px;margin:10px 0 6px;color:#fff}'
+ +'#v-best .bhero p{font-size:14px;color:var(--tx2);line-height:1.7;margin:0}'
+ +'#v-best .bgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}'
+ +'@media(max-width:720px){#v-best .bgrid{grid-template-columns:1fr}}'
+ +'#v-best .bcard{background:var(--panel2);border:1px solid var(--line);border-radius:14px;padding:16px}'
+ +'#v-best .bcard .bt{font-size:15px;font-weight:800;color:#fff;margin-bottom:6px}'
+ +'#v-best .bcard .bd{font-size:13.5px;color:var(--tx2);line-height:1.7}'
+ +'#v-best .bcard .tagr{margin-top:9px;font-size:12px;color:#5fd3b2;font-weight:700}'
+ +'#v-best .routine{background:var(--panel2);border:1px solid var(--line);border-radius:14px;padding:16px;margin-top:14px}'
+ +'#v-best .routine h3{font-size:15px;color:#fff;margin:0 0 10px}'
+ +'#v-best .routine ol{margin:0;padding-left:20px}#v-best .routine li{font-size:13.5px;color:var(--tx);line-height:1.8;margin-bottom:4px}'
+ +'#v-best .warnbox{margin-top:14px;font-size:12.5px;color:var(--tx2);background:var(--panel);border:1px dashed var(--line2);border-radius:12px;padding:12px 14px;line-height:1.7}';
+ document.head.appendChild(css);
+
+ var view=document.createElement('section');view.className='view';view.id='v-best';
+ view.innerHTML=''
+ +'<div class="sect-t">🏆 리비안 베스트 활용 · AI 스튜디오, 리비안은 이렇게 쓰면 돈값합니다</div>'
+ +'<div class="sub-t">AI 스튜디오의 강점과, 리비안디자인이 <b>실속있게</b> 쓰는 법을 정리했어요.</div>'
+ +'<div class="bhero"><span class="kk">한 문장 요약</span><h2>“AI를 시험·완성해서 — 내 서비스(홍보물·SaaS)에 직접 붙이는 작업대”</h2>'
+ +'<p>AI 스튜디오는 요청 문장을 <b>완벽히 다듬어 저장</b>하고, <b>고화질 이미지·영상·음악</b>을 만들고, <b>실제 앱까지</b> 만들어 <b>내 서비스에 코드/API로 연결</b>하는 곳이에요. 리비안엔 홍보물·응대·신사업(AI 교육 SaaS)을 <b>외주 없이</b> 굴리는 무기가 됩니다.</p></div>'
+ +'<div class="bgrid">'
+ +'<div class="bcard"><div class="bt">① 시스템 명령 — 완벽한 응대 고정</div><div class="bd">“확정 금액 금지·결론부터” 규칙을 <b>한 번</b> 정하면 항상 그대로 응대. 저장해두고 재사용·직원 공유.</div><div class="tagr">응대 표준화</div></div>'
+ +'<div class="bcard"><div class="bt">② 나노바나나 Pro — 인쇄물</div><div class="bd">글자 또렷한 <b>2K/4K 포스터·간판 시안</b>을 즉석에서. 인쇄물 디자인 외주비를 크게 줄여요.</div><div class="tagr">인쇄물 외주 절감</div></div>'
+ +'<div class="bcard"><div class="bt">③ Veo + Lyria — 영상·음악</div><div class="bd">시공 전/후 <b>홍보 영상</b>과 <b>배경 음악</b>까지 한 곳에서. SNS 릴스·매장용으로 바로.</div><div class="tagr">영상·음악 외주 절감</div></div>'
+ +'<div class="bcard"><div class="bt">④ Build — AI 교육 SaaS 시제품</div><div class="bd">개발 전에 <b>실제 도는 화면</b>을 만들어 “이렇게 생겼다”를 확인. 개발 비용·시행착오를 줄여요.</div><div class="tagr">신사업 시제품</div></div>'
+ +'<div class="bcard"><div class="bt">⑤ 코드·API 키 — 내 서비스에 AI 붙이기</div><div class="bd">완성한 응대·기능을 <b>내 웹사이트·앱에 연결</b>. AI 상담 챗봇을 실제 서비스로. (키는 서버에 안전하게)</div><div class="tagr">실서비스 연결</div></div>'
+ +'<div class="bcard"><div class="bt">⑥ 코드 실행 — 정확한 계산</div><div class="bd">견적 합계·전환율을 <b>실제 계산</b>으로 정확히. 표로 정리해 사장님 보고용으로.</div><div class="tagr">정확한 수치</div></div>'
+ +'</div>'
+ +'<div class="routine"><h3>🧭 리비안 추천 루틴 (그대로 따라 하면 됨)</h3><ol>'
+ +'<li>상담 응대 규칙을 <b>시스템 명령</b>으로 고정하고 <b>저장</b></li>'
+ +'<li>인쇄물은 <b>나노바나나 Pro</b>, 홍보는 <b>Veo+Lyria</b>로</li>'
+ +'<li>신사업(AI 교육 SaaS)은 <b>Build</b>로 시제품 → 확인 후 개발</li>'
+ +'<li>완성한 응대는 <b>코드/ API 키</b>로 내 사이트에 연결(개발자와)</li>'
+ +'<li>API 키는 <b>절대 노출 금지</b> — 서버에 두고 요금·한도 확인</li>'
+ +'</ol></div>'
+ +'<div class="warnbox">⚠️ 꼭 확인: AI 스튜디오는 개발도 되는 <b>전문 도구</b>예요. 만든 이미지·영상·수치는 예시일 수 있으니 고객 전달 전 확인, 영상은 “예시” 표기. <b>API 키는 화면·공개 코드에 절대 노출하지 말고</b> 개발자와 서버에서 다루세요. 모델명·요금은 자주 바뀝니다(확인 필요).</div>';
+ function place(){
+  var wrap=document.querySelector('.wrap'); var tabs=document.querySelector('.tabs');
+  if(!wrap||!tabs||document.getElementById('v-best'))return;
+  wrap.appendChild(view);
+  var t=document.createElement('button');t.className='tab';t.dataset.tab='best';t.textContent='🏆 리비안 베스트';t.setAttribute('role','tab');t.setAttribute('tabindex','0');
+  tabs.appendChild(t);
+  function showBest(){document.querySelectorAll('.tab').forEach(function(x){x.classList.toggle('on',x===t);x.setAttribute('aria-selected',x===t?'true':'false');});document.querySelectorAll('.view').forEach(function(v){v.classList.toggle('on',v.id==='v-best');});try{document.querySelector('.wrap').scrollTop=0;}catch(e){}}
+  t.addEventListener('click',showBest);
+  t.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();showBest();}});
+  document.querySelectorAll('.tab').forEach(function(x){ if(x!==t){ x.addEventListener('click',function(){ view.classList.remove('on'); t.classList.remove('on'); t.setAttribute('aria-selected','false'); }); } });
+ }
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',place);else place();
+})();
+</script>
+</body>
+</html>
