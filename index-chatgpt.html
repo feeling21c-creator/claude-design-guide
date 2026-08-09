@@ -245,8 +245,6 @@ a{color:var(--accent-ink)}
    <span class="sp"></span>
    <span class="cw ix" data-k="chatwork" role="group" aria-label="Chat / Work 전환"><span class="cwb" data-cw="chat">Chat</span><span class="cwb on" data-cw="work">Work</span></span>
    <span class="sp"></span>
-   <button class="tbtn ix" data-k="share">↗ 공유</button>
-   <button class="av ix" data-k="account">R</button>
   </div>
 
   <div class="tabs">
@@ -323,8 +321,6 @@ a{color:var(--accent-ink)}
  <button id="tVoice">🔊 설명 자동읽기 끔</button>
  <button id="reopen">🏠 처음 화면</button>
 </div>
-<div class="simbadge">🧪 교육용 시뮬레이션 · 실제 ChatGPT 아님</div>
-
 <div class="guidebd" id="guidebd">
  <div class="gtop"><span class="gt">📘 작업 가이드</span><span class="gtk">ChatGPT로 실제 일하는 법 + 잘 시키는 법</span><span class="sp"></span><button id="guideVoice">🔊 자동읽기 끔</button><button id="guideClose">✕ 화면으로</button></div>
  <div class="guide" id="guideBody"></div>
@@ -395,7 +391,7 @@ var GPTS=[
  {emo:'🖼',bg:'#3a2a55',n:'이미지 생성',d:'설명하면 그림·포스터·썸네일을 만들어줘요.',fn:'이미지 생성에 특화된 GPT예요. 무드보드·컨셉 이미지·SNS 썸네일에 좋아요.'},
  {emo:'📊',bg:'#123a2f',n:'데이터 분석',d:'엑셀·CSV를 올리면 계산·차트·요약.',fn:'표·숫자 분석에 특화. 매출·설문 데이터를 차트와 요약으로 만들어줘요.'},
  {emo:'✍️',bg:'#3a3320',n:'글쓰기 코치',d:'글을 다듬고 톤을 바꿔줘요.',fn:'문장 교정·톤 변경·구조 잡기에 특화된 GPT예요.'},
- {emo:'💻',bg:'#20303a',n:'코딩 도우미',d:'코드 작성·오류 수정을 도와줘요.',fn:'프로그래밍에 특화. 코드 생성·디버그·설명을 해줘요.'},
+ {emo:'💻',bg:'#20303a',n:'코딩 도우미',d:'코드 작성·오류 수정을 도와줘요.',fn:'프로그래밍에 특화. 코드 생성·오류 고치기·설명을 해줘요.'},
  {emo:'🌍',bg:'#2a3a20',n:'번역기',d:'자연스러운 번역과 현지 말투.',fn:'번역·현지화에 특화된 GPT예요.'},
  {emo:'🎓',bg:'#3a2030',n:'학습 튜터',d:'개념을 눈높이에 맞게 설명·퀴즈.',fn:'공부·개념 설명·연습문제에 특화된 GPT예요.'}
 ];
@@ -570,34 +566,34 @@ var FLOW=[
  {t:'구체적으로 말해요',d:'누구에게 · 무엇을 · 어떤 톤 · 얼마나(길이)까지. 참고할 사진·문서가 있으면 ＋ 로 첨부해요.'},
  {t:'필요하면 도구를 켜요',d:'최신 정보면 🌐 웹 검색, 그림이면 🎨 이미지, 긴 글·코드면 🖊 캔버스.'},
  {t:'나온 답을 보고 “고쳐 말하기”를 반복해요',d:'“더 짧게”, “표로”, “친근하게”처럼 하나씩 바꿔 말하면 점점 좋아져요.'},
- {t:'중요한 정보는 꼭 직접 확인해요',d:'ChatGPT는 가끔 그럴듯하게 틀린 답(환각)을 해요. 숫자·사실·법규는 반드시 검증하세요.'}
+ {t:'중요한 정보는 꼭 직접 확인해요',d:'ChatGPT는 가끔 그럴듯하게 틀린 답(사실이 아닌 내용을 사실처럼 자신있게 말하는 경우)을 해요. 숫자·사실·법규는 반드시 검증하세요.'}
 ];
 var GUIDE=[
  {id:'g1',num:'PART 1',title:'큰 그림 — 전체 흐름 5단계',
   voice:'큰 그림. 챗지피티는 말로 시키면 대신 해주는 에이아이예요. 흐름은 다섯 단계. 무엇을 원하는지 정하고, 구체적으로 말하고, 필요하면 도구를 켜고, 나온 답을 고쳐 말하기를 반복하고, 중요한 정보는 꼭 직접 확인해요.',
   html:'<p>ChatGPT로 하는 <b>모든 일</b>은 아래 5단계면 충분해요.</p><div class="flow">'+FLOW.map(function(f,i){return '<div class="step"><div class="n">'+(i+1)+'</div><div><div class="tt2">'+f.t+'</div><div class="ds2">'+f.d+'</div></div></div>';}).join('')+'</div><p style="margin-top:12px"><b>잘 되는 일:</b> 글쓰기·요약·번역·아이디어·이미지·자료 정리·코딩. &nbsp;<b>조심할 것:</b> 최신·정확한 숫자/사실(직접 확인 필요).</p>'},
- {id:'g2',num:'PART 2',title:'실전 레시피 — 복붙 프롬프트',
-  voice:'실전 레시피. 이메일 초안, 긴 글 요약, 이미지 만들기, 문서 질문 네 가지예요. 프롬프트를 복사해 붙여넣고, 나온 뒤 고쳐 말하면 됩니다.',
-  html:'<p>아래 <b>프롬프트 상자</b>를 복사해 입력창에 붙여넣고 ↑ 를 누르세요. 나온 뒤엔 “다듬는 말”로 고치면 돼요.</p>'
+ {id:'g2',num:'PART 2',title:'실전 레시피 — 복붙 요청 문장',
+  voice:'실전 레시피. 이메일 초안, 긴 글 요약, 이미지 만들기, 문서 질문 네 가지예요. 요청 문장를 복사해 붙여넣고, 나온 뒤 고쳐 말하면 됩니다.',
+  html:'<p>아래 <b>요청 문장 상자</b>를 복사해 입력창에 붙여넣고 ↑ 를 누르세요. 나온 뒤엔 “다듬는 말”로 고치면 돼요.</p>'
    +'<div class="rec"><span class="rtag">레시피 ①</span><h3>거래처 안내 이메일</h3><p class="goal">목표: 바로 보낼 정중한 이메일. 준비물: 없음.</p><div class="rlab">복사해 붙여넣기</div>'+pbox('거래처에 보낼 정중한 안내 이메일을 써줘. 내용은 다음 주 미팅 일정을 화·수 오후로 조율하고 싶다는 것. 제목도 만들어주고, 3문단으로, 너무 딱딱하지 않게 정중하게.')+'<div class="rlab">이렇게 다듬어요</div><div class="rnext"><div class="ri">“더 짧고 친근하게”</div><div class="ri">“마지막에 연락처 넣어줘”</div></div><span class="out">복사 → 메일에 붙여넣어 발송</span></div>'
    +'<div class="rec"><span class="rtag">레시피 ②</span><h3>긴 글·회의록 요약</h3><p class="goal">목표: 핵심만 빠르게. 준비물: 요약할 글.</p><div class="rlab">복사해 붙여넣기</div>'+pbox('아래 회의록을 5줄로 핵심 요약하고, 결정사항과 할 일(담당자 포함)을 나눠서 정리해줘. 마지막에 다음 회의 때 확인할 것 3가지도 뽑아줘.\n\n(여기에 회의록을 붙여넣기)')+'<div class="rlab">이렇게 다듬어요</div><div class="rnext"><div class="ri">“할 일을 표로 정리해줘”</div><div class="ri">“존댓말 공지 형태로 바꿔줘”</div></div><span class="out">복사 → 카톡·메일 공유</span></div>'
    +'<div class="rec"><span class="rtag">레시피 ③</span><h3>이미지 만들기 (무드보드)</h3><p class="goal">목표: 컨셉 이미지. 준비물: 없음.</p><div class="rlab">복사해 붙여넣기</div>'+pbox('따뜻한 우드톤의 미니멀 거실 인테리어 무드보드 이미지를 만들어줘. 자연광이 들어오고, 아이보리와 오크 우드 톤, 식물 조금, 아늑한 느낌. 정사각형 구도로.')+'<div class="rlab">이렇게 다듬어요</div><div class="rnext"><div class="ri">“조명을 더 아늑하게”</div><div class="ri">“소파를 패브릭으로 바꿔줘”</div></div><span class="out">이미지 저장 → 고객 제안·SNS</span></div>'
    +'<div class="rec"><span class="rtag">레시피 ④</span><h3>문서(PDF) 요약·질문</h3><p class="goal">목표: 긴 문서 빠르게 파악. 준비물: PDF·워드.</p><div class="rlab">＋ 로 문서 올린 뒤 붙여넣기</div>'+pbox('방금 올린 문서를 한 페이지로 요약해줘. 그리고 내가 꼭 알아야 할 주의사항이나 리스크가 있으면 쉬운 말로 3가지 짚어줘. 애매한 부분은 “확인 필요”라고 표시해줘.')+'<div class="rlab">이렇게 다듬어요</div><div class="rnext"><div class="ri">“○○ 부분만 더 자세히”</div><div class="ri">원문 조항도 함께 확인</div></div><span class="out">중요 내용은 원문 대조</span></div>'},
- {id:'g3',num:'PART 3',title:'잘 시키는 법 — 프롬프트 공식 & 요령',
+ {id:'g3',num:'PART 3',title:'잘 시키는 법 — 요청 문장 공식 & 요령',
   voice:'잘 시키는 법. 공식은 누구에게, 무엇을, 어떤 톤으로, 얼마나. 이 네 가지를 넣으세요. 그리고 한 번에 다 고치려 하지 말고 하나씩 고쳐 말하세요. 참고 자료를 붙이면 정확도가 올라가요.',
-  html:'<div class="rlab" style="margin-top:0">좋은 프롬프트 공식</div><div class="formula"><em>누구에게</em> + <em>무엇을</em> + <em>어떤 톤·형식</em> + <em>분량</em> ( + 참고 자료 첨부 )</div>'
+  html:'<div class="rlab" style="margin-top:0">좋은 요청 문장 공식</div><div class="formula"><em>누구에게</em> + <em>무엇을</em> + <em>어떤 톤·형식</em> + <em>분량</em> ( + 참고 자료 첨부 )</div>'
    +'<div class="cmp"><div class="cc bad"><div class="cl">✕ 두루뭉술</div>“이메일 써줘”<br><span style="opacity:.8;font-size:12.5px">→ 밋밋하고 다시 시켜야 함</span></div><div class="cc good"><div class="cl">✓ 잘 되는 예</div>“거래처에 미팅 일정 조율 이메일. 정중하게, 3문단, 제목 포함”<br><span style="opacity:.8;font-size:12.5px">→ 바로 쓸 수 있음</span></div></div>'
    +'<div class="rlab">결과를 끌어올리는 5가지</div><div class="tips">'
    +'<div class="tp"><span class="ic2">🧩</span><div><b>하나씩 고쳐 말하기.</b> “제목만 더 짧게” → 보고 → 다음. 이 반복이 핵심이에요.</div></div>'
    +'<div class="tp"><span class="ic2">📎</span><div><b>참고 자료 붙이기.</b> ＋ 로 사진·문서를 올리고 “이거 참고해서”라고 하면 정확해져요.</div></div>'
    +'<div class="tp"><span class="ic2">🌐</span><div><b>최신 정보는 검색 켜기.</b> 요금·뉴스·트렌드는 🌐 웹 검색을 켜야 정확해요.</div></div>'
-   +'<div class="tp"><span class="ic2">🔢</span><div><b>숫자·사실은 직접 확인.</b> 그럴듯하게 틀릴 수 있어요(환각). 특히 가격·법규·인용은 검증하세요.</div></div>'
+   +'<div class="tp"><span class="ic2">🔢</span><div><b>숫자·사실은 직접 확인.</b> 그럴듯하게 틀릴 수 있어요(사실이 아닌 내용을 사실처럼 자신있게 말하는 경우). 특히 가격·법규·인용은 검증하세요.</div></div>'
    +'<div class="tp"><span class="ic2">🔒</span><div><b>민감정보는 넣지 않기.</b> 주민번호·카드번호·기밀은 붙여넣지 마세요.</div></div>'
    +'</div><div class="warn"><b>자주 하는 실수:</b> ① 너무 짧게 시켜 밋밋함 → 공식대로. ② 한 번에 다 갈아엎기 → 하나씩. ③ 답을 그대로 믿기 → 직접 확인.</div>'},
  {id:'g4',num:'PART 4',title:'안전·정확성 — 꼭 지킬 것',
   voice:'안전과 정확성. 챗지피티는 가끔 그럴듯하게 틀린 답을 해요. 숫자와 사실은 반드시 확인하세요. 개인정보와 기밀은 넣지 말고, 공유할 땐 개인정보가 없는지 확인하세요.',
   html:'<div class="tips">'
-   +'<div class="tp"><span class="ic2">⚠️</span><div><b>환각(그럴듯한 오답).</b> 없는 사실·잘못된 숫자·가짜 출처를 만들 수 있어요. 중요한 건 <b>원자료로 검증</b>하세요.</div></div>'
+   +'<div class="tp"><span class="ic2">⚠️</span><div><b>사실이 아닌 내용을 사실처럼 자신있게 말하는 경우.</b> 없는 사실·잘못된 숫자·가짜 출처를 만들 수 있어요. 중요한 건 <b>원자료로 검증</b>하세요.</div></div>'
    +'<div class="tp"><span class="ic2">🔒</span><div><b>개인정보·기밀 금지.</b> 고객 개인정보, 계약 원본, 비밀번호는 넣지 마세요. 꼭 필요하면 가리고 요약해서.</div></div>'
    +'<div class="tp"><span class="ic2">🌐</span><div><b>최신성.</b> 모델은 최신 정보를 모를 수 있어요. 요금·뉴스·법규는 검색을 켜고 출처를 확인하세요.</div></div>'
    +'<div class="tp"><span class="ic2">↗</span><div><b>공유 주의.</b> 대화를 링크로 공유하면 그 내용이 열려요. 개인정보가 없는지 보고 공유하세요.</div></div>'
@@ -792,17 +788,17 @@ document.addEventListener('click',function(e){if(e.target.closest&&e.target.clos
    steps:['🎤 음성 모드 켜기','평소처럼 말로 물어보기','중요한 건 텍스트로 확인']},
 
   {k:'f-codex',emo:'🤖',en:'Codex (coding agent)',ko:'Codex (코딩 에이전트 · 개발자용)',
-   fn:'개발 작업을 <b>대신 해주는 코딩 에이전트</b>. 작업을 글로 맡기면 <b>격리된 클라우드에서 코드를 고치고 테스트</b>한 뒤 결과(PR)를 만들어 와요. (플랜: 대개 Pro·Team·Enterprise · 확인 필요)',
+   fn:'프로그램 코드를 <b>대신 수정·정리해 주는 자동화 도구</b>예요. 개발자가 “이 부분을 이렇게 고쳐줘”라고 글로 맡기면 <b>인터넷과 분리된 안전한 작업 공간에서 코드를 고치고 테스트</b>한 뒤 결과(PR)를 만들어 와요. (플랜: 대개 Pro·Team·Enterprise · 확인 필요)',
    when:'GitHub 저장소가 있고 “이 기능 추가/버그 수정/테스트 추가” 같은 <b>명확한 작업</b>을 맡길 때. 개발 안 하면 지금은 안 써도 돼요.',
-   how:'Codex에 GitHub 저장소를 연결하고 작업을 설명 → 백그라운드 작업 후 Pull Request 생성 → 개발자가 검토·병합.',
+   how:'Codex에 GitHub 저장소를 연결하고 작업을 설명 → 백그라운드 작업 후 수정 결과(검토 요청) 생성 → 개발자가 검토·병합.',
    caution:'<b>결과 코드는 사람이 반드시 리뷰·테스트</b>. 저장소 접근 권한을 주니 민감 코드는 신중히.',
    sc:'<b>“평수·단가 → 견적 자동계산” 웹앱</b> 저장소를 개선해 볼게요. (개발자용)',
    run:[
-    {t:'1 · 저장소 연결 + 작업 지시',me:'견적계산 웹앱 저장소에서 “부가세 10% 자동 포함” 기능을 추가하고, 테스트 통과 후 PR 올려줘.'},
-    {t:'2 · Codex가 백그라운드 작업',ai:'저장소 복제 → 계산 로직 수정 → 테스트 실행(통과) → 새 브랜치에 Pull Request 생성.'},
-    {t:'✅ 결과 — PR',ai:'PR “부가세 자동 포함”: 변경 파일 2개, 테스트 5/5 통과, 변경 요약 포함. 개발자가 검토 후 병합하면 반영돼요.'}
+    {t:'1 · 저장소 연결 + 작업 지시',me:'견적계산 웹앱 저장소에서 “부가세 10% 자동 포함” 기능을 추가하고, 테스트 통과 후 수정 결과 올려줘.'},
+    {t:'2 · Codex가 백그라운드 작업',ai:'저장소 복제 → 계산 로직 수정 → 테스트 실행(통과) → 새 브랜치에 수정 결과(검토 요청) 생성.'},
+    {t:'✅ 결과 — PR',ai:'수정 결과 “부가세 자동 포함”: 변경 파일 2개, 테스트 5/5 통과, 변경 요약 포함. 개발자가 검토 후 병합하면 반영돼요.'}
    ],
-   steps:['GitHub 저장소를 연결','작업을 “무엇을·어디서” 명확히','올라온 PR을 검토·병합']},
+   steps:['GitHub 저장소를 연결','작업을 “무엇을·어디서” 명확히','올라온 수정 결과를 검토·병합']},
 
   {k:'f-model',emo:'🧠',en:'Model picker',ko:'모델 선택 (속도 vs 깊이)',
    fn:'답을 만드는 AI의 “두뇌”를 고르는 곳. <b>빠른 모델</b>과 <b>더 오래 생각하는 모델</b>이 있어요. (이름·종류는 자주 바뀜 · 확인 필요)',
@@ -816,7 +812,7 @@ document.addEventListener('click',function(e){if(e.target.closest&&e.target.clos
    ],
    steps:['간단하면 기본, 어려우면 생각하는 모델','대화 중에도 바꿀 수 있어요','답이 얕으면 “더 깊이 생각해서 다시”']},
 
-  {k:'f-apps',emo:'🔌',en:'Apps / connectors',ko:'앱 연결 (커넥터)',
+  {k:'f-apps',emo:'🔌',en:'Apps / connectors',ko:'앱 연결 (다른 앱과 이어주기)',
    fn:'구글 드라이브·Gmail·캘린더 같은 <b>외부 앱을 연결</b>해 그 안의 파일·일정을 참고하게 해요. (연결 가능 앱·플랜 확인 필요)',
    when:'드라이브 문서 요약, 캘린더 정리처럼 내 자료와 연결해 일할 때.',
    how:'설정 → 연결된 앱에서 연결·허용 → 대화에서 “드라이브의 ○○ 요약해줘”.',
@@ -882,7 +878,7 @@ document.addEventListener('click',function(e){if(e.target.closest&&e.target.clos
   if(d.list){b+='<h4>이 안에 있는 것들</h4><div class="dlist">'+d.list.map(function(x){return '<div class="di"><div class="die">'+x.en+'</div><div class="did">'+x.d+'</div></div>';}).join('')+'</div>';}
   /* 실제로 해보기 (run) — 인테리어 예시로 진행 과정 + 결과값 */
   if(d.run){b+='<div class="exhd"><h4 style="margin:0">🏗 실제로 해보기 (인테리어 예시)</h4></div>';if(d.sc)b+='<div class="fn" style="color:var(--tx2);margin-bottom:10px">'+d.sc+'</div>';b+='<div class="simwrap">'+d.run.map(function(s){var h='<div class="runstep"><div class="rt">'+s.t+'</div>';if(s.me)h+='<div class="rbub me2">'+esc2(s.me)+'</div>';if(s.ai)h+='<div class="rbub ai2">'+esc2(s.ai)+'</div>';return h+'</div>';}).join('')+'</div>';}
-  /* 프롬프트형 시뮬(활용법 등) */
+  /* 요청 문장형 시뮬(활용법 등) */
   var sim=(!d.run&&d.say)?{say:d.say,result:d.ans,refine:d.refine}:null;
   if(sim&&sim.say){b+='<div class="exhd"><h4 style="margin:0">사용 시뮬레이션</h4><button class="simbtn" id="simBtn">▶ 다시 재생</button></div><div class="simwrap" id="simWrap">';
    b+='<div class="simline"><span class="stag">1 · 이렇게 적어요</span><div class="sbub" data-full="'+esc2(sim.say)+'">'+esc2(sim.say)+'</div></div><div class="sarrow">↓ ↑ 보내면</div><div class="simline"><span class="stag">2 · 이렇게 돼요</span><div class="sbub ai">'+esc2(sim.result||'')+'</div></div>';
@@ -956,7 +952,11 @@ document.addEventListener('click',function(e){if(e.target.closest&&e.target.clos
  +'.introbox .go.p{background:var(--accent);color:#fff}.introbox .go.s{background:transparent;color:var(--tx);border:1px solid var(--line2)}'
  +'.introbox .grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}'
  +'.introbox .grid2 .go{margin-top:0}'
- +'.introbox .mini{font-size:11.5px;color:#8e8e8e;margin-top:14px;text-align:center;line-height:1.6}';
+ +'.introbox .mini{font-size:11.5px;color:#8e8e8e;margin-top:14px;text-align:center;line-height:1.6}'
+ +'.introbox .glab{font-size:12.5px;font-weight:800;color:#5fd3b2;margin:16px 0 8px}'
+ +'.introbox .ggoal{display:grid;grid-template-columns:1fr 1fr;gap:8px}'
+ +'.introbox .ggo{display:flex;flex-direction:column;gap:2px;min-height:58px;padding:10px 11px;border-radius:11px;border:1px solid #3a3a3a;background:#212121;color:#ececec;cursor:pointer;text-align:left}'
+ +'.introbox .ggo .e{font-size:16px}.introbox .ggo .g{font-size:13px;font-weight:800}.introbox .ggo .d2{font-size:10.5px;color:#b4b4b4}';
  document.head.appendChild(css);
 
  /* Chat/Work 시각 토글(실제감) — 클릭 시 선택 표시 (설명 드로어는 .ix 로 함께 열림) */
@@ -976,7 +976,7 @@ document.addEventListener('click',function(e){if(e.target.closest&&e.target.clos
    caution:'엉뚱한 프로젝트를 고르면 다른 고객 기준이 섞여요. 선택한 프로젝트를 꼭 확인.',
    sc:'“○○아파트 34평 리모델링” 프로젝트를 선택하고 물어볼게요.',
    run:[{t:'1 · 프로젝트 선택',me:'프로젝트 선택 → “○○아파트 34평 리모델링”'},{t:'2 · 그 폴더 기준으로 답함',me:'주방 자재 추천해줘',ai:'(그 프로젝트의 예산 4,500만·우드톤·반려묘 기준으로) 주방 자재 추천 3안을 정리해줘요.'}]},
-  plugins:{en:'Plugins / connectors',ko:'플러그인 · 커넥터',fn:'<b>플러그인·커넥터</b>는 외부 앱·기능을 ChatGPT에 붙여 <b>능력을 확장</b>하는 거예요. ‘＋Ⓒ’는 연결된 앱 아이콘이에요. 드라이브·지메일·슬랙·캘린더 등과 연결해요.',
+  plugins:{en:'Plugins / connectors',ko:'플러그인 · 다른 앱과 이어주기',fn:'<b>플러그인·다른 앱과 이어주기</b>는 외부 앱·기능을 ChatGPT에 붙여 <b>능력을 확장</b>하는 거예요. ‘＋Ⓒ’는 연결된 앱 아이콘이에요. 드라이브·지메일·슬랙·캘린더 등과 연결해요.',
    when:'내 드라이브 문서·지메일·일정과 엮어 일할 때.',
    how:'‘플러그인/＋’을 눌러 원하는 앱을 연결·허용 → 대화에서 그 앱 자료를 참고시켜요.',
    caution:'연결은 <b>내 데이터 접근 권한</b>을 줘요. 필요한 것만, 안 쓰면 해제. 회사 계정은 관리자 정책.',
@@ -1031,15 +1031,18 @@ document.addEventListener('click',function(e){if(e.target.closest&&e.target.clos
   +'<h1>ChatGPT 한글 사용설명서</h1>'
   +'<div class="by"><b>리비안디자인 루카스</b>가 <b style="color:#fff">AI 강의용</b>으로 제작한 자료입니다.</div>'
   +'<p class="d">이 화면은 실제 ChatGPT를 <b>교육용으로 재현</b>한 것이에요. 화면의 어느 요소든 <b>마우스를 올리면 한글 설명</b>, <b>누르면 상세 설명 + 인테리어 실제 예시</b>가 나옵니다. (모바일은 탭)</p>'
-  +'<button class="go p" data-a="features">🧭 핵심 기능부터 보기</button>'
-  +'<div class="grid2"><button class="go s" data-a="practice">🎬 첫 대화 따라하기</button><button class="go s" data-a="guide">📘 작업 가이드</button></div>'
-  +'<button class="go s" data-a="close" style="margin-top:8px">👀 그냥 화면 둘러보기</button>'
+  +'<button class="go p" data-a="practice">🎬 첫 대화 따라하기</button>'
+  +'<div class="grid2"><button class="go s" data-a="close">🧭 화면 둘러보기</button><button class="go s" data-a="guide">📘 작업 가이드</button></div>'
+  +'<div class="glab">또는 — 무엇을 하고 싶으세요? 목적으로 바로 시작</div>'
+  +'<div class="ggoal">'+CATS.filter(function(c){return c.id!=='all';}).map(function(c){return '<button class="ggo" data-cat="'+c.id+'"><span class="e">'+c.emo+'</span><span class="g">'+c.ko+'</span><span class="d2">'+c.q+'</span></button>';}).join('')+'</div>'
   +'<div class="mini">🔒 지정된 분만 보시는 자료 · 무단 전달·재공유 금지 · 72시간 열람<br>© 리비안디자인 루카스 · AI 강의용 제작 · 무단 변경 금지</div>'
   +'</div>';
  document.body.appendChild(ov);
  function closeIntro(){ov.classList.add('hide');}
  function openIntro(){ov.classList.remove('hide');}
- ov.addEventListener('click',function(e){ if(e.target===ov){closeIntro();return;} var b=e.target.closest('button[data-a]'); if(!b)return; var a=b.getAttribute('data-a'); closeIntro();
+ ov.addEventListener('click',function(e){ if(e.target===ov){closeIntro();return;}
+  var gb=e.target.closest('button[data-cat]'); if(gb){ closeIntro(); var tu=document.querySelector('.tab[data-tab="uses"]'); if(tu)tu.click(); var chip=document.querySelector('.p2-chip[data-cat="'+gb.getAttribute('data-cat')+'"]'); if(chip)chip.click(); return; }
+  var b=e.target.closest('button[data-a]'); if(!b)return; var a=b.getAttribute('data-a'); closeIntro();
   if(a==='features'){var t=document.querySelector('.tab[data-tab="features"]');if(t)t.click();}
   else if(a==='practice'){ if(window.startPractice)startPractice(); }
   else if(a==='guide'){ try{openGuide();}catch(e2){} }
@@ -1096,7 +1099,7 @@ document.addEventListener('click',function(e){if(e.target.closest&&e.target.clos
 
  var mask=ce('div','p2-mask'),panel=ce('div','p2-panel');
  var pcss=ce('style');pcss.textContent='.p2-mask{position:fixed;inset:0;z-index:1500;background:rgba(0,0,0,.55);opacity:0;pointer-events:none;transition:opacity .2s}.p2-mask.on{opacity:1;pointer-events:auto}.p2-panel{position:fixed;top:0;right:0;bottom:0;width:min(420px,92vw);z-index:1501;background:#212121;border-left:1px solid #3a3a3a;transform:translateX(100%);transition:transform .24s;display:flex;flex-direction:column}.p2-panel.on{transform:none}.p2-panel .ph{display:flex;align-items:center;gap:10px;padding:16px 18px;border-bottom:1px solid #3a3a3a}.p2-panel .ph h2{font-size:17px;margin:0}.p2-panel .x{margin-left:auto;background:transparent;border:1px solid #454545;color:#b4b4b4;border-radius:10px;min-width:40px;min-height:40px;font-size:15px;cursor:pointer}.p2-panel .pb{flex:1;overflow:auto;padding:16px 18px 30px}.p2-prog{background:#2a2a2a;border:1px solid #3a3a3a;border-radius:14px;padding:14px 15px;margin-bottom:16px}.p2-prog .pt b{font-size:26px}.p2-prog .pt span{font-size:12.5px;color:#8e8e8e;margin-left:8px}.p2-bar{height:10px;border-radius:999px;background:#3a3a3a;overflow:hidden;margin-top:10px}.p2-bar i{display:block;height:100%;background:linear-gradient(90deg,#10a37f,#1fb98a)}.p2-mile{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}.p2-mile .m{flex:1;min-width:120px;background:#2a2a2a;border:1px solid #3a3a3a;border-radius:11px;padding:10px 11px}.p2-mile .l{font-size:12px;color:#8e8e8e}.p2-mile .s{font-size:13.5px;font-weight:800;margin-top:2px}.p2-mile .s.ok{color:#5fd3b2}.p2-mile button{margin-top:8px;width:100%;min-height:38px;border-radius:9px;border:none;background:#10a37f;color:#fff;font:inherit;font-weight:800;font-size:12.5px;cursor:pointer}.p2-sec-t{font-size:12.5px;font-weight:800;color:#5fd3b2;margin:18px 0 8px}.p2-item{display:flex;align-items:center;gap:10px;background:#2a2a2a;border:1px solid #3a3a3a;border-radius:10px;padding:9px 11px;margin-bottom:7px}.p2-item .nm{flex:1;font-size:13.5px;cursor:pointer}.p2-item .st{font-size:11px;font-weight:800;border-radius:999px;padding:3px 9px;white-space:nowrap}.p2-item .st.none{color:#8e8e8e;background:#333}.p2-item .st.seen{color:#7ab7ff;background:rgba(90,150,255,.14)}.p2-item .st.fav{color:#ffcf6a;background:rgba(255,190,70,.14)}.p2-item .fav{background:transparent;border:none;cursor:pointer;font-size:16px;min-width:34px;min-height:34px;color:#7a7a82}.p2-item .fav.on{color:#ffcf6a}.p2-recent span{display:inline-block;font-size:12px;background:#2a2a2a;border:1px solid #3a3a3a;border-radius:999px;padding:5px 10px;margin:0 6px 6px 0;color:#b4b4b4}.p2-quiz-mask{position:fixed;inset:0;z-index:1600;background:rgba(0,0,0,.6);display:flex;align-items:flex-start;justify-content:center;overflow:auto;padding:26px 14px}.p2-quiz{width:100%;max-width:560px;background:#212121;border:1px solid #3a3a3a;border-radius:18px;padding:20px}.p2-quiz h2{margin:0 0 4px}.p2-q{border:1px solid #3a3a3a;border-radius:12px;padding:13px 14px;margin-bottom:11px;background:#2a2a2a}.p2-q .qq{font-weight:800;margin-bottom:9px}.p2-q label{display:flex;gap:9px;padding:9px 10px;border:1px solid #3a3a3a;border-radius:9px;margin-bottom:6px;cursor:pointer;font-size:13.5px}.p2-q .ex{font-size:12.5px;line-height:1.6;margin-top:8px;padding:9px 11px;border-radius:9px;display:none}.p2-q.right .ex{display:block;background:rgba(16,163,127,.12);color:#9fe6cd;border:1px solid rgba(16,163,127,.3)}.p2-q.wrong .ex{display:block;background:rgba(255,138,106,.12);color:#ffb59c;border:1px solid rgba(255,138,106,.3)}.p2-q label.ans{border-color:#10a37f;background:rgba(16,163,127,.08)}.p2-q.wrong label.pick{border-color:#ff8a6a}.p2-quiz .qbtns{display:flex;gap:9px;margin-top:6px}.p2-quiz .qbtns button{flex:1;min-height:48px;border-radius:12px;font:inherit;font-weight:900;font-size:15px;cursor:pointer;border:none}.p2-quiz .submit{background:#10a37f;color:#fff}.p2-quiz .close{background:#2f2f2f;color:#ececec;border:1px solid #454545!important}.p2-quiz .score{text-align:center;font-weight:900;background:#2a2a2a;border:1px solid #3a3a3a;border-radius:12px;padding:12px;margin-bottom:12px;display:none}'
- +'#p2-startBtn{position:fixed;left:12px;bottom:12px;z-index:1490;display:inline-flex;align-items:center;gap:7px;background:#10a37f;color:#fff;border:none;border-radius:999px;padding:10px 14px;font:inherit;font-weight:800;font-size:13.5px;cursor:pointer;box-shadow:0 8px 22px #0007;min-height:44px}.p2-lpanel{position:fixed;top:0;left:0;bottom:0;width:min(360px,90vw);z-index:1501;background:#212121;border-right:1px solid #3a3a3a;transform:translateX(-100%);transition:transform .24s;display:flex;flex-direction:column}.p2-lpanel.on{transform:none}.p2-lpanel .ph{display:flex;align-items:center;gap:10px;padding:16px 18px;border-bottom:1px solid #3a3a3a}.p2-lpanel .ph h2{font-size:16px;margin:0}.p2-lpanel .x{margin-left:auto;background:transparent;border:1px solid #454545;color:#b4b4b4;border-radius:10px;min-width:40px;min-height:40px;font-size:15px;cursor:pointer}.p2-lpanel .pb{flex:1;overflow:auto;padding:16px 18px 30px}.p2-lbtn{display:flex;align-items:center;gap:11px;width:100%;text-align:left;background:#2a2a2a;border:1px solid #3a3a3a;border-radius:12px;padding:13px 14px;margin-bottom:9px;color:#ececec;font:inherit;font-size:14.5px;font-weight:800;cursor:pointer;min-height:52px}.p2-lbtn.primary{background:#10a37f;border-color:#10a37f;color:#fff}.p2-lbtn .e{font-size:18px;flex:none}.p2-lbtn small{display:block;font-size:11.5px;font-weight:600;color:#b4b4b4;margin-top:2px}.p2-lbtn.primary small{color:rgba(255,255,255,.85)}.p2-lsec{font-size:12px;font-weight:800;color:#5fd3b2;margin:16px 0 8px}.p2-lgoal{display:grid;grid-template-columns:1fr 1fr;gap:8px}.p2-lgoal button{display:flex;flex-direction:column;gap:2px;min-height:60px;padding:10px 11px;border-radius:11px;border:1px solid #3a3a3a;background:#2a2a2a;color:#ececec;cursor:pointer;text-align:left}.p2-lgoal .e{font-size:17px}.p2-lgoal .g{font-size:13px;font-weight:800}.p2-lgoal .d{font-size:10.5px;color:#b4b4b4}'
+ +'#p2-startBtn{position:fixed;left:12px;bottom:12px;z-index:1490;display:inline-flex;align-items:center;gap:7px;background:#10a37f;color:#fff;border:none;border-radius:999px;padding:10px 14px;font:inherit;font-weight:800;font-size:13.5px;cursor:pointer;box-shadow:0 8px 22px #0007;min-height:44px}@media(min-width:821px){#p2-startBtn{left:274px}}.p2-lpanel{position:fixed;top:0;left:0;bottom:0;width:min(360px,90vw);z-index:1501;background:#212121;border-right:1px solid #3a3a3a;transform:translateX(-100%);transition:transform .24s;display:flex;flex-direction:column}.p2-lpanel.on{transform:none}.p2-lpanel .ph{display:flex;align-items:center;gap:10px;padding:16px 18px;border-bottom:1px solid #3a3a3a}.p2-lpanel .ph h2{font-size:16px;margin:0}.p2-lpanel .x{margin-left:auto;background:transparent;border:1px solid #454545;color:#b4b4b4;border-radius:10px;min-width:40px;min-height:40px;font-size:15px;cursor:pointer}.p2-lpanel .pb{flex:1;overflow:auto;padding:16px 18px 30px}.p2-lbtn{display:flex;align-items:center;gap:11px;width:100%;text-align:left;background:#2a2a2a;border:1px solid #3a3a3a;border-radius:12px;padding:13px 14px;margin-bottom:9px;color:#ececec;font:inherit;font-size:14.5px;font-weight:800;cursor:pointer;min-height:52px}.p2-lbtn.primary{background:#10a37f;border-color:#10a37f;color:#fff}.p2-lbtn .e{font-size:18px;flex:none}.p2-lbtn small{display:block;font-size:11.5px;font-weight:600;color:#b4b4b4;margin-top:2px}.p2-lbtn.primary small{color:rgba(255,255,255,.85)}.p2-lsec{font-size:12px;font-weight:800;color:#5fd3b2;margin:16px 0 8px}.p2-lgoal{display:grid;grid-template-columns:1fr 1fr;gap:8px}.p2-lgoal button{display:flex;flex-direction:column;gap:2px;min-height:60px;padding:10px 11px;border-radius:11px;border:1px solid #3a3a3a;background:#2a2a2a;color:#ececec;cursor:pointer;text-align:left}.p2-lgoal .e{font-size:17px}.p2-lgoal .g{font-size:13px;font-weight:800}.p2-lgoal .d{font-size:10.5px;color:#b4b4b4}'
  +'.ix:focus-visible,.tab:focus-visible,.p2-chip:focus-visible,button:focus-visible,[role=button]:focus-visible{outline:3px solid #5fd3b2;outline-offset:2px}@media(max-width:640px){.p2-lgoal{grid-template-columns:1fr 1fr}}';
  document.head.appendChild(pcss);
  panel.setAttribute('role','dialog');panel.setAttribute('aria-modal','true');panel.setAttribute('aria-label','학습 현황');
@@ -1120,7 +1123,7 @@ document.addEventListener('click',function(e){if(e.target.closest&&e.target.clos
  /* 퀴즈 */
  var QUESTIONS=[
   {q:'ChatGPT를 가장 잘 쓰는 방법은?',opts:['한 번에 완벽하게 시킨다','구체적으로 시키고, 답을 보고 고쳐 말한다','짧게 한 단어만 넣는다'],a:1,ex:'구체적으로 시키고 고쳐 말하기를 반복하는 게 핵심이에요.'},
-  {q:'ChatGPT가 준 숫자·사실은?',opts:['항상 정확하다','그럴듯해도 틀릴 수 있어 직접 확인한다','출처가 있으면 무조건 맞다'],a:1,ex:'환각(그럴듯한 오답)이 있을 수 있어요. 중요한 건 원자료로 검증하세요.'},
+  {q:'ChatGPT가 준 숫자·사실은?',opts:['항상 정확하다','그럴듯해도 틀릴 수 있어 직접 확인한다','출처가 있으면 무조건 맞다'],a:1,ex:'사실이 아닌 내용을 사실처럼 자신있게 말하는 경우이 있을 수 있어요. 중요한 건 원자료로 검증하세요.'},
   {q:'최신 정보(요금·뉴스·트렌드)를 물을 땐?',opts:['그냥 물어본다','🌐 웹 검색을 켜고 출처를 확인한다','이미지를 켠다'],a:1,ex:'바뀌는 정보는 웹 검색을 켜야 정확하고 출처도 확인할 수 있어요.'},
   {q:'대화에 넣으면 안 되는 것은?',opts:['만들고 싶은 글의 주제','주민번호·카드번호 같은 민감정보','원하는 말투'],a:1,ex:'개인정보·기밀은 넣지 마세요. 꼭 필요하면 가리고 요약해서.'},
   {q:'긴 PDF를 요약시키려면?',opts:['내용을 전부 타이핑한다','＋ 로 파일을 올리고 요약을 요청한다','불가능하다'],a:1,ex:'＋ 로 문서를 올리면 요약·질문이 가능해요. 중요한 건 원문도 확인하세요.'}
@@ -1167,7 +1170,7 @@ document.addEventListener('click',function(e){if(e.target.closest&&e.target.clos
  function goalBtns(){return CATS.filter(function(c){return c.id!=='all';}).map(function(c){return '<button type="button" data-cat="'+c.id+'"><span class="e">'+c.emo+'</span><span class="g">'+c.ko+'</span><span class="d">'+c.q+'</span></button>';}).join('');}
  function renderL(){lpanel.innerHTML='<div class="ph"><h2>🏠 시작 메뉴</h2><button class="x" type="button" aria-label="닫기">✕</button></div><div class="pb">'
   +'<button class="p2-lbtn primary" data-act="practice"><span class="e">🎬</span><span>첫 대화 따라하기<small>슬라이드로 6장</small></span></button>'
-  +'<button class="p2-lbtn" data-act="guide"><span class="e">📘</span><span>작업 가이드<small>실제 쓰는 법·복붙 프롬프트</small></span></button>'
+  +'<button class="p2-lbtn" data-act="guide"><span class="e">📘</span><span>작업 가이드<small>실제 쓰는 법·복붙 요청 문장</small></span></button>'
   +'<button class="p2-lbtn" data-act="home"><span class="e">🏠</span><span>홈(대화) 화면으로<small>처음으로 돌아가기</small></span></button>'
   +'<div class="p2-lsec">무엇을 하고 싶으세요? — 목적으로 시작</div><div class="p2-lgoal">'+goalBtns()+'</div></div>';
   lpanel.querySelector('.x').onclick=closeL;
