@@ -1512,5 +1512,150 @@ INFO['library']={en:'My designs',ko:'내 디자인 (보관함)',
 .introbox .mini{color:#e6d9ff}
 </style>
 
+<style id="fxCSS">
+/* ===== 등장 애니메이션 ===== */
+.introbox{animation:fxPop .55s cubic-bezier(.2,1.5,.4,1) both}
+@keyframes fxPop{0%{opacity:0;transform:scale(.86) translateY(24px)}100%{opacity:1;transform:scale(1) translateY(0)}}
+.introbox>img{animation:fxFloat 3.2s ease-in-out infinite}
+@keyframes fxFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+.introbox .go,.introbox .ggo,.introbox .glab{animation:fxUp .5s ease both}
+.introbox .go.p{animation-delay:.12s}.introbox .grid2 .go{animation-delay:.2s}
+.introbox .glab{animation-delay:.28s}.introbox .ggo{animation-delay:.34s}
+.introbox .ggo:nth-child(2){animation-delay:.4s}.introbox .ggo:nth-child(3){animation-delay:.46s}
+.introbox .ggo:nth-child(4){animation-delay:.52s}.introbox .ggo:nth-child(5){animation-delay:.58s}
+@keyframes fxUp{0%{opacity:0;transform:translateY(14px)}100%{opacity:1;transform:translateY(0)}}
+.introbox .go:hover,.introbox .ggo:hover{transform:translateY(-2px) scale(1.02);transition:.15s}
+.introbox .go:active,.introbox .ggo:active{transform:scale(.97)}
+/* 시작 버튼: 빛 스윕 */
+.lvstart{overflow:hidden}
+.lvstart::after{content:'';position:absolute;top:0;left:-80%;width:50%;height:100%;
+ background:linear-gradient(105deg,transparent,rgba(255,255,255,.45),transparent);
+ animation:fxShine 2.4s ease-in-out infinite}
+@keyframes fxShine{0%{left:-80%}55%{left:130%}100%{left:130%}}
+/* 시뮬레이션 말풍선 등장 */
+.lvrow{animation:fxUp .4s ease both}
+.lvbub.a{animation:fxPopS .35s cubic-bezier(.2,1.5,.4,1) both}
+@keyframes fxPopS{0%{opacity:0;transform:scale(.94)}100%{opacity:1;transform:scale(1)}}
+.lvfig img,.lvposter{transition:transform .25s}
+.lvfig img:hover,.lvposter:hover{transform:scale(1.045) rotate(.4deg)}
+.lvctrls .lvbtn{animation:fxUp .4s ease both}
+/* 음악 토글 */
+#bgmBtn{position:fixed;right:16px;bottom:96px;z-index:2000;border:1px solid rgba(255,255,255,.25);
+ background:rgba(20,20,22,.82);backdrop-filter:blur(6px);color:#fff;border-radius:999px;
+ padding:9px 15px;font:inherit;font-size:12.5px;font-weight:800;cursor:pointer;box-shadow:0 8px 24px rgba(0,0,0,.4)}
+#bgmBtn.on{border-color:#8b3dff;color:#fff;background:rgba(139,61,255,.28)}
+#bgmBtn.on .eq{display:inline-flex;gap:2px;margin-right:6px;vertical-align:-2px}
+#bgmBtn .eq{display:none}
+#bgmBtn .eq i{width:3px;background:#8b3dff;border-radius:2px;animation:fxEq .9s ease-in-out infinite}
+#bgmBtn .eq i:nth-child(1){height:10px}#bgmBtn .eq i:nth-child(2){height:14px;animation-delay:.2s}
+#bgmBtn .eq i:nth-child(3){height:8px;animation-delay:.4s}
+@keyframes fxEq{0%,100%{transform:scaleY(.5)}50%{transform:scaleY(1)}}
+/* 폭죽 캔버스 */
+#fxCanvas{position:fixed;inset:0;pointer-events:none;z-index:2500}
+</style>
+<script id="fxJS">
+(function(){
+ var CFG={"bpm": 100, "root": 261.63, "padWave": "triangle", "padGain": 0.028, "arpWave": "triangle", "arpGain": 0.055, "density": 0.7, "colors": ["#8b3dff", "#c026d3", "#e11d74", "#ffe066"]};
+ var ctx=null, master=null, playing=false, wantMusic=true, timers=[];
+ try{wantMusic = localStorage.getItem('rdai_bgm')!=='off';}catch(e){}
+
+ /* ---------- WebAudio 생성 BGM ---------- */
+ function ac(){ if(!ctx){ var A=window.AudioContext||window.webkitAudioContext; if(!A)return null;
+   ctx=new A(); master=ctx.createGain(); master.gain.value=0.0; master.connect(ctx.destination);
+   // 딜레이(공간감)
+   var dl=ctx.createDelay(1.0); dl.delayTime.value=60/CFG.bpm*0.75;
+   var fb=ctx.createGain(); fb.gain.value=0.34;
+   var wet=ctx.createGain(); wet.gain.value=0.35;
+   dl.connect(fb); fb.connect(dl); dl.connect(wet); wet.connect(ctx.destination);
+   master.__dl=dl; } return ctx; }
+ function note(f,t,dur,type,gain,toDelay){ if(!ctx)return;
+  var o=ctx.createOscillator(), g=ctx.createGain();
+  o.type=type||'triangle'; o.frequency.value=f;
+  g.gain.setValueAtTime(0,t); g.gain.linearRampToValueAtTime(gain,t+0.02);
+  g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+  o.connect(g); g.connect(master); if(toDelay)g.connect(master.__dl);
+  o.start(t); o.stop(t+dur+0.05); }
+ function pad(f,t,dur){ if(!ctx)return;
+  [0,0.4,-0.35].forEach(function(det,i){
+   var o=ctx.createOscillator(), g=ctx.createGain();
+   o.type=CFG.padWave; o.frequency.value=f*Math.pow(2,det/1200*8);
+   g.gain.setValueAtTime(0,t); g.gain.linearRampToValueAtTime(CFG.padGain/(i+1),t+dur*0.3);
+   g.gain.linearRampToValueAtTime(0.0001,t+dur);
+   o.connect(g); g.connect(master); o.start(t); o.stop(t+dur+0.1); });}
+ var SCALE=[0,2,4,7,9,12,14,16];  // 메이저 펜타토닉 2옥타브
+ var CHORDS=[[0,4,7],[9,12,16],[5,9,12],[7,11,14]]; // I vi IV V
+ var loopId=0;
+ function schedule(){ if(!playing||!ctx)return;
+  var t=ctx.currentTime+0.05, spb=60/CFG.bpm, barLen=spb*4, root=CFG.root;
+  var ch=CHORDS[(loopId)%CHORDS.length]; loopId++;
+  // 패드 (2마디)
+  ch.forEach(function(s){ pad(root*Math.pow(2,s/12), t, barLen*2*0.95); });
+  pad(root/2*Math.pow(2,ch[0]/12), t, barLen*2*0.95);
+  // 아르페지오
+  for(var b=0;b<8;b++){
+   if(Math.random()<CFG.density){
+    var s=SCALE[Math.floor(Math.random()*SCALE.length)];
+    note(root*2*Math.pow(2,s/12), t+b*spb+ (Math.random()<.3?spb/2:0), spb*1.6, CFG.arpWave, CFG.arpGain, true);
+   }}
+  timers.push(setTimeout(schedule, barLen*2*1000-80));
+ }
+ function startMusic(){ if(playing)return; if(!ac())return;
+  if(ctx.state==='suspended')ctx.resume();
+  playing=true; master.gain.linearRampToValueAtTime(1.0, ctx.currentTime+1.2); schedule(); updBtn(); }
+ function stopMusic(){ playing=false; timers.forEach(clearTimeout); timers=[];
+  if(master)master.gain.linearRampToValueAtTime(0.0, ctx.currentTime+0.4); updBtn(); }
+ /* ---------- 효과음 ---------- */
+ var lastTick=0;
+ window.__fxTick=function(){ if(!ctx||!playing&&!wantMusic)return; if(!ctx)return;
+  var n=performance.now(); if(n-lastTick<55)return; lastTick=n;
+  note(1200+Math.random()*600, ctx.currentTime, 0.03, 'square', 0.015); };
+ function popSound(){ if(!ctx)return; var t=ctx.currentTime;
+  note(520,t,0.12,'sine',0.06); note(780,t+0.07,0.15,'sine',0.05); }
+ function chime(){ if(!ctx)return; var t=ctx.currentTime;
+  [0,4,7,12].forEach(function(s,i){ note(CFG.root*2*Math.pow(2,s/12), t+i*0.07, 0.5,'triangle',0.05,true); }); }
+ /* ---------- 폭죽 ---------- */
+ var cv=null;
+ function confetti(){ if(!cv){cv=document.createElement('canvas');cv.id='fxCanvas';document.body.appendChild(cv);}
+  cv.width=innerWidth; cv.height=innerHeight;
+  var c=cv.getContext('2d'), P=[], colors=CFG.colors;
+  for(var i=0;i<90;i++){P.push({x:innerWidth/2+(Math.random()-0.5)*260, y:innerHeight*0.55,
+   vx:(Math.random()-0.5)*11, vy:-(4+Math.random()*9), r:3+Math.random()*4,
+   c:colors[i%colors.length], rot:Math.random()*6.28, vr:(Math.random()-0.5)*0.3, life:1});}
+  var n=0;(function frame(){ n++; c.clearRect(0,0,cv.width,cv.height);
+   var alive=false;
+   P.forEach(function(p){ p.x+=p.vx; p.y+=p.vy; p.vy+=0.32; p.rot+=p.vr; p.life-=0.011;
+    if(p.life>0&&p.y<cv.height+20){alive=true; c.save(); c.globalAlpha=Math.max(p.life,0);
+     c.translate(p.x,p.y); c.rotate(p.rot); c.fillStyle=p.c; c.fillRect(-p.r,-p.r/2,p.r*2,p.r); c.restore();}});
+   if(alive&&n<240)requestAnimationFrame(frame); else c.clearRect(0,0,cv.width,cv.height);})();}
+ /* ---------- 토글 버튼 ---------- */
+ var btn=document.createElement('button'); btn.id='bgmBtn'; btn.type='button';
+ function updBtn(){ btn.className=playing?'on':'';
+  btn.innerHTML=(playing?'<span class="eq"><i></i><i></i><i></i></span>🎵 배경음악 켜짐':'🔇 배경음악 꺼짐'); }
+ updBtn(); document.body.appendChild(btn);
+ btn.addEventListener('click',function(e){ e.stopPropagation();
+  if(playing){wantMusic=false; stopMusic();}else{wantMusic=true; startMusic();}
+  try{localStorage.setItem('rdai_bgm',playing?'on':'off');}catch(x){} });
+ /* 첫 제스처에서 시작 (자동재생 정책) */
+ function firstGesture(){ if(wantMusic)startMusic();
+  document.removeEventListener('pointerdown',firstGesture,true);
+  document.removeEventListener('keydown',firstGesture,true); }
+ document.addEventListener('pointerdown',firstGesture,true);
+ document.addEventListener('keydown',firstGesture,true);
+ /* ---------- 시뮬레이션 후킹 (관찰자) ---------- */
+ var mo=new MutationObserver(function(ms){ ms.forEach(function(m){
+   m.addedNodes&&m.addedNodes.forEach(function(nd){ if(nd.nodeType!==1)return;
+    if(nd.classList&&nd.classList.contains('lvrow')&&nd.classList.contains('a'))popSound();
+    if(nd.classList&&nd.classList.contains('lvctrls')){chime();confetti();}
+   });});});
+ function watchLog(){ var lg=document.getElementById('lvLog'); if(lg){mo.observe(lg,{childList:true});}
+  else setTimeout(watchLog,800);} watchLog();
+ /* 타이핑 사운드: 입력창 관찰 */
+ var mo2=new MutationObserver(function(){ if(window.__fxTick)window.__fxTick(); });
+ function watchInput(){ var el=document.querySelector("#v-home #ph");
+  if(el){mo2.observe(el,{childList:true,characterData:true,subtree:true});} else setTimeout(watchInput,800);}
+ watchInput();
+})();
+</script>
+
 </body>
 </html>
