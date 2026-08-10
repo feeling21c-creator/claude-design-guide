@@ -1440,5 +1440,147 @@ INFO['library']={en:'Saved prompts',ko:'저장된 프롬프트 (라이브러리)
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',place);else place();
 })();
 </script>
+<style id="liveSimCSS">
+.lvwrap{max-width:760px;margin:14px auto 0;}
+.lvhint{display:flex;align-items:center;gap:8px;justify-content:center;margin:6px auto 0;font-size:13px;color:#4285f4;font-weight:700;flex-wrap:wrap;text-align:center}
+.lvhint .kbd{background:rgba(66,133,244,.13);border:1px solid rgba(66,133,244,.34);border-radius:8px;padding:2px 8px}
+.lvcaret{display:inline-block;width:2px;height:1em;background:#4285f4;margin-left:1px;vertical-align:-2px;animation:lvbl 1s steps(1) infinite}
+@keyframes lvbl{50%{opacity:0}}
+.lvtyping{color:#ececec !important}
+.lvlog{margin:16px auto 0;max-width:820px;display:none;flex-direction:column;gap:14px}
+.lvlog.on{display:flex}
+.lvrow{display:flex;flex-direction:column}
+.lvrow.u{align-items:flex-end}
+.lvrow.a{align-items:flex-start}
+.lvtag{font-size:11px;font-weight:800;color:#8a8a8a;margin:0 4px 5px}
+.lvrow.a .lvtag{color:#4285f4}
+.lvbub{max-width:88%;border-radius:16px;padding:12px 15px;font-size:14px;line-height:1.72;white-space:pre-wrap;word-break:break-word}
+.lvbub.u{background:#2f2f2f;border:1px solid #454545;color:#f2f2f2;border-bottom-right-radius:5px}
+.lvbub.a{background:rgba(66,133,244,.13);border:1px solid rgba(66,133,244,.34);color:#eef4ff;border-bottom-left-radius:5px}
+.lvbub b{color:#fff}
+.lvcode{background:#0e0e0e;border:1px solid #333;border-radius:10px;padding:12px 13px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12.5px;color:#d6e9ff;white-space:pre;overflow-x:auto;margin-top:10px;line-height:1.6}
+.lvcards{display:flex;gap:10px;margin-top:11px;flex-wrap:wrap}
+.lvcard{flex:1 1 120px;min-width:110px;height:118px;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;font-weight:800;color:#fff;font-size:12.5px;padding:8px;box-shadow:0 4px 14px rgba(0,0,0,.3)}
+.lvcard small{font-weight:600;opacity:.85;font-size:10.5px;margin-top:4px}
+.lvdots span{display:inline-block;width:7px;height:7px;margin:0 2px;border-radius:50%;background:#4285f4;opacity:.4;animation:lvd 1.2s infinite}
+.lvdots span:nth-child(2){animation-delay:.2s}.lvdots span:nth-child(3){animation-delay:.4s}
+@keyframes lvd{0%,60%,100%{opacity:.3;transform:translateY(0)}30%{opacity:1;transform:translateY(-4px)}}
+.lvctrls{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:6px auto 2px}
+.lvbtn{background:#1f1f1f;border:1px solid #3a3a3a;color:#ececec;border-radius:999px;padding:8px 15px;font-size:13px;font-weight:700;cursor:pointer;transition:.15s}
+.lvbtn:hover{border-color:#4285f4;color:#fff}
+.lvbtn.p{background:#4285f4;border-color:#4285f4;color:#fff}
+.lvcue{position:relative}
+.lvcue::after{content:'👆 눌러서 실제로 써보기';position:absolute;left:50%;top:-34px;transform:translateX(-50%);background:#4285f4;color:#fff;font-size:12px;font-weight:800;padding:5px 11px;border-radius:9px;white-space:nowrap;box-shadow:0 6px 18px rgba(66,133,244,.34);animation:lvpulse 1.6s ease-in-out infinite;pointer-events:none;z-index:5}
+.lvcue::before{content:'';position:absolute;left:50%;top:-8px;transform:translateX(-50%) rotate(45deg);width:10px;height:10px;background:#4285f4;pointer-events:none;z-index:5}
+@keyframes lvpulse{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(-4px)}}
+.lvcue.done::after,.lvcue.done::before{display:none}
+</style>
+<script id="liveSimJS">
+(function(){
+ var SCEN=[{"q": "리비안 고객 견적 문의에 1차로 자동 답장하는 에이전트를 만들어줘.", "a": "견적 문의 자동응답 에이전트를 구성했습니다.\n\n**System instruction**에 '리비안디자인 상담 톤(정중·전문)'과 '실측 없이 확정 금액은 말하지 않기' 규칙을 넣었어요.\n동작: 문의 접수 → 매장 종류·평수 질문 → 실측 일정 2개 제안 → 담당자 연결.\n\n오른쪽 Run settings에서 모델·Temperature를 조절하고, 실제 카톡/메일 연동은 API 키로 붙이면 됩니다. (실제 API 요금은 확인 필요)"}, {"q": "수강생 목록 CSV를 읽어서 평균 진도율을 내는 파이썬 코드 실행해줘.", "a": "CSV를 읽어 수강생 평균 진도율을 계산하는 코드입니다. Code execution으로 바로 실행돼요.", "extra": "<div class=\"lvcode\">import pandas as pd\n\ndf = pd.read_csv(&#x27;students.csv&#x27;)\ndf[&#x27;rate&#x27;] = df[&#x27;done&#x27;] / df[&#x27;total&#x27;] * 100\nprint(round(df[&#x27;rate&#x27;].mean(), 1), &#x27;%&#x27;)\n\n# 출력 예: 63.5 %</div>"}, {"q": "이 프롬프트가 너무 딱딱한데 더 친근하게 바꿔서 비교해줘.", "a": "System instruction을 두 버전으로 만들어 비교했습니다.\n\nA (기존): 정중하지만 사무적인 톤\nB (수정): '~해요' 체 + 이모지 최소 사용으로 친근함↑\n\n같은 질문에 A/B 응답을 나란히 테스트해서 리비안 톤에 맞는 쪽을 고르시면 됩니다."}];
+ var TOOL="AI Studio 에이전트", TRIGGERWORD="프롬프트";
+ var INPUTSEL="#v-home .aibox .ph", TRIGGERSEL="#v-home .aibox .ph, #v-home .run.ix", ANCHORSEL=".apbar";
+ var idx=-1, timers=[], busy=false, phSaved=null;
+ function T(fn,ms){var id=setTimeout(fn,ms);timers.push(id);return id;}
+ function clearT(){timers.forEach(clearTimeout);timers=[];}
+ function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+ function fmt(s){return esc(s).replace(/\*\*(.+?)\*\*/g,'<b>$1</b>').replace(/\n/g,'<br>');}
+ function inp(){return document.querySelector(INPUTSEL);}
+ function home(){return document.getElementById('v-home');}
+ function ensureUI(){
+  var h=home();if(!h)return null;
+  var log=document.getElementById('lvLog');
+  if(!log){
+   log=document.createElement('div');log.id='lvLog';log.className='lvlog';
+   var anc=h.querySelector(ANCHORSEL);
+   if(anc&&anc.parentNode){anc.parentNode.insertBefore(log,anc.nextSibling);}else{h.appendChild(log);}
+  }
+  return log;
+ }
+ function sTo(el){try{el.scrollIntoView({behavior:'smooth',block:'center'});}catch(e){}}
+ function typeInto(el,txt,cb,sp){
+  el.classList.add('lvtyping');var i=0;
+  (function step(){
+   if(i<=txt.length){el.innerHTML=esc(txt.slice(0,i))+'<span class="lvcaret"></span>';i++;T(step,sp||24);}
+   else{el.innerHTML=esc(txt);if(cb)cb();}
+  })();
+ }
+ function typeBub(bub,txt,extra,cb){
+  var i=0;
+  (function step(){
+   if(i<=txt.length){bub.innerHTML=fmt(txt.slice(0,i))+'<span class="lvcaret"></span>';i+=2;var l=document.getElementById('lvLog');T(step,10);}
+   else{bub.innerHTML=fmt(txt);if(extra){var d=document.createElement('div');d.innerHTML=extra;bub.appendChild(d);}if(cb)cb();}
+  })();
+ }
+ function addRow(cls,tag){
+  var log=ensureUI();log.classList.add('on');
+  var row=document.createElement('div');row.className='lvrow '+cls;
+  var t=document.createElement('div');t.className='lvtag';t.textContent=tag;
+  var b=document.createElement('div');b.className='lvbub '+cls;
+  row.appendChild(t);row.appendChild(b);log.appendChild(row);return b;
+ }
+ function baseCtrls(sc){
+  var log=document.getElementById('lvLog');
+  var old=log.querySelector('.lvctrls');if(old)old.parentNode.removeChild(old);
+  var box=document.createElement('div');box.className='lvctrls';
+  if(sc&&sc.refine){
+   var rb=document.createElement('button');rb.className='lvbtn p';
+   var q=sc.refine.q;rb.textContent='↳ 이어서: "'+(q.length>16?q.slice(0,16)+'…':q)+'"';
+   rb.onclick=function(){if(!busy)runRefine(sc);};box.appendChild(rb);
+  }
+  var nb=document.createElement('button');nb.className='lvbtn';nb.textContent='🔄 다른 예시로 써보기';
+  nb.onclick=function(){if(!busy)runNext();};box.appendChild(nb);
+  var cb=document.createElement('button');cb.className='lvbtn';cb.textContent='✕ 지우기';
+  cb.onclick=function(){if(!busy)reset();};box.appendChild(cb);
+  log.appendChild(box);sTo(box);
+ }
+ function reset(){
+  clearT();busy=false;var log=document.getElementById('lvLog');if(log){log.innerHTML='';log.classList.remove('on');}
+  var el=inp();if(el&&phSaved!=null){el.classList.remove('lvtyping');el.innerHTML=phSaved;}
+ }
+ function runScen(sc){
+  busy=true;var el=inp();if(!el)return;var log=ensureUI();
+  var cue=document.querySelector('.lvcue');if(cue)cue.classList.add('done');
+  if(phSaved==null)phSaved=el.innerHTML;
+  sTo(el);
+  typeInto(el,sc.q,function(){
+   T(function(){
+    el.classList.remove('lvtyping');el.innerHTML=phSaved;
+    var ub=addRow('u','나 (리비안디자인)');ub.textContent=sc.q;sTo(ub.parentNode);
+    var ab=addRow('a',TOOL);ab.innerHTML='<span class="lvdots"><span></span><span></span><span></span></span>';
+    sTo(ab.parentNode);
+    T(function(){typeBub(ab,sc.a,sc.extra,function(){busy=false;baseCtrls(sc);});},900);
+   },360);
+  },24);
+ }
+ function runRefine(sc){
+  busy=true;var old=document.querySelector('#lvLog .lvctrls');if(old)old.parentNode.removeChild(old);
+  var ub=addRow('u','나 (리비안디자인)');ub.textContent=sc.refine.q;sTo(ub.parentNode);
+  var ab=addRow('a',TOOL);ab.innerHTML='<span class="lvdots"><span></span><span></span><span></span></span>';
+  T(function(){typeBub(ab,sc.refine.a,sc.refine.extra,function(){busy=false;
+   var log=document.getElementById('lvLog');var box=document.createElement('div');box.className='lvctrls';
+   var nb=document.createElement('button');nb.className='lvbtn';nb.textContent='🔄 다른 예시로 써보기';nb.onclick=function(){if(!busy)runNext();};
+   var cb=document.createElement('button');cb.className='lvbtn';cb.textContent='✕ 지우기';cb.onclick=function(){if(!busy)reset();};
+   box.appendChild(nb);box.appendChild(cb);log.appendChild(box);sTo(box);});},800);
+ }
+ function runNext(){clearT();var log=document.getElementById('lvLog');if(log)log.innerHTML='';idx=(idx+1)%SCEN.length;runScen(SCEN[idx]);}
+ function start(){if(busy)return;idx=(idx<0)?0:(idx+1)%SCEN.length;clearT();var log=document.getElementById('lvLog');if(log)log.innerHTML='';runScen(SCEN[idx]);}
+ function ready(){
+  var h=home();if(!h)return;
+  var anc=h.querySelector(ANCHORSEL);if(anc)anc.classList.add('lvcue');
+  ensureUI();
+  var hint=document.createElement('div');hint.className='lvwrap';
+  hint.innerHTML='<div class="lvhint"><span class="kbd">'+TRIGGERWORD+'</span> 을(를) 누르면 리비안디자인 실제 예시로 <b>자동 작성 → '+TOOL+' 답변</b>이 바로 재생됩니다</div>';
+  if(anc&&anc.parentNode)anc.parentNode.insertBefore(hint,anc);
+  document.addEventListener('click',function(e){
+   var hh=home();if(!hh||!hh.classList.contains('on'))return;
+   var hit=e.target.closest(TRIGGERSEL);
+   if(hit&&hh.contains(hit)){e.preventDefault();e.stopPropagation();start();}
+  },true);
+ }
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',ready);else T(ready,300);
+})();
+</script>
+
 </body>
 </html>
