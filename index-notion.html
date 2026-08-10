@@ -223,17 +223,22 @@ a{color:var(--accent-ink)}
 
 <div class="app">
  <aside class="side" id="side">
-  <div class="sbrand"><div class="lg">◼</div><div class="nm">Notion</div><span class="sp" style="flex:1"></span><span class="sicon ix" data-k="search" aria-label="검색">🔍</span><span class="sicon ix" data-k="sidetoggle" aria-label="사이드바 접기">▢</span></div>
-  <div class="sitem ix" data-k="newchat"><span class="i">✎</span> 새 페이지</div>
+  <div class="sbrand"><div class="lg" style="background:#c23b3b">R</div><div class="nm">rima</div><span class="sp" style="flex:1"></span><span class="sicon ix" data-k="search" aria-label="검색">🔍</span><span class="sicon ix" data-k="sidetoggle" aria-label="사이드바 접기">▢</span></div>
+  <div class="sitem ix" data-k="newchat"><span class="i">🏠</span> 홈</div>
+  <div class="sitem ix" data-k="model"><span class="i">✦</span> Notion AI</div>
+  <div class="sitem ix" data-k="tsearch"><span class="i">📥</span> 수신함</div>
+  <div class="ssec">팀스페이스</div>
+  <div class="sitem ix" data-k="projects"><span class="i">🏠</span> 리비안 공동작업</div>
+  <div class="schat ix" data-k="hist1">📄 리비안 통합 대시보드</div>
+  <div class="schat">📕 루카스 업무일지 (오늘 한 일)</div>
+  <div class="schat">📕 박건우 업무일지 (오늘 한 일)</div>
+  <div class="schat">📕 김혜원 업무일지 (오늘 한 일)</div>
+  <div class="schat ix" data-k="library">🗂 작업 폴더</div>
+  <div class="schat ix" data-k="f-data">📊 프로젝트별 공정과정</div>
+  <div class="ssec">Notion 앱</div>
+  <div class="sitem ix" data-k="reserve"><span class="i">📅</span> Notion 캘린더</div>
   <div class="sitem ix" data-k="library"><span class="i">🧩</span> 템플릿</div>
-  <div class="sitem ix" data-k="projects"><span class="i">🗄</span> 데이터베이스</div>
-  <div class="sitem ix" data-k="reserve"><span class="i">📆</span> 캘린더</div>
   <div class="sitem ix" data-k="more2"><span class="i">⋯</span> 더 보기</div>
-  <div class="ssec">최근 페이지 ›</div>
-  <div class="schat ix" data-k="hist1">🗄 고객 관리 데이터베이스</div>
-  <div class="schat ix" data-k="hist2">📄 ○○아파트 상담 기록</div>
-  <div class="schat">📚 시공 매뉴얼 위키</div>
-  <div class="schat">📆 6월 시공 프로젝트</div>
   <div class="sfoot"><div class="sitem ix" data-k="account"><span class="i">👤</span> 내 계정 · 요금제</div></div>
  </aside>
  <div class="sbackdrop" id="sbackdrop"></div>
@@ -242,7 +247,7 @@ a{color:var(--accent-ink)}
   <div class="topbar">
    <button class="ib menub" id="menub" aria-label="메뉴 열기" style="border-radius:9px">☰</button>
    <span class="sp"></span>
-   <span class="cw ix" data-k="chatwork" role="group" aria-label="페이지 / AI 전환"><span class="cwb" data-cw="chat">페이지</span><span class="cwb on" data-cw="work">AI</span></span>
+   <span class="crumb" style="font-size:13px;color:var(--tx2)">🏠 리비안 공동작업 <span style="color:var(--mut)">/</span> <b style="color:var(--tx)">리비안 통합 대시보드</b></span>
    <span class="sp"></span>
   </div>
 
@@ -255,32 +260,80 @@ a{color:var(--accent-ink)}
 
   <div class="wrap">
    <!-- HOME -->
-   <section class="view on" id="v-home">
-    <div class="hero" id="heroBox"><h1 id="heroH">무엇을 정리할까요?</h1><p>노션은 <b>문서·데이터베이스·AI로 회사 업무를 한 곳에</b> 모으는 도구예요. 위 <b>페이지/AI</b>와 아래 <b>데이터베이스·템플릿</b>이 무엇인지도 눌러보며 배워요.</p></div>
-    <div class="composer">
-     <div class="ph ix" id="ph" data-k="input">무엇이든 묻거나 작성을 요청하세요 (Notion AI)</div>
-     <div class="crow">
-      <span class="ib ix" data-k="plus" data-pop="plus">＋</span>
-      <span class="ib ix" data-k="tools" data-pop="tools">✦ <span class="t">AI 기능</span></span>
-      <span class="cend">
-       <span class="mchip2 ix" data-k="model">✦ AI <span style="color:var(--mut)">⌄</span></span>
-       <span class="ib ix" data-k="voice">🔗</span>
-       <span class="send ix" data-k="send">실행</span>
-      </span>
+   <style>
+#v-home{color:#d4d4d2}
+#v-home .ndash{max-width:1080px;margin:0 auto}
+#v-home .nbanner{height:110px;border-radius:8px;background:linear-gradient(100deg,#e9edf2 0%,#dfe6ee 40%,#cdd8e6 100%);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;border:1px solid rgba(255,255,255,.06)}
+#v-home .nbanner .rv{font-family:Pretendard,system-ui;font-weight:800;letter-spacing:6px;color:#2f6fd0;font-size:38px;text-shadow:0 1px 0 #fff}
+#v-home .nbanner .rv small{display:block;font-size:12px;letter-spacing:10px;color:#3a3f4a;text-align:center;margin-top:2px}
+#v-home .ndtitle{font-size:30px;font-weight:800;color:#efeeec;margin:16px 0 10px}
+#v-home .callout{display:flex;gap:10px;border-radius:8px;padding:12px 14px;margin:10px 0;font-size:14px;line-height:1.6;border:1px solid rgba(255,255,255,.07)}
+#v-home .callout .ci{font-size:16px}
+#v-home .callout.gray{background:rgba(255,255,255,.04)}
+#v-home .callout.blue{background:rgba(45,90,160,.18);border-color:rgba(90,150,230,.28)}
+#v-home .callout.purple{background:rgba(110,70,170,.20);border-color:rgba(150,110,210,.30)}
+#v-home .callout.green{background:rgba(50,130,80,.18);border-color:rgba(90,180,120,.30)}
+#v-home .callout b{color:#fff}
+#v-home .ncols{display:grid;grid-template-columns:1.35fr 1fr;gap:16px;margin-top:8px}
+@media(max-width:860px){#v-home .ncols{grid-template-columns:1fr}}
+#v-home .dbwrap{border:1px solid rgba(255,255,255,.08);border-radius:8px;overflow:hidden;background:rgba(255,255,255,.02)}
+#v-home .dbtabs{display:flex;gap:14px;align-items:center;padding:8px 12px;font-size:12.5px;color:#8f8d88;border-bottom:1px solid rgba(255,255,255,.06)}
+#v-home .dbtabs .on{color:#efeeec;font-weight:700}
+#v-home table.ndb{width:100%;border-collapse:collapse;font-size:12.5px}
+#v-home table.ndb th{text-align:left;color:#8f8d88;font-weight:600;padding:7px 10px;border-bottom:1px solid rgba(255,255,255,.06)}
+#v-home table.ndb td{padding:8px 10px;border-bottom:1px solid rgba(255,255,255,.05);color:#d4d4d2;vertical-align:middle}
+#v-home table.ndb tr:hover td{background:rgba(255,255,255,.03)}
+#v-home .tag{display:inline-block;font-size:11px;font-weight:700;border-radius:5px;padding:2px 7px;color:#eee}
+#v-home .t-hyunjang{background:#6b4a2f}
+#v-home .t-gongdong{background:#5b432a}
+#v-home .t-hakwon{background:#4b3a6b}
+#v-home .t-lucas{background:#2f4f7b}
+#v-home .red{color:#e2725b}
+#v-home ul.wk{margin:6px 0 0;padding-left:18px}#v-home ul.wk li{margin:3px 0;color:#cfe0f5}
+#v-home .naibar{margin:16px 0 0;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.09);border-radius:12px;padding:13px 16px;color:#9b9a97;font-size:14px;display:flex;align-items:center;gap:9px;cursor:pointer}
+#v-home .naibar b{color:#a78bfa}
+</style>
+<section class="view on" id="v-home">
+   <div class="ndash">
+    <div class="nbanner"><div class="rv">RIVIAN<small>D E S I G N</small></div></div>
+    <div class="ndtitle">🏠 리비안 통합 대시보드</div>
+    <div class="callout gray"><span class="ci">│</span><div>프로젝트, 직원업무, 현장관리, 시간기록, 학원, 전시장 업무를 <b>한 화면에서 확인</b>하는 리비안 운영 허브입니다.</div></div>
+    <div class="ncols">
+     <div class="ncolL">
+      <div class="callout gray ix" data-k="reserve" role="button"><span class="ci">📅</span><div><b>리비안 전체 일정</b><div style="color:#9b9a97;margin-top:2px">아래 표에서 <b>월간 일정(캘린더)</b> 탭을 누르면 달력으로 보입니다.</div></div></div>
+      <div class="dbwrap ix" data-k="projects" role="button">
+       <div class="dbtabs"><span class="on">📅 월간일정</span><span>🗓 월간 일정 목록 보기</span></div>
+       <table class="ndb"><thead><tr><th>Aa 일정명</th><th>구분</th><th>날짜</th><th>담당자</th></tr></thead><tbody>
+        <tr><td>동명대 개강 전 마감 (간판·시트지·거울)</td><td><span class="tag t-hyunjang">현장</span></td><td>2026년 8월 24일</td><td><span class="tag t-gongdong">공동</span></td></tr>
+        <tr><td>SKF 공사 착공 (최소 20일)</td><td><span class="tag t-hyunjang">현장</span></td><td>2026년 8월 3일</td><td><span class="tag t-gongdong">공동</span></td></tr>
+        <tr><td>학원 개강 · 전시장 오픈</td><td><span class="tag t-hakwon">학원</span></td><td>2026년 8월 31일 →</td><td><span class="tag t-gongdong">공동</span></td></tr>
+        <tr><td>엔포유(장애인 표준 사업장) 준공</td><td><span class="tag t-hyunjang">현장</span></td><td>2026년 8월 20일</td><td><span class="tag t-lucas">루카스</span></td></tr>
+        <tr><td>어댑핏 3시 1차 조닝미팅</td><td></td><td>2026년 7월 28일</td><td></td></tr>
+        <tr><td>회계사무실 착공 예정</td><td></td><td class="red">2026년 7월 13일 →</td><td><span class="tag t-lucas">루카스</span></td></tr>
+        <tr><td>장애인표준사업장(엔포유) 제안서 미팅</td><td></td><td class="red">2026년 7월 1일 ⏰</td><td><span class="tag t-lucas">루카스</span></td></tr>
+       </tbody></table>
+      </div>
+     </div>
+     <div class="ncolR">
+      <div class="callout blue ix" data-k="hist1" role="button"><span class="ci">👥</span><div><b>직원별 이번 주 할 일</b><ul class="wk"><li>루카스 업무일지</li><li>박건우 업무일지</li><li>김혜원 업무일지</li></ul></div></div>
+      <div class="callout purple ix" data-k="library" role="button"><span class="ci">📌</span><div><b>리비안 주간계획</b><div style="color:#cdbef0;margin-top:3px">이번 주 핵심 일정과 우선순위를 여기에 정리합니다.</div></div></div>
+      <div class="callout green"><span class="ci">✅</span><div><b>오늘 체크리스트</b><div style="color:#bfe6cd;margin-top:3px">날짜가 바뀌면 “오늘 상태”가 자동으로 초기화됩니다.</div></div></div>
+      <div class="dbwrap ix" data-k="tcanvas" role="button" style="margin-top:8px">
+       <div class="dbtabs"><span class="on">✅ 오늘 체크리스트 (자동 초기화)</span></div>
+       <table class="ndb"><thead><tr><th>Aa 항목</th><th>오늘 상태</th></tr></thead><tbody>
+        <tr><td>1. 오늘 고객 연락 확인</td><td>◻ 미완료</td></tr>
+        <tr><td>2. 오늘 현장 일정 확인</td><td>◻ 미완료</td></tr>
+        <tr><td>3. 오늘 견적·제안서 확인</td><td>◻ 미완료</td></tr>
+        <tr><td>4. 오늘 직원 업무 확인</td><td>◻ 미완료</td></tr>
+        <tr><td>5. 오늘 시간기록 입력</td><td>◻ 미완료</td></tr>
+       </tbody></table>
+      </div>
      </div>
     </div>
-    <div class="cbar">
-     <span class="cb ix" data-k="projsel">🗄 데이터베이스</span>
-     <span class="cb ix" data-k="plugins">🧩 템플릿</span>
-     <span class="cbend"><span class="cb ix" data-k="desktop">📤 공유 · 게시</span></span>
-    </div>
-    <div class="sugs">
-     <div class="sug ix" data-k="sug1"><span class="si">🗄</span> 고객 관리 데이터베이스를 만들어줘</div>
-     <div class="sug ix" data-k="sug2"><span class="si">🗜</span> 이 상담 회의록을 요약하고 할 일로 정리해줘</div>
-     <div class="sug ix" data-k="sug3"><span class="si">📝</span> 상담 신청 폼을 만들어 고객 DB에 자동 저장되게 해줘</div>
-    </div>
-    <p class="sub-t" style="text-align:center;margin-top:18px">위 어느 요소든 <b>마우스를 올리면</b> 한글 설명이, <b>누르면</b> 상세 설명 + 실제 예시가 나와요. (모바일은 탭)</p>
-   </section>
+    <div class="naibar ix" data-k="input" role="button"><b>✦</b> Notion AI에게 질문하거나 작성을 요청하세요…</div>
+    <p class="sub-t" style="text-align:center;margin-top:16px">위 <b>배너·표·콜아웃·사이드바</b> 어디든 <b>올리면 한글 설명</b>, <b>누르면 상세 + 리비안 실제 예시</b>가 나와요. (모바일은 탭)</p>
+   </div>
+  </section>
 
    <!-- USES -->
    <section class="view" id="v-uses">

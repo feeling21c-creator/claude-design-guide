@@ -255,32 +255,53 @@ a{color:var(--accent-ink)}
 
   <div class="wrap">
    <!-- HOME -->
-   <section class="view on" id="v-home">
-    <div class="hero" id="heroBox"><h1 id="heroH">무엇이든 도와드릴게요</h1><p>아래 입력창에 <b>말하듯이</b> 적으면 돼요. 위 <b>대화/도구</b>와 아래 <b>도구·NotebookLM</b>이 무엇인지도 눌러보며 배워요.</p></div>
-    <div class="composer">
-     <div class="ph ix" id="ph" data-k="input">Gemini에게 묻거나 만들어 달라고 하세요 (＋로 첨부)</div>
-     <div class="crow">
-      <span class="ib ix" data-k="plus" data-pop="plus">＋</span>
-      <span class="ib ix" data-k="tools" data-pop="tools">🧰 <span class="t">도구</span></span>
+   <style>
+#v-home .gwrap{max-width:820px;margin:0 auto;padding-top:20px}
+#v-home .ggreet{font-size:34px;font-weight:800;background:linear-gradient(90deg,#4285f4,#9b72cb,#d96570);-webkit-background-clip:text;background-clip:text;color:transparent;line-height:1.25}
+#v-home .gsub{font-size:20px;color:var(--tx2);margin-top:2px;margin-bottom:22px}
+#v-home .gbox{border:1px solid var(--line2);border-radius:26px;padding:16px 18px;background:var(--panel2)}
+#v-home .gbox .ph{color:var(--mut);font-size:16px;cursor:pointer;display:block;margin-bottom:12px}
+#v-home .grow{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+#v-home .gpill{display:inline-flex;align-items:center;gap:5px;border:1px solid var(--line2);border-radius:999px;padding:7px 13px;font-size:13px;color:var(--tx);cursor:pointer;background:var(--panel)}
+#v-home .gpill:hover{background:var(--line)}
+#v-home .grow .cend{margin-left:auto;display:inline-flex;align-items:center;gap:8px}
+#v-home .grow .mchip{font-size:13px;font-weight:700;cursor:pointer;padding:6px 8px;border-radius:8px}
+#v-home .grow .mic{cursor:pointer;font-size:16px}
+#v-home .grow .send{background:#4285f4;color:#fff;width:36px;height:36px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;font-weight:800}
+#v-home .gcards{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:22px}
+@media(max-width:760px){#v-home .gcards{grid-template-columns:1fr 1fr}}
+#v-home .gcard{border:1px solid var(--line);border-radius:14px;padding:14px;background:var(--panel2);cursor:pointer;min-height:96px;display:flex;flex-direction:column;justify-content:space-between}
+#v-home .gcard:hover{background:var(--panel)}
+#v-home .gcard .gt{font-size:13px;color:var(--tx);line-height:1.5}
+#v-home .gcard .ge{font-size:20px;align-self:flex-end}
+</style>
+<section class="view on" id="v-home">
+   <div class="gwrap">
+    <div class="ggreet">안녕하세요, 루카스님</div>
+    <div class="gsub">무엇을 도와드릴까요?</div>
+    <div class="gbox">
+     <span class="ph ix" id="ph" data-k="input" role="button">Gemini에게 물어보기</span>
+     <div class="grow">
+      <span class="gpill ix" data-k="plus" data-pop="plus" role="button">＋</span>
+      <span class="gpill ix" data-k="tsearch" role="button">🔎 딥리서치</span>
+      <span class="gpill ix" data-k="tcanvas" role="button">🖊 Canvas</span>
+      <span class="gpill ix" data-k="timage" role="button">🍌 이미지</span>
       <span class="cend">
-       <span class="mchip2 ix" data-k="model">3.1 Pro <span style="color:var(--mut)">⌄</span></span>
-       <span class="ib ix" data-k="voice">🎤</span>
-       <span class="send ix" data-k="send">↑</span>
+       <span class="mchip ix" data-k="model" role="button">3.1 Pro ⌄</span>
+       <span class="mic ix" data-k="voice" role="button">🎤</span>
+       <span class="send ix" data-k="send" role="button">↑</span>
       </span>
      </div>
     </div>
-    <div class="cbar">
-     <span class="cb ix" data-k="projsel">🧰 도구 켜기</span>
-     <span class="cb ix" data-k="plugins">📓 NotebookLM</span>
-     <span class="cbend"><span class="cb ix" data-k="desktop">⭱ 공유 · 내보내기</span></span>
+    <div class="gcards">
+     <div class="gcard ix" data-k="sug1" role="button"><div class="gt">경쟁 인테리어 업체 5곳을 딥리서치로 조사</div><div class="ge">📊</div></div>
+     <div class="gcard ix" data-k="sug2" role="button"><div class="gt">우드톤 거실 무드보드 만들기 (나노바나나)</div><div class="ge">🍌</div></div>
+     <div class="gcard ix" data-k="sug3" role="button"><div class="gt">리모델링 전/후 15초 홍보 영상 (Veo)</div><div class="ge">🎬</div></div>
+     <div class="gcard ix" data-k="projects" role="button"><div class="gt">자재·계약 자료를 NotebookLM에 정리</div><div class="ge">📓</div></div>
     </div>
-    <div class="sugs">
-     <div class="sug ix" data-k="sug1"><span class="si">📊</span> 경쟁 인테리어 업체 5곳을 딥리서치로 조사해줘</div>
-     <div class="sug ix" data-k="sug2"><span class="si">🍌</span> 우드톤 거실 무드보드 이미지를 만들어줘 (나노바나나)</div>
-     <div class="sug ix" data-k="sug3"><span class="si">🎬</span> 리모델링 전/후 15초 홍보 영상을 만들어줘 (Veo)</div>
-    </div>
-    <p class="sub-t" style="text-align:center;margin-top:18px">위 어느 요소든 <b>마우스를 올리면</b> 한글 설명이, <b>누르면</b> 상세 설명 + 실제 예시가 나와요. (모바일은 탭)</p>
-   </section>
+    <p class="sub-t" style="text-align:center;margin-top:20px">위 <b>입력창·도구 칩·모델·추천 카드</b> 어디든 <b>올리면 한글 설명</b>, <b>누르면 상세 + 리비안 실제 예시</b>가 나와요. (모바일은 탭)</p>
+   </div>
+  </section>
 
    <!-- USES -->
    <section class="view" id="v-uses">

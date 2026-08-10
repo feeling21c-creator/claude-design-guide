@@ -255,32 +255,64 @@ a{color:var(--accent-ink)}
 
   <div class="wrap">
    <!-- HOME -->
-   <section class="view on" id="v-home">
-    <div class="hero" id="heroBox"><h1 id="heroH">무엇을 시험해볼까요?</h1><p>여기는 AI를 <b>시험하고·다듬고·앱까지 만드는 작업대</b>예요. 아래 <b>시스템 명령·온도·도구·코드/API</b>가 무엇인지 눌러보며 배워요.</p></div>
-    <div class="composer">
-     <div class="ph ix" id="ph" data-k="input">프롬프트를 입력하고 ▶ 실행하세요 (＋로 첨부)</div>
-     <div class="crow">
-      <span class="ib ix" data-k="plus" data-pop="plus">＋</span>
-      <span class="ib ix" data-k="tools" data-pop="tools">🧰 <span class="t">도구</span></span>
-      <span class="cend">
-       <span class="mchip2 ix" data-k="model">3.1 Pro <span style="color:var(--mut)">⌄</span></span>
-       <span class="ib ix" data-k="voice">🎤</span>
-       <span class="send ix" data-k="send">▶</span>
-      </span>
+   <style>
+#v-home .aiwrap{display:grid;grid-template-columns:1fr 300px;gap:14px;max-width:1040px;margin:0 auto}
+@media(max-width:820px){#v-home .aiwrap{grid-template-columns:1fr}}
+#v-home .aimain{background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:14px;display:flex;flex-direction:column;min-height:420px}
+#v-home .aisys{border:1px dashed var(--line2);border-radius:10px;padding:10px 12px;font-size:12.5px;color:var(--tx2);margin-bottom:12px;cursor:pointer}
+#v-home .aisys b{color:#5fd3b2}
+#v-home .aichat{flex:1;display:flex;flex-direction:column;gap:10px;overflow:auto}
+#v-home .msg{max-width:88%;border-radius:12px;padding:10px 13px;font-size:13.5px;line-height:1.6;white-space:pre-wrap}
+#v-home .msg.u{align-self:flex-end;background:#2f2f2f;border:1px solid #454545}
+#v-home .msg.m{align-self:flex-start;background:rgba(16,163,127,.10);border:1px solid rgba(16,163,127,.30)}
+#v-home .aiprompt{display:flex;align-items:center;gap:8px;margin-top:12px;border:1px solid var(--line2);border-radius:12px;padding:8px 10px;background:var(--panel)}
+#v-home .aiprompt .ph{flex:1;color:var(--mut);font-size:14px;cursor:pointer}
+#v-home .aiprompt .ib{cursor:pointer;color:var(--tx2);font-size:16px;padding:2px 6px}
+#v-home .aiprompt .run{background:#1a73e8;color:#fff;border-radius:9px;padding:8px 14px;font-weight:800;font-size:13px;cursor:pointer}
+#v-home .aiset{background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:14px;font-size:13px}
+#v-home .aiset .sh{font-weight:800;color:#fff;margin-bottom:12px;display:flex;align-items:center;gap:6px}
+#v-home .srow{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid var(--line);cursor:pointer}
+#v-home .srow b{color:var(--tx)}
+#v-home .srow .v{color:var(--tx2)}
+#v-home .slider{height:5px;border-radius:3px;background:linear-gradient(90deg,#1a73e8 45%,#3a3a3a 45%);width:120px}
+#v-home .slbl{font-size:11.5px;color:var(--mut);margin:12px 0 6px;font-weight:700}
+#v-home .stog{display:flex;justify-content:space-between;align-items:center;padding:8px 10px;border:1px solid var(--line);border-radius:9px;margin-bottom:7px;cursor:pointer;font-size:12.5px}
+#v-home .stog .sw{width:30px;height:17px;border-radius:99px;background:#3a3a3a;position:relative}
+#v-home .stog .sw::after{content:"";position:absolute;width:13px;height:13px;border-radius:50%;background:#fff;top:2px;left:2px}
+#v-home .sbtn{width:100%;margin-top:8px;border:1px solid var(--line2);background:var(--panel);color:var(--tx);border-radius:10px;padding:11px;font-weight:800;font-size:13px;cursor:pointer;text-align:center}
+#v-home .sbtn.k{background:#1a73e8;color:#fff;border-color:#1a73e8}
+</style>
+<section class="view on" id="v-home">
+   <div class="aiwrap">
+    <div class="aimain">
+     <div class="aisys ix" data-k="projsel" role="button"><b>⚙ 시스템 명령</b> — 너는 리비안 상담 도우미다. 정중히 인사→예산·시기 되묻기→방향만 제시. 확정 금액은 말하지 마라.</div>
+     <div class="aichat">
+      <div class="msg u">34평인데 전체 리모델링 얼마예요?</div>
+      <div class="msg m">안녕하세요, 리비안디자인입니다 😊
+전체 리모델링은 범위(부분/전체·자재 등급)에 따라 차이가 커요. 생각하시는 예산 범위와 희망 입주 시기를 알려주시면 방향을 잡아드릴게요. 정확한 견적은 현장 실측 후 안내드립니다.</div>
+     </div>
+     <div class="aiprompt">
+      <span class="ib ix" data-k="plus" role="button">＋</span>
+      <span class="ph ix" data-k="input" role="button">프롬프트를 입력하고 ▶ 실행하세요…</span>
+      <span class="ib ix" data-k="voice" role="button">🎤</span>
+      <span class="run ix" data-k="send" role="button">▶ 실행</span>
      </div>
     </div>
-    <div class="cbar">
-     <span class="cb ix" data-k="projsel">📌 시스템 명령</span>
-     <span class="cb ix" data-k="plugins">🎚 온도 · 생각 수준</span>
-     <span class="cbend"><span class="cb ix" data-k="desktop">🔑 코드 가져오기 · API 키</span></span>
+    <div class="aiset">
+     <div class="sh">⚙ Run settings</div>
+     <div class="srow ix" data-k="model" role="button"><b>모델</b><span class="v">Gemini 3.1 Pro ⌄</span></div>
+     <div class="srow ix" data-k="plugins" role="button"><b>온도(Temperature)</b><span class="slider"></span></div>
+     <div class="srow"><b>토큰 수</b><span class="v">1,024</span></div>
+     <div class="slbl">도구 (Tools)</div>
+     <div class="stog ix" data-k="tsearch" role="button">🔎 구글 검색 (그라운딩)<span class="sw"></span></div>
+     <div class="stog ix" data-k="tcanvas" role="button">🧮 코드 실행<span class="sw"></span></div>
+     <div class="stog ix" data-k="tstudy" role="button">🧾 구조화 출력<span class="sw"></span></div>
+     <button class="sbtn ix" data-k="share" type="button">&lt;/&gt; 코드 가져오기</button>
+     <button class="sbtn k ix" data-k="account" type="button">🔑 API 키 받기</button>
     </div>
-    <div class="sugs">
-     <div class="sug ix" data-k="sug1"><span class="si">📌</span> “34평 얼마예요?”에 확정 금액 없이 답하는 응대 문장 만들어줘</div>
-     <div class="sug ix" data-k="sug2"><span class="si">🍌</span> “봄맞이 무료 상담” 문구가 또렷한 포스터를 만들어줘 (나노바나나 프로)</div>
-     <div class="sug ix" data-k="sug3"><span class="si">🧱</span> AI 교육 SaaS 수강 신청 앱을 만들어줘 (Build)</div>
-    </div>
-    <p class="sub-t" style="text-align:center;margin-top:18px">위 어느 요소든 <b>마우스를 올리면</b> 한글 설명이, <b>누르면</b> 상세 설명 + 실제 예시가 나와요. (모바일은 탭)</p>
-   </section>
+   </div>
+   <p class="sub-t" style="text-align:center;margin-top:16px;max-width:1040px;margin-left:auto;margin-right:auto">위 <b>프롬프트·시스템 명령·Run settings(모델·온도·도구·코드·API)</b> 어디든 <b>올리면 한글 설명</b>, <b>누르면 상세 + 리비안 실제 예시</b>가 나와요. (모바일은 탭)</p>
+  </section>
 
    <!-- USES -->
    <section class="view" id="v-uses">
