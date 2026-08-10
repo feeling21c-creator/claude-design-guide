@@ -1443,11 +1443,7 @@ INFO['library']={en:'Templates',ko:'템플릿 (미리 만든 페이지 틀)',
 .lvbtn{background:#1f1f1f;border:1px solid #3a3a3a;color:#ececec;border-radius:999px;padding:8px 15px;font-size:13px;font-weight:700;cursor:pointer;transition:.15s}
 .lvbtn:hover{border-color:#2f82e0;color:#fff}
 .lvbtn.p{background:#2f82e0;border-color:#2f82e0;color:#fff}
-.lvcue{position:relative}
-.lvcue::after{content:'👆 눌러서 실제로 써보기';position:absolute;left:50%;top:-34px;transform:translateX(-50%);background:#2f82e0;color:#fff;font-size:12px;font-weight:800;padding:5px 11px;border-radius:9px;white-space:nowrap;box-shadow:0 6px 18px rgba(47,130,224,.36);animation:lvpulse 1.6s ease-in-out infinite;pointer-events:none;z-index:5}
-.lvcue::before{content:'';position:absolute;left:50%;top:-8px;transform:translateX(-50%) rotate(45deg);width:10px;height:10px;background:#2f82e0;pointer-events:none;z-index:5}
-@keyframes lvpulse{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(-4px)}}
-.lvcue.done::after,.lvcue.done::before{display:none}
+
 .lvimgs{display:flex;gap:10px;flex-wrap:wrap;margin-top:11px}
 .lvfig{margin:0;flex:1 1 150px;min-width:130px}
 .lvfig.one{flex:0 1 300px;max-width:320px}
@@ -1458,6 +1454,12 @@ INFO['library']={en:'Templates',ko:'템플릿 (미리 만든 페이지 틀)',
 .lvposter .pt{position:relative;font-weight:900;font-size:17px;letter-spacing:2px;color:#fff;text-shadow:0 2px 8px rgba(0,0,0,.5)}
 .lvposter .ps{position:relative;font-weight:700;font-size:11.5px;color:#ffe9c9;margin-top:3px;text-shadow:0 1px 6px rgba(0,0,0,.5)}
 
+
+.lvstart{display:block;margin:14px auto 2px;background:#2f82e0;color:#fff;border:none;border-radius:999px;
+ padding:13px 26px;font:inherit;font-size:15px;font-weight:800;cursor:pointer;position:relative;z-index:6;
+ box-shadow:0 10px 28px rgba(47,130,224,.36);animation:lvpulse2 1.6s ease-in-out infinite}
+.lvstart:hover{filter:brightness(1.12);animation-play-state:paused}
+@keyframes lvpulse2{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
 </style>
 <script id="liveSimJS">
 (function(){
@@ -1521,10 +1523,11 @@ INFO['library']={en:'Templates',ko:'템플릿 (미리 만든 페이지 틀)',
  function reset(){
   clearT();busy=false;var log=document.getElementById('lvLog');if(log){log.innerHTML='';log.classList.remove('on');}
   var el=inp();if(el&&phSaved!=null){el.classList.remove('lvtyping');el.innerHTML=phSaved;}
+  var sb=document.getElementById('lvStart');if(sb)sb.style.display='block';
  }
  function runScen(sc){
   busy=true;var el=inp();if(!el)return;var log=ensureUI();
-  var cue=document.querySelector('.lvcue');if(cue)cue.classList.add('done');
+  var sb=document.getElementById('lvStart');if(sb)sb.style.display='none';
   if(phSaved==null)phSaved=el.innerHTML;
   sTo(el);
   typeInto(el,sc.q,function(){
@@ -1551,11 +1554,15 @@ INFO['library']={en:'Templates',ko:'템플릿 (미리 만든 페이지 틀)',
  function start(){if(busy)return;idx=(idx<0)?0:(idx+1)%SCEN.length;clearT();var log=document.getElementById('lvLog');if(log)log.innerHTML='';runScen(SCEN[idx]);}
  function ready(){
   var h=home();if(!h)return;
-  var anc=h.querySelector(ANCHORSEL);if(anc)anc.classList.add('lvcue');
   ensureUI();
+  var anc=h.querySelector(ANCHORSEL);
   var hint=document.createElement('div');hint.className='lvwrap';
   hint.innerHTML='<div class="lvhint"><span class="kbd">'+TRIGGERWORD+'</span> 을(를) 누르면 리비안디자인 실제 예시로 <b>자동 작성 → '+TOOL+' 답변</b>이 바로 재생됩니다</div>';
   if(anc&&anc.parentNode)anc.parentNode.insertBefore(hint,anc);
+  var sb=document.createElement('button');sb.id='lvStart';sb.className='lvstart';sb.type='button';
+  sb.textContent='\uD83D\uDC46 \ub20c\ub7ec\uc11c \uc2e4\uc81c\ub85c \uc368\ubcf4\uae30';
+  sb.addEventListener('click',function(e){e.preventDefault();e.stopPropagation();start();});
+  if(anc&&anc.parentNode)anc.parentNode.insertBefore(sb,anc.nextSibling);
   document.addEventListener('click',function(e){
    var hh=home();if(!hh||!hh.classList.contains('on'))return;
    var hit=e.target.closest(TRIGGERSEL);
@@ -1565,6 +1572,31 @@ INFO['library']={en:'Templates',ko:'템플릿 (미리 만든 페이지 틀)',
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',ready);else T(ready,300);
 })();
 </script>
+
+
+<style id="introSkin">
+.introov{background:rgba(15,15,15,.62)}
+.introbox{background:#fff;border:1px solid #e6e3de;border-radius:8px;max-width:530px;color:#37352f;
+ box-shadow:0 20px 60px rgba(0,0,0,.5)}
+.introbox .k{background:#f1f0ec;color:#787468;border:1px solid #e0ddd6;border-radius:5px}
+.introbox h1{color:#37352f;border-bottom:1px solid #ececea;padding-bottom:10px}
+.introbox h1::before{content:'📋 '}
+.introbox .by{color:#787468}.introbox .by b{color:#2f82e0!important}
+.introbox p.d{color:#4d473e}.introbox p.d b{color:#37352f}
+.introbox .go{border-radius:6px}
+.introbox .go.p{background:#2f82e0;color:#fff}
+.introbox .go.s{background:#fff;border:1px solid #d9d6cf;color:#37352f}
+.introbox .glab{color:#9b9689;text-transform:none}
+.introbox .ggoal{grid-template-columns:1fr;gap:0;border:1px solid #eceae5;border-radius:8px;overflow:hidden}
+.introbox .ggo{flex-direction:row;align-items:center;gap:10px;background:#fff;border:none;
+ border-bottom:1px solid #eceae5;border-radius:0;min-height:46px;color:#37352f;padding:9px 13px}
+.introbox .ggo:last-child{border-bottom:none}
+.introbox .ggo::before{content:'☐';color:#b9b5aa;font-size:15px}
+.introbox .ggo .g{color:#37352f}
+.introbox .ggo .d2{margin-left:auto;text-align:right;color:#9b9689}
+.introbox .ggo:hover{background:#f7f6f3}
+.introbox .mini{color:#9b9689}
+</style>
 
 </body>
 </html>

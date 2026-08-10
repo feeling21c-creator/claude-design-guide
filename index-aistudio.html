@@ -1469,11 +1469,7 @@ INFO['library']={en:'Saved prompts',ko:'저장된 프롬프트 (라이브러리)
 .lvbtn{background:#1f1f1f;border:1px solid #3a3a3a;color:#ececec;border-radius:999px;padding:8px 15px;font-size:13px;font-weight:700;cursor:pointer;transition:.15s}
 .lvbtn:hover{border-color:#4285f4;color:#fff}
 .lvbtn.p{background:#4285f4;border-color:#4285f4;color:#fff}
-.lvcue{position:relative}
-.lvcue::after{content:'👆 눌러서 실제로 써보기';position:absolute;left:50%;top:-34px;transform:translateX(-50%);background:#4285f4;color:#fff;font-size:12px;font-weight:800;padding:5px 11px;border-radius:9px;white-space:nowrap;box-shadow:0 6px 18px rgba(66,133,244,.34);animation:lvpulse 1.6s ease-in-out infinite;pointer-events:none;z-index:5}
-.lvcue::before{content:'';position:absolute;left:50%;top:-8px;transform:translateX(-50%) rotate(45deg);width:10px;height:10px;background:#4285f4;pointer-events:none;z-index:5}
-@keyframes lvpulse{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(-4px)}}
-.lvcue.done::after,.lvcue.done::before{display:none}
+
 .lvimgs{display:flex;gap:10px;flex-wrap:wrap;margin-top:11px}
 .lvfig{margin:0;flex:1 1 150px;min-width:130px}
 .lvfig.one{flex:0 1 300px;max-width:320px}
@@ -1484,6 +1480,12 @@ INFO['library']={en:'Saved prompts',ko:'저장된 프롬프트 (라이브러리)
 .lvposter .pt{position:relative;font-weight:900;font-size:17px;letter-spacing:2px;color:#fff;text-shadow:0 2px 8px rgba(0,0,0,.5)}
 .lvposter .ps{position:relative;font-weight:700;font-size:11.5px;color:#ffe9c9;margin-top:3px;text-shadow:0 1px 6px rgba(0,0,0,.5)}
 
+
+.lvstart{display:block;margin:14px auto 2px;background:#4285f4;color:#fff;border:none;border-radius:999px;
+ padding:13px 26px;font:inherit;font-size:15px;font-weight:800;cursor:pointer;position:relative;z-index:6;
+ box-shadow:0 10px 28px rgba(66,133,244,.34);animation:lvpulse2 1.6s ease-in-out infinite}
+.lvstart:hover{filter:brightness(1.12);animation-play-state:paused}
+@keyframes lvpulse2{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
 </style>
 <script id="liveSimJS">
 (function(){
@@ -1547,10 +1549,11 @@ INFO['library']={en:'Saved prompts',ko:'저장된 프롬프트 (라이브러리)
  function reset(){
   clearT();busy=false;var log=document.getElementById('lvLog');if(log){log.innerHTML='';log.classList.remove('on');}
   var el=inp();if(el&&phSaved!=null){el.classList.remove('lvtyping');el.innerHTML=phSaved;}
+  var sb=document.getElementById('lvStart');if(sb)sb.style.display='block';
  }
  function runScen(sc){
   busy=true;var el=inp();if(!el)return;var log=ensureUI();
-  var cue=document.querySelector('.lvcue');if(cue)cue.classList.add('done');
+  var sb=document.getElementById('lvStart');if(sb)sb.style.display='none';
   if(phSaved==null)phSaved=el.innerHTML;
   sTo(el);
   typeInto(el,sc.q,function(){
@@ -1577,11 +1580,15 @@ INFO['library']={en:'Saved prompts',ko:'저장된 프롬프트 (라이브러리)
  function start(){if(busy)return;idx=(idx<0)?0:(idx+1)%SCEN.length;clearT();var log=document.getElementById('lvLog');if(log)log.innerHTML='';runScen(SCEN[idx]);}
  function ready(){
   var h=home();if(!h)return;
-  var anc=h.querySelector(ANCHORSEL);if(anc)anc.classList.add('lvcue');
   ensureUI();
+  var anc=h.querySelector(ANCHORSEL);
   var hint=document.createElement('div');hint.className='lvwrap';
   hint.innerHTML='<div class="lvhint"><span class="kbd">'+TRIGGERWORD+'</span> 을(를) 누르면 리비안디자인 실제 예시로 <b>자동 작성 → '+TOOL+' 답변</b>이 바로 재생됩니다</div>';
   if(anc&&anc.parentNode)anc.parentNode.insertBefore(hint,anc);
+  var sb=document.createElement('button');sb.id='lvStart';sb.className='lvstart';sb.type='button';
+  sb.textContent='\uD83D\uDC46 \ub20c\ub7ec\uc11c \uc2e4\uc81c\ub85c \uc368\ubcf4\uae30';
+  sb.addEventListener('click',function(e){e.preventDefault();e.stopPropagation();start();});
+  if(anc&&anc.parentNode)anc.parentNode.insertBefore(sb,anc.nextSibling);
   document.addEventListener('click',function(e){
    var hh=home();if(!hh||!hh.classList.contains('on'))return;
    var hit=e.target.closest(TRIGGERSEL);
@@ -1591,6 +1598,28 @@ INFO['library']={en:'Saved prompts',ko:'저장된 프롬프트 (라이브러리)
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',ready);else T(ready,300);
 })();
 </script>
+
+
+<style id="introSkin">
+.introov{background:rgba(4,8,14,.82)}
+.introbox{background:#0c1017;border:1px solid #263141;border-left:4px solid #1a73e8;border-radius:10px;
+ max-width:560px;padding-top:54px;position:relative;
+ background-image:radial-gradient(circle at 1px 1px,rgba(122,168,255,.06) 1px,transparent 0);background-size:20px 20px}
+.introbox::before{content:'>_ google-ai-studio  ·  build console';position:absolute;top:0;left:0;right:0;height:36px;
+ display:flex;align-items:center;padding:0 16px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;
+ color:#7fb0ff;background:#0e1622;border-bottom:1px solid #1d2a3d;border-radius:6px 6px 0 0;letter-spacing:.5px}
+.introbox .k{font-family:ui-monospace,Menlo,Consolas,monospace;color:#7fb0ff;background:#0d1b2e;border:1px solid #1f4c8f;border-radius:5px}
+.introbox h1{color:#e8f0ff}
+.introbox h1::before{content:'// ';color:#3d5a86}
+.introbox .by b{color:#7fb0ff!important}
+.introbox .go{border-radius:7px}
+.introbox .go.p{background:#1a73e8;color:#fff}
+.introbox .go.s{border:1px solid #2c3a50;color:#dbe6f7;background:#0f1520}
+.introbox .glab{color:#7fb0ff;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px}
+.introbox .ggo{background:#10151d;border:1px solid #263141;border-radius:7px}
+.introbox .ggo .g{color:#e8f0ff}.introbox .ggo:hover{border-color:#1a73e8}
+.introbox .mini{color:#5f6f88}
+</style>
 
 </body>
 </html>

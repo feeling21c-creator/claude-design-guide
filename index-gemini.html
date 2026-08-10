@@ -1408,11 +1408,7 @@ INFO['library']={en:'Gems',ko:'Gems (저장된 나만의 도우미)',
 .lvbtn{background:#1f1f1f;border:1px solid #3a3a3a;color:#ececec;border-radius:999px;padding:8px 15px;font-size:13px;font-weight:700;cursor:pointer;transition:.15s}
 .lvbtn:hover{border-color:#4285f4;color:#fff}
 .lvbtn.p{background:#4285f4;border-color:#4285f4;color:#fff}
-.lvcue{position:relative}
-.lvcue::after{content:'👆 눌러서 실제로 써보기';position:absolute;left:50%;top:-34px;transform:translateX(-50%);background:#4285f4;color:#fff;font-size:12px;font-weight:800;padding:5px 11px;border-radius:9px;white-space:nowrap;box-shadow:0 6px 18px rgba(66,133,244,.34);animation:lvpulse 1.6s ease-in-out infinite;pointer-events:none;z-index:5}
-.lvcue::before{content:'';position:absolute;left:50%;top:-8px;transform:translateX(-50%) rotate(45deg);width:10px;height:10px;background:#4285f4;pointer-events:none;z-index:5}
-@keyframes lvpulse{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(-4px)}}
-.lvcue.done::after,.lvcue.done::before{display:none}
+
 .lvimgs{display:flex;gap:10px;flex-wrap:wrap;margin-top:11px}
 .lvfig{margin:0;flex:1 1 150px;min-width:130px}
 .lvfig.one{flex:0 1 300px;max-width:320px}
@@ -1423,6 +1419,12 @@ INFO['library']={en:'Gems',ko:'Gems (저장된 나만의 도우미)',
 .lvposter .pt{position:relative;font-weight:900;font-size:17px;letter-spacing:2px;color:#fff;text-shadow:0 2px 8px rgba(0,0,0,.5)}
 .lvposter .ps{position:relative;font-weight:700;font-size:11.5px;color:#ffe9c9;margin-top:3px;text-shadow:0 1px 6px rgba(0,0,0,.5)}
 
+
+.lvstart{display:block;margin:14px auto 2px;background:#4285f4;color:#fff;border:none;border-radius:999px;
+ padding:13px 26px;font:inherit;font-size:15px;font-weight:800;cursor:pointer;position:relative;z-index:6;
+ box-shadow:0 10px 28px rgba(66,133,244,.34);animation:lvpulse2 1.6s ease-in-out infinite}
+.lvstart:hover{filter:brightness(1.12);animation-play-state:paused}
+@keyframes lvpulse2{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
 </style>
 <script id="liveSimJS">
 (function(){
@@ -1486,10 +1488,11 @@ INFO['library']={en:'Gems',ko:'Gems (저장된 나만의 도우미)',
  function reset(){
   clearT();busy=false;var log=document.getElementById('lvLog');if(log){log.innerHTML='';log.classList.remove('on');}
   var el=inp();if(el&&phSaved!=null){el.classList.remove('lvtyping');el.innerHTML=phSaved;}
+  var sb=document.getElementById('lvStart');if(sb)sb.style.display='block';
  }
  function runScen(sc){
   busy=true;var el=inp();if(!el)return;var log=ensureUI();
-  var cue=document.querySelector('.lvcue');if(cue)cue.classList.add('done');
+  var sb=document.getElementById('lvStart');if(sb)sb.style.display='none';
   if(phSaved==null)phSaved=el.innerHTML;
   sTo(el);
   typeInto(el,sc.q,function(){
@@ -1516,11 +1519,15 @@ INFO['library']={en:'Gems',ko:'Gems (저장된 나만의 도우미)',
  function start(){if(busy)return;idx=(idx<0)?0:(idx+1)%SCEN.length;clearT();var log=document.getElementById('lvLog');if(log)log.innerHTML='';runScen(SCEN[idx]);}
  function ready(){
   var h=home();if(!h)return;
-  var anc=h.querySelector(ANCHORSEL);if(anc)anc.classList.add('lvcue');
   ensureUI();
+  var anc=h.querySelector(ANCHORSEL);
   var hint=document.createElement('div');hint.className='lvwrap';
   hint.innerHTML='<div class="lvhint"><span class="kbd">'+TRIGGERWORD+'</span> 을(를) 누르면 리비안디자인 실제 예시로 <b>자동 작성 → '+TOOL+' 답변</b>이 바로 재생됩니다</div>';
   if(anc&&anc.parentNode)anc.parentNode.insertBefore(hint,anc);
+  var sb=document.createElement('button');sb.id='lvStart';sb.className='lvstart';sb.type='button';
+  sb.textContent='\uD83D\uDC46 \ub20c\ub7ec\uc11c \uc2e4\uc81c\ub85c \uc368\ubcf4\uae30';
+  sb.addEventListener('click',function(e){e.preventDefault();e.stopPropagation();start();});
+  if(anc&&anc.parentNode)anc.parentNode.insertBefore(sb,anc.nextSibling);
   document.addEventListener('click',function(e){
    var hh=home();if(!hh||!hh.classList.contains('on'))return;
    var hit=e.target.closest(TRIGGERSEL);
@@ -1530,6 +1537,27 @@ INFO['library']={en:'Gems',ko:'Gems (저장된 나만의 도우미)',
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',ready);else T(ready,300);
 })();
 </script>
+
+
+<style id="introSkin">
+.introov{background:rgba(6,8,18,.8)}
+.introbox{max-width:530px;border-radius:26px;border:2px solid transparent;position:relative;
+ background-image:linear-gradient(#0d1220,#0d1220),linear-gradient(135deg,#4285f4,#9b72cb,#d96570);
+ background-origin:border-box;background-clip:padding-box,border-box}
+.introbox::after{content:'✦';position:absolute;top:16px;right:22px;font-size:26px;color:#8ab4f8;
+ text-shadow:0 0 18px rgba(66,133,244,.8);animation:gsp 2.2s ease-in-out infinite}
+@keyframes gsp{0%,100%{opacity:.5;transform:scale(1)}50%{opacity:1;transform:scale(1.25)}}
+.introbox .k{color:#8ab4f8;background:rgba(66,133,244,.12);border:1px solid rgba(66,133,244,.45);border-radius:999px}
+.introbox h1{background:linear-gradient(90deg,#8ab4f8,#b891f5,#ee8b77);-webkit-background-clip:text;background-clip:text;color:transparent}
+.introbox .by b{color:#8ab4f8!important}
+.introbox .go{border-radius:999px}
+.introbox .go.p{background:linear-gradient(90deg,#4285f4,#9b72cb);color:#fff}
+.introbox .go.s{border:1px solid #39415a;color:#dfe4f5}
+.introbox .glab{color:#8ab4f8}
+.introbox .ggo{background:#131a2e;border:1px solid #2a3452;border-radius:14px}
+.introbox .ggo:hover{border-color:#4285f4}
+.introbox .mini{color:#7d86a3}
+</style>
 
 </body>
 </html>
