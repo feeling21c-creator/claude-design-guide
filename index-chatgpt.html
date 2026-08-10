@@ -1536,5 +1536,164 @@ document.addEventListener('click',function(e){if(e.target.closest&&e.target.clos
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',place);else place();
 })();
 </script>
+<style id="liveSimCSS">
+.lvwrap{max-width:760px;margin:14px auto 0;}
+.lvhint{display:flex;align-items:center;gap:8px;justify-content:center;margin:6px auto 0;font-size:13px;color:#10a37f;font-weight:700}
+.lvhint .kbd{background:rgba(16,163,127,.12);border:1px solid rgba(16,163,127,.35);border-radius:8px;padding:2px 8px}
+.lvcaret{display:inline-block;width:2px;height:1em;background:#10a37f;margin-left:1px;vertical-align:-2px;animation:lvbl 1s steps(1) infinite}
+@keyframes lvbl{50%{opacity:0}}
+#ph.lvtyping{color:#ececec}
+.lvlog{margin:16px auto 0;display:none;flex-direction:column;gap:14px}
+.lvlog.on{display:flex}
+.lvrow{display:flex;flex-direction:column}
+.lvrow.u{align-items:flex-end}
+.lvrow.a{align-items:flex-start}
+.lvtag{font-size:11px;font-weight:800;color:#8a8a8a;margin:0 4px 5px}
+.lvrow.a .lvtag{color:#10a37f}
+.lvbub{max-width:88%;border-radius:16px;padding:12px 15px;font-size:14px;line-height:1.72;white-space:pre-wrap;word-break:break-word}
+.lvbub.u{background:#2f2f2f;border:1px solid #454545;color:#f2f2f2;border-bottom-right-radius:5px}
+.lvbub.a{background:rgba(16,163,127,.09);border:1px solid rgba(16,163,127,.3);color:#eaf7f2;border-bottom-left-radius:5px}
+.lvbub b{color:#fff}
+.lvdots span{display:inline-block;width:7px;height:7px;margin:0 2px;border-radius:50%;background:#10a37f;opacity:.4;animation:lvd 1.2s infinite}
+.lvdots span:nth-child(2){animation-delay:.2s}.lvdots span:nth-child(3){animation-delay:.4s}
+@keyframes lvd{0%,60%,100%{opacity:.3;transform:translateY(0)}30%{opacity:1;transform:translateY(-4px)}}
+.lvctrls{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:6px auto 2px}
+.lvbtn{background:#1f1f1f;border:1px solid #3a3a3a;color:#ececec;border-radius:999px;padding:8px 15px;font-size:13px;font-weight:700;cursor:pointer;transition:.15s}
+.lvbtn:hover{border-color:#10a37f;color:#fff}
+.lvbtn.p{background:#10a37f;border-color:#10a37f;color:#fff}
+.lvbtn.p:hover{background:#0d8a6c}
+.lvcue{position:relative}
+.lvcue::after{content:'👆 눌러서 실제로 써보기';position:absolute;left:50%;top:-34px;transform:translateX(-50%);background:#10a37f;color:#fff;font-size:12px;font-weight:800;padding:5px 11px;border-radius:9px;white-space:nowrap;box-shadow:0 6px 18px rgba(16,163,127,.4);animation:lvpulse 1.6s ease-in-out infinite;pointer-events:none}
+.lvcue::before{content:'';position:absolute;left:50%;top:-8px;transform:translateX(-50%) rotate(45deg);width:10px;height:10px;background:#10a37f;pointer-events:none}
+@keyframes lvpulse{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(-4px)}}
+.lvcue.done::after,.lvcue.done::before{display:none}
+</style>
+<script id="liveSimJS">
+(function(){
+ var SCEN=[
+  {who:'거래처 회신 이메일',
+   q:"럭셔리 뷰티샵 리모델링 견적 문의 주신 고객님께 회신할 이메일 써줘. 정중하게, 현장 실측 일정 2개 제안, 3문단, 너무 딱딱하지 않게.",
+   a:"제목: 뷰티샵 리모델링 상담·실측 일정 안내드립니다\n\n안녕하세요, 대표님. 리비안디자인입니다. 먼저 저희에게 리모델링을 문의해 주셔서 진심으로 감사드립니다.\n\n보내주신 매장 사진을 살펴보니 브랜드 무드를 살린 조명·마감 위주의 리뉴얼이 잘 어울릴 공간이었습니다. 정확한 견적을 위해 현장 실측을 먼저 제안드립니다. 이번 주 목요일 오후 2시 또는 금요일 오전 11시 중 편하신 시간을 알려주시면 방문 일정을 맞추겠습니다.\n\n실측 후 3일 이내에 공정별 상세 견적서를 보내드리겠습니다. 궁금하신 점은 편하게 회신 주세요. 감사합니다.\n\n리비안디자인 드림",
+   refine:{q:"더 짧고 친근하게 3줄로 줄여줘.",
+    a:"대표님, 리비안디자인입니다. 뷰티샵 리모델링 문의 감사드려요!\n정확한 견적을 위해 현장 실측부터 제안드립니다 — 목요일 오후 2시 또는 금요일 오전 11시 중 편하신 때 알려주세요.\n실측 후 3일 안에 상세 견적서 보내드리겠습니다. 감사합니다 :)"}},
+  {who:'인테리어 콘셉트 제안',
+   q:"27평 신혼집 거실을 '따뜻한 미니멀' 콘셉트로 잡고 싶어. 컬러·자재·조명 방향을 3가지로 제안해줘.",
+   a:"'따뜻한 미니멀' 27평 거실, 세 가지 방향으로 정리했습니다.\n\n1) 컬러 — 웜 화이트 벽에 오크 우드톤 60:30, 포인트로 카밀 베이지 20%. 차갑지 않게 톤을 낮추는 게 핵심입니다.\n\n2) 자재 — 바닥은 내추럴 오크 강마루, TV월은 마이크로시멘트로 매끈하게. 걸레받이는 최소화해 미니멀하게 마감합니다.\n\n3) 조명 — 메인 등은 줄이고 매입 다운라이트 + 간접 코브 조명으로. 3000K 전구색으로 통일하면 '따뜻함'이 확실히 살아납니다.\n\n원하시면 이 방향으로 무드보드용 이미지 프롬프트도 만들어 드릴게요.",
+   refine:{q:"이 방향으로 무드보드 이미지 프롬프트도 만들어줘.",
+    a:"무드보드용 이미지 프롬프트입니다 (이미지 생성 AI에 그대로 붙여넣기):\n\n\"Warm minimal living room, 27-pyeong Korean apartment, warm white walls, natural oak wood flooring, micro-cement TV wall, recessed downlights and indirect cove lighting 3000K, beige accents, cozy and clean, soft afternoon light, interior magazine photo, ultra realistic\"\n\n비율은 16:9, 저녁·오후 두 버전으로 뽑아 비교해 보시길 추천드립니다."}},
+  {who:'공정별 견적 체크표',
+   q:"상가 카페 15평 인테리어, 공정별 견적 '항목'만 표로 정리해줘. 금액은 비워두고 체크용으로.",
+   a:"카페 15평 공정별 견적 체크표입니다. (금액은 실측 후 기입)\n\n■ 철거·설비  ·  기존 철거, 전기·급배수 이설\n■ 목공        ·  파티션, 카운터 목대, 천장\n■ 전기·조명  ·  배선, 레일·매입 조명\n■ 마감        ·  도장, 타일, 바닥\n■ 가구·집기  ·  카운터 상판, 좌석\n■ 간판·사인  ·  외부 간판, 사인물\n\n⚠️ 실제 금액·자재 단가는 현장 실측과 자재 확정 후에만 정확합니다. (확인 필요)"},
+  {who:'AI 교육 SaaS 화면 기획',
+   q:"내가 만들 'AI 교육 SaaS'의 수강생 관리 화면을 기획해줘. 로그인 / 수강목록 / 진도율 세 화면 구성으로.",
+   a:"AI 교육 SaaS 수강생 관리, 세 화면으로 정리했습니다.\n\n① 로그인 — 이메일·비밀번호 + '카카오로 시작하기'. 최초 로그인 시 수강코드 입력(강의별 코드).\n\n② 수강목록 — 카드형으로 강의 표시, 각 카드에 진도율 바·'이어보기' 버튼. 상단에 검색·필터(진행중/완료).\n\n③ 진도율 — 강의별 완료 회차/전체 회차, 마지막 학습일, 수료 임박 표시. 관리자는 수강생별 진도를 표로 한눈에.\n\n다음 단계로 각 화면의 버튼·데이터 항목을 표로 뽑아드릴 수 있어요. (실제 개발 요금·서버 사양은 확인 필요)"}
+ ];
+ var idx=-1, timers=[], busy=false;
+ function T(fn,ms){var id=setTimeout(fn,ms);timers.push(id);return id;}
+ function clearT(){timers.forEach(clearTimeout);timers=[];}
+ function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+ function fmt(s){return esc(s).replace(/\*\*(.+?)\*\*/g,'<b>$1</b>').replace(/\n/g,'<br>');}
+ function ensureUI(){
+  var home=document.getElementById('v-home');if(!home)return null;
+  var log=document.getElementById('lvLog');
+  if(!log){
+   log=document.createElement('div');log.id='lvLog';log.className='lvlog';
+   var comp=home.querySelector('.composer');
+   if(comp&&comp.parentNode){comp.parentNode.insertBefore(log,comp.nextSibling);}else{home.appendChild(log);}
+  }
+  return log;
+ }
+ function scrollTo(el){try{el.scrollIntoView({behavior:'smooth',block:'center'});}catch(e){}}
+ function typeInto(el,txt,cb,sp){
+  el.textContent='';el.classList.add('lvtyping');var i=0;
+  var car=document.createElement('span');car.className='lvcaret';el.appendChild(car);
+  (function step(){
+   if(i<=txt.length){el.textContent=txt.slice(0,i);el.appendChild(car);i++;T(step,sp||24);}
+   else{if(car.parentNode)car.parentNode.removeChild(car);if(cb)cb();}
+  })();
+ }
+ function typeBub(bub,txt,cb){
+  var i=0;bub.innerHTML='';var car=document.createElement('span');car.className='lvcaret';bub.appendChild(car);
+  (function step(){
+   if(i<=txt.length){bub.innerHTML=fmt(txt.slice(0,i))+'<span class="lvcaret"></span>';i+=2;scrollBottom();T(step,10);}
+   else{bub.innerHTML=fmt(txt);if(cb)cb();}
+  })();
+ }
+ function scrollBottom(){var log=document.getElementById('lvLog');if(!log)return;}
+ function addRow(cls,tag){
+  var log=ensureUI();log.classList.add('on');
+  var row=document.createElement('div');row.className='lvrow '+cls;
+  var t=document.createElement('div');t.className='lvtag';t.textContent=tag;
+  var b=document.createElement('div');b.className='lvbub '+cls;
+  row.appendChild(t);row.appendChild(b);log.appendChild(row);return b;
+ }
+ function ctrls(sc){
+  var log=document.getElementById('lvLog');
+  var old=log.querySelector('.lvctrls');if(old)old.parentNode.removeChild(old);
+  var box=document.createElement('div');box.className='lvctrls';
+  if(sc&&sc.refine){
+   var rb=document.createElement('button');rb.className='lvbtn p';rb.textContent='↳ 이어서: "'+sc.refine.q.slice(0,16)+(sc.refine.q.length>16?'…':'')+'"';
+   rb.onclick=function(){if(busy)return;runRefine(sc);};box.appendChild(rb);
+  }
+  var nb=document.createElement('button');nb.className='lvbtn';nb.textContent='🔄 다른 예시로 써보기';
+  nb.onclick=function(){if(busy)return;runNext();};box.appendChild(nb);
+  var cb=document.createElement('button');cb.className='lvbtn';cb.textContent='✕ 지우기';
+  cb.onclick=function(){if(busy)return;reset();};box.appendChild(cb);
+  log.appendChild(box);scrollTo(box);
+ }
+ function reset(){
+  clearT();busy=false;var log=document.getElementById('lvLog');if(log){log.innerHTML='';log.classList.remove('on');}
+  var ph=document.getElementById('ph');if(ph){ph.classList.remove('lvtyping');ph.textContent='무엇이든 작업하세요';}
+ }
+ function runScen(sc){
+  busy=true;var ph=document.getElementById('ph');var log=ensureUI();
+  var cue=document.querySelector('.lvcue');if(cue)cue.classList.add('done');
+  scrollTo(document.querySelector('.composer'));
+  typeInto(ph,sc.q,function(){
+   T(function(){
+    ph.classList.remove('lvtyping');ph.textContent='무엇이든 작업하세요';
+    var ub=addRow('u','나 (리비안디자인)');ub.textContent=sc.q;scrollTo(ub.parentNode);
+    var ab=addRow('a','ChatGPT');ab.innerHTML='<span class="lvdots"><span></span><span></span><span></span></span>';
+    scrollTo(ab.parentNode);
+    T(function(){typeBub(ab,sc.a,function(){busy=false;ctrls(sc);});},900);
+   },380);
+  },26);
+ }
+ function runRefine(sc){
+  busy=true;
+  var old=document.querySelector('#lvLog .lvctrls');if(old)old.parentNode.removeChild(old);
+  var ub=addRow('u','나 (리비안디자인)');ub.textContent=sc.refine.q;scrollTo(ub.parentNode);
+  var ab=addRow('a','ChatGPT');ab.innerHTML='<span class="lvdots"><span></span><span></span><span></span></span>';
+  T(function(){typeBub(ab,sc.refine.a,function(){busy=false;var log=document.getElementById('lvLog');
+   var box=document.createElement('div');box.className='lvctrls';
+   var nb=document.createElement('button');nb.className='lvbtn';nb.textContent='🔄 다른 예시로 써보기';nb.onclick=function(){if(!busy)runNext();};
+   var cb=document.createElement('button');cb.className='lvbtn';cb.textContent='✕ 지우기';cb.onclick=function(){if(!busy)reset();};
+   box.appendChild(nb);box.appendChild(cb);log.appendChild(box);scrollTo(box);});},800);
+ }
+ function runNext(){
+  clearT();var log=document.getElementById('lvLog');if(log)log.innerHTML='';
+  idx=(idx+1)%SCEN.length;runScen(SCEN[idx]);
+ }
+ function start(){if(busy)return;if(idx<0)idx=0;else idx=(idx+1)%SCEN.length;clearT();var log=document.getElementById('lvLog');if(log)log.innerHTML='';runScen(SCEN[idx]);}
+
+ function ready(){
+  var home=document.getElementById('v-home');if(!home)return;
+  var comp=home.querySelector('.composer');if(comp)comp.classList.add('lvcue');
+  // 힌트 라인
+  ensureUI();
+  var hint=document.createElement('div');hint.className='lvwrap';
+  hint.innerHTML='<div class="lvhint"><span class="kbd">입력창</span> 을 누르면 리비안디자인 실제 예시로 <b>자동 작성 → AI 답변</b>이 바로 재생됩니다</div>';
+  if(comp&&comp.parentNode)comp.parentNode.insertBefore(hint,comp);
+  // 홈 입력창/보내기 클릭 → 라이브 시뮬 (캡처 단계에서 가로채 드로어 대신 실행)
+  document.addEventListener('click',function(e){
+   var home=document.getElementById('v-home');if(!home||!home.classList.contains('on'))return;
+   var hit=e.target.closest('#ph, .send.ix, .composer .ph');
+   if(hit&&home.contains(hit)){e.preventDefault();e.stopPropagation();start();}
+  },true);
+ }
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',ready);else T(ready,300);
+})();
+</script>
+
 </body>
 </html>
