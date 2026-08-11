@@ -8,9 +8,9 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
 <style>
 :root{
- --bg:#212121;--bg2:#171717;--panel:#2a2a2a;--panel2:#303030;--line:#3a3a3a;--line2:#454545;
+ --bg:#262624;--bg2:#1f1e1c;--panel:#30302d;--panel2:#3a3936;--line:#3e3d3a;--line2:#4a4946;
  --tx:#ececec;--tx2:#b4b4b4;--mut:#8e8e8e;--mut2:#6e6e6e;
- --accent:#c96442;--accent2:#1a7f64;--accent-soft:#0f2b23;--accent-ink:#5fd3b2;--chip:#2f2f2f;
+ --accent:#c96442;--accent2:#c96442;--accent-soft:#3a2620;--accent-ink:#e8a084;--chip:#33322f;
 }
 *{box-sizing:border-box}
 html,body{margin:0;padding:0}
@@ -218,24 +218,54 @@ a{color:var(--accent-ink)}
  .p2-search input{min-height:44px}
 }
 </style>
+
+<style id="realHomeCSS">
+.cwmini{display:inline-flex;align-items:center;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:999px;padding:2.5px;cursor:pointer}
+.cwmini .cwm{padding:4.5px 12px;border-radius:999px;font-size:12.5px;color:var(--mut)}
+.cwmini .cwm.on{background:#3a3733;color:#fff;font-weight:700}
+</style>
+
+<style id="realHomeCSS2">
+/* 히어로: 실제처럼 크고 중앙 */
+#v-home .hero{text-align:center;margin-top:34px}
+#v-home .hero h1{font-size:27px;letter-spacing:-.5px}
+#v-home .hero p{max-width:520px;margin:10px auto 0}
+/* 컴포저 카드 + 하단 스트립 연결 */
+#v-home .composer{border-radius:18px 18px 0 0;border-bottom:none;background:var(--panel)}
+#v-home .cbar{background:var(--panel);border:1px solid var(--line);border-top:1px solid var(--line);border-radius:0 0 18px 18px;margin-top:0;padding:9px 14px}
+#v-home .cbar .cb{background:transparent;border:none;color:var(--tx2);font-size:12.5px;padding:4px 6px}
+#v-home .cbar .cbend .cb{color:var(--mut)}
+/* 추천 아이디어: 리스트형 */
+#v-home .sugs{display:flex;flex-direction:column;gap:8px;max-width:560px;margin:6px auto 0}
+#v-home .sug{display:flex;align-items:center;gap:12px;background:transparent;border:none;padding:8px 6px;border-radius:10px;text-align:left;font-size:13.5px;color:var(--tx)}
+#v-home .sug:hover{background:rgba(255,255,255,.05)}
+#v-home .sug .si{width:44px;height:32px;border-radius:7px;background:linear-gradient(135deg,#3d3b37,#2c2b28);display:grid;place-items:center;font-size:15px;flex:none;border:1px solid var(--line)}
+#v-home .ssec{max-width:560px;margin:22px auto 2px;color:var(--mut);font-size:12px}
+/* 상단바: 홈|Code 왼쪽, 베타 오른쪽 */
+.topbar .cw{margin-right:auto}
+.topbar::after{content:'☁ 베타';font-size:11.5px;color:var(--tx2);border:1px solid var(--line);border-radius:999px;padding:4px 10px}
+/* 법적 고지 */
+#rdLegal{margin:40px auto 8px;text-align:center;color:var(--mut2);font-size:10.5px;line-height:1.7;max-width:640px}
+</style>
 </head>
 <body>
 
 <div class="app">
  <aside class="side" id="side">
   <div class="sbrand"><div class="lg">◍</div><div class="nm">클로드</div><span class="sp" style="flex:1"></span><span class="sicon ix" data-k="search" aria-label="채팅 검색">🔍</span><span class="sicon ix" data-k="sidetoggle" aria-label="사이드바 접기">▢</span></div>
-  <div class="sitem ix" data-k="newchat"><span class="i">✎</span> 새 채팅</div>
-  <div class="sitem ix" data-k="library"><span class="i">▤</span> 라이브러리</div>
-  <div class="sitem ix" data-k="projects"><span class="i">📁</span> 프로젝트</div>
-  <div class="sitem ix" data-k="reserve"><span class="i">◷</span> 예약</div>
-  <div class="sitem ix" data-k="plugins"><span class="i">◎</span> 플러그인</div>
-  <div class="sitem ix" data-k="more2"><span class="i">⋯</span> 더 보기</div>
-  <div class="ssec">최근 ›</div>
+  <div class="sitem ix" data-k="newchat"><span class="i">＋</span> 새로 생성</div>
+  <div class="sitem ix" data-k="projects"><span class="i">🗂</span> 프로젝트</div>
+  <div class="sitem ix" data-k="library"><span class="i">✦</span> 아티팩트</div>
+  <div class="sitem ix" data-k="reserve"><span class="i">◷</span> 예정됨</div>
+  <div class="sitem ix" data-k="sendbeta"><span class="i">📤</span> 발송 <b style="font-size:10px;color:var(--accent)">베타</b></div>
+  <div class="sitem ix" data-k="gpts"><span class="i">🛠</span> 사용자 지정</div>
+   <div class="ssec">고정됨 ›</div>
+  <div class="ssec">최근 항목 ›</div>
   <div class="schat ix" data-k="hist1">📧 거래처 안내 이메일 초안</div>
   <div class="schat ix" data-k="hist2">📝 회의록 요약해줘</div>
   <div class="schat">🖼 인테리어 무드보드 이미지</div>
   <div class="schat">🌐 리모델링 트렌드 리서치</div>
-  <div class="sfoot"><div class="sitem ix" data-k="account"><span class="i">👤</span> 내 계정 · 요금제</div></div>
+  <div class="sfoot"><div class="sitem ix" data-k="account"><span class="i">Ⓡ</span> Rucas · <b>Max</b></div></div>
  </aside>
  <div class="sbackdrop" id="sbackdrop"></div>
 
@@ -243,7 +273,7 @@ a{color:var(--accent-ink)}
   <div class="topbar">
    <button class="ib menub" id="menub" aria-label="메뉴 열기" style="border-radius:9px">☰</button>
    <span class="sp"></span>
-   <span class="cw ix" data-k="chatwork" role="group" aria-label="채팅 / 프로젝트 전환"><span class="cwb" data-cw="chat">채팅</span><span class="cwb on" data-cw="work">프로젝트</span></span>
+   <span class="cw ix" data-k="chatwork" role="group" aria-label="홈 / Code 전환"><span class="cwb on" data-cw="chat">🏠 홈</span><span class="cwb" data-cw="work">&lt;/&gt; Code</span></span>
    <span class="sp"></span>
   </div>
 
@@ -257,30 +287,32 @@ a{color:var(--accent-ink)}
   <div class="wrap">
    <!-- HOME -->
    <section class="view on" id="v-home">
-    <div class="hero" id="heroBox"><h1 id="heroH">어떤 작업을 시작할까요?</h1><p>아래 입력창에 <b>그냥 말하듯이</b> 적으면 돼요. 위 <b>채팅 / 프로젝트</b>와 아래 <b>프로젝트·플러그인·데스크톱 앱</b>이 무엇인지도 눌러보며 배워요.</p></div>
+    <div class="hero" id="heroBox"><h1 id="heroH"><span style="color:var(--accent)">✳</span> 같이 뭘 해결해볼까요?</h1><p><b>입력창·채팅|Cowork·Opus 모델·프로젝트 또는 폴더</b> — 어느 요소든 눌러보며 배워요.</p></div>
     <div class="composer">
-     <div class="ph ix" id="ph" data-k="input">무엇이든 작업하세요</div>
+     <div class="ph ix" id="ph" data-k="input">스킬을 보려면 /를 입력하세요</div>
      <div class="crow">
       <span class="ib ix" data-k="plus" data-pop="plus">＋</span>
-      <span class="ib ix" data-k="tools" data-pop="tools">🧰 <span class="t">도구</span></span>
+      <span class="cwmini ix" data-k="cowork"><span class="cwm">채팅</span><span class="cwm on">Cowork</span></span>
       <span class="cend">
-       <span class="mchip2 ix" data-k="model">Opus 4.6 <span style="color:var(--mut)">⌄</span></span>
+       <span class="mchip2 ix" data-k="model">Opus 4.8 <b style="color:var(--mut);font-weight:600">높음</b> <span style="color:var(--mut)">⌄</span></span>
        <span class="ib ix" data-k="voice">🎤</span>
        <span class="send ix" data-k="send">↑</span>
       </span>
      </div>
     </div>
     <div class="cbar">
-     <span class="cb ix" data-k="projsel">📁 프로젝트 선택</span>
-     <span class="cb ix" data-k="plugins">◎ 플러그인 <b>＋Ⓒ</b></span>
-     <span class="cbend"><span class="cb ix" data-k="desktop">🖥 데스크톱 앱 열기</span></span>
+     <span class="cb ix" data-k="projsel">🗂 프로젝트 또는 폴더 <span style="color:var(--mut)">⌄</span></span>
+     <span class="cb ix" data-k="plugins">🖐 수동 <span style="color:var(--mut)">⌄</span></span>
+     <span class="cbend"><span class="cb ix" data-k="desktop">⚡ 8월 19일까지 2배 더 많은 사용량</span></span>
     </div>
-    <div class="sugs">
-     <div class="sug ix" data-k="sug1"><span class="si">🔵</span> 내가 쓰는 AI 도구의 요금·한도·플랜이 바뀌면 알려줘</div>
-     <div class="sug ix" data-k="sug2"><span class="si">💬</span> <b>(슬랙)</b> 내 할 일 정리해줘</div>
-     <div class="sug ix" data-k="sug3"><span class="si">✉️</span> <b>(지메일)</b> 후속 이메일 초안을 작성해줘</div>
+    <div class="ssec" style="margin:18px 4px 8px;text-align:left">추천 아이디어</div>
+     <div class="sugs">
+     <div class="sug ix" data-k="sug1"><span class="si">🌅</span> 매일 브리핑 보내주기</div>
+     <div class="sug ix" data-k="sug2"><span class="si">📥</span> 받은편지함 정리하기</div>
+     <div class="sug ix" data-k="sug3"><span class="si">⚙️</span> 나를 위해 Cowork 맞춤 설정</div>
     </div>
-    <p class="sub-t" style="text-align:center;margin-top:18px">위 어느 요소든 <b>마우스를 올리면</b> 한글 설명이, <b>누르면</b> 상세 설명 + 실제 예시가 나와요. (모바일은 탭)</p>
+    <p class="sub-t" style="text-align:center;margin-top:14px">위 어느 요소든 <b>마우스를 올리면</b> 한글 설명, <b>누르면</b> 상세 설명 + 실제 예시. (모바일은 탭)</p>
+     <div id="rdLegal">Anthropic PBC | 사업자등록번호 86-1969045 (미국 델라웨어) | 다리오 아모데이<br>통신판매업 신고: 2025-공정-0020호 | 호스팅제공자: AWS Cloud Services · 교육용 재현 화면</div>
    </section>
 
    <!-- USES -->
@@ -930,11 +962,11 @@ document.addEventListener('click',function(e){if(e.target.closest&&e.target.clos
  var side=document.querySelector('#side');
  var proj=side.querySelector('[data-k="projects"]');
  function sItem(k,icon,label){var e=document.createElement('div');e.className='sitem ix';e.dataset.k=k;e.innerHTML='<span class="i">'+icon+'</span> '+label;return e;}
- if(proj&&proj.parentNode)proj.parentNode.insertBefore(sItem('f-codex','🤖','Codex'),proj.nextSibling);
- var foot=side.querySelector('.sfoot');if(foot)foot.insertBefore(sItem('f-custom','⚙️','설정 · 개인 맞춤'),foot.firstChild);
+ 
+ var foot=side.querySelector('.sfoot');if(foot)foot.insertBefore(sItem('f-custom','◐','디자인'),foot.firstChild);
 
  document.querySelectorAll('#fg .card, #side [data-k="f-codex"], #side [data-k="f-custom"]').forEach(function(el){if(typeof wire==='function')wire(el);});
- (function(){var w=document.createElement('div');w.className='p2-search';var s=document.createElement('span');s.className='ic';s.textContent='🔎';w.appendChild(s);var inp=document.createElement('input');inp.type='search';inp.placeholder='기능 검색 (예: 프로젝트, 메모리, 맞춤, Codex…)';inp.setAttribute('aria-label','기능 검색');w.appendChild(inp);var x=document.createElement('button');x.className='x';x.textContent='✕';x.type='button';w.appendChild(x);
+ (function(){var w=document.createElement('div');w.className='p2-search';var s=document.createElement('span');s.className='ic';s.textContent='🔎';w.appendChild(s);var inp=document.createElement('input');inp.type='search';inp.placeholder='기능 검색 (예: 프로젝트, 아티팩트, 스킬, 커넥터…)';inp.setAttribute('aria-label','기능 검색');w.appendChild(inp);var x=document.createElement('button');x.className='x';x.textContent='✕';x.type='button';w.appendChild(x);
   function run(){var q=(inp.value||'').trim().toLowerCase();document.querySelectorAll('#fg .card').forEach(function(c){var t=(c.textContent||'').toLowerCase();c.style.display=(!q||t.indexOf(q)>-1)?'':'none';});}
   inp.addEventListener('input',run);x.addEventListener('click',function(){inp.value='';run();inp.focus();});document.getElementById('fsearch').appendChild(w);})();
  var VIEWS=['home','uses','features','gpts','recent'];
@@ -1862,6 +1894,58 @@ img{-webkit-user-drag:none;user-drag:none;pointer-events:auto}
  },true);
  document.getElementById('cdConnItem').addEventListener('mouseenter',openSub);
 })();
+</script>
+
+<script id="realHomeInfo">
+(function(){function go(){ if(typeof INFO==='undefined'){setTimeout(go,600);return;}
+ INFO.cowork={en:'Chat / Cowork',ko:'채팅 | Cowork 전환 (가장 중요한 스위치)',
+  fn:'클로드를 쓰는 두 가지 방식이에요.\n· <b>채팅</b>: 묻고 답을 받는 대화.\n· <b>Cowork</b>: 클로드가 <b>내 컴퓨터에서 직접 일하는 모드</b> — 파일을 만들고, 폴더를 정리하고, 여러 단계를 알아서 이어가요.',
+  when:'질문·글쓰기면 채팅, "이 폴더의 파일들 정리해줘"처럼 실제 작업을 통째로 맡기려면 Cowork.',
+  how:'입력창에서 채팅|Cowork를 눌러 전환해요. Cowork에선 아래 "프로젝트 또는 폴더"로 작업 대상을 지정해요.',
+  caution:'Cowork는 실제 파일을 만지므로 처음엔 <b>수동(승인) 모드</b>로 쓰는 게 안전해요.',
+  sc:'현장 사진 폴더 정리를 Cowork로 시켜 볼게요.',
+  run:[{t:'1 · Cowork 선택 + 폴더 지정',me:'(폴더: 8월 현장사진) 사진들을 현장별 폴더로 분류하고 목록 만들어줘.'},{t:'2 · 결과',ai:'폴더가 현장별로 정리되고, 사진 목록 문서가 만들어져요. 각 단계마다 승인을 물어봐요(수동 모드).'}],
+  steps:['채팅|Cowork 전환','폴더 지정','작업 맡기기','승인하며 진행']};
+ INFO.plugins={en:'Permission mode',ko:'수동 / 자동 (승인 방식)',
+  fn:'Cowork가 일할 때 <b>매 단계 허락을 받을지(수동)</b>, 알아서 진행할지(자동) 정하는 스위치예요.',
+  when:'처음이거나 중요한 파일을 다룰 땐 수동, 익숙한 반복 작업은 자동.',
+  how:'입력창 아래 "수동 ⌄"을 눌러 바꿔요.',
+  caution:'자동은 편하지만 되돌리기 어려운 작업(삭제·발송)도 진행될 수 있어요. 처음엔 수동 추천.',
+  steps:['수동 ⌄ 클릭','수동/자동 선택','중요 작업은 수동으로']};
+ INFO.desktop={en:'Usage',ko:'사용량 안내 배너',
+  fn:'내 요금제의 <b>사용량 상태</b>를 알려주는 배너예요. 이벤트·프로모션으로 한도가 늘면 여기 표시돼요. (한도·플랜은 확인 필요)',
+  steps:['배너 확인','부족하면 모델을 가볍게(Haiku)','플랜은 설정에서']};
+ INFO.projsel={en:'Project or folder',ko:'프로젝트 또는 폴더 (작업 대상 지정)',
+  fn:'이 작업을 <b>어느 프로젝트/폴더 안에서</b> 할지 정해요. 지정하면 그 안의 파일·지침을 배경으로 깔고 일해요.',
+  when:'한 고객 건을 이어서 할 때, 특정 폴더의 파일로 작업시킬 때.',
+  how:'"프로젝트 또는 폴더 ⌄" → 목록에서 선택하거나 새로 만들어요.',
+  steps:['⌄ 클릭','프로젝트/폴더 선택','그 맥락 안에서 작업']};
+ INFO.reserve={en:'Scheduled',ko:'예정됨 (예약 작업)',
+  fn:'"매일 아침 브리핑"처럼 <b>정해진 시간에 자동 실행</b>되는 작업들이 모이는 곳이에요.',
+  steps:['작업을 예약으로 만들기','예정됨에서 확인·수정']};
+ INFO.sendbeta={en:'Outbox (beta)',ko:'발송 (베타)',
+  fn:'클로드가 만든 이메일·메시지 <b>보내기 대기함</b>이에요. 내가 확인 후 내보내는 구조라 안전해요. (베타 기능 — 구성은 확인 필요)',
+  steps:['초안 확인','수정','발송 승인']};
+ INFO.gpts={en:'Customize',ko:'사용자 지정 (스킬·맞춤 설정)',
+  fn:'나만의 <b>스킬(작업 규칙 묶음)</b>과 맞춤 설정을 관리하는 곳이에요. 회사 양식·응대 규칙을 스킬로 만들어두면 팀 전체가 같은 품질로 써요.',
+  when:'반복 작업을 표준화하고 싶을 때.',how:'사이드바 "사용자 지정" → 스킬 만들기.',
+  steps:['사용자 지정 열기','스킬 만들기','지침·예시 넣기','대화에서 /스킬명']};
+ INFO.model={en:'Model · Effort',ko:'모델과 노력 수준',
+  fn:'답을 만드는 클로드의 종류와 <b>얼마나 깊이 생각할지</b>예요.\n· <b>Opus</b>: 가장 똑똑 (기획·분석) · <b>Sonnet</b>: 균형 · <b>Haiku</b>: 빠름\n· <b>높음/중간</b>: 노력 수준 — 높을수록 깊게 생각하고 사용량을 더 써요.\n보통 기본값이면 충분해요. (이름·구성은 확인 필요)',
+  steps:['모델칩 클릭','작업 무게에 맞게 선택','평소엔 기본값']};
+ INFO.chatwork={en:'Home / Code',ko:'홈 | Code 탭',
+  fn:'· <b>홈</b>: 일반 업무 공간 (지금 화면)\n· <b>Code</b>: 개발자용 코딩 작업 공간 (클로드 코드)\n대표님 업무는 대부분 홈에서 해결돼요.',
+  steps:['평소엔 홈','개발 작업만 Code']};
+ INFO.sug1={en:'Daily briefing',ko:'매일 브리핑 보내주기',
+  fn:'매일 아침 <b>일정·메일·할 일 요약</b>을 자동으로 받아보는 추천 작업이에요. 누르면 바로 설정을 시작해요.',
+  say:'매일 아침 8시에 오늘 일정·새 메일·할 일 요약해서 브리핑해줘.',ans:'예약 작업으로 등록되고, 매일 아침 브리핑이 도착해요. (예정됨에서 관리)'};
+ INFO.sug2={en:'Clean inbox',ko:'받은편지함 정리하기',
+  fn:'지메일을 연결해 <b>중요 메일 분류·답장 초안·스팸 정리</b>를 맡기는 추천 작업이에요.',
+  say:'받은편지함에서 상담 문의만 골라 요약하고 답장 초안 만들어줘.',ans:'문의 메일이 분류되고 답장 초안이 준비돼요. ※발송 전 직접 확인.'};
+ INFO.sug3={en:'Customize Cowork',ko:'나를 위해 Cowork 맞춤 설정',
+  fn:'내 업무 방식(인테리어 실무·문서 규칙)을 알려주면 <b>클로드가 나에게 맞게 세팅</b>되는 추천 작업이에요.',
+  say:'나는 인테리어 회사 대표야. 견적·제안서·현장관리 중심으로 맞춤 설정해줘.',ans:'업무에 맞는 스킬·폴더 구조·추천 작업이 세팅돼요.'};
+ } go();})();
 </script>
 </body>
 </html>
