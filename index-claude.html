@@ -1625,5 +1625,124 @@ img{-webkit-user-drag:none;user-drag:none;pointer-events:auto}
 .sw-ov [style*="#b4b4b4"]{color:#8a8377!important}
 </style>
 
+
+<style id="plusMenuCSS">
+#cdPlus{position:fixed;z-index:2400;width:250px;background:#30302e;border:1px solid #46464a;border-radius:14px;
+ padding:7px;box-shadow:0 18px 50px rgba(0,0,0,.55);display:none;animation:fxUp .18s ease}
+#cdPlus.show{display:block}
+#cdPlus .mi{display:flex;align-items:center;gap:10px;padding:9px 11px;border-radius:9px;color:#ececec;
+ font-size:13.5px;cursor:pointer;position:relative}
+#cdPlus .mi:hover{background:#3d3d3b}
+#cdPlus .mi .e{width:18px;text-align:center;flex:none;opacity:.9}
+#cdPlus .mi .kbd{margin-left:auto;font-size:11px;color:#8e8e93}
+#cdPlus .mi .arw{margin-left:auto;color:#8e8e93;font-size:12px}
+#cdPlus .mi .chk{margin-left:auto;color:#6ea8ff}
+#cdPlus .sep{height:1px;background:#46464a;margin:6px 4px}
+#cdSub{position:fixed;z-index:2401;width:260px;background:#30302e;border:1px solid #46464a;border-radius:14px;
+ padding:7px;box-shadow:0 18px 50px rgba(0,0,0,.55);display:none;animation:fxUp .18s ease;max-height:60vh;overflow:auto}
+#cdSub.show{display:block}
+#cdSub .mi{display:flex;align-items:center;gap:10px;padding:9px 11px;border-radius:9px;color:#ececec;font-size:13.5px;cursor:pointer}
+#cdSub .mi:hover{background:#3d3d3b}
+#cdSub .mi .e{width:18px;text-align:center;flex:none}
+#cdSub .sep{height:1px;background:#46464a;margin:6px 4px}
+#cdSub .tgl{margin-left:auto;width:38px;height:21px;border-radius:999px;background:#5a5a5e;position:relative;transition:.18s;flex:none}
+#cdSub .tgl::after{content:'';position:absolute;top:2.5px;left:3px;width:16px;height:16px;border-radius:50%;background:#fff;transition:.18s}
+#cdSub .mi.on .tgl{background:#4c8bf5}
+#cdSub .mi.on .tgl::after{left:19px}
+#cdSub .arw{margin-left:auto;color:#8e8e93;font-size:12px}
+#cdHint{position:fixed;z-index:2402;background:#d97757;color:#fff;font-size:12px;font-weight:800;
+ padding:7px 12px;border-radius:10px;box-shadow:0 8px 24px rgba(217,119,87,.45);display:none;max-width:240px;line-height:1.5}
+#cdHint.show{display:block;animation:lvpulse2 1.6s ease-in-out infinite}
+</style>
+<script id="plusMenuJS">
+(function(){
+ /* 드로어 심층 설명 등록 */
+ function reg(){ if(typeof INFO==='undefined'){setTimeout(reg,700);return;}
+  INFO['cd_conn']={en:'Connectors',ko:'커넥터 확인·켜기',
+   fn:'커넥터는 클로드에 <b>다른 앱(피그마·노션·Mobbin·Vercel 등)을 연결</b>해 그 앱의 자료를 쓰게 하는 기능이에요.<br><b>어디서 확인?</b> 대화창 <b>왼쪽 아래 ＋ 버튼 → 커넥터</b> — 여기에 목록과 <b>켜짐/꺼짐 스위치</b>가 있어요.',
+   when:'작업을 시키기 전에! 커넥터가 <b>연결되어 있고, 스위치가 파란색(켜짐)</b>인지 먼저 확인해요.',
+   how:'① 새 채팅을 연다 → ② 입력창 왼쪽 아래 <b>＋</b> 클릭 → ③ <b>커넥터</b>에 마우스 → ④ 목록에서 쓸 앱의 <b>스위치가 켜져 있는지</b> 확인(꺼져 있으면 클릭해 켜기)',
+   caution:'스위치가 꺼져 있으면 그 대화에서 해당 앱을 <b>못 씁니다</b>. 또 커넥터 등록 <b>전에 시작한 대화</b>에는 안 붙을 수 있어요 — 새 채팅에서 확인하세요.',
+   sc:'루카스가 Mobbin 커넥터로 뷰티샵 앱 레퍼런스를 찾는 실제 상황이에요.',
+   run:[{t:'1 · ＋ → 커넥터에서 Mobbin 스위치 켜짐 확인'},
+        {t:'2 · 요청',me:'Mobbin에서 뷰티샵 예약 앱 온보딩 플로우 레퍼런스 3개 찾아줘.',ai:'(Mobbin 연결됨) 실제 앱 3개의 온보딩 화면 플로우를 가져와 요약해줘요. 실제 앱 이름·화면이 나오면 연결 성공!'},
+        {t:'3 · 안 나오면',me:'',ai:'스위치가 꺼져 있거나, 등록 전에 시작한 대화예요. 새 채팅에서 다시 켜고 시도.'}],
+   steps:['새 채팅 열기','입력창 왼쪽 아래 ＋ 누르기','커넥터 → 스위치 파란색(켜짐) 확인','꺼져 있으면 클릭해 켜기','그다음 요청 보내기']};
+  INFO['cd_plusmenu']={en:'+ menu',ko:'＋ 메뉴 (첨부·스킬·커넥터·플러그인)',
+   fn:'입력창 왼쪽 아래 <b>＋</b>는 클로드의 <b>도구 서랍</b>이에요. 파일 첨부, 프로젝트, GitHub, 스킬, 커넥터, 플러그인, 연구·웹 검색이 다 여기서 시작해요.',
+   when:'파일을 붙이거나, 연결된 앱을 확인하거나, 웹 검색을 켜고 끌 때.',
+   how:'＋를 누르면 메뉴가 열려요. ›가 붙은 항목은 마우스를 올리면 <b>하위 메뉴</b>가 옆으로 열립니다.',
+   caution:'같은 이름이라도 <b>대화마다 켜짐 상태가 다를 수</b> 있어요. 새 대화를 열면 꼭 다시 확인.',
+   steps:['＋ 클릭 → 메뉴 열림','커넥터/스킬/플러그인은 › 하위 메뉴','밖을 클릭하면 닫힘']};
+ } reg();
+
+ var CONNS=[['📱','Mobbin',true],['📝','Notion',true],['🟣','Sentry',true],['▲','Vercel',true],['🌐','Claude in Chrome',true],['🎨','Canva',false]];
+ var menu=document.createElement('div');menu.id='cdPlus';
+ menu.innerHTML=''
+  +'<div class="mi" data-a="drawer"><span class="e">📎</span>파일 또는 사진 추가<span class="kbd">Ctrl+U</span></div>'
+  +'<div class="mi" data-a="drawer"><span class="e">🗂</span>프로젝트에 추가<span class="arw">›</span></div>'
+  +'<div class="mi" data-a="drawer"><span class="e">🐙</span>GitHub에서 추가<span class="arw">›</span></div>'
+  +'<div class="sep"></div>'
+  +'<div class="mi" data-a="drawer"><span class="e">🧩</span>스킬<span class="arw">›</span></div>'
+  +'<div class="mi" id="cdConnItem" data-a="conn"><span class="e">🔌</span><b>커넥터</b><span class="arw">›</span></div>'
+  +'<div class="mi" data-a="drawer"><span class="e">🧷</span>플러그인<span class="arw">›</span></div>'
+  +'<div class="sep"></div>'
+  +'<div class="mi" data-a="drawer"><span class="e">🔍</span>연구</div>'
+  +'<div class="mi" data-a="drawer"><span class="e">🌐</span>웹 검색<span class="chk">✓</span></div>';
+ var sub=document.createElement('div');sub.id='cdSub';
+ function renderSub(){ sub.innerHTML=''
+  +'<div class="mi" data-a="drawer"><span class="e">＋</span>connector 추가<span class="arw">›</span></div>'
+  +'<div class="mi" data-a="drawer"><span class="e">🧰</span>커넥터 관리</div>'
+  +'<div class="sep"></div>'
+  +CONNS.map(function(c,i){return '<div class="mi cn'+(c[2]?' on':'')+'" data-i="'+i+'"><span class="e">'+c[0]+'</span>'+c[1]+'<span class="tgl"></span></div>';}).join('')
+  +'<div class="sep"></div>'
+  +'<div class="mi" data-a="drawer"><span class="e">🔧</span>도구 액세스<span class="arw">›</span></div>'; }
+ renderSub();
+ var hint=document.createElement('div');hint.id='cdHint';
+ hint.textContent='💡 여기! 스위치가 파란색이면 이 대화에서 사용 가능해요';
+ document.body.appendChild(menu);document.body.appendChild(sub);document.body.appendChild(hint);
+
+ function plusEl(){return document.querySelector('#v-home .composer [data-k="plus"]');}
+ function openMenu(){ var p=plusEl(); if(!p)return; var r=p.getBoundingClientRect();
+  menu.classList.add('show');
+  var top=r.top-menu.offsetHeight-10; if(top<8)top=r.bottom+10;
+  menu.style.left=Math.max(8,Math.min(r.left,innerWidth-260))+'px'; menu.style.top='0px';
+  var h=menu.offsetHeight; top=r.top-h-10; if(top<8)top=r.bottom+10; menu.style.top=top+'px'; }
+ function openSub(){ var it=document.getElementById('cdConnItem'); var r=it.getBoundingClientRect();
+  sub.classList.add('show'); sub.style.left='0px'; sub.style.top='0px';
+  var left=r.right+6; if(left+265>innerWidth)left=r.left-266; if(left<8)left=8;
+  var top=Math.min(r.top-40,innerHeight-sub.offsetHeight-12); if(top<8)top=8;
+  sub.style.left=left+'px'; sub.style.top=top+'px';
+  var hr=sub.getBoundingClientRect();
+  hint.classList.add('show'); hint.style.left=Math.max(8,hr.left)+'px'; hint.style.top=Math.max(8,hr.top-46)+'px'; }
+ function closeAll(){menu.classList.remove('show');sub.classList.remove('show');hint.classList.remove('show');}
+
+ /* + 클릭 가로채기 (홈에서만) */
+ document.addEventListener('click',function(e){
+  var home=document.getElementById('v-home'); if(!home||!home.classList.contains('on'))return;
+  var p=e.target.closest&&e.target.closest('#v-home .composer [data-k="plus"]');
+  if(p){e.preventDefault();e.stopPropagation();
+   if(menu.classList.contains('show'))closeAll(); else openMenu();
+   try{if(window.markSeen)window.markSeen('plus');}catch(x){}
+   return;}
+  if(menu.contains(e.target)){e.stopPropagation();
+   var mi=e.target.closest('.mi'); if(!mi)return;
+   if(mi.dataset.a==='conn'){openSub();}
+   else{closeAll(); try{window.openDrawer('cd_plusmenu');}catch(x){}}
+   return;}
+  if(sub.contains(e.target)){e.stopPropagation();
+   var cn=e.target.closest('.mi.cn');
+   if(cn){var i=+cn.dataset.i;CONNS[i][2]=!CONNS[i][2];cn.classList.toggle('on',CONNS[i][2]);
+    if(window.__fxTick)try{window.__fxTick();}catch(x){}
+    hint.textContent=CONNS[i][2]?('✅ '+CONNS[i][1]+' 켜짐 — 이 대화에서 사용 가능'):('⛔ '+CONNS[i][1]+' 꺼짐 — 이 대화에서 사용 불가');
+    return;}
+   var mi=e.target.closest('.mi'); if(mi&&mi.dataset.a==='drawer'){closeAll();try{window.openDrawer('cd_conn');}catch(x){}}
+   return;}
+  closeAll();
+ },true);
+ document.getElementById('cdConnItem').addEventListener('mouseenter',openSub);
+})();
+</script>
+
 </body>
 </html>
