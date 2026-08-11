@@ -1659,5 +1659,92 @@ img{-webkit-user-drag:none;user-drag:none;pointer-events:auto}
 .sw-ov [style*="#b4b4b4"]{color:#787468!important}
 </style>
 
+
+<style id="connMenuCSS">
+#cmMenu,#cmSub{position:fixed;z-index:2400;width:252px;background:#2b2b2b;border:1px solid #454545;border-radius:14px;
+ padding:7px;box-shadow:0 18px 50px rgba(0,0,0,.55);display:none;animation:fxUp .18s ease;max-height:62vh;overflow:auto}
+#cmSub{z-index:2401;width:262px}
+#cmMenu.show,#cmSub.show{display:block}
+#cmMenu .mi,#cmSub .mi{display:flex;align-items:center;gap:10px;padding:9px 11px;border-radius:9px;color:#ececec;
+ font-size:13.5px;cursor:pointer}
+#cmMenu .mi:hover,#cmSub .mi:hover{background:#363636}
+#cmMenu .mi .e,#cmSub .mi .e{width:18px;text-align:center;flex:none;opacity:.92}
+#cmMenu .mi .arw{margin-left:auto;color:#8e8e93;font-size:12px}
+#cmMenu .mi .chk{margin-left:auto;color:#2f82e0}
+#cmMenu .sep,#cmSub .sep{height:1px;background:#454545;margin:6px 4px}
+#cmSub .tgl{margin-left:auto;width:38px;height:21px;border-radius:999px;background:#5a5a5e;position:relative;transition:.18s;flex:none}
+#cmSub .tgl::after{content:'';position:absolute;top:2.5px;left:3px;width:16px;height:16px;border-radius:50%;background:#fff;transition:.18s}
+#cmSub .mi.on .tgl{background:#2f82e0}
+#cmSub .mi.on .tgl::after{left:19px}
+#cmHint{position:fixed;z-index:2402;background:#2f82e0;color:#fff;font-size:12px;font-weight:800;
+ padding:7px 12px;border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.4);display:none;max-width:250px;line-height:1.5}
+#cmHint.show{display:block;animation:lvpulse2 1.6s ease-in-out infinite}
+#ntGear{margin-left:auto;cursor:pointer;font-size:15px;opacity:.85;padding:2px 6px;border-radius:6px}#ntGear:hover{opacity:1;background:rgba(255,255,255,.08)}
+</style>
+<script id="connMenuJS">
+(function(){
+ var MAIN=[["🔄", "동기화"], ["🔔", "알림"], "---", ["🔗", "내 연결 (Connections)", "sub"], ["⚙️", "설정과 멤버"]], CONNS=[["💬", "Slack", true], ["📁", "Google Drive", true], ["🐙", "GitHub", false], ["🎨", "Figma", true], ["📅", "Google 캘린더", true]], DIRECT=false, SUBLABEL="연결 추가";
+ var DRAWKEY="nt_conn", DRAW={"en": "My connections", "ko": "내 연결(Connections) 확인", "fn": "노션의 <b>내 연결</b>은 슬랙·드라이브·피그마 같은 앱을 노션과 <b>묶어주는 곳</b>이에요. 연결돼 있어야 미리보기·자동 공유·가져오기가 됩니다.<br><b>어디서 확인?</b> 왼쪽 아래 <b>설정 → 내 연결</b> (여기선 입력창 오른쪽 <b>⚙️</b>로 체험).", "when": "슬랙으로 페이지를 공유하거나, 드라이브 파일을 붙이거나, 피그마 미리보기를 볼 때.", "how": "① <b>설정(⚙️)</b> 클릭 → ② <b>내 연결</b> → ③ 쓸 앱이 목록에 있고 <b>켜져 있는지</b> 확인 (없으면 '연결 추가')", "caution": "연결은 <b>계정 단위</b>예요 — 워크스페이스를 옮기면 다시 확인. 권한 범위도 함께 확인.", "sc": "루카스가 Slack 연결을 확인하고 회의 액션아이템을 자동 공유하는 상황이에요.", "run": [{"t": "1 · 설정 → 내 연결에서 Slack 켜짐 확인"}, {"t": "2 · 사용", "me": "오늘 회의록의 액션아이템을 #현장공유 채널로 보내줘.", "ai": "(Slack 연결됨) 액션아이템 3건이 슬랙 채널에 카드로 공유돼요."}, {"t": "3 · 안 되면", "ai": "목록에 Slack이 없거나 꺼짐 — '연결 추가'로 연결부터."}], "steps": ["설정(⚙️) 열기", "내 연결 확인", "없으면 연결 추가", "기능 사용"]}, HINT="💡 파란 스위치 = 노션이 그 앱과 연결되어 있다는 뜻!";
+ function reg(){ if(typeof INFO==='undefined'){setTimeout(reg,700);return;} INFO[DRAWKEY]=DRAW; }
+ reg();
+ var menu=document.createElement('div');menu.id='cmMenu';
+ var sub=document.createElement('div');sub.id='cmSub';
+ var hint=document.createElement('div');hint.id='cmHint';hint.textContent=HINT;
+ function rMain(){ menu.innerHTML=MAIN.map(function(m){
+   if(m==='---')return '<div class="sep"></div>';
+   var a=m[2]||'drawer';
+   return '<div class="mi" data-a="'+a+'"><span class="e">'+m[0]+'</span>'+m[1]
+    +(a==='sub'?'<span class="arw">›</span>':(m[3]==='chk'?'<span class="chk">✓</span>':(m[3]==='arw'?'<span class="arw">›</span>':'')))+'</div>';
+  }).join(''); }
+ function rSub(){ sub.innerHTML=(SUBLABEL?'<div class="mi" data-a="drawer"><span class="e">＋</span>'+SUBLABEL+'<span class="arw">›</span></div><div class="mi" data-a="drawer"><span class="e">🧰</span>연결 관리</div><div class="sep"></div>':'')
+  +CONNS.map(function(c,i){return '<div class="mi cn'+(c[2]?' on':'')+'" data-i="'+i+'"><span class="e">'+c[0]+'</span>'+c[1]+'<span class="tgl"></span></div>';}).join('')
+  +'<div class="sep"></div><div class="mi" data-a="drawer"><span class="e">📘</span>이게 뭐예요? 자세히</div>'; }
+ rMain(); rSub();
+ document.body.appendChild(menu);document.body.appendChild(sub);document.body.appendChild(hint);
+ var nb=document.querySelector('#v-home .naibar');
+ if(nb&&!document.getElementById('ntGear')){var g=document.createElement('span');g.id='ntGear';g.textContent='⚙️';
+  g.title='설정·내 연결';nb.appendChild(g);}
+ function trig(){return document.querySelector('#ntGear');}
+ function openMenu(){ var p=trig(); if(!p)return;
+  var start=DIRECT?sub:menu; var r=p.getBoundingClientRect();
+  start.classList.add('show'); start.style.left='0px'; start.style.top='0px';
+  var w=start.offsetWidth,h=start.offsetHeight;
+  var left=Math.max(8,Math.min(r.left,innerWidth-w-10));
+  var top=r.top-h-10; if(top<8)top=r.bottom+10;
+  start.style.left=left+'px'; start.style.top=top+'px';
+  if(DIRECT)showHint();
+ }
+ function openSub(){ var r=menu.getBoundingClientRect();
+  sub.classList.add('show'); sub.style.left='0px'; sub.style.top='0px';
+  var left=r.right+6; if(left+270>innerWidth)left=r.left-270; if(left<8)left=8;
+  var top=Math.min(r.top,innerHeight-sub.offsetHeight-12); if(top<8)top=8;
+  sub.style.left=left+'px'; sub.style.top=top+'px'; showHint(); }
+ function showHint(){ var hr=sub.getBoundingClientRect();
+  hint.classList.add('show'); hint.style.left=Math.max(8,hr.left)+'px'; hint.style.top=Math.max(8,hr.top-46)+'px'; }
+ function closeAll(){menu.classList.remove('show');sub.classList.remove('show');hint.classList.remove('show');}
+ window.addEventListener('click',function(e){
+  var home=document.getElementById('v-home'); if(!home||!home.classList.contains('on'))return;
+  var p=e.target.closest&&e.target.closest('#ntGear');
+  if(p){e.preventDefault();e.stopPropagation();
+   if((DIRECT?sub:menu).classList.contains('show'))closeAll(); else openMenu(); return;}
+  if(menu.contains(e.target)){e.stopPropagation();
+   var mi=e.target.closest('.mi'); if(!mi)return;
+   if(mi.dataset.a==='sub'){openSub();}
+   else{closeAll(); try{window.openDrawer(DRAWKEY);}catch(x){}}
+   return;}
+  if(sub.contains(e.target)){e.stopPropagation();
+   var cn=e.target.closest('.mi.cn');
+   if(cn){var i=+cn.dataset.i;CONNS[i][2]=!CONNS[i][2];cn.classList.toggle('on',CONNS[i][2]);
+    if(window.__fxTick)try{window.__fxTick();}catch(x){}
+    hint.classList.add('show');
+    hint.textContent=CONNS[i][2]?('✅ '+CONNS[i][1]+' 켜짐 — 사용 가능'):('⛔ '+CONNS[i][1]+' 꺼짐 — 사용 불가');
+    return;}
+   var mi=e.target.closest('.mi'); if(mi){closeAll();try{window.openDrawer(DRAWKEY);}catch(x){}}
+   return;}
+  closeAll();
+ },true);
+})();
+</script>
+
 </body>
 </html>

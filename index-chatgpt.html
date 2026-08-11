@@ -1767,5 +1767,90 @@ img{-webkit-user-drag:none;user-drag:none;pointer-events:auto}
 .sw-next{border-radius:999px!important}.sw-prev{border-radius:999px!important}
 </style>
 
+
+<style id="connMenuCSS">
+#cmMenu,#cmSub{position:fixed;z-index:2400;width:252px;background:#2f2f2f;border:1px solid #454545;border-radius:14px;
+ padding:7px;box-shadow:0 18px 50px rgba(0,0,0,.55);display:none;animation:fxUp .18s ease;max-height:62vh;overflow:auto}
+#cmSub{z-index:2401;width:262px}
+#cmMenu.show,#cmSub.show{display:block}
+#cmMenu .mi,#cmSub .mi{display:flex;align-items:center;gap:10px;padding:9px 11px;border-radius:9px;color:#ececec;
+ font-size:13.5px;cursor:pointer}
+#cmMenu .mi:hover,#cmSub .mi:hover{background:#3a3a3a}
+#cmMenu .mi .e,#cmSub .mi .e{width:18px;text-align:center;flex:none;opacity:.92}
+#cmMenu .mi .arw{margin-left:auto;color:#8e8e93;font-size:12px}
+#cmMenu .mi .chk{margin-left:auto;color:#10a37f}
+#cmMenu .sep,#cmSub .sep{height:1px;background:#454545;margin:6px 4px}
+#cmSub .tgl{margin-left:auto;width:38px;height:21px;border-radius:999px;background:#5a5a5e;position:relative;transition:.18s;flex:none}
+#cmSub .tgl::after{content:'';position:absolute;top:2.5px;left:3px;width:16px;height:16px;border-radius:50%;background:#fff;transition:.18s}
+#cmSub .mi.on .tgl{background:#10a37f}
+#cmSub .mi.on .tgl::after{left:19px}
+#cmHint{position:fixed;z-index:2402;background:#10a37f;color:#fff;font-size:12px;font-weight:800;
+ padding:7px 12px;border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.4);display:none;max-width:250px;line-height:1.5}
+#cmHint.show{display:block;animation:lvpulse2 1.6s ease-in-out infinite}
+
+</style>
+<script id="connMenuJS">
+(function(){
+ var MAIN=[["📎", "파일·사진 추가"], ["🖼", "이미지 만들기"], ["🌐", "웹 검색", null, "chk"], "---", ["🔌", "앱 연결 (커넥터)", "sub"], ["⚙️", "설정"]], CONNS=[["📁", "Google Drive", true], ["✉️", "Gmail", true], ["💬", "Slack", true], ["📝", "Notion", false], ["🐙", "GitHub", true], ["📅", "캘린더", false]], DIRECT=false, SUBLABEL="앱 추가";
+ var DRAWKEY="gpt_conn", DRAW={"en": "Connected apps", "ko": "앱 연결 확인·켜기", "fn": "ChatGPT에 <b>내 앱(드라이브·지메일·슬랙 등)을 연결</b>해 실제 자료로 일을 시키는 기능이에요.<br><b>어디서 확인?</b> 입력창 왼쪽 아래 <b>＋ → 앱 연결</b> — 스위치가 켜져 있어야 그 대화에서 씁니다.", "when": "지메일·드라이브 자료로 일을 시키기 <b>전에</b> 반드시 확인.", "how": "① 새 채팅 → ② 입력창 왼쪽 아래 <b>＋</b> → ③ <b>앱 연결</b> → ④ 쓸 앱 스위치 <b>켜짐</b> 확인", "caution": "스위치가 꺼져 있으면 '앱에 접근할 수 없어요'라고 나와요. 연결 전에 시작한 대화엔 안 붙을 수 있으니 <b>새 채팅</b>에서.", "sc": "루카스가 지메일 연결을 확인하고 상담 메일을 정리시키는 상황이에요.", "run": [{"t": "1 · ＋ → 앱 연결에서 Gmail 켜짐 확인"}, {"t": "2 · 요청", "me": "지메일에서 오늘 온 상담 문의 3건 요약하고 답장 초안 만들어줘.", "ai": "(Gmail 연결됨) 문의 3건 요약 + 답장 초안 3개. ※발송 전 꼭 직접 확인."}, {"t": "3 · 안 되면", "ai": "스위치 꺼짐이거나 권한 미허용 — ＋ → 앱 연결에서 다시 켜고 새 채팅으로."}], "steps": ["새 채팅", "＋ 클릭", "앱 연결 › 스위치 확인", "꺼져 있으면 켜기", "요청 보내기"]}, HINT="💡 스위치가 초록이면 이 대화에서 사용 가능!";
+ function reg(){ if(typeof INFO==='undefined'){setTimeout(reg,700);return;} INFO[DRAWKEY]=DRAW; }
+ reg();
+ var menu=document.createElement('div');menu.id='cmMenu';
+ var sub=document.createElement('div');sub.id='cmSub';
+ var hint=document.createElement('div');hint.id='cmHint';hint.textContent=HINT;
+ function rMain(){ menu.innerHTML=MAIN.map(function(m){
+   if(m==='---')return '<div class="sep"></div>';
+   var a=m[2]||'drawer';
+   return '<div class="mi" data-a="'+a+'"><span class="e">'+m[0]+'</span>'+m[1]
+    +(a==='sub'?'<span class="arw">›</span>':(m[3]==='chk'?'<span class="chk">✓</span>':(m[3]==='arw'?'<span class="arw">›</span>':'')))+'</div>';
+  }).join(''); }
+ function rSub(){ sub.innerHTML=(SUBLABEL?'<div class="mi" data-a="drawer"><span class="e">＋</span>'+SUBLABEL+'<span class="arw">›</span></div><div class="mi" data-a="drawer"><span class="e">🧰</span>연결 관리</div><div class="sep"></div>':'')
+  +CONNS.map(function(c,i){return '<div class="mi cn'+(c[2]?' on':'')+'" data-i="'+i+'"><span class="e">'+c[0]+'</span>'+c[1]+'<span class="tgl"></span></div>';}).join('')
+  +'<div class="sep"></div><div class="mi" data-a="drawer"><span class="e">📘</span>이게 뭐예요? 자세히</div>'; }
+ rMain(); rSub();
+ document.body.appendChild(menu);document.body.appendChild(sub);document.body.appendChild(hint);
+ 
+ function trig(){return document.querySelector('#v-home .composer [data-k="plus"]');}
+ function openMenu(){ var p=trig(); if(!p)return;
+  var start=DIRECT?sub:menu; var r=p.getBoundingClientRect();
+  start.classList.add('show'); start.style.left='0px'; start.style.top='0px';
+  var w=start.offsetWidth,h=start.offsetHeight;
+  var left=Math.max(8,Math.min(r.left,innerWidth-w-10));
+  var top=r.top-h-10; if(top<8)top=r.bottom+10;
+  start.style.left=left+'px'; start.style.top=top+'px';
+  if(DIRECT)showHint();
+ }
+ function openSub(){ var r=menu.getBoundingClientRect();
+  sub.classList.add('show'); sub.style.left='0px'; sub.style.top='0px';
+  var left=r.right+6; if(left+270>innerWidth)left=r.left-270; if(left<8)left=8;
+  var top=Math.min(r.top,innerHeight-sub.offsetHeight-12); if(top<8)top=8;
+  sub.style.left=left+'px'; sub.style.top=top+'px'; showHint(); }
+ function showHint(){ var hr=sub.getBoundingClientRect();
+  hint.classList.add('show'); hint.style.left=Math.max(8,hr.left)+'px'; hint.style.top=Math.max(8,hr.top-46)+'px'; }
+ function closeAll(){menu.classList.remove('show');sub.classList.remove('show');hint.classList.remove('show');}
+ window.addEventListener('click',function(e){
+  var home=document.getElementById('v-home'); if(!home||!home.classList.contains('on'))return;
+  var p=e.target.closest&&e.target.closest('#v-home .composer [data-k="plus"]');
+  if(p){e.preventDefault();e.stopPropagation();
+   if((DIRECT?sub:menu).classList.contains('show'))closeAll(); else openMenu(); return;}
+  if(menu.contains(e.target)){e.stopPropagation();
+   var mi=e.target.closest('.mi'); if(!mi)return;
+   if(mi.dataset.a==='sub'){openSub();}
+   else{closeAll(); try{window.openDrawer(DRAWKEY);}catch(x){}}
+   return;}
+  if(sub.contains(e.target)){e.stopPropagation();
+   var cn=e.target.closest('.mi.cn');
+   if(cn){var i=+cn.dataset.i;CONNS[i][2]=!CONNS[i][2];cn.classList.toggle('on',CONNS[i][2]);
+    if(window.__fxTick)try{window.__fxTick();}catch(x){}
+    hint.classList.add('show');
+    hint.textContent=CONNS[i][2]?('✅ '+CONNS[i][1]+' 켜짐 — 사용 가능'):('⛔ '+CONNS[i][1]+' 꺼짐 — 사용 불가');
+    return;}
+   var mi=e.target.closest('.mi'); if(mi){closeAll();try{window.openDrawer(DRAWKEY);}catch(x){}}
+   return;}
+  closeAll();
+ },true);
+})();
+</script>
+
 </body>
 </html>
