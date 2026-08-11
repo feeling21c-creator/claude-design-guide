@@ -1603,5 +1603,22 @@ img{-webkit-user-drag:none;user-drag:none;pointer-events:auto}
 })();
 </script>
 
+
+<style id="swSkin">
+.sw-ov{background:radial-gradient(60% 40% at 50% 8%,rgba(66,133,244,.16),transparent),#0d1220}
+.sw-card{position:relative}
+.sw-card::after{content:'✦';position:absolute;top:-4px;right:2px;font-size:22px;color:#8ab4f8;text-shadow:0 0 16px rgba(66,133,244,.8);animation:gsp2 2.2s ease-in-out infinite}
+@keyframes gsp2{0%,100%{opacity:.5;transform:scale(1)}50%{opacity:1;transform:scale(1.25)}}
+.sw-h{background:linear-gradient(90deg,#8ab4f8,#b891f5,#ee8b77);-webkit-background-clip:text;background-clip:text;color:transparent}
+.sw-step{color:#8ab4f8}
+.sw-dot{background:#252c42}.sw-dot.on{background:#9b72cb}
+.sw-bar{background:#0f1526;border-top:1px solid #232c47}
+.sw-next{background:linear-gradient(90deg,#4285f4,#9b72cb)!important;color:#fff!important;border-radius:999px!important}
+.sw-prev{background:#151c30!important;color:#dfe4f5!important;border:1px solid #39415a!important;border-radius:999px!important}
+.sw-sub2 button{border-color:#39415a;color:#7d86a3}
+.sw-ov [style*="#10a37f"]{background:linear-gradient(135deg,#4285f4,#9b72cb)!important}
+.sw-ov [style*="#2a2a2a"]{background:#131a2e!important;border-color:#2a3452!important}
+</style>
+
 </body>
 </html>
