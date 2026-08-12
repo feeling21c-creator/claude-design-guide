@@ -8,9 +8,9 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
 <style>
 :root{
- --bg:#212121;--bg2:#171717;--panel:#2a2a2a;--panel2:#303030;--line:#3a3a3a;--line2:#454545;
- --tx:#ececec;--tx2:#b4b4b4;--mut:#8e8e8e;--mut2:#6e6e6e;
- --accent:#10a37f;--accent2:#1a7f64;--accent-soft:#0f2b23;--accent-ink:#5fd3b2;--chip:#2f2f2f;
+ --bg:#ffffff;--bg2:#f7f7f9;--panel:#f4f5f7;--panel2:#ffffff;--line:#e5e7ea;--line2:#d8dbdf;
+ --tx:#191a1c;--tx2:#45484d;--mut:#7b8087;--mut2:#9aa0a7;
+ --accent:#8b3dff;--accent2:#6f2dcf;--accent-soft:#f1e8ff;--accent-ink:#7a2fe8;--chip:#f0f1f4;
 }
 *{box-sizing:border-box}
 html,body{margin:0;padding:0}
@@ -223,18 +223,17 @@ a{color:var(--accent-ink)}
 
 <div class="app">
  <aside class="side" id="side">
-  <div class="sbrand"><div class="lg">🎨</div><div class="nm">Canva</div><span class="sp" style="flex:1"></span><span class="sicon ix" data-k="search" aria-label="검색">🔍</span><span class="sicon ix" data-k="sidetoggle" aria-label="사이드바 접기">▢</span></div>
-  <div class="sitem ix" data-k="newchat"><span class="i">✎</span> 디자인 만들기</div>
-  <div class="sitem ix" data-k="library"><span class="i">▤</span> 내 디자인</div>
-  <div class="sitem ix" data-k="projects"><span class="i">🗂</span> 프로젝트 · 폴더</div>
-  <div class="sitem ix" data-k="reserve"><span class="i">◧</span> 템플릿</div>
-  <div class="sitem ix" data-k="more2"><span class="i">⋯</span> 더 보기</div>
-  <div class="ssec">최근 작업 ›</div>
-  <div class="schat ix" data-k="hist1">📄 34평 리모델링 상담 전단</div>
-  <div class="schat ix" data-k="hist2">📱 봄 상담 이벤트 인스타 카드</div>
-  <div class="schat">🎬 시공 전/후 릴스</div>
-  <div class="schat">🎨 리비안 로고 · 브랜드킷</div>
-  <div class="sfoot"><div class="sitem ix" data-k="account"><span class="i">👤</span> 내 계정 · 요금제</div></div>
+  <div class="sbrand"><span class="sicon ix" data-k="sidetoggle" aria-label="사이드바 접기">◫</span></div>
+  <div class="sitem ix" data-k="newchat"><span class="i cvplus">＋</span><span class="sl">만들기</span></div>
+  <div class="sitem on ix" data-k="home2"><span class="i">🏠</span><span class="sl">홈</span></div>
+  <div class="sitem ix" data-k="projects"><span class="i">📁</span><span class="sl">프로젝트</span></div>
+  <div class="sitem ix" data-k="reserve"><span class="i">▤</span><span class="sl">템플릿</span></div>
+  <div class="sitem ix" data-k="printstore"><span class="i">🛍️</span><span class="sl">프린트 스토어</span></div>
+  <div class="sitem ix" data-k="brandcenter"><span class="i">Ⓒ</span><span class="sl">브랜드 센터</span></div>
+  <div class="sitem ix" data-k="canvaai"><span class="i">⚡</span><span class="sl">Canva AI</span></div>
+  <div class="sitem ix" data-k="approve"><span class="i">☑️</span><span class="sl">승인</span></div>
+  <div class="sitem ix" data-k="more2"><span class="i">⋯</span><span class="sl">더 보기</span></div>
+  <div class="sfoot"><div class="sitem ix" data-k="bell"><span class="i">🔔</span><span class="sl">알림</span></div><div class="sitem ix" data-k="account"><span class="i">🙂</span><span class="sl">내 계정</span></div></div>
  </aside>
  <div class="sbackdrop" id="sbackdrop"></div>
 
@@ -256,9 +255,12 @@ a{color:var(--accent-ink)}
   <div class="wrap">
    <!-- HOME -->
    <section class="view on" id="v-home">
-    <div class="hero" id="heroBox"><h1 id="heroH">무엇을 디자인할까요?</h1><p>아래 칸에 <b>만들 것을 적거나</b> 템플릿을 골라요. 위 <b>만들기/Magic</b>과 아래 <b>Magic Studio·브랜드킷</b>이 무엇인지도 눌러보며 배워요.</p></div>
+    <div class="hero cvhero" id="heroBox">
+     <h1 id="heroH" class="cvh1">오늘은 무엇을 만들어 볼까요?</h1>
+     <div class="cvchips"><span class="cvchip on ix" data-k="home2">🏠 홈</span><span class="cvchip ix" data-k="reserve">▤ 템플릿</span></div>
+    </div>
     <div class="composer">
-     <div class="ph ix" id="ph" data-k="input">무엇을 만들까요? (예: 인테리어 상담 전단)</div>
+     <div class="ph ix" id="ph" data-k="input">무엇이든 검색하세요</div>
      <div class="crow">
       <span class="ib ix" data-k="plus" data-pop="plus">＋</span>
       <span class="ib ix" data-k="tools" data-pop="tools">✨ <span class="t">Magic Studio</span></span>
@@ -269,6 +271,11 @@ a{color:var(--accent-ink)}
       </span>
      </div>
     </div>
+    <div class="cvfmts"><div class="cvfmt ix" data-k="fmt-tpl"><span class="cvfi" style="background:#8b3dff">▤</span><span>템플릿</span></div><div class="cvfmt ix" data-k="fmt-layers"><span class="cvfi" style="background:#00c4cc">🪄</span><span>Magic Layers</span></div><div class="cvfmt ix" data-k="fmt-print"><span class="cvfi" style="background:#7d2ae8">🏬</span><span>프린트 스토어</span></div><div class="cvfmt ix" data-k="fmt-pt"><span class="cvfi" style="background:#ff5e57">📽️</span><span>프레젠테이션</span></div><div class="cvfmt ix" data-k="fmt-sns"><span class="cvfi" style="background:#ff4f81">❤️</span><span>SNS</span></div><div class="cvfmt ix" data-k="fmt-video"><span class="cvfi" style="background:#d63af9">▶️</span><span>동영상</span></div><div class="cvfmt ix" data-k="fmt-docs"><span class="cvfi" style="background:#2f7cf6">📄</span><span>Docs</span></div><div class="cvfmt ix" data-k="fmt-wb"><span class="cvfi" style="background:#00c16e">🧩</span><span>화이트보드</span></div><div class="cvfmt ix" data-k="fmt-sheet"><span class="cvfi" style="background:#1e6fff">▦</span><span>시트</span></div><div class="cvfmt ix" data-k="fmt-web"><span class="cvfi" style="background:#5b4df1">🌐</span><span>웹사이트</span></div><div class="cvfmt ix" data-k="fmt-size"><span class="cvfi out">⤢</span><span>맞춤형 크기</span></div><div class="cvfmt ix" data-k="fmt-upload"><span class="cvfi out">☁️</span><span>업로드</span></div><div class="cvfmt ix" data-k="fmt-more"><span class="cvfi out">⋯</span><span>더 보기</span></div></div>
+    <div class="cvsec">하이라이트</div>
+    <div class="cvhl"><div class="cvhlc ix" data-k="hl1" style="background:linear-gradient(120deg,#ffd9a0,#ffb7c5);color:#5a3d00">휴무 공지부터 포스터까지<br>핫한 여름 템플릿 모음 ›</div><div class="cvhlc ix" data-k="hl2" style="background:linear-gradient(120deg,#123c2e,#1d5c46);color:#eafff4">목적에 맞게 골라 쓰는<br>보고서 템플릿 모음 ›</div><div class="cvhlc ix" data-k="hl3" style="background:linear-gradient(120deg,#bfe6ff,#d9f2ff);color:#0b3a5c">한 장의 사진이<br>움직이는 영상으로 ›</div><div class="cvhlc ix" data-k="hl4" style="background:linear-gradient(120deg,#1a1040,#3c1361);color:#ffe9f0">스파이더맨:<br>브랜드 뉴 데이 템플릿 ›</div></div>
+    <div class="cvsec">이어서 디자인해 보세요 <span class="cvall ix" data-k="seeall">모두 보기</span></div>
+    <div class="cvgrid"><div class="cvcard ix" data-k="hist1"><div class="cvthumb" style="background:linear-gradient(135deg,#fde7ec,#f8d3dc)">🧑‍🎨</div><div class="cvtitle">이미지 2번 빈칸 글 삽입 디자인</div><div class="cvmeta">✓ 멀티 디자인 · 1개월 전 편집함</div></div><div class="cvcard ix" data-k="hist2"><div class="cvthumb" style="background:linear-gradient(135deg,#fdf1e7,#f9e0d0)">💄</div><div class="cvtitle">이미지 빈칸 텍스트 스타일링</div><div class="cvmeta">✓ 멀티 디자인 · 1개월 전 편집함</div></div><div class="cvcard ix" data-k="rd3"><div class="cvthumb" style="background:linear-gradient(135deg,#f5f6f8,#e9ebef)">📐</div><div class="cvtitle">02 이미지 내 문구 배치 요청</div><div class="cvmeta">✓ 멀티 디자인 · 1개월 전 편집함</div></div><div class="cvcard ix" data-k="rd4"><div class="cvthumb" style="background:linear-gradient(135deg,#dfe3e8,#b9c2cc)">🏠</div><div class="cvtitle">White and Black Modern Open House Poster</div><div class="cvmeta">✓ 디자인 · 1개월 전 편집함</div></div><div class="cvcard ix" data-k="rd5"><div class="cvthumb" style="background:linear-gradient(135deg,#1f5fd0,#2e79ff)">🏢</div><div class="cvtitle">Red Modern Real Estate Agent Services Poster</div><div class="cvmeta">✓ 멀티 디자인 · 1개월 전 편집함</div></div><div class="cvcard ix" data-k="rd6"><div class="cvthumb" style="background:linear-gradient(135deg,#3b2a1e,#6b4a2e)">🛋️</div><div class="cvtitle">RIVIAN Design Showroom Banner</div><div class="cvmeta">✓ 디자인 · 1개월 전 편집함</div></div></div>
     <div class="cbar">
      <span class="cb ix" data-k="projsel">✨ Magic Studio</span>
      <span class="cb ix" data-k="plugins">🧷 브랜드킷</span>
@@ -570,7 +577,7 @@ $all('.ix').forEach(wire);
 document.addEventListener('click',function(){hidePop();});
 
 /* 자리표시 회전 */
-var ph=$('#ph');var PHS=['무엇이든 물어보거나 시켜보세요','거래처에 보낼 이메일 초안 써줘','이 회의록을 5줄로 요약해줘','따뜻한 우드톤 거실 이미지 만들어줘'];var pi=0;
+var ph=$('#ph');var PHS=['무엇이든 검색하세요','인테리어 상담 전단','인스타 스토리 · 릴스','쇼룸 오픈 포스터','로고 · 브랜드킷'];var pi=0;
 setInterval(function(){if(!ph||window.__prActive||tip.classList.contains('show')||pop.classList.contains('show'))return;pi=(pi+1)%PHS.length;ph.style.opacity='0';setTimeout(function(){ph.textContent=PHS[pi];ph.style.opacity='1';},300);},3600);
 
 /* 컨트롤 */
@@ -811,8 +818,8 @@ document.addEventListener('click',function(e){if(e.target.closest&&e.target.clos
  var side=document.querySelector('#side');
  var proj=side.querySelector('[data-k="projects"]');
  function sItem(k,icon,label){var e=document.createElement('div');e.className='sitem ix';e.dataset.k=k;e.innerHTML='<span class="i">'+icon+'</span> '+label;return e;}
- if(proj&&proj.parentNode)proj.parentNode.insertBefore(sItem('f-codex','🧩','Canva Code'),proj.nextSibling);
- var foot=side.querySelector('.sfoot');if(foot)foot.insertBefore(sItem('f-custom','✍️','Magic Write'),foot.firstChild);
+ 
+ 
 
  document.querySelectorAll('#fg .card, #side [data-k="f-codex"], #side [data-k="f-custom"]').forEach(function(el){if(typeof wire==='function')wire(el);});
  (function(){var w=document.createElement('div');w.className='p2-search';var s=document.createElement('span');s.className='ic';s.textContent='🔎';w.appendChild(s);var inp=document.createElement('input');inp.type='search';inp.placeholder='기능 검색 (예: 프로젝트, 메모리, 맞춤, Codex…)';inp.setAttribute('aria-label','기능 검색');w.appendChild(inp);var x=document.createElement('button');x.className='x';x.textContent='✕';x.type='button';w.appendChild(x);
@@ -861,7 +868,7 @@ document.addEventListener('click',function(e){if(e.target.closest&&e.target.clos
  document.head.appendChild(css);
 
  /* Chat/Work 시각 토글(실제감) — 클릭 시 선택 표시 (설명 드로어는 .ix 로 함께 열림) */
- document.querySelectorAll('.cwb').forEach(function(btn){btn.addEventListener('click',function(e){document.querySelectorAll('.cwb').forEach(function(x){x.classList.toggle('on',x===btn);});var work=btn.getAttribute('data-cw')==='work';var h=document.getElementById('heroH');if(h)h.textContent=work?'무엇을 만들어 드릴까요? (Magic)':'무엇을 디자인할까요?';var ph=document.getElementById('ph');if(ph)ph.textContent=work?'만들 것을 설명하면 Magic이 자동으로 만들어요':'무엇을 만들까요? (예: 인테리어 상담 전단)';var sg=document.querySelector('.sugs');if(sg)sg.style.display=work?'flex':'none';var cb=document.querySelector('.cbar');if(cb)cb.style.display=work?'flex':'none';});});
+ document.querySelectorAll('.cwb').forEach(function(btn){btn.addEventListener('click',function(e){document.querySelectorAll('.cwb').forEach(function(x){x.classList.toggle('on',x===btn);});var work=btn.getAttribute('data-cw')==='work';var h=document.getElementById('heroH');if(h)h.textContent=work?'무엇을 만들어 드릴까요? (Magic)':'무엇을 디자인할까요?';var ph=document.getElementById('ph');if(ph)ph.textContent=work?'만들 것을 설명하면 Magic이 자동으로 만들어요':'무엇이든 검색하세요';var sg=document.querySelector('.sugs');if(sg)sg.style.display=work?'flex':'none';var cb=document.querySelector('.cbar');if(cb)cb.style.display=work?'flex':'none';});});
 
  /* 새 요소 설명 (깊게 + 인테리어 실제 예시) */
  var add={
@@ -1743,6 +1750,86 @@ img{-webkit-user-drag:none;user-drag:none;pointer-events:auto}
   window.addEventListener('resize', function(){ if (MOB()) ensure(); });
   if (document.readyState==='loading') document.addEventListener('DOMContentLoaded', init);
   else init();
+})();
+</script>
+
+<!-- cvreal v1 : 실제 캔바 홈 재현 레이어 -->
+<style id="cvrealCss">
+.side{width:88px !important;min-width:88px !important;padding:8px 4px !important}
+.side .sitem{flex-direction:column;gap:3px;padding:9px 2px;font-size:10.5px;text-align:center;border-radius:10px;color:var(--tx2)}
+.side .sitem .i{font-size:19px;line-height:1}
+.side .sitem .sl{line-height:1.15}
+.side .sitem.on{background:var(--accent-soft);color:var(--accent2)}
+.cvplus{display:inline-flex;width:30px;height:30px;border-radius:50%;background:var(--accent);color:#fff;align-items:center;justify-content:center;font-size:19px;font-weight:700}
+.side .sfoot{margin-top:auto;border-top:1px solid var(--line);padding-top:6px}
+.side .ssec,.side .schat{display:none}
+.cw{display:none !important}
+.cvhero{background:linear-gradient(115deg,#d9f4e7 0%,#dcedff 34%,#e9e2ff 66%,#f3e3ff 100%);border-radius:0 0 26px 26px;margin:-6px -10px 0;padding:46px 14px 26px !important}
+.cvh1{font-size:34px;font-weight:800;color:#6420d6;margin:0 0 14px}
+.cvchips{display:flex;gap:8px;justify-content:center}
+.cvchip{background:rgba(255,255,255,.85);border:1px solid #e3ddf2;border-radius:999px;padding:6px 14px;font-size:13px;font-weight:700;color:var(--tx2);cursor:pointer}
+.cvchip.on{color:var(--tx);box-shadow:0 2px 8px rgba(90,50,180,.12)}
+.composer{max-width:640px !important;border-radius:999px !important;background:#fff !important;border:1px solid #e7e2f2 !important;box-shadow:0 8px 28px rgba(100,60,200,.10) !important;padding:16px 22px !important;margin-top:-46px !important;position:relative;z-index:3}
+.composer .crow{display:none !important}
+#ph{font-size:15px}
+.cbar{display:none !important}
+.sugs{display:none !important}
+.cvfmts{display:flex;gap:20px;justify-content:center;flex-wrap:wrap;margin:30px auto 6px;max-width:1020px}
+.cvfmt{display:flex;flex-direction:column;align-items:center;gap:7px;font-size:12px;color:var(--tx2);cursor:pointer;width:72px}
+.cvfi{width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;color:#fff}
+.cvfi.out{background:#fff;border:1.5px solid var(--line2);color:var(--tx2)}
+.cvsec{max-width:1080px;margin:28px auto 12px;font-weight:800;font-size:17px;display:flex;justify-content:space-between;align-items:center;padding:0 10px}
+.cvall{font-size:12.5px;font-weight:700;color:var(--tx2);cursor:pointer}
+.cvhl{display:flex;gap:14px;max-width:1080px;margin:0 auto;flex-wrap:wrap;padding:0 10px}
+.cvhlc{flex:1 1 200px;max-width:260px;min-height:106px;border-radius:14px;padding:16px 14px;font-weight:800;font-size:14.5px;line-height:1.45;cursor:pointer}
+.cvgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:16px;max-width:1080px;margin:0 auto 34px;padding:0 10px}
+.cvcard{cursor:pointer}
+.cvthumb{height:118px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:34px;border:1px solid var(--line)}
+.cvtitle{font-size:13px;font-weight:700;margin-top:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cvmeta{font-size:11px;color:var(--mut);margin-top:2px}
+@media (max-width:700px){
+ .cvh1{font-size:23px}
+ .cvhero{margin:0 -8px;padding:34px 10px 22px !important}
+ .composer{margin-top:-40px !important}
+ .cvfmts{flex-wrap:nowrap;overflow-x:auto;justify-content:flex-start;padding:0 12px;-webkit-overflow-scrolling:touch}
+ .cvfmt{flex:0 0 64px}
+ .cvhl{flex-wrap:nowrap;overflow-x:auto}
+ .cvhlc{flex:0 0 190px}
+ .cvgrid{grid-template-columns:repeat(2,1fr)}
+}
+</style>
+<script id="cvrealInfo">
+(function(){
+ if (typeof INFO==='undefined') return;
+ function put(k,en,ko,fn,when){ INFO[k]={en:en,ko:ko,fn:fn}; if(when) INFO[k].when=when; }
+ put('home2','Home','홈','캔바의 <b>첫 화면</b>이에요. 검색·최근 디자인·추천 템플릿이 모여 있어요.');
+ put('printstore','Print store','프린트 스토어','만든 디자인을 <b>실물로 인쇄·배송</b>해주는 곳이에요. 명함·전단·현수막·스티커까지. (가격·배송일은 확인 필요)');
+ put('brandcenter','Brand center','브랜드 센터','로고·색·글꼴을 <b>브랜드킷</b>으로 등록해두면 모든 디자인에 한 번에 적용돼요. 리비안디자인 로고·컬러를 여기 넣어두세요.');
+ put('canvaai','Canva AI','Canva AI','캔바의 <b>AI 비서</b>예요. 말로 시키면 디자인 초안·문구·이미지를 만들어줘요.');
+ put('approve','Approvals','승인','팀원이 만든 디자인을 <b>검토·승인</b>하는 기능이에요. 직원이 만든 홍보물을 대표님이 확인할 때 써요.');
+ put('bell','Notifications','알림','댓글·공유·승인 요청 알림이 여기로 와요.');
+ put('seeall','See all','모두 보기','최근 디자인 전체를 프로젝트 화면에서 봐요.');
+ put('fmt-tpl','Templates','템플릿','수십만 개 <b>디자인 틀</b>이에요. 골라서 내용만 바꾸면 완성.');
+ put('fmt-layers','Magic Layers','Magic Layers','사진·요소를 <b>레이어로 분리·합성</b>하는 AI 기능이에요. (신기능 · 확인 필요)');
+ put('fmt-print','Print store','프린트 스토어','디자인을 실물 인쇄물로 주문해요.');
+ put('fmt-pt','Presentation','프레젠테이션','발표 슬라이드를 만들어요. 강의안·제안 발표에 활용.');
+ put('fmt-sns','Social media','SNS','인스타 게시물·스토리 등 SNS 규격 디자인이에요.');
+ put('fmt-video','Video','동영상','릴스·쇼츠 같은 영상을 편집해요.');
+ put('fmt-docs','Docs','Docs','문서를 만들어요. 표·이미지가 들어간 예쁜 문서.');
+ put('fmt-wb','Whiteboard','화이트보드','팀 아이디어 회의용 무한 보드예요.');
+ put('fmt-sheet','Sheets','시트','표·데이터를 다루는 캔바식 스프레드시트예요. (신기능 · 확인 필요)');
+ put('fmt-web','Website','웹사이트','코드 없이 한 페이지 웹사이트를 만들어 게시해요.');
+ put('fmt-size','Custom size','맞춤형 크기','원하는 픽셀/cm 크기로 새 디자인을 시작해요. 간판·현수막처럼 규격이 특별할 때.');
+ put('fmt-upload','Upload','업로드','내 사진·영상·로고를 올려서 디자인에 써요. 현장 사진을 올려보세요.');
+ put('fmt-more','More','더 보기','나머지 형식(명함·초대장·로고 등)을 모두 봐요.');
+ put('hl1','Seasonal templates','여름 템플릿 모음','계절·시즌 템플릿 모음이에요. 휴무 공지·이벤트 포스터를 빠르게.');
+ put('hl2','Report templates','보고서 템플릿 모음','성과 보고·제안서용 템플릿 모음이에요.');
+ put('hl3','Photo to video','사진→영상','사진 한 장을 움직이는 영상으로 만들어줘요. 시공 사진을 릴스 소스로!');
+ put('hl4','Brand templates','브랜드 콜라보 템플릿','브랜드 협업 템플릿 모음이에요.');
+ put('rd3','Recent design','최근 작업 (이어가기)','예전에 만든 디자인이에요. 누르면 이어서 고칠 수 있어요.');
+ put('rd4','Recent design','최근 작업 (이어가기)','오픈하우스 포스터 디자인이에요. 눌러서 이어서 편집해요.');
+ put('rd5','Recent design','최근 작업 (이어가기)','부동산 서비스 포스터예요. 색·문구만 바꿔 재활용해요.');
+ put('rd6','Recent design','최근 작업 (이어가기)','리비안 쇼룸 배너예요. 크기를 바꿔 다른 매체에도 써요.');
 })();
 </script>
 </body>
