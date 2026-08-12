@@ -331,7 +331,7 @@ a{color:var(--accent-ink)}
 (function(){var TXT='© 리비안디자인 루카스 · AI 강의용 제작';var ID='__rdai_credit__';
  function ensure(){var el=document.getElementById(ID);if(!el){el=document.createElement('div');el.id=ID;document.documentElement.appendChild(el);}if(el.textContent!==TXT)el.textContent=TXT;var s=el.style;
   s.setProperty('position','fixed','important');s.setProperty('top','8px','important');s.setProperty('right','12px','important');s.setProperty('z-index','2147483647','important');s.setProperty('padding','4px 9px','important');s.setProperty('font','700 11px "Pretendard",system-ui,sans-serif','important');s.setProperty('color','rgba(255,255,255,.7)','important');s.setProperty('background','rgba(18,18,20,.6)','important');s.setProperty('border','1px solid rgba(255,255,255,.14)','important');s.setProperty('border-radius','999px','important');s.setProperty('pointer-events','none','important');s.setProperty('white-space','nowrap','important');s.setProperty('display','block','important');s.setProperty('opacity','1','important');s.setProperty('transform','none','important');
-  if(window.innerWidth<=640){s.setProperty('top','auto','important');s.setProperty('right','auto','important');s.setProperty('bottom','6px','important');s.setProperty('left','50%','important');s.setProperty('transform','translateX(-50%)','important');s.setProperty('font-size','10px','important');}}
+  if(window.innerWidth<=640){s.setProperty('top','auto','important');s.setProperty('right','auto','important');s.setProperty('bottom','calc(58px + env(safe-area-inset-bottom,0px))','important');s.setProperty('left','50%','important');s.setProperty('transform','translateX(-50%)','important');s.setProperty('font-size','10px','important');}}
  ensure();setInterval(ensure,700);try{new MutationObserver(function(){if(!document.getElementById(ID))ensure();}).observe(document.documentElement,{childList:true,subtree:true});}catch(e){}})();
 
 /* ===== 참여 코드 + 72시간 (소유자 예외) — 실제 보안 아님 ===== */
@@ -572,7 +572,7 @@ document.addEventListener('click',function(){hidePop();});
 
 /* 자리표시 회전 */
 var ph=$('#ph');var PHS=['무엇이든 물어보거나 시켜보세요','거래처에 보낼 이메일 초안 써줘','이 회의록을 5줄로 요약해줘','따뜻한 우드톤 거실 이미지 만들어줘'];var pi=0;
-setInterval(function(){if(window.__prActive||tip.classList.contains('show')||pop.classList.contains('show'))return;pi=(pi+1)%PHS.length;ph.style.opacity='0';setTimeout(function(){ph.textContent=PHS[pi];ph.style.opacity='1';},300);},3600);
+setInterval(function(){if(!ph||window.__prActive||tip.classList.contains('show')||pop.classList.contains('show'))return;pi=(pi+1)%PHS.length;ph.style.opacity='0';setTimeout(function(){ph.textContent=PHS[pi];ph.style.opacity='1';},300);},3600);
 
 /* 컨트롤 */
 var intro=null; /* (이 파일은 인트로 모달 대신 홈 탭이 시작 화면) */
@@ -1852,5 +1852,93 @@ img{-webkit-user-drag:none;user-drag:none;pointer-events:auto}
 })();
 </script>
 
+
+
+
+
+
+<!-- rdMobDock v3 : 모바일 하단 통합 독 (ID 기반 CSS 재배치) -->
+<style id="rdMobDockCss3">
+@media (max-width: 700px){
+  body{ padding-bottom: calc(66px + env(safe-area-inset-bottom,0px)) !important; }
+  #rdDockBg{ position:fixed; left:0; right:0; bottom:0; height:calc(56px + env(safe-area-inset-bottom,0px));
+    z-index:99979; background:rgba(14,14,16,.93); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);
+    border-top:1px solid rgba(255,255,255,.09); }
+  #p2-startBtn{ position:fixed !important; left:8px !important; right:auto !important;
+    top:auto !important; bottom:calc(8px + env(safe-area-inset-bottom,0px)) !important;
+    margin:0 !important; z-index:99990 !important; transform:none !important; }
+  #msnPill{ position:fixed !important; left:50% !important; right:auto !important;
+    top:auto !important; bottom:calc(10px + env(safe-area-inset-bottom,0px)) !important;
+    margin:0 !important; z-index:99990 !important; transform:translateX(-50%) !important; }
+  #rdMoreBtn3{ position:fixed; right:8px; bottom:calc(9px + env(safe-area-inset-bottom,0px)); z-index:99999;
+    border:1px solid rgba(255,255,255,.2); background:rgba(255,255,255,.07);
+    color:#eee; border-radius:18px; padding:8px 14px; font-size:15px; line-height:1; }
+  /* 보조 버튼 묶음(.help: 학습·작업가이드·자동읽기·처음화면)은 기본 숨김, ⋯ 로 열기 */
+  div.help{ display:none !important; }
+  body.rdMoreOpen div.help{ display:flex !important; flex-direction:column !important; gap:8px !important;
+    position:fixed !important; right:8px !important; left:auto !important; top:auto !important;
+    bottom:calc(64px + env(safe-area-inset-bottom,0px)) !important;
+    width:auto !important; max-width:75vw; margin:0 !important; padding:12px !important;
+    background:rgba(20,20,24,.97) !important; border:1px solid rgba(255,255,255,.14) !important;
+    border-radius:14px !important; box-shadow:0 8px 30px rgba(0,0,0,.5) !important; z-index:99998 !important; }
+  body.rdMoreOpen div.help > *{ width:100% !important; margin:0 !important; box-sizing:border-box;
+    position:static !important; transform:none !important; text-align:left;
+    display:flex !important; align-items:center !important; gap:6px !important;
+    visibility:visible !important; opacity:1 !important; }
+  body.rdMoreOpen #openGuide, body.rdMoreOpen #tVoice, body.rdMoreOpen #reopen,
+  body.rdMoreOpen #p2-openPanel{ display:flex !important; }
+  /* 배경음악 버튼도 ⋯ 안에서만 (위치는 JS가 .help 높이에 맞춰 지정) */
+  #bgmBtn{ display:none !important; }
+  body.rdMoreOpen #bgmBtn{ display:block !important; position:fixed !important; right:8px !important;
+    left:auto !important; top:auto !important; margin:0 !important; z-index:99998 !important; transform:none !important; }
+  /* 토스트는 독 위로 */
+  #acadToast{ bottom:calc(70px + env(safe-area-inset-bottom,0px)) !important; top:auto !important; }
+}
+@media (min-width: 701px){ #rdDockBg, #rdMoreBtn3{ display:none !important; } }
+</style>
+<script id="rdMobDockJs3">
+(function(){
+  if (window.__rdMobDock3) return; window.__rdMobDock3 = true;
+  function MOB(){ return window.matchMedia('(max-width:700px)').matches; }
+  function ensure(){
+    if (document.getElementById('rdDockBg')) return;
+    var bg=document.createElement('div'); bg.id='rdDockBg'; document.body.appendChild(bg);
+    var mb=document.createElement('button'); mb.id='rdMoreBtn3'; mb.type='button'; mb.textContent='⋯';
+    mb.setAttribute('aria-label','더보기 메뉴');
+    mb.addEventListener('click', function(ev){
+      ev.stopPropagation();
+      var on = document.body.classList.toggle('rdMoreOpen');
+      if (on) requestAnimationFrame(placeBgm);
+    });
+    document.body.appendChild(mb);
+    document.addEventListener('click', function(ev){
+      if (!document.body.classList.contains('rdMoreOpen')) return;
+      var help=document.querySelector('div.help'), bgm=document.getElementById('bgmBtn');
+      if (ev.target.id==='rdMoreBtn3') return;
+      if (help && help.contains(ev.target)) return;
+      if (bgm && bgm.contains(ev.target)) return;
+      document.body.classList.remove('rdMoreOpen');
+    });
+  }
+  function placeBgm(){
+    var help=document.querySelector('div.help'), bgm=document.getElementById('bgmBtn');
+    if (!bgm) return;
+    var h = help ? help.getBoundingClientRect().height : 0;
+    bgm.style.setProperty('bottom', 'calc(' + (72 + h) + 'px + env(safe-area-inset-bottom,0px))', 'important');
+  }
+  function desktopFooterFix(){
+    var all = document.querySelectorAll('body *');
+    for (var i=0;i<all.length;i++){ var e=all[i];
+      var t=(e.textContent||'');
+      if (/Anthropic PBC/.test(t) && e.children.length<=6 && t.length<400){
+        e.style.paddingBottom='84px'; break; }
+    }
+  }
+  function init(){ desktopFooterFix(); if (MOB()) ensure(); }
+  window.addEventListener('resize', function(){ if (MOB()) ensure(); });
+  if (document.readyState==='loading') document.addEventListener('DOMContentLoaded', init);
+  else init();
+})();
+</script>
 </body>
 </html>
