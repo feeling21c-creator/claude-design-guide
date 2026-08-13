@@ -1892,7 +1892,7 @@ img{-webkit-user-drag:none;user-drag:none;pointer-events:auto}
 .ntbl{border-collapse:collapse;width:100%;font-size:13px;margin-top:8px}
 .ntbl th,.ntbl td{border:1px solid #ededec;padding:6px 9px;text-align:left}
 .ntbl th{background:#fbfbfa;color:#787774;font-weight:600;font-size:12px}
-@media (max-width:700px){ .ntbody{padding:12px 10px 90px} .nth1{font-size:20px} .ntop{padding:10px 12px} }
+@media (max-width:700px){ .ntbody{padding:12px 10px 90px} .nth1{font-size:20px} .ntop{padding:10px 12px;flex-wrap:wrap} }
 </style>
 <script id="ntsimJs">
 (function(){
@@ -1901,11 +1901,11 @@ img{-webkit-user-drag:none;user-drag:none;pointer-events:auto}
  function speak(t){try{speechSynthesis.cancel();var u=new SpeechSynthesisUtterance(t);u.lang='ko-KR';u.rate=1.05;speechSynthesis.speak(u);}catch(e){}}
  function ov(id,crumb,inner,voice){
   var o=el('<div class="ntov" id="'+id+'" role="dialog" aria-modal="true">'
-   +'<div class="ntop"><span class="crumb">🏠 리비안 공동작업 / <b>'+crumb+'</b></span><span class="sp"></span>'
+   +'<div class="ntop"><button class="ntbtn nt-back" style="font-weight:700;background:#2383e2;color:#fff;border-color:#2383e2">← 첫 화면</button><span class="crumb" style="cursor:pointer">🏠 리비안 공동작업 / <b>'+crumb+'</b></span><span class="sp"></span>'
    +'<button class="ntbtn nt-voice">🔊 듣기</button><button class="ntbtn nt-info">ℹ️ 설명</button><button class="ntbtn x nt-close">✕</button></div>'
    +'<div class="ntbody">'+inner+'</div></div>');
   document.body.appendChild(o);
-  o.querySelector('.nt-close').onclick=function(){o.classList.remove('on');try{speechSynthesis.cancel();}catch(e){}};
+  var __cl=function(){o.classList.remove('on');try{speechSynthesis.cancel();}catch(e){}};o.querySelector('.nt-close').onclick=__cl;o.querySelector('.nt-back').onclick=__cl;o.querySelector('.crumb').onclick=__cl;
   o.querySelector('.nt-voice').onclick=function(){speak(voice);};
   return o;
  }
