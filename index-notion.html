@@ -223,23 +223,48 @@ a{color:var(--accent-ink)}
 
 <div class="app">
  <aside class="side" id="side">
-  <div class="sbrand"><div class="lg" style="background:#c23b3b">R</div><div class="nm">rima</div><span class="sp" style="flex:1"></span><span class="sicon ix" data-k="search" aria-label="검색">🔍</span><span class="sicon ix" data-k="sidetoggle" aria-label="사이드바 접기">▢</span></div>
-  <div class="sitem ix" data-k="newchat"><span class="i">🏠</span> 홈</div>
-  <div class="sitem ix" data-k="model"><span class="i">✦</span> Notion AI</div>
-  <div class="sitem ix" data-k="tsearch"><span class="i">📥</span> 수신함</div>
+  <div class="sbrand"><div class="lg" style="background:#c23b3b">R</div><div class="nm">rima</div><span class="sp" style="flex:1"></span><span class="sicon ix" data-k="sidetoggle" aria-label="사이드바 접기">«</span></div>
+  <div class="nticons">
+   <span class="ntic on" data-nt="dash">🏠 홈</span>
+   <span class="ntic" data-nt="chat">💬</span>
+   <span class="ntic ix" data-k="model">📑</span>
+   <span class="ntic" data-nt="inbox">📥<span class="ntbadge">95</span></span>
+   <span class="sp" style="flex:1"></span>
+   <span class="ntic" data-nt="srch">🔍</span>
+  </div>
   <div class="ssec">팀스페이스</div>
   <div class="sitem ix" data-k="projects"><span class="i">🏠</span> 리비안 공동작업</div>
-  <div class="schat ix" data-k="hist1">📄 리비안 통합 대시보드</div>
-  <div class="schat">📕 루카스 업무일지 (오늘 한 일)</div>
-  <div class="schat">📕 박건우 업무일지 (오늘 한 일)</div>
-  <div class="schat">📕 김혜원 업무일지 (오늘 한 일)</div>
-  <div class="schat ix" data-k="library">🗂 작업 폴더</div>
-  <div class="schat ix" data-k="f-data">📊 프로젝트별 공정과정</div>
+  <div class="schat sub" data-nt="dash">📄 리비안 통합 대시보드</div>
+  <div class="schat sub" data-nt="diary-lucas">🗓 루카스 업무일지 ( 오늘 한 일)</div>
+  <div class="schat sub" data-nt="diary-park">🗓 박건우 업무일지 ( 오늘 한 일)</div>
+  <div class="schat sub" data-nt="diary-kim">🗓 김혜원 업무일지 ( 오늘 한 일)</div>
+  <div class="schat sub ix" data-k="library">📁 작업 폴더</div>
+  <div class="schat sub" data-nt="proc">🏢 프로젝트별 공정과정</div>
+  <div class="ssec">개인 페이지</div>
+  <div class="schat ix" data-k="personal">📄 박건우</div>
+  <div class="schat ix" data-k="personal">📄 테스트폴더</div>
+  <div class="schat ix" data-k="model">📄 내 Notion AI <span class="aiTag">AI 지침</span></div>
+  <div class="schat ix" data-k="personal">🔥 쉽게 쉽게 풀어쓰는 Notion 사…</div>
+  <div class="schat ix" data-k="personal">📄 확인 후 삭제or 정리할 페이지 …</div>
+  <div class="schat ix" data-k="personal">▦ 리비안 파일 관리 (Claude 작업 …</div>
+  <div class="schat ix" data-k="personal">💈 헤어샵 운영비서 SaaS — 초간…</div>
+  <div class="schat ix" data-k="personal">🟢 리비안뷰티 운영비서 — 라이브…</div>
+  <div class="schat ix" data-k="personal">📄 AI 노트 체험하기@2026년 6월 …</div>
+  <div class="schat ix" data-k="personal">📁 에코테크 (농사의달인)</div>
+  <div class="schat ix" data-k="more2">⋯ 더 보기</div>
+  <div class="ssec">에이전트</div>
+  <div class="sitem ix" data-k="agents"><span class="i">🌀</span> Stellar Alchemist</div>
+  <div class="sitem ix" data-k="newagent"><span class="i">＋</span> 새 에이전트</div>
   <div class="ssec">Notion 앱</div>
-  <div class="sitem ix" data-k="reserve"><span class="i">📅</span> Notion 캘린더</div>
-  <div class="sitem ix" data-k="library"><span class="i">🧩</span> 템플릿</div>
-  <div class="sitem ix" data-k="more2"><span class="i">⋯</span> 더 보기</div>
-  <div class="sfoot"><div class="sitem ix" data-k="account"><span class="i">👤</span> 내 계정 · 요금제</div></div>
+  <div class="sitem" data-nt="cal"><span class="i">📅</span> Notion 캘린더</div>
+  <div class="sitem ix" data-k="ntdesk"><span class="i">Ⓝ</span> Notion 데스크톱</div>
+  <div class="ssec"> </div>
+  <div class="sitem ix" data-k="ntlib"><span class="i">📚</span> 라이브러리</div>
+  <div class="sitem ix" data-k="mywork"><span class="i">☑</span> 내 작업</div>
+  <div class="sitem" data-nt="mkt"><span class="i">🧩</span> 마켓플레이스</div>
+  <div class="sitem ix" data-k="nthelp"><span class="i">❓</span> 도움말</div>
+  <div class="sitem ix" data-k="nttrash"><span class="i">🗑</span> 휴지통</div>
+  <div class="sfoot"><div class="ntNewChat ix" data-k="newchat2">✨ 새 채팅 <span class="kbd">Ctrl+O</span></div></div>
  </aside>
  <div class="sbackdrop" id="sbackdrop"></div>
 
@@ -2020,6 +2045,198 @@ img{-webkit-user-drag:none;user-drag:none;pointer-events:auto}
   b.onclick=function(){ var o=b.closest('.ntov'); o.classList.remove('on');
    try{ if(typeof openDrawer==='function') openDrawer(MAP[o.id]); }catch(e){} };
  });
+})();
+</script>
+
+<!-- ntreal3 : 실제 노션 사이드바 + 마켓플레이스(5탭)·수신함·검색·채팅 시뮬 -->
+<style id="ntreal3Css">
+.nticons{display:flex;gap:3px;align-items:center;padding:2px 8px 8px}
+.ntic{position:relative;display:inline-flex;align-items:center;gap:5px;padding:6px 9px;border-radius:8px;cursor:pointer;font-size:14px;color:#b8b6b1}
+.ntic.on{background:rgba(255,255,255,.09);color:#ececec;font-weight:600;font-size:13px}
+.ntic:hover{background:rgba(255,255,255,.06)}
+.ntbadge{position:absolute;top:-3px;right:-5px;background:#eb5757;color:#fff;font-size:9px;font-weight:700;border-radius:9px;padding:1px 4px;line-height:1.2}
+.side .schat.sub{padding-left:24px}
+.aiTag{font-size:9px;border:1px solid #555;border-radius:4px;padding:0 4px;color:#9b9a97;margin-left:4px}
+.ntNewChat{display:flex;align-items:center;gap:8px;margin:8px 6px 4px;padding:9px 12px;border:1px solid rgba(255,255,255,.14);border-radius:999px;color:#b8b6b1;font-size:13px;cursor:pointer}
+.ntNewChat .kbd{margin-left:auto;font-size:10px;color:#7d7c78;border:1px solid #444;border-radius:4px;padding:0 4px}
+/* 마켓플레이스 */
+.mkTabs{display:flex;gap:18px;font-size:20px;font-weight:800;margin:4px 0 16px;flex-wrap:wrap}
+.mkTabs span{color:#9b9a97;cursor:pointer}
+.mkTabs span.on{color:#37352f}
+.mkChips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:22px}
+.mkChip{border:1px solid #ededec;border-radius:999px;padding:6px 12px;font-size:12.5px;color:#57564f;cursor:pointer;white-space:nowrap}
+.mkSec{display:flex;justify-content:space-between;align-items:center;font-size:13px;font-weight:700;color:#57564f;margin:6px 0 12px}
+.mkSec .all{color:#9b9a97;font-weight:600;font-size:12px;cursor:pointer}
+.mkCards{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px;margin-bottom:28px}
+.mkCard{border:1px solid #ededec;border-radius:10px;overflow:hidden;cursor:pointer}
+.mkCard .th{height:110px;display:flex;align-items:center;justify-content:center;font-size:30px;color:#fff;font-weight:800}
+.mkCard .tt{display:flex;justify-content:space-between;align-items:center;padding:9px 10px;font-size:12.5px;font-weight:700;gap:6px}
+.mkCard .tt em{font-style:normal;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mkCard .st{color:#9b9a97;font-weight:600;font-size:11.5px;flex:0 0 auto}
+.mkAgents{border-top:1px solid #f1f1ef}
+.mkAg{display:flex;gap:14px;align-items:center;padding:16px 4px;border-bottom:1px solid #f1f1ef;cursor:pointer}
+.mkAg .ic{width:52px;height:52px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:24px;flex:0 0 auto}
+.mkAg b{font-size:14.5px}
+.mkAg .ds{color:#787774;font-size:12.5px;margin-top:2px}
+.mkAg .by{color:#9b9a97;font-size:11.5px;margin-top:3px}
+.mkFree{margin-left:auto;border:1px solid #ededec;border-radius:6px;padding:3px 9px;font-size:11.5px;color:#57564f;flex:0 0 auto}
+.mkConn{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px}
+.mkCn{display:flex;gap:10px;align-items:center;border:1px solid #ededec;border-radius:10px;padding:12px}
+.mkCn .ic{font-size:22px}
+.mkCn b{font-size:13.5px;display:block}
+.mkCn .ds{font-size:11.5px;color:#9b9a97;margin-top:2px}
+.mkCn button{margin-left:auto;border:1px solid #2383e2;background:#fff;color:#2383e2;border-radius:6px;padding:4px 10px;font-size:11.5px;cursor:pointer}
+.mkCn button.done{background:#2383e2;color:#fff}
+/* 수신함 / 검색 / 채팅 */
+.ntInList{max-width:760px;margin:0 auto}
+.ntIn{display:flex;gap:12px;padding:13px 8px;border-bottom:1px solid #f1f1ef;font-size:13.5px;align-items:flex-start;cursor:pointer}
+.ntIn .dot{width:8px;height:8px;border-radius:50%;background:#2383e2;margin-top:6px;flex:0 0 auto}
+.ntIn.read .dot{background:transparent}
+.ntIn .tm{margin-left:auto;color:#9b9a97;font-size:11.5px;flex:0 0 auto}
+.ntSearchBox{max-width:640px;margin:0 auto}
+.ntSearchBox input{width:100%;box-sizing:border-box;font-size:16px;padding:13px 16px;border:1px solid #d8dbdf;border-radius:10px;outline:none}
+.ntSR{display:flex;gap:10px;align-items:center;padding:10px 8px;border-bottom:1px solid #f4f4f2;font-size:13.5px;cursor:pointer}
+.ntSR .pth{margin-left:auto;color:#9b9a97;font-size:11px}
+.ntChatWrap{max-width:680px;margin:0 auto;display:flex;flex-direction:column;gap:10px}
+.ntMsg{display:flex;gap:10px;align-items:flex-start}
+.ntMsg .av{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#f1f1ef;font-size:15px;flex:0 0 auto}
+.ntMsg .bb{background:#f7f7f5;border-radius:12px;padding:9px 13px;font-size:13.5px;max-width:80%}
+.ntMsg.me{flex-direction:row-reverse}
+.ntMsg.me .bb{background:#d3e5ef}
+.ntChatIn{display:flex;gap:8px;margin-top:10px}
+.ntChatIn input{flex:1;padding:11px 14px;border:1px solid #d8dbdf;border-radius:10px;font-size:14px;outline:none}
+.ntChatIn button{border:none;background:#2383e2;color:#fff;border-radius:10px;padding:0 16px;font-size:14px;cursor:pointer}
+@media (max-width:700px){ .mkTabs{font-size:15px;gap:12px} .mkChips{flex-wrap:nowrap;overflow-x:auto} }
+</style>
+<script id="ntreal3Js">
+(function(){
+ if(window.__ntreal3)return; window.__ntreal3=true;
+ function speak(t){try{speechSynthesis.cancel();var u=new SpeechSynthesisUtterance(t);u.lang='ko-KR';u.rate=1.05;speechSynthesis.speak(u);}catch(e){}}
+ function mkOv(id,crumb,inner,voice){
+  var d=document.createElement('div');
+  d.innerHTML='<div class="ntov" id="'+id+'" role="dialog"><div class="ntop">'
+   +'<button class="ntbtn nt-back" style="font-weight:700;background:#2383e2;color:#fff;border-color:#2383e2">← 첫 화면</button>'
+   +'<span class="crumb" style="cursor:pointer">'+crumb+'</span><span class="sp"></span>'
+   +'<button class="ntbtn nt-voice">🔊 듣기</button><button class="ntbtn x nt-close">✕</button></div>'
+   +'<div class="ntbody">'+inner+'</div></div>';
+  var o=d.firstElementChild; document.body.appendChild(o);
+  function cl(){o.classList.remove('on');try{speechSynthesis.cancel();}catch(e){}}
+  o.querySelector('.nt-close').onclick=cl; o.querySelector('.nt-back').onclick=cl; o.querySelector('.crumb').onclick=cl;
+  o.querySelector('.nt-voice').onclick=function(){speak(voice);};
+  return o;
+ }
+ /* ---------- 마켓플레이스 (5탭 전부 작동) ---------- */
+ var CARD=function(bg,emo,tt,st){return '<div class="mkCard"><div class="th" style="background:'+bg+'">'+emo+'</div><div class="tt"><em>'+tt+'</em> <span class="st">'+st+'</span></div></div>';};
+ var AG=function(bg,emo,tt,ds,by){return '<div class="mkAg"><span class="ic" style="background:'+bg+'">'+emo+'</span><div><b>'+tt+'</b><div class="ds">'+ds+'</div><div class="by">'+by+'</div></div><span class="mkFree">무료</span></div>';};
+ var browse='<div class="mkChips"><span class="mkChip">🔗 워크플로 &amp; 자동화</span><span class="mkChip">🎁 선물과 위시리스트</span><span class="mkChip">📙 학습</span><span class="mkChip">🎬 영화</span><span class="mkChip">👥 학생 단체</span><span class="mkChip">📄 입학 신청서</span><span class="mkChip">🎒 개학 준비</span><span class="mkChip">🧍 학생 생활</span><span class="mkChip">📋 Personal Dashboards</span></div>'
+  +'<div class="mkSec">🗂 추천 컨설턴트 <span class="all">모두 둘러보기</span></div><div class="mkCards">'
+  +CARD('#6d5a1e','📓','The Organized Noteb…','★ 5.0 (3)')+CARD('#22355c','👩🏾‍💼','The Notion Bar','★ 5.0 (23)')+CARD('#173425','NS','Notion State','★ 5.0 (5)')+CARD('#5c2d44','👩‍💼','Primary Goals','★ 5.0 (3)')+CARD('#7a5065','🙋‍♀️','Marie-Pier Rochon','★ 5.0')
+  +'</div><div class="mkSec">⚡ 추천 에이전트 <span class="all">모두 둘러보기</span></div><div class="mkAgents">'
+  +AG('#e7f5ec','✅','Project Manager','노션 안에서 작업·타임라인·실행을 정리해주는 프로젝트 관리 에이전트예요.','desbyseb · ↓2.8천')
+  +AG('#e8f1fb','🔭','Small Business Competitor Analysis','경쟁사 5–10곳의 웹·SNS·리뷰·가격을 분석해 비교 리포트를 만들어줘요.','danyanovich · ↓4.9천')
+  +AG('#e9f0fa','📣','Social media manager','SNS 콘텐츠를 기획·초안·예약하고 콘텐츠 캘린더를 관리해요.','Notion · ↓1.9천')
+  +AG('#e8f0fb','🎩','Startup COO','창업자를 위한 운영 관리 에이전트예요.','Nation4Business · ↓2천')
+  +AG('#eaf2fc','📇','Contacts manager','주고받은 이메일에서 연락처 DB를 자동으로 만들어요.','Notion · ↓3.1천')+'</div>';
+ var tpl='<div class="mkSec">🧩 인기 템플릿</div><div class="mkCards">'
+  +CARD('#2f4f8f','📋','프로젝트 관리 보드','무료')+CARD('#3a6351','📝','회의록 + AI 요약','무료')+CARD('#7a4b2e','🏠','인테리어 견적·자재 표','무료')+CARD('#5a3286','📇','간단 CRM (고객 관리)','무료')+CARD('#22577c','🗓','콘텐츠 캘린더','무료')+CARD('#93353a','✅','습관 트래커','무료')
+  +'</div><div class="ncallout"><span>💡</span><div>템플릿은 <b>복제</b> 버튼 한 번이면 내 워크스페이스로 들어와요. 리비안은 <b>인테리어 견적·자재 표</b>부터 써보세요.</div></div>';
+ var agents='<div class="mkSec">⚡ 에이전트 전체</div><div class="mkAgents">'
+  +AG('#e7f5ec','✅','Project Manager','작업·타임라인·실행 정리.','desbyseb · ↓2.8천')
+  +AG('#e8f1fb','🔭','Small Business Competitor Analysis','경쟁사 분석 리포트.','danyanovich · ↓4.9천')
+  +AG('#e9f0fa','📣','Social media manager','SNS 기획·초안·예약.','Notion · ↓1.9천')
+  +AG('#e8f0fb','🎩','Startup COO','운영 구조·명확성 지원.','Nation4Business · ↓2천')
+  +AG('#eaf2fc','📇','Contacts manager','이메일→연락처 DB 자동화.','Notion · ↓3.1천')
+  +AG('#fdeef0','📊','Trends','업계 트렌드를 모아 브리핑해줘요.','Notion · ↓1.2천')+'</div>'
+  +'<div class="ncallout"><span>🏗</span><div>리비안 추천 활용: <b>Project Manager</b>에게 "현장별 공정 보드 만들어줘"라고 시키면 공정과정 페이지를 자동으로 만들어줘요.</div></div>';
+ var cons='<div class="mkSec">🗂 컨설턴트 — 노션 세팅을 대신 해주는 전문가</div><div class="mkCards">'
+  +CARD('#6d5a1e','📓','The Organized Noteb…','★ 5.0 (3)')+CARD('#22355c','👩🏾‍💼','The Notion Bar','★ 5.0 (23)')+CARD('#173425','NS','Notion State','★ 5.0 (5)')+CARD('#5c2d44','👩‍💼','Primary Goals','★ 5.0 (3)')
+  +'</div><div class="ncallout"><span>💬</span><div>컨설턴트에게 회사 노션 구축을 의뢰할 수 있어요. (비용은 각 프로필에서 확인 필요)</div></div>';
+ var conn='<div class="mkSec">🔗 연결 — 다른 앱과 노션을 이어요</div><div class="mkConn">'
+  +[['💬','Slack','메시지를 노션에 저장'],['📁','Google Drive','드라이브 파일 미리보기'],['🎨','Figma','디자인 미리보기 삽입'],['🐙','GitHub','이슈·PR 연동'],['📧','Gmail','메일을 페이지로'],['🖌','Canva','디자인 삽입'],['📅','Google Calendar','일정 동기화'],['🎥','Zoom','회의 기록 연동']].map(function(c){return '<div class="mkCn"><span class="ic">'+c[0]+'</span><div><b>'+c[1]+'</b><div class="ds">'+c[2]+'</div></div><button type="button">연결</button></div>';}).join('')
+  +'</div><div class="ncallout"><span>💡</span><div><b>연결</b> 버튼을 눌러보세요 — 연결됨으로 바뀌어요. 실제 노션에서는 로그인 창이 뜹니다.</div></div>';
+ var mkInner='<div class="mkTabs"><span class="on" data-mk="browse">둘러보기</span><span data-mk="tpl">템플릿</span><span data-mk="agents">에이전트</span><span data-mk="cons">컨설턴트</span><span data-mk="conn">연결</span></div>'
+  +'<div class="mkPane" data-p="browse">'+browse+'</div>'
+  +'<div class="mkPane" data-p="tpl" style="display:none">'+tpl+'</div>'
+  +'<div class="mkPane" data-p="agents" style="display:none">'+agents+'</div>'
+  +'<div class="mkPane" data-p="cons" style="display:none">'+cons+'</div>'
+  +'<div class="mkPane" data-p="conn" style="display:none">'+conn+'</div>';
+ var mk=mkOv('ntMktOv','🧩 <b>마켓플레이스</b>',mkInner,
+  '노션 마켓플레이스입니다. 둘러보기, 템플릿, 에이전트, 컨설턴트, 연결 다섯 탭이 있어요. 템플릿은 복제 한 번으로 가져오고, 에이전트는 나 대신 일하는 AI 직원이에요. 탭을 눌러 전부 구경해보세요.');
+ mk.addEventListener('click',function(e){
+  var tb=e.target.closest('[data-mk]');
+  if(tb){ mk.querySelectorAll('.mkTabs span').forEach(function(s){s.classList.toggle('on',s===tb);});
+   mk.querySelectorAll('.mkPane').forEach(function(p){p.style.display=(p.dataset.p===tb.dataset.mk)?'':'none';}); return; }
+  var cb=e.target.closest('.mkCn button');
+  if(cb){ cb.textContent=cb.classList.toggle('done')?'✓ 연결됨':'연결'; }
+ });
+ /* ---------- 수신함 ---------- */
+ var IN=[['💬','<b>박건우</b>님이 <b>SKF 공사</b> 페이지에 댓글: "전기 자재 내일 입고 예정입니다"','5분 전',0],
+  ['📌','<b>김혜원</b>님이 회원님을 <b>학원 개강 홍보물</b>에 멘션했어요','1시간 전',0],
+  ['✅','<b>루카스 업무일지</b>의 할 일 2개가 오늘로 예약됐어요','3시간 전',0],
+  ['📝','<b>리비안 통합 대시보드</b>가 수정됐어요 — 월간일정 1건 추가','어제',1],
+  ['👥','<b>박건우</b>님이 <b>작업 폴더</b>에 참여했어요','어제',1],
+  ['📅','<b>엔포유 준공</b> 일정 리마인더 — 8월 20일','2일 전',1]];
+ var inInner='<div class="ntInList"><div class="nth1">📥 수신함</div><div class="ntsub">안 읽은 알림 3개 · 댓글·멘션·업데이트가 여기 모여요. 항목을 누르면 읽음 처리돼요.</div>'
+  +IN.map(function(n){return '<div class="ntIn'+(n[3]?' read':'')+'"><span class="dot"></span><span>'+n[0]+'</span><div>'+n[1]+'</div><span class="tm">'+n[2]+'</span></div>';}).join('')+'</div>';
+ var inb=mkOv('ntInOv','📥 <b>수신함</b>',inInner,'수신함입니다. 댓글, 멘션, 페이지 업데이트 알림이 모여요. 파란 점이 안 읽은 알림이에요.');
+ inb.addEventListener('click',function(e){var r=e.target.closest('.ntIn'); if(r)r.classList.add('read');});
+ /* ---------- 검색 ---------- */
+ var PAGES=[['📄','리비안 통합 대시보드','팀스페이스'],['🗓','루카스 업무일지','팀스페이스'],['🏢','프로젝트별 공정과정','팀스페이스'],['📁','작업 폴더','팀스페이스'],['📇','리비안 파일 관리','개인 페이지'],['💈','헤어샵 운영비서 SaaS','개인 페이지'],['🟢','리비안뷰티 운영비서','개인 페이지'],['📓','쉽게 쉽게 풀어쓰는 Notion 사용법','개인 페이지']];
+ var srInner='<div class="ntSearchBox"><div class="nth1">🔍 검색</div><div class="ntsub">제목을 입력하면 바로 걸러져요 — "공정"이라고 쳐보세요.</div>'
+  +'<input id="ntSrIn" type="text" placeholder="검색어 입력…">'
+  +'<div id="ntSrList">'+PAGES.map(function(p){return '<div class="ntSR" data-t="'+p[1]+'"><span>'+p[0]+'</span><span>'+p[1]+'</span><span class="pth">'+p[2]+'</span></div>';}).join('')+'</div></div>';
+ var sr=mkOv('ntSrOv','🔍 <b>검색</b>',srInner,'노션 검색입니다. 페이지 제목이나 내용으로 무엇이든 찾을 수 있어요. 검색어를 입력하면 실시간으로 걸러져요.');
+ sr.addEventListener('input',function(e){ if(e.target.id!=='ntSrIn')return; var q=e.target.value.trim();
+  sr.querySelectorAll('.ntSR').forEach(function(r){ r.style.display=(!q||r.dataset.t.indexOf(q)>=0)?'':'none'; }); });
+ /* ---------- 채팅 ---------- */
+ var chInner='<div class="ntChatWrap"><div class="nth1">💬 팀 채팅</div><div class="ntsub">노션 안에서 팀원과 바로 대화해요. 아래에 입력하고 보내보세요. (신기능 · 확인 필요)</div>'
+  +'<div id="ntChLog">'
+  +'<div class="ntMsg"><span class="av">👷</span><div class="bb"><b>박건우</b> · SKF 전기 배선 60% 진행됐습니다. 분전반은 금요일 마무리 예정.</div></div>'
+  +'<div class="ntMsg"><span class="av">👩</span><div class="bb"><b>김혜원</b> · 학원 개강 홍보물 시안 2종 대시보드에 올렸어요!</div></div>'
+  +'<div class="ntMsg me"><span class="av">🧑‍💼</span><div class="bb"><b>루카스</b> · 확인했습니다. 동명대 간판 발주 오늘 넣을게요.</div></div>'
+  +'</div><div class="ntChatIn"><input id="ntChIn" type="text" placeholder="메시지 입력…"><button id="ntChSend" type="button">보내기</button></div></div>';
+ var ch=mkOv('ntChOv','💬 <b>팀 채팅</b>',chInner,'노션 팀 채팅입니다. 페이지를 벗어나지 않고 팀원과 대화해요. 메시지를 입력해보세요.');
+ function chSend(){ var i=ch.querySelector('#ntChIn'); var v=i.value.trim(); if(!v)return;
+  var log=ch.querySelector('#ntChLog');
+  log.insertAdjacentHTML('beforeend','<div class="ntMsg me"><span class="av">🧑‍💼</span><div class="bb"><b>루카스</b> · '+v.replace(/</g,'&lt;')+'</div></div>');
+  i.value='';
+  setTimeout(function(){ log.insertAdjacentHTML('beforeend','<div class="ntMsg"><span class="av">👷</span><div class="bb"><b>박건우</b> · 넵, 확인했습니다! 👍</div></div>'); log.lastElementChild.scrollIntoView({behavior:'smooth'}); },900);
+  log.lastElementChild.scrollIntoView({behavior:'smooth'});
+ }
+ ch.addEventListener('click',function(e){ if(e.target.id==='ntChSend') chSend(); });
+ ch.addEventListener('keydown',function(e){ if(e.target.id==='ntChIn'&&e.key==='Enter') chSend(); });
+ /* ---------- 라우팅 ---------- */
+ function openOv(id){ document.querySelectorAll('.ntov.on').forEach(function(x){x.classList.remove('on');}); var o=document.getElementById(id); if(o)o.classList.add('on'); return o; }
+ function openDiary(name){ var o=openOv('ntDiaryOv'); if(!o)return; var h=o.querySelector('.nth1'); if(h)h.textContent='📓 '+name+' 업무일지'; }
+ document.addEventListener('click',function(e){
+  var m=e.target.closest&&e.target.closest('[data-nt]');
+  if(!m)return;
+  e.stopPropagation(); e.preventDefault();
+  var k=m.getAttribute('data-nt');
+  if(k==='dash'){ document.querySelectorAll('.ntov.on').forEach(function(x){x.classList.remove('on');}); }
+  else if(k==='proc') openOv('ntProcOv');
+  else if(k==='cal') openOv('ntCalOv');
+  else if(k==='mkt') openOv('ntMktOv');
+  else if(k==='inbox') openOv('ntInOv');
+  else if(k==='srch'){ openOv('ntSrOv'); setTimeout(function(){document.getElementById('ntSrIn').focus();},150); }
+  else if(k==='chat') openOv('ntChOv');
+  else if(k==='diary-lucas') openDiary('루카스');
+  else if(k==='diary-park') openDiary('박건우');
+  else if(k==='diary-kim') openDiary('김혜원');
+ },true);
+ /* INFO 확장 */
+ try{ if(typeof INFO!=='undefined'){
+  var A={agents:['Agents','에이전트','나 대신 노션 안에서 일하는 <b>AI 직원</b>이에요. 반복 업무를 맡겨요.'],
+   newagent:['New agent','새 에이전트','원하는 역할(예: 현장 보고 정리)의 나만의 에이전트를 만들어요.'],
+   ntdesk:['Notion Desktop','Notion 데스크톱','브라우저 없이 쓰는 노션 전용 앱이에요.'],
+   ntlib:['Library','라이브러리','저장해 둔 템플릿·클립이 모여요.'],
+   mywork:['My tasks','내 작업','여러 페이지에 흩어진 <b>내 할 일</b>을 한 곳에서 봐요.'],
+   nthelp:['Help','도움말','노션 공식 가이드와 문의 창구예요.'],
+   nttrash:['Trash','휴지통','지운 페이지가 30일간 보관돼요. 복구 가능.'],
+   personal:['Private pages','개인 페이지','나만 보는 페이지예요. 팀스페이스로 옮기면 공유돼요.'],
+   newchat2:['New chat','새 채팅','Notion AI와 새 대화를 시작해요. 단축키 Ctrl+O.']};
+  for(var k in A){ INFO[k]={en:A[k][0],ko:A[k][1],fn:A[k][2]}; }
+ }}catch(e){}
 })();
 </script>
 </body>
