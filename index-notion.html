@@ -1834,5 +1834,193 @@ img{-webkit-user-drag:none;user-drag:none;pointer-events:auto}
   else init();
 })();
 </script>
+
+<!-- ntsim v1 : 노션 실화면 시뮬레이션 (캘린더·공정보드·업무일지·주간계획) -->
+<style id="ntsimCss">
+.ntov{position:fixed;inset:0;z-index:2600;background:#ffffff;display:none;flex-direction:column;color:#37352f;font-family:"Pretendard",system-ui,sans-serif}
+.ntov.on{display:flex}
+.ntop{display:flex;align-items:center;gap:10px;padding:10px 250px 10px 16px;border-bottom:1px solid #ededec;font-size:13px;color:#787774;flex:0 0 auto}
+.ntop .crumb b{color:#37352f}
+.ntop .sp{flex:1}
+.ntbtn{border:1px solid #e3e2e0;background:#fff;border-radius:6px;padding:5px 10px;font-size:12px;cursor:pointer;color:#37352f}
+.ntbtn.x{font-size:15px;line-height:1;padding:5px 9px}
+.ntbody{flex:1;overflow:auto;padding:18px 26px 40px}
+.nth1{font-size:26px;font-weight:800;margin:6px 0 2px;display:flex;align-items:center;gap:10px}
+.ntsub{color:#787774;font-size:13px;margin-bottom:12px}
+.ntvtabs{display:flex;gap:2px;border-bottom:1px solid #ededec;margin:10px 0 14px;font-size:13px}
+.ntvtabs span{padding:6px 10px;cursor:pointer;color:#787774;border-bottom:2px solid transparent}
+.ntvtabs span.on{color:#37352f;font-weight:700;border-bottom-color:#37352f}
+/* 캘린더 */
+.ncalgrid{display:grid;grid-template-columns:repeat(7,1fr);border:1px solid #ededec;border-radius:8px;overflow:hidden;min-width:640px}
+.ncalgrid .dow{background:#fbfbfa;color:#787774;font-size:11px;padding:6px 8px;border-bottom:1px solid #ededec;text-align:right}
+.ncald{min-height:92px;border-bottom:1px solid #f1f1ef;border-right:1px solid #f1f1ef;padding:4px 6px;font-size:11px;color:#787774;text-align:right;background:#fff}
+.ncald.dim{background:#fbfbfa;color:#c9c8c6}
+.ncald.today .dnum{background:#eb5757;color:#fff;border-radius:50%;display:inline-flex;width:20px;height:20px;align-items:center;justify-content:center;font-weight:700}
+.nev{display:block;text-align:left;font-size:11px;border-radius:4px;padding:2px 6px;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:default;font-weight:600}
+.nev.red{background:#ffe2dd;color:#93353a}.nev.blue{background:#d3e5ef;color:#22577c}.nev.green{background:#dbeddb;color:#2b593f}.nev.pur{background:#e8deee;color:#5a3286}.nev.cont{opacity:.45;font-weight:400}
+/* 공정 보드 */
+.nboard{display:flex;gap:12px;align-items:flex-start;min-width:900px;padding-bottom:8px}
+.ncol{flex:0 0 190px;background:#fbfbfa;border:1px solid #ededec;border-radius:8px;padding:8px}
+.ncol h4{margin:2px 4px 8px;font-size:12.5px;display:flex;align-items:center;gap:6px}
+.nst{font-size:10.5px;border-radius:10px;padding:2px 8px;font-weight:700}
+.nst.done{background:#dbeddb;color:#2b593f}.nst.doing{background:#d3e5ef;color:#22577c}.nst.todo{background:#f1f1ef;color:#787774}
+.ncard{background:#fff;border:1px solid #ededec;border-radius:6px;padding:8px 9px;margin-bottom:8px;box-shadow:0 1px 2px rgba(0,0,0,.04);font-size:12px}
+.ncard b{display:block;margin-bottom:3px}
+.nmeta{color:#787774;font-size:11px;display:flex;gap:6px;flex-wrap:wrap;margin-top:3px}
+.ntag{background:#f1f1ef;border-radius:4px;padding:1px 6px;font-size:10.5px}
+.nprog{height:4px;background:#ededec;border-radius:2px;margin-top:6px;overflow:hidden}
+.nprog i{display:block;height:100%;background:#2eaadc}
+/* 타임라인 */
+.ntl{min-width:820px;border:1px solid #ededec;border-radius:8px;overflow:hidden;font-size:12px}
+.ntlh{display:grid;grid-template-columns:170px repeat(36,1fr);background:#fbfbfa;border-bottom:1px solid #ededec;color:#787774;font-size:10px}
+.ntlh div{padding:4px 2px;text-align:center}
+.ntlr{display:grid;grid-template-columns:170px repeat(36,1fr);border-bottom:1px solid #f4f4f2;align-items:center;height:34px}
+.ntlr .lbl{padding:0 10px;font-weight:600;font-size:11.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.nbar{height:16px;border-radius:8px;grid-row:1}
+/* 문서 페이지 */
+.ndoc{max-width:760px;margin:0 auto}
+.nprops{border-bottom:1px solid #ededec;padding-bottom:10px;margin-bottom:14px;font-size:13px;color:#787774}
+.nprops div{display:flex;gap:14px;padding:3px 0}
+.nprops .k{width:90px;color:#9b9a97}
+.ntodo{display:flex;gap:8px;align-items:flex-start;padding:3px 0;font-size:14px;cursor:pointer}
+.ntodo input{margin-top:3px;accent-color:#2383e2}
+.ntodo.done span{text-decoration:line-through;color:#9b9a97}
+.ntgl{margin:8px 0;font-size:14px}
+.ntgl>summary{cursor:pointer;font-weight:600}
+.ntgl div{margin:6px 0 0 18px;color:#57564f;font-size:13px;line-height:1.7}
+.ncallout{display:flex;gap:8px;background:#f1f1ef;border-radius:6px;padding:10px 12px;font-size:13px;margin:10px 0}
+.ntbl{border-collapse:collapse;width:100%;font-size:13px;margin-top:8px}
+.ntbl th,.ntbl td{border:1px solid #ededec;padding:6px 9px;text-align:left}
+.ntbl th{background:#fbfbfa;color:#787774;font-weight:600;font-size:12px}
+@media (max-width:700px){ .ntbody{padding:12px 10px 90px} .nth1{font-size:20px} .ntop{padding:10px 12px} }
+</style>
+<script id="ntsimJs">
+(function(){
+ if(window.__ntsim)return; window.__ntsim=true;
+ function el(html){var d=document.createElement('div');d.innerHTML=html;return d.firstElementChild;}
+ function speak(t){try{speechSynthesis.cancel();var u=new SpeechSynthesisUtterance(t);u.lang='ko-KR';u.rate=1.05;speechSynthesis.speak(u);}catch(e){}}
+ function ov(id,crumb,inner,voice){
+  var o=el('<div class="ntov" id="'+id+'" role="dialog" aria-modal="true">'
+   +'<div class="ntop"><span class="crumb">🏠 리비안 공동작업 / <b>'+crumb+'</b></span><span class="sp"></span>'
+   +'<button class="ntbtn nt-voice">🔊 듣기</button><button class="ntbtn nt-info">ℹ️ 설명</button><button class="ntbtn x nt-close">✕</button></div>'
+   +'<div class="ntbody">'+inner+'</div></div>');
+  document.body.appendChild(o);
+  o.querySelector('.nt-close').onclick=function(){o.classList.remove('on');try{speechSynthesis.cancel();}catch(e){}};
+  o.querySelector('.nt-voice').onclick=function(){speak(voice);};
+  return o;
+ }
+ /* ---------- 1. 캘린더 (2026년 8월) ---------- */
+ var EV={3:[{t:'SKF 공사 착공',c:'red'}],20:[{t:'엔포유 준공',c:'blue'}],24:[{t:'동명대 개강 전 마감',c:'red'}],31:[{t:'학원 개강·전시장 오픈',c:'pur'}]};
+ var CONT={}; for(var d=4;d<=28;d++){ if(d!==20&&d!==24) CONT[d]='SKF 공사 (진행)'; }
+ function calHTML(){
+  var dows=['일','월','화','수','목','금','토'];
+  var h='<div class="nth1">📅 리비안 전체 일정</div><div class="ntsub">2026년 8월 · 월간 캘린더 보기 — 표의 일정이 달력 위에 배치됩니다.</div>'
+   +'<div class="ntvtabs"><span class="on">📅 월간 일정(캘린더)</span><span class="nt-tolist">🗓 목록 보기</span></div>'
+   +'<div style="overflow-x:auto"><div class="ncalgrid">';
+  for(var i=0;i<7;i++)h+='<div class="dow">'+dows[i]+'</div>';
+  var first=new Date(2026,7,1), start=new Date(2026,7,1-first.getDay());
+  for(var i=0;i<42;i++){
+   var dt=new Date(start); dt.setDate(start.getDate()+i);
+   var inAug=dt.getMonth()===7, dd=dt.getDate();
+   var today=(dt.getFullYear()===2026&&dt.getMonth()===7&&dd===13);
+   h+='<div class="ncald'+(inAug?'':' dim')+(today?' today':'')+'"><span class="dnum">'+dd+'</span>';
+   if(inAug){
+    if(EV[dd])EV[dd].forEach(function(e){h+='<span class="nev '+e.c+'">'+e.t+'</span>';});
+    if(CONT[dd])h+='<span class="nev red cont">'+CONT[dd]+'</span>';
+   }
+   h+='</div>';
+  }
+  return h+'</div></div>';
+ }
+ var calOv=ov('ntCalOv','리비안 전체 일정 · 캘린더',calHTML(),
+  '리비안 전체 일정 캘린더입니다. 8월 3일 SKF 공사 착공, 20일 엔포유 준공, 24일 동명대 개강 전 마감, 31일 학원 개강과 전시장 오픈이 잡혀 있어요. 표에 적은 일정이 이렇게 달력 위에 자동으로 배치됩니다.');
+ var tl=calOv.querySelector('.nt-tolist'); if(tl)tl.onclick=function(){calOv.classList.remove('on');};
+ /* ---------- 2. 공정 보드 (가상 현장) ---------- */
+ var COLS=[
+  {n:'철거·폐기물',s:'done',cards:[{t:'전체 철거',d:'8/3 – 8/5',who:'철거팀',p:100},{t:'폐기물 반출',d:'8/5',who:'공동',p:100}]},
+  {n:'설비·배관',s:'done',cards:[{t:'배관 교체 (욕실 2)',d:'8/6 – 8/8',who:'설비',p:100}]},
+  {n:'전기·조명 배선',s:'doing',cards:[{t:'전열·조명 배선',d:'8/11 – 8/14',who:'전기',p:60},{t:'분전반 정리',d:'8/14',who:'전기',p:0}]},
+  {n:'목공·가벽',s:'todo',cards:[{t:'거실 아트월 목공',d:'8/17 – 8/20',who:'목공',p:0}]},
+  {n:'필름·도장',s:'todo',cards:[{t:'문틀 필름 · 천장 도장',d:'8/21 – 8/23',who:'도장',p:0}]},
+  {n:'타일·바닥',s:'todo',cards:[{t:'욕실 타일 · 강마루',d:'8/24 – 8/27',who:'타일',p:0}]},
+  {n:'가구·조명 설치',s:'todo',cards:[{t:'싱크·붙박이장 설치',d:'8/28 – 8/30',who:'가구',p:0}]},
+  {n:'준공 청소·검수',s:'todo',cards:[{t:'입주 청소 · 하자 체크',d:'8/31',who:'루카스',p:0}]}
+ ];
+ var SLBL={done:'완료',doing:'진행 중',todo:'예정'};
+ function procHTML(){
+  var h='<div class="nth1">🏗 연산동 34평 리모델링 · 공정 관리</div><div class="ntsub">가상 현장 예시 — 공정별 카드를 칸반 보드와 타임라인으로 관리합니다.</div>'
+   +'<div class="ntvtabs"><span class="on nt-vb">📋 보드</span><span class="nt-vt">📊 타임라인</span></div>'
+   +'<div class="nt-pane-b" style="overflow-x:auto"><div class="nboard">';
+  COLS.forEach(function(c){
+   h+='<div class="ncol"><h4><span class="nst '+c.s+'">'+SLBL[c.s]+'</span> '+c.n+'</h4>';
+   c.cards.forEach(function(cd){
+    h+='<div class="ncard"><b>'+cd.t+'</b><div class="nmeta"><span>🗓 '+cd.d+'</span><span class="ntag">'+cd.who+'</span></div><div class="nprog"><i style="width:'+cd.p+'%"></i></div></div>';
+   });
+   h+='</div>';
+  });
+  h+='</div></div><div class="nt-pane-t" style="display:none;overflow-x:auto"><div class="ntl"><div class="ntlh"><div style="text-align:left;padding-left:10px">공정</div>';
+  for(var d=1;d<=31;d++)h+='<div>'+(d%2?d:'')+'</div>'; h+='<div>9/1</div><div></div><div></div><div></div><div></div>';
+  var BARS=[['철거·폐기물',3,5,'#2b593f'],['설비·배관',6,8,'#2b593f'],['전기·조명 배선',11,14,'#2383e2'],['목공·가벽',17,20,'#9b9a97'],['필름·도장',21,23,'#9b9a97'],['타일·바닥',24,27,'#9b9a97'],['가구·조명 설치',28,30,'#9b9a97'],['준공 청소·검수',31,31,'#9b9a97']];
+  BARS.forEach(function(b){
+   h+='<div class="ntlr"><div class="lbl">'+b[0]+'</div><div class="nbar" style="grid-column:'+(b[1]+1)+' / '+(b[2]+2)+';background:'+b[3]+'"></div></div>';
+  });
+  return h+'</div></div>';
+ }
+ var procOv=ov('ntProcOv','현장 공정 보드',procHTML(),
+  '가상 현장, 연산동 34평 리모델링의 공정 보드입니다. 철거와 설비는 완료, 전기 배선이 진행 중이고, 목공부터 준공 검수까지 예정 상태예요. 타임라인 탭을 누르면 공정이 날짜 막대로 보입니다.');
+ procOv.querySelector('.nt-vb').onclick=function(){this.classList.add('on');procOv.querySelector('.nt-vt').classList.remove('on');procOv.querySelector('.nt-pane-b').style.display='';procOv.querySelector('.nt-pane-t').style.display='none';};
+ procOv.querySelector('.nt-vt').onclick=function(){this.classList.add('on');procOv.querySelector('.nt-vb').classList.remove('on');procOv.querySelector('.nt-pane-t').style.display='';procOv.querySelector('.nt-pane-b').style.display='none';};
+ /* ---------- 3. 업무일지 페이지 ---------- */
+ function diaryHTML(){
+  return '<div class="ndoc"><div class="nth1">📓 루카스 업무일지</div>'
+   +'<div class="nprops"><div><span class="k">담당</span><span>👤 루카스</span></div><div><span class="k">날짜</span><span>2026년 8월 13일</span></div><div><span class="k">구분</span><span class="ntag">현장</span> <span class="ntag">학원</span></div></div>'
+   +'<div class="ncallout"><span>💡</span><div>체크박스를 눌러보세요 — 실제 노션처럼 <b>완료 처리</b>됩니다.</div></div>'
+   +'<label class="ntodo"><input type="checkbox" checked><span>SKF 현장 전기 배선 중간 점검 (오전)</span></label>'
+   +'<label class="ntodo"><input type="checkbox"><span>동명대 간판 시안 최종 컨펌 요청</span></label>'
+   +'<label class="ntodo"><input type="checkbox"><span>엔포유 준공 서류 준비 (8/20까지)</span></label>'
+   +'<label class="ntodo"><input type="checkbox"><span>학원 개강 안내문 검토</span></label>'
+   +'<details class="ntgl"><summary>▸ 현장 메모 (누르면 펼쳐져요)</summary><div>전기 배선 60% 진행. 분전반 정리는 금요일 예정.<br>욕실 타일 자재 입고일 확인 필요 — <b>확인 필요</b>.</div></details>'
+   +'</div>';
+ }
+ var diaryOv=ov('ntDiaryOv','직원업무 / 루카스 업무일지',diaryHTML(),
+  '루카스 업무일지 페이지입니다. 오늘 할 일을 체크박스로 관리하고, 현장 메모는 토글로 접어둡니다. 체크박스를 직접 눌러보세요.');
+ diaryOv.addEventListener('change',function(e){ if(e.target.type==='checkbox'){ e.target.closest('.ntodo').classList.toggle('done', e.target.checked); } });
+ /* ---------- 4. 주간계획 페이지 ---------- */
+ function weekHTML(){
+  return '<div class="ndoc"><div class="nth1">📌 리비안 주간계획</div><div class="ntsub">8월 2주차 (8/11 – 8/17)</div>'
+   +'<table class="ntbl"><thead><tr><th>우선순위</th><th>할 일</th><th>담당</th><th>상태</th></tr></thead><tbody>'
+   +'<tr><td>🔴 1</td><td>SKF 전기·조명 배선 완료</td><td>루카스</td><td><span class="nst doing">진행 중</span></td></tr>'
+   +'<tr><td>🟠 2</td><td>동명대 간판·시트지 발주</td><td>공동</td><td><span class="nst todo">예정</span></td></tr>'
+   +'<tr><td>🟡 3</td><td>엔포유 준공 서류</td><td>루카스</td><td><span class="nst todo">예정</span></td></tr>'
+   +'<tr><td>🟢 4</td><td>학원 개강 홍보물 제작</td><td>김혜원</td><td><span class="nst done">완료</span></td></tr>'
+   +'</tbody></table>'
+   +'<div class="ncallout"><span>📅</span><div>이 표는 <b>대시보드 캘린더와 같은 데이터</b>를 다른 보기로 본 것이에요 — 노션의 핵심 개념!</div></div></div>';
+ }
+ var weekOv=ov('ntWeekOv','리비안 주간계획',weekHTML(),
+  '리비안 주간계획 페이지입니다. 이번 주 우선순위 네 가지를 표로 관리해요. 같은 데이터를 캘린더로도, 표로도 볼 수 있는 게 노션의 핵심입니다.');
+ /* ---------- 진입 지점 연결 ---------- */
+ function openOv(o){ document.querySelectorAll('.ntov.on').forEach(function(x){x.classList.remove('on');}); o.classList.add('on'); }
+ function addProcEntry(){
+  var db=document.querySelector('.dbwrap'); if(!db||document.getElementById('ntProcEntry'))return;
+  db.insertAdjacentHTML('afterend','<div class="callout gray" id="ntProcEntry" role="button" style="cursor:pointer"><span class="ci">🏗</span><div><b>현장 공정 보드</b> · 연산동 34평 리모델링 <span style="color:#9b9a97">— 누르면 칸반·타임라인이 열립니다</span></div></div>');
+ }
+ addProcEntry(); setTimeout(addProcEntry,1500);
+ document.addEventListener('click',function(e){
+  var t=e.target;
+  if(t.closest&&t.closest('#ntProcEntry')){e.stopPropagation();e.preventDefault();openOv(procOv);return;}
+  var db=t.closest&&t.closest('.dbwrap'); if(db){e.stopPropagation();e.preventDefault();openOv(calOv);return;}
+  var rs=t.closest&&t.closest('[data-k="reserve"]');
+  if(rs&&rs.closest('.ndash')){e.stopPropagation();e.preventDefault();openOv(calOv);return;}
+  var h1=t.closest&&t.closest('[data-k="hist1"]'); if(h1&&h1.closest('.ndash')){e.stopPropagation();e.preventDefault();openOv(diaryOv);return;}
+  var lb=t.closest&&t.closest('[data-k="library"]'); if(lb&&lb.closest('.ndash')){e.stopPropagation();e.preventDefault();openOv(weekOv);return;}
+ },true);
+ /* 설명 버튼 → 기존 INFO 드로어 연동 */
+ var MAP={ntCalOv:'reserve',ntProcOv:'projects',ntDiaryOv:'hist1',ntWeekOv:'library'};
+ document.querySelectorAll('.ntov .nt-info').forEach(function(b){
+  b.onclick=function(){ var o=b.closest('.ntov'); o.classList.remove('on');
+   try{ if(typeof openDrawer==='function') openDrawer(MAP[o.id]); }catch(e){} };
+ });
+})();
+</script>
 </body>
 </html>
