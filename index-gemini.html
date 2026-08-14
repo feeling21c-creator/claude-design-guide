@@ -234,8 +234,16 @@ a{color:var(--accent-ink)}
   <div class="schat ix" data-k="projects">📓 AI Strategies for Small-Scale Beau…</div>
   <div class="schat ix" data-k="projects">📓 Restoration and Interior Construc…</div>
   <div class="schat">… 모든 노트북</div>
-  <div class="ssec">최근 ›</div>
-  <div class="sfoot"><div class="sitem ix" data-k="account"><span class="i">🦎</span> 도마뱀</div></div>
+  <div class="ssec">최근</div>
+  <div class="schat ix" data-k="hist1">Korean Office Worker's AI Vision</div>
+  <div class="schat ix" data-k="hist2">AI 홍보 영상 제작 프롬프트 제안</div>
+  <div class="schat">위험보다 확실한 근거 우선</div>
+  <div class="schat">Google AI Studio Veo 3.1 활용 가이드</div>
+  <div class="schat">이미지 기반 피부관리샵 홍보 영상 제작</div>
+  <div class="schat">메이크업샵 홍보영상 제작 요청</div>
+  <div class="schat">Instagram Carousel Design Request</div>
+  <div class="schat">4장 사진으로 8초 철거 영상 제작</div>
+  <div class="sfoot"><div class="sitem ix" data-k="account"><span class="i">🦎</span> 도마뱀 <span style="opacity:.5;font-size:11px">Pro</span><span class="sp" style="flex:1"></span><span style="opacity:.6">⚙</span></div></div>
  </aside>
  <div class="sbackdrop" id="sbackdrop"></div>
 
@@ -270,7 +278,7 @@ a{color:var(--accent-ink)}
 <section class="view on" id="v-home">
    <div class="ghome">
     <div class="gglow"></div>
-    <div class="ghi">무엇을 도와드릴까요?</div>
+    <div class="ghi">마뱀님, 시작해 볼까요?</div>
     <div class="gin">
      <span class="plus ix" data-k="plus" data-pop="plus" role="button">＋</span>
      <span class="ph ix" id="ph" data-k="input" role="button">Gemini에게 물어보기</span>
@@ -856,8 +864,8 @@ document.addEventListener('click',function(e){if(e.target.closest&&e.target.clos
  var side=document.querySelector('#side');
  var proj=side.querySelector('[data-k="projects"]');
  function sItem(k,icon,label){var e=document.createElement('div');e.className='sitem ix';e.dataset.k=k;e.innerHTML='<span class="i">'+icon+'</span> '+label;return e;}
- if(proj&&proj.parentNode)proj.parentNode.insertBefore(sItem('f-codex','💻','코딩 · Jules'),proj.nextSibling);
- var foot=side.querySelector('.sfoot');if(foot)foot.insertBefore(sItem('f-custom','⚙️','설정 · 개인화'),foot.firstChild);
+ 
+ var foot=side.querySelector('.sfoot');
 
  document.querySelectorAll('#fg .card, #side [data-k="f-codex"], #side [data-k="f-custom"]').forEach(function(el){if(typeof wire==='function')wire(el);});
  (function(){var w=document.createElement('div');w.className='p2-search';var s=document.createElement('span');s.className='ic';s.textContent='🔎';w.appendChild(s);var inp=document.createElement('input');inp.type='search';inp.placeholder='기능 검색 (예: 프로젝트, 메모리, 맞춤, Codex…)';inp.setAttribute('aria-label','기능 검색');w.appendChild(inp);var x=document.createElement('button');x.className='x';x.textContent='✕';x.type='button';w.appendChild(x);
