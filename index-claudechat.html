@@ -2454,5 +2454,480 @@ body.ccacOpen #p2-startBtn{visibility:hidden !important}
  },true);
 })();
 </script>
+
+<!-- ccreal v3 add : 프로젝트 갤러리·생성·내부 + 설명 패널 + 계정 하위 화면 전체 -->
+<style id="ccr3Css">
+/* ── 프로젝트 갤러리 ── */
+.ccpjBody{flex:1;overflow:auto;padding:20px 26px 70px;min-width:0}
+.ccpjHead{display:flex;align-items:center;gap:10px;flex-wrap:wrap;max-width:1060px;margin:0 auto}
+.ccpjHead h1{font-size:23px;font-weight:700;color:#f5f3ef;margin:0}
+.ccpjHead .sp{flex:1}
+#ccpjSearch{display:none;background:#1f1e1c;border:1px solid rgba(255,255,255,.18);border-radius:8px;color:#ececec;font-size:13px;padding:7px 10px;width:170px}
+#ccpjSearch.on{display:block}
+.ccpjSort{display:flex;align-items:center;gap:6px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.04);border-radius:8px;padding:7px 12px;font-size:12.5px;color:#d5d2cc;cursor:pointer}
+.ccpjNew{border:1px solid #e8e5de;background:#faf9f5;border-radius:8px;padding:7px 14px;font-size:12.5px;font-weight:600;color:#1c1c1a;cursor:pointer}
+.ccpjBanner{display:flex;align-items:center;gap:10px;max-width:1060px;margin:16px auto 14px;border:1px solid rgba(255,255,255,.12);border-radius:11px;padding:10px 14px;font-size:12.5px;color:#d5d2cc}
+.ccpjBanner .tag{background:rgba(53,116,240,.25);color:#8db4f8;font-size:11px;border-radius:6px;padding:2px 8px;flex:0 0 auto}
+.ccpjBanner .x{margin-left:auto;cursor:pointer;color:#8a877f}
+.ccpjGrid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;max-width:1060px;margin:0 auto}
+.ccpjCard{background:#2b2a28;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:16px 16px 12px;cursor:pointer;display:flex;flex-direction:column;min-height:118px;transition:border-color .12s}
+.ccpjCard:hover{border-color:rgba(255,255,255,.22)}
+.ccpjCard .t{font-size:14px;font-weight:700;color:#f0eee9;display:flex;align-items:flex-start;gap:6px}
+.ccpjCard .t .pin{font-size:11px;color:#b5b2ac}
+.ccpjCard .d{margin-top:8px;font-size:12px;color:#a5a29b;line-height:1.6;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.ccpjCard .dt{margin-top:auto;padding-top:12px;font-size:11px;color:#7a776f}
+/* 프로젝트 생성 모달 */
+#ccPrjNew{position:fixed;inset:0;z-index:2700;background:rgba(0,0,0,.55);display:none;align-items:center;justify-content:center;padding:16px}
+#ccPrjNew.on{display:flex}
+.ccpnBox{width:100%;max-width:560px;background:#30302e;border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:22px 24px;box-shadow:0 20px 60px rgba(0,0,0,.6)}
+.ccpnBox h2{margin:0;font-size:19px;color:#f5f3ef;display:flex}
+.ccpnBox h2 .x{margin-left:auto;cursor:pointer;font-size:15px;color:#8a877f;font-weight:400}
+.ccpnBox label{display:block;margin:18px 0 7px;font-size:13px;color:#d5d2cc}
+.ccpnBox input,.ccpnBox textarea{width:100%;box-sizing:border-box;background:#262624;border:1px solid rgba(255,255,255,.14);border-radius:9px;color:#ececec;font-size:13px;padding:10px 12px;font-family:inherit}
+.ccpnBox textarea{min-height:86px;resize:vertical}
+.ccpnFolder{margin-top:14px;font-size:12.5px;color:#b5b2ac;cursor:pointer}
+.ccpnBtns{display:flex;justify-content:flex-end;gap:8px;margin-top:20px}
+.ccpnBtns .c{border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.05);color:#ececec;border-radius:8px;padding:8px 16px;font-size:13px;cursor:pointer}
+.ccpnBtns .m{border:none;background:#faf9f5;color:#1c1c1a;border-radius:8px;padding:8px 16px;font-size:13px;font-weight:700;cursor:pointer}
+/* 프로젝트 내부 */
+#ccPrjIn{position:fixed;inset:0;z-index:2650;background:#262624;display:none;flex-direction:column;color:#ececec}
+#ccPrjIn.on{display:flex}
+.ccpiBody{flex:1;overflow:auto;padding:26px 20px 80px;display:flex;justify-content:center}
+.ccpiWrap{width:100%;max-width:820px}
+.ccpiWrap h2{font-size:22px;color:#f5f3ef;margin:0 0 6px}
+.ccpiDesc{color:#a5a29b;font-size:13px;line-height:1.7}
+.ccpiChat{margin:20px 0;background:#30302e;border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:14px 16px}
+.ccpiChat .ph{color:#8a877f;font-size:14px}
+.ccpiChat .row{display:flex;align-items:center;margin-top:12px;gap:8px}
+.ccpiChat .row .sp{flex:1}
+.ccpiChat .up{width:32px;height:32px;border-radius:50%;background:#c96442;color:#fff;display:flex;align-items:center;justify-content:center}
+.ccpiCols{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.ccpiBox{background:#2b2a28;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:14px}
+.ccpiBox b{font-size:13px;color:#f0eee9}
+.ccpiBox .it{margin-top:9px;font-size:12px;color:#a5a29b;padding:8px 10px;background:#242322;border-radius:8px}
+.ccpiSteps{margin-top:18px;background:rgba(35,131,226,.08);border:1px solid rgba(35,131,226,.3);border-radius:12px;padding:14px 16px}
+.ccpiSteps b{color:#8db4f8;font-size:13px}
+.ccpiSteps .st{margin-top:9px;font-size:12.5px;color:#cfe0f5;line-height:1.6}
+.ccpiSteps .st i{font-style:normal;color:#e0885f;font-weight:700;margin-right:6px}
+/* ── 설명 패널(공용) ── */
+#ccExpl{position:fixed;top:0;right:0;bottom:0;width:400px;max-width:92vw;z-index:2860;background:#1f2430;border-left:1px solid rgba(255,255,255,.12);box-shadow:-16px 0 50px rgba(0,0,0,.5);display:none;flex-direction:column;color:#e7ecf5;font-family:"Pretendard",system-ui,sans-serif}
+#ccExpl.on{display:flex}
+.ccexTop{display:flex;align-items:center;gap:8px;padding:12px 14px;border-bottom:1px solid rgba(255,255,255,.08)}
+.ccexTop b{font-size:15px}
+.ccexTop .sp{flex:1}
+.ccexBody{flex:1;overflow:auto;padding:14px 16px 40px;font-size:13px;line-height:1.75}
+.ccexBody h4{margin:16px 0 6px;font-size:12.5px;color:#e0885f}
+.ccexBody .box{background:rgba(255,255,255,.06);border-radius:9px;padding:9px 11px;margin:7px 0}
+.ccexBody .ok{background:rgba(69,133,86,.18);border:1px solid rgba(69,133,86,.4)}
+.ccexBody .warn{background:rgba(201,100,66,.12);border:1px solid rgba(201,100,66,.35);color:#f0cdbd}
+/* ── 계정 하위 화면 ── */
+#ccAcSub{position:fixed;inset:0;z-index:2820;background:#262624;display:none;flex-direction:column;color:#ececec;font-family:"Pretendard",system-ui,sans-serif}
+#ccAcSub.on{display:flex}
+.ccasBody{flex:1;overflow:auto;padding:22px 18px 80px;display:flex;justify-content:center;align-items:flex-start}
+.ccasWrap{width:100%;max-width:860px}
+/* 설정 모달 재현 */
+.ccasSet{display:flex;background:#30302e;border:1px solid rgba(255,255,255,.1);border-radius:14px;overflow:hidden;min-height:440px}
+.ccasNav{flex:0 0 178px;background:#2a2927;border-right:1px solid rgba(255,255,255,.07);padding:12px 8px}
+.ccasNav .srch{background:#242322;border:1px solid rgba(255,255,255,.12);border-radius:7px;color:#8a877f;font-size:12px;padding:6px 9px;margin:0 4px 10px}
+.ccasNav .hd{font-size:10.5px;color:#7a776f;padding:8px 10px 3px}
+.ccasNav .it{display:flex;align-items:center;gap:8px;padding:6.5px 10px;border-radius:7px;font-size:12.5px;color:#c9c7c2;cursor:pointer}
+.ccasNav .it:hover{background:rgba(255,255,255,.06)}
+.ccasNav .it.on{background:#3a3936;color:#f0eee9}
+.ccasCont{flex:1;padding:20px 22px;min-width:0}
+.ccasCont h3{margin:0 0 14px;font-size:15px;color:#f0eee9}
+.ccasRow{display:flex;align-items:center;gap:12px;margin:12px 0;font-size:13px;color:#d5d2cc}
+.ccasRow .sp{flex:1}
+.ccasRow .val{background:#242322;border:1px solid rgba(255,255,255,.12);border-radius:8px;padding:7px 12px;font-size:12.5px;color:#ececec;min-width:120px}
+.ccasAva{width:34px;height:34px;border-radius:50%;background:#c96442;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700}
+.ccasGd{background:#242322;border:1px solid rgba(255,255,255,.12);border-radius:9px;padding:11px 13px;font-size:12px;color:#b5b2ac;line-height:1.7;max-height:110px;overflow:hidden}
+.ccasTheme{display:flex;gap:6px}
+.ccasTheme span{width:30px;height:26px;border:1px solid rgba(255,255,255,.16);border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:13px;cursor:pointer}
+.ccasTheme span.on{background:rgba(255,255,255,.14)}
+.ccasPlain{background:#30302e;border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:22px 24px}
+.ccasPlain h3{margin:0 0 8px;font-size:17px;color:#f0eee9}
+.ccasPlain .sub{color:#a5a29b;font-size:12.5px;line-height:1.7;margin-bottom:16px}
+.ccasCards{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+.ccasCard{background:#2b2a28;border:1px solid rgba(255,255,255,.09);border-radius:12px;padding:16px}
+.ccasCard b{font-size:13.5px;color:#f0eee9;display:block}
+.ccasCard .p{font-size:12px;color:#a5a29b;line-height:1.65;margin:8px 0 12px}
+.ccasCard button{border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);color:#ececec;border-radius:8px;padding:7px 12px;font-size:12px;cursor:pointer;width:100%}
+.ccasCard button.hot{background:#faf9f5;color:#1c1c1a;border-color:#faf9f5;font-weight:700}
+.ccasCard .bg{font-size:10.5px;color:#e0885f;border:1px solid rgba(201,100,66,.4);border-radius:6px;padding:1px 7px;display:inline-block;margin-bottom:8px}
+.ccasList .li{display:flex;gap:10px;padding:11px 0;border-bottom:1px solid rgba(255,255,255,.07);font-size:12.5px;color:#c9c7c2;line-height:1.6}
+.ccasList .li b{color:#f0eee9;flex:0 0 auto}
+.ccasInput{width:100%;box-sizing:border-box;background:#242322;border:1px solid rgba(255,255,255,.14);border-radius:9px;color:#ececec;font-size:13px;padding:10px 12px;font-family:inherit;margin:8px 0}
+textarea.ccasInput{min-height:90px;resize:vertical}
+.ccasSend{border:none;background:#faf9f5;color:#1c1c1a;border-radius:8px;padding:9px 18px;font-size:13px;font-weight:700;cursor:pointer}
+.ccasNote{margin-top:16px;background:rgba(35,131,226,.08);border:1px solid rgba(35,131,226,.3);border-radius:11px;padding:12px 14px;font-size:12.5px;color:#cfe0f5;line-height:1.7}
+.ccasMask{font-size:11px;color:#7a776f;margin-top:10px}
+/* 로그아웃 확인 */
+.ccasConfirm{max-width:420px;margin:40px auto;background:#30302e;border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:24px;text-align:center}
+.ccasConfirm h3{margin:0 0 10px;font-size:16px;color:#f0eee9}
+.ccasConfirm p{font-size:12.5px;color:#a5a29b;line-height:1.7}
+.ccasConfirm .btns{display:flex;gap:8px;justify-content:center;margin-top:18px}
+
+/* 오버레이 열림 중 홈 하단 독 숨김(모바일 겹침 방지) */
+body.ccOvOpen #rdDockBg, body.ccOvOpen #p2-startBtn, body.ccOvOpen #msnPill,
+body.ccOvOpen #rdMoreBtn3, body.ccOvOpen div.help, body.ccOvOpen #bgmBtn{display:none !important}
+#ccr3Toast{position:fixed;left:50%;bottom:96px;transform:translateX(-50%);background:#2a2a28;border:1px solid #444;color:#eee;font-size:12.5px;border-radius:10px;padding:10px 16px;z-index:2895;display:none;max-width:86vw;text-align:center;line-height:1.6}
+@media (max-width:700px){
+ .ccpjBody{padding:14px 12px 100px}
+ .ccpjGrid{grid-template-columns:1fr}
+ .ccpjHead h1{font-size:19px}
+ .ccpiCols{grid-template-columns:1fr}
+ .ccasSet{flex-direction:column}
+ .ccasNav{flex:none;display:flex;overflow-x:auto;gap:2px;padding:8px}
+ .ccasNav .srch,.ccasNav .hd{display:none}
+ .ccasNav .it{flex:0 0 auto}
+ #ccExpl{width:100%;max-width:100%}
+}
+</style>
+<script id="ccr3Js">
+(function(){
+ if(window.__ccr3)return; window.__ccr3=true;
+ function speak(t){try{speechSynthesis.cancel();var u=new SpeechSynthesisUtterance(t);u.lang='ko-KR';u.rate=1.05;speechSynthesis.speak(u);}catch(e){}}
+ var toastEl;
+ function say(m){toastEl.textContent=m;toastEl.style.display='block';clearTimeout(say._t);say._t=setTimeout(function(){toastEl.style.display='none';},3000);}
+ /* 사이드바(공용 마크업 — v2 CSS 재사용) */
+ var RECENTS=['클로드 디자인 인트랙티브 사용 설명서','루카스 아카데미 홈페이지 구축','뷰티 산업에서 루카스 브랜드 구축하기','홍보 영상 제작 방법','리비안 대시보드 달력 연동 기능','컴퓨터 견적서 확인','Lucas Group Master Blueprint 2035','Mobbin MCP 연결','루카스를 위한 회사명 제안','리비안디자인 AI 스튜디오와 LAS 비교','미가메디컬 프로젝트 진행 상황','리비안 대시보드 거래처 정보 섹션 추가','콘텐츠 기록 위치','AI 뉴스 브리핑 7월 29일','Lucas 법인 회사 설립 계획','AI SaaS 제품 소개','이지은 대표 설문지 102문항 분석','루카스 설정 최적화 및 토큰 소모량 분석','인스타그램 콘텐츠 위험 표현 검수','구글 AI 스튜디오, 캔바, 노션 가이드북 제작'];
+ function sbHTML(active){
+  function it(k,i,t,extra){return '<div class="ccSbIt'+(active===k?' on':'')+'" data-go3="'+k+'"><span class="i">'+i+'</span>'+t+(extra||'')+'</div>';}
+  return '<div class="ccSb"><div class="ccSbScroll">'
+   +'<div class="ccSbSeg"><b class="on">🏠 홈</b><b data-go3="code">&lt;/&gt; Code</b></div>'
+   +it('newchat','＋','새로 생성')+it('projects','🗂','프로젝트')+it('library','✦','아티팩트')+it('reserve','◷','예정됨')
+   +it('sendbeta','📤','발송','<span class="beta">베타</span>')+it('gpts','🛠','사용자 지정')
+   +'<div class="ccSbH">프로젝트<span class="sp"></span><span class="plus" data-go3="toast">＋</span></div>'
+   +'<div class="ccSbRec" data-go3="toast">🧩 클로드와 GPT 연결해서 동시에 일하기</div>'
+   +'<div class="ccSbH" data-go3="toast">고정됨 ›</div>'
+   +'<div class="ccSbH">최근 항목<span class="sp"></span><span data-go3="toast">⇅</span></div>'
+   +RECENTS.map(function(t){return '<div class="ccSbRec" data-go3="toast">'+t+'</div>';}).join('')
+   +'<div class="ccSbView" data-go3="toast">View all conversations</div>'
+   +'</div><div class="ccSbFoot">'
+   +'<div class="ccSbIt" data-go3="toast"><span class="i">◑</span>디자인</div>'
+   +'<div class="ccSbIt" data-go3="account"><span class="i">Ⓡ</span>Rucas · <b class="mx">Max</b></div>'
+   +'</div></div>';
+ }
+ /* 프로젝트 데이터 (실제 화면 그대로) */
+ var PROJECTS=[
+  {t:'클로드 디자인 인트렉티브 사용 설명서 만들기.',d:'클로드 디자인의 모든 기능을 정확하게 파악해서 인트렉티브로 사용 설명서를 한글로 만드는게 목표다. 지금 너무 어렵다...',dt:'21분 전'},
+  {t:'클로드와 GPT 연결해서 동시에 일하기',pin:1,dt:'1시간 전'},
+  {t:'리비안 디자인 회사 운영 메뉴얼',d:'리비안 디자인의 총서를 만드는게 목표이다',dt:'8월 11일'},
+  {t:'루카스 회사 홈페이지 saas 구축',dt:'8월 11일'},
+  {t:'미가메디컬',dt:'8월 5일'},
+  {t:'뷰티 산업에 전문가가 되기위한 루카스',dt:'7월 31일'},
+  {t:'(주)하루하루움직임연구소',dt:'7월 29일'},
+  {t:'두피 문신 SMP 배드 프로젝트',dt:'7월 29일'},
+  {t:'루카스 데일리 뉴스 엔진',d:'# AI 데일리 브리핑 엔진 — 프로젝트 지침 ## 역할 이 프로젝트에서 너는 리비안디자인의 AI 뉴스 브리핑 편집장이다. 수집·선별·요약·태깅을 담당하고, 최종 발행 판단은 대표에게 ...',dt:'7월 29일'},
+  {t:'루카스의 Ai 회사 설립 과정',dt:'7월 28일'},
+  {t:'클로드와 클로드 사용 설명서 SAAS 만들기',dt:'7월 27일'},
+  {t:'외국인 외국계 회사 대상 광고안',d:'리비안디자인 회사의 부산 지역 거주 수준 높은 외국인 주거 공간과 외국계 회사의 인테리어 수주를 위한 광고 전략 구축',dt:'7월 27일'},
+  {t:'리비안 디자인 광고 홍보',dt:'7월 27일'},
+  {t:'RADI',d:'# RDAI PROJECT EXECUTION CONSTITUTION # (Goal Achievement Instructions) 이 프로젝트의 최종 목표는 단순한 강의 제작이나 SaaS 개발이 아니다. 최종 목표는...',dt:'7월 21일'},
+  {t:'LAS - Lucas AI Studio',dt:'7월 13일'},
+  {t:'김혜원',dt:'7월 8일'}
+ ];
+ /* 설명 패널 콘텐츠 */
+ var EXPL={
+  projects:{t:'프로젝트란?',h:'<h4>한 마디로</h4><div class="box">주제별로 <b>대화·파일·지침을 한 폴더에 모아 두는 작업방</b>이에요. 프로젝트 안에서 대화하면 Claude가 그 프로젝트의 지침과 파일을 기억한 채로 답합니다.</div>'
+   +'<h4>이럴 때 써요</h4><div class="box">현장별(미가메디컬…)·업무별(광고, 뉴스 엔진…)로 방을 나눠 두면, 매번 배경 설명 없이 바로 일 시킬 수 있어요.</div>'
+   +'<h4>하는 법</h4><div class="box ok">1 · 새 프로젝트 → 이름·목표 입력<br>2 · 지침(역할·규칙)과 참고 파일 넣기<br>3 · 프로젝트 안에서 새 채팅으로 일 시키기<br>4 · 결과물·결정사항은 프로젝트에 계속 쌓임</div>'
+   +'<h4>실제로 해보기 (인테리어 예시)</h4><div class="box">"미가메디컬" 프로젝트를 만들고 도면·견적서를 넣어 두면 → "이 현장 3주차 진행보고 써줘" 한 줄로 끝나요.</div>'
+   +'<h4>주의</h4><div class="box warn">프로젝트가 다르면 서로 내용을 모릅니다. 같은 현장 일은 꼭 같은 프로젝트 안에서 하세요.</div>'
+   +'<h4>한 줄 정리</h4><div class="box">프로젝트 = 현장별 작업방. 지침+파일을 넣어 두면 설명 없이 바로 일 시킨다.</div>',
+   v:'프로젝트는 주제별로 대화와 파일, 지침을 한 폴더에 모아 두는 작업방입니다. 새 프로젝트를 만들어 이름과 목표를 적고, 지침과 파일을 넣은 뒤, 그 안에서 새 채팅으로 일을 시키면 클로드가 프로젝트 내용을 기억한 채로 답해요.'},
+  library:{t:'아티팩트란?',h:'<h4>한 마디로</h4><div class="box">Claude가 만들어 준 <b>문서·웹앱·코드 결과물 보관함</b>이에요. 만든 것들이 카드로 모여 있어 언제든 다시 열고 수정할 수 있어요.</div>'
+   +'<h4>이럴 때 써요</h4><div class="box">전에 만든 제안서·설명서·미니 웹앱을 다시 꺼내 쓰거나, 고객에게 링크로 보여 줄 때.</div>'
+   +'<h4>하는 법</h4><div class="box ok">1 · 왼쪽 메뉴 → 아티팩트<br>2 · 탭(전체/내 것/나와 공유됨)과 🔍검색·필터로 찾기<br>3 · 카드 클릭 → 내용이 열림, 이어서 수정 요청 가능<br>4 · 게시하면 🌐 공개 링크가 생겨 누구나 볼 수 있음</div>'
+   +'<h4>실제로 해보기 (인테리어 예시)</h4><div class="box">"오늘 저녁 뭐 먹지?"처럼 미니 웹앱도 아티팩트예요. 거실 무드보드 웹페이지를 만들어 게시하면 고객에게 링크만 보내면 됩니다.</div>'
+   +'<h4>주의</h4><div class="box warn">🌐 게시된 아티팩트는 링크만 알면 누구나 봅니다. 고객 정보가 든 것은 🔒 비공개로 두세요.</div>'
+   +'<h4>한 줄 정리</h4><div class="box">아티팩트 = 결과물 보관함. 카드 클릭 → 열람·수정, 게시 → 공개 링크.</div>',
+   v:'아티팩트는 클로드가 만들어 준 문서와 웹앱, 코드 결과물의 보관함입니다. 탭과 검색으로 찾고, 카드를 클릭하면 열리며, 게시하면 공개 링크가 만들어집니다. 고객 정보가 든 것은 비공개로 두세요.'},
+  sendbeta:{t:'발송(베타)이란?',h:'<h4>한 마디로</h4><div class="box">휴대폰 Claude 앱에서 시킨 일을 <b>데스크톱 Claude가 이어받아 처리</b>하게 연결하는 기능이에요.</div>'
+   +'<h4>이럴 때 써요</h4><div class="box">현장 이동 중에 "사무실 컴퓨터의 제안서 열어서 요점 정리해줘"처럼, 컴퓨터에 있는 파일·앱이 필요한 일을 밖에서 시킬 때.</div>'
+   +'<h4>하는 법</h4><div class="box ok">1 · 데스크톱에서 발송 → 휴대폰 연결하기<br>2 · 휴대폰 앱으로 QR 스캔 (페어링)<br>3 · 이동 중 폰에서 작업 지시<br>4 · 데스크톱 Claude가 파일을 열어 처리 → 폰에서 결과 확인</div>'
+   +'<h4>주의</h4><div class="box warn">데스크톱의 파일·앱·브라우저에 접근하므로, 본인 소유의 신뢰하는 기기만 페어링하세요.</div>'
+   +'<h4>한 줄 정리</h4><div class="box">발송 = 폰에서 시키고, 사무실 컴퓨터가 일한다.</div>',
+   v:'발송 베타는 휴대폰 클로드 앱에서 시킨 일을 데스크톱 클로드가 이어받아 처리하게 연결하는 기능입니다. 휴대폰 연결하기를 눌러 큐알 페어링을 하면, 이동 중에도 사무실 컴퓨터의 파일로 일을 시킬 수 있어요.'}
+ };
+ /* 계정 하위 화면 콘텐츠 */
+ function setCont(tab){
+  var C={
+   general:'<h3>프로필</h3>'
+    +'<div class="ccasRow">아바타<span class="sp"></span><span class="ccasAva">R</span></div>'
+    +'<div class="ccasRow">성명<span class="sp"></span><span class="val">Rucas</span></div>'
+    +'<div class="ccasRow">Claude가 어떻게 불러드릴까요?<span class="sp"></span><span class="val">Rucas</span></div>'
+    +'<div class="ccasRow">귀하의 업무를 가장 잘 설명하는 것은 무엇입니까?<span class="sp"></span><span class="val">디자인 ⌄</span></div>'
+    +'<div class="ccasRow" style="display:block"><div style="margin-bottom:7px">Claude 지침</div><div class="ccasGd"># 리비안디자인 AI 업무 기준 (핵심)<br><br>나는 리비안디자인 대표 루카스님의 실무 보조 AI다. 인테리어 기획, 제안서, 현장관리, 고객상담 정리, 콘텐츠 기획, 강의안 설계, 업무자동화를 보조한다…</div></div>'
+    +'<div class="ccasRow">모양<span class="sp"></span><span class="ccasTheme"><span class="on">🖥</span><span>☀</span><span>🌙</span></span></div>',
+   account:'<h3>계정</h3><div class="ccasList"><div class="li"><b>이메일</b>feeling21c@gmail.com</div><div class="li"><b>로그인 방법</b>Google 계정 연결</div><div class="li"><b>데이터 내보내기</b>내 대화 기록을 파일로 받아요</div><div class="li"><b>계정 삭제</b>모든 데이터가 지워져요 (신중히!)</div></div>',
+   privacy:'<h3>개인정보보호</h3><div class="ccasList"><div class="li"><b>모델 학습</b>내 대화를 모델 개선에 쓸지 선택</div><div class="li"><b>대화 기록</b>기록 보관 기간 관리</div><div class="li"><b>연결앱 권한</b>연결된 앱이 보는 범위 확인</div></div>',
+   billing:'<h3>결제</h3>'
+    +'<div class="ccasCard" style="margin-bottom:12px"><b>🌿 맥스 플랜</b><div class="p">Pro보다 20배 더 많은 사용량 · 구독이 매월 자동으로 갱신됩니다.</div><button>플랜 조정</button></div>'
+    +'<div class="ccasRow">결제 수단<span class="sp"></span><span class="val">Mastercard •••• 0000</span></div>'
+    +'<div class="ccasList"><div class="li"><b>청구서</b>매달 결제 내역을 보고 영수증(보기)을 받을 수 있어요</div></div>'
+    +'<div class="ccasMask">🔒 교육용 화면이라 카드번호·금액은 가려 두었어요. 실제 화면에는 내 결제 내역이 그대로 보여요.</div>',
+   usage:'<h3>사용량</h3><div class="ccasList"><div class="li"><b>이번 주 사용량</b>플랜별 한도 안에서 얼마나 썼는지 그래프로 보여요</div><div class="li"><b>한도 도달 시</b>잠시 기다리면 다시 사용할 수 있어요</div></div>',
+   features:'<h3>기능</h3><div class="ccasList"><div class="li"><b>미리보기 기능</b>새 기능(베타)을 켜고 끌 수 있어요</div><div class="li"><b>음성·검색</b>웹 검색, 음성 대화 등의 사용 여부</div></div>',
+   ccode:'<h3>Claude Code</h3><div class="ccasList"><div class="li"><b>개발자용</b>터미널에서 코딩을 시키는 도구예요. 설명서 웹앱을 만들 때 쓰는 그 기능!</div></div>',
+   cowork:'<h3>Cowork</h3><div class="ccasList"><div class="li"><b>파일 작업방</b>폴더를 통째로 맡기고 문서 정리·제작을 시키는 기능이에요</div></div>',
+   chrome:'<h3>Chrome용 Claude</h3><div class="ccasList"><div class="li"><b>브라우저 확장</b>Claude가 크롬에서 직접 화면을 보고 클릭하며 일해요</div></div>',
+   skills:'<h3>스킬</h3><div class="ccasList"><div class="li"><b>업무 매뉴얼</b>"제안서 쓰는 법" 같은 나만의 작업 규칙을 저장해 두면 매번 그대로 일해요</div></div>',
+   connectors:'<h3>커넥터</h3><div class="ccasList"><div class="li"><b>앱 연결</b>Gmail·캘린더·노션 등을 연결하면 Claude가 그 앱의 내용을 읽고 써요</div></div>',
+   plugins:'<h3>플러그인</h3><div class="ccasList"><div class="li"><b>기능 묶음</b>스킬+커넥터를 묶어 한 번에 설치하는 패키지예요</div></div>'
+  };
+  return C[tab]||C.general;
+ }
+ var SUB={
+  settings:{t:'설정',mk:function(){
+   var nav='<div class="ccasNav"><div class="srch">🔍 검색</div><div class="hd">설정</div>'
+    +[['general','⚙ 일반'],['account','Ⓐ 계정'],['privacy','🛡 개인정보보호'],['billing','💳 결제'],['usage','📊 사용량'],['features','🧪 기능'],['ccode','&lt;/&gt; Claude Code'],['cowork','🗂 Cowork'],['chrome','🌐 Chrome용 Claude']].map(function(x){return '<div class="it'+(x[0]==='general'?' on':'')+'" data-set="'+x[0]+'">'+x[1]+'</div>';}).join('')
+    +'<div class="hd">사용자 지정</div>'
+    +[['skills','📚 스킬'],['connectors','🔌 커넥터'],['plugins','🧩 플러그인']].map(function(x){return '<div class="it" data-set="'+x[0]+'">'+x[1]+'</div>';}).join('')+'</div>';
+   return '<div class="ccasSet">'+nav+'<div class="ccasCont" id="ccasCont">'+setCont('general')+'</div></div>'
+    +'<div class="ccasNote">💡 <b>사용 순서</b> — 1· 왼쪽 아래 내 이름 → 설정 (또는 Ctrl+,) 2· 왼쪽 목록에서 항목 선택 3· 오른쪽에서 바꾸기. <b>Claude 지침</b>에 회사 규칙을 적어 두면 모든 답변에 반영돼요. 왼쪽 항목을 눌러 하나씩 구경해 보세요!</div>';},
+   v:'설정 화면입니다. 왼쪽 아래 내 이름을 누르고 설정을 선택하거나 컨트롤 쉼표를 누르면 열려요. 일반에서는 이름과 클로드 지침을, 결제에서는 플랜과 청구서를, 커넥터에서는 앱 연결을 관리합니다.'},
+  apps:{t:'앱 및 확장 프로그램 받기',mk:function(){
+   return '<div class="ccasPlain"><h3>Claude를 어디서나</h3><div class="sub">컴퓨터·휴대폰·크롬 브라우저에 Claude를 설치하면 더 편하게 쓸 수 있어요.</div>'
+    +'<div class="ccasCards">'
+    +'<div class="ccasCard"><b>🖥 데스크톱 앱</b><div class="p">Windows·macOS용. Cowork(파일 작업)과 발송 페어링은 데스크톱 앱에서 해요.</div><button class="hot" data-app="win">Windows용 다운로드</button><div style="height:6px"></div><button data-app="mac">macOS용 다운로드</button></div>'
+    +'<div class="ccasCard"><b>📱 모바일 앱</b><div class="p">이동 중에 사진 찍어 물어보고, 발송으로 데스크톱에 일 시키기.</div><button data-app="ios">App Store</button><div style="height:6px"></div><button data-app="and">Google Play</button></div>'
+    +'<div class="ccasCard"><b>🌐 Chrome 확장</b><div class="p">Claude가 브라우저 화면을 직접 보고 클릭하며 일해요.</div><button data-app="ext">Chrome에 추가</button></div>'
+    +'</div></div>'
+    +'<div class="ccasNote">💡 <b>사용 순서</b> — 1· 내 기기 버튼 클릭 2· 설치 후 같은 계정(feeling21c@gmail.com)으로 로그인 3· 어디서든 대화가 이어져요.</div>';},
+   v:'앱 및 확장 프로그램 받기 화면입니다. 윈도우와 맥용 데스크톱 앱, 아이폰과 안드로이드 모바일 앱, 크롬 확장 프로그램을 설치할 수 있어요. 같은 계정으로 로그인하면 어디서든 대화가 이어집니다.'},
+  plans:{t:'모든 요금제 보기',mk:function(){
+   return '<div class="ccasPlain"><h3>요금제</h3><div class="sub">쓰는 양에 맞게 고르면 돼요. (요금은 바뀔 수 있으니 실제 화면에서 확인하세요)</div>'
+    +'<div class="ccasCards">'
+    +'<div class="ccasCard"><b>무료</b><div class="p">가볍게 써 보기. 하루 사용량 제한이 있어요.</div><button data-pl="free">현재 플랜 아님</button></div>'
+    +'<div class="ccasCard"><b>Pro</b><div class="p">매일 쓰는 개인용. 더 많은 사용량 + 프로젝트·파일 기능.</div><button data-pl="pro">Pro 선택</button></div>'
+    +'<div class="ccasCard"><span class="bg">사용 중</span><b>Max</b><div class="p">Pro보다 최대 20배 사용량. 루카스님처럼 하루 종일 일 시키는 분용.</div><button class="hot" data-pl="max">현재 플랜</button></div>'
+    +'</div></div>'
+    +'<div class="ccasNote">💡 지금 <b>Max 플랜</b> 사용 중이에요. 플랜 변경은 설정 → 결제 → 플랜 조정에서 합니다.</div>';},
+   v:'요금제 화면입니다. 무료, 프로, 맥스 세 가지가 있고, 루카스님은 프로보다 최대 이십 배 사용량의 맥스 플랜을 사용 중이에요. 플랜 변경은 설정의 결제 메뉴에서 합니다.'},
+  help:{t:'도움 받기',mk:function(){
+   return '<div class="ccasPlain"><h3>도움말 센터</h3><div class="sub">궁금한 것을 검색하거나 주제를 골라 보세요.</div>'
+    +'<input class="ccasInput" placeholder="🔍 예: 사용량 한도가 뭐예요?">'
+    +'<div class="ccasCards">'
+    +'<div class="ccasCard"><b>🚀 시작하기</b><div class="p">기본 사용법과 첫 설정</div><button data-hp="1">보기</button></div>'
+    +'<div class="ccasCard"><b>💳 요금제·결제</b><div class="p">플랜, 결제, 환불 안내</div><button data-hp="2">보기</button></div>'
+    +'<div class="ccasCard"><b>🧰 기능 사용법</b><div class="p">프로젝트·아티팩트·발송 등</div><button data-hp="3">보기</button></div>'
+    +'<div class="ccasCard"><b>🔧 문제 해결</b><div class="p">로그인·오류·속도 문제</div><button data-hp="4">보기</button></div>'
+    +'</div></div>'
+    +'<div class="ccasNote">💡 실제로는 support.claude.com 도움말 센터가 열려요. 답을 못 찾으면 아래 <b>피드백 제공</b>으로 문의할 수 있어요.</div>';},
+   v:'도움 받기 화면입니다. 실제로는 클로드 도움말 센터가 열리고, 시작하기, 요금제와 결제, 기능 사용법, 문제 해결 주제로 검색할 수 있어요.'},
+  feedback:{t:'피드백 제공',mk:function(){
+   return '<div class="ccasPlain"><h3>피드백 보내기</h3><div class="sub">불편한 점이나 바라는 점을 Anthropic 팀에게 직접 전해요.</div>'
+    +'<textarea class="ccasInput" id="ccasFb" placeholder="예: 한국어 음성 설명이 더 자연스러우면 좋겠어요."></textarea>'
+    +'<button class="ccasSend" id="ccasFbSend">보내기</button></div>'
+    +'<div class="ccasNote">💡 <b>사용 순서</b> — 1· 내용 적기 2· 보내기 3· 끝! 답장이 오는 창구는 아니고, 제품 개선에 반영돼요.</div>';},
+   v:'피드백 제공 화면입니다. 불편한 점이나 바라는 점을 적어 보내면 제품 개선에 반영됩니다.'},
+  gift:{t:'Claude 선물하기',mk:function(){
+   return '<div class="ccasPlain"><h3>🎁 Claude 선물하기</h3><div class="sub">직원·지인에게 Claude 이용권을 선물할 수 있어요.</div>'
+    +'<div class="ccasCards">'
+    +'<div class="ccasCard"><b>1개월 이용권</b><div class="p">가볍게 써 보게 하고 싶을 때</div><button data-gf="1">선택</button></div>'
+    +'<div class="ccasCard"><b>12개월 이용권</b><div class="p">1년 내내 — 직원 교육용으로 좋아요</div><button data-gf="12">선택</button></div>'
+    +'</div>'
+    +'<input class="ccasInput" placeholder="받는 사람 이메일" style="margin-top:14px">'
+    +'<button class="ccasSend" data-gf="send">선물 보내기</button></div>'
+    +'<div class="ccasNote">💡 리비안디자인 직원에게 선물하면 팀 전체가 같은 방식으로 AI를 쓰게 만들 수 있어요.</div>';},
+   v:'클로드 선물하기 화면입니다. 한 달 또는 일 년 이용권을 골라 받는 사람 이메일로 보낼 수 있어요.'},
+  changelog:{t:'변경 로그 보기',mk:function(){
+   return '<div class="ccasPlain"><h3>변경 로그</h3><div class="sub">Claude에 새로 생긴 기능들이에요. 가끔 들어와 보면 새 기능을 놓치지 않아요.</div>'
+    +'<div class="ccasList">'
+    +'<div class="li"><b>발송(베타)</b>휴대폰에서 시킨 일을 데스크톱이 이어받는 기능이 추가됐어요</div>'
+    +'<div class="li"><b>프로젝트 통합</b>Chat과 Cowork에서 만든 프로젝트가 한 곳에 모였어요</div>'
+    +'<div class="li"><b>아티팩트 갤러리</b>만든 결과물을 카드로 모아 보는 화면이 새로워졌어요</div>'
+    +'<div class="li"><b>예정됨</b>정해진 시간에 Claude가 알아서 일하는 예약 작업이 생겼어요</div>'
+    +'<div class="li"><b>Cowork</b>폴더를 통째로 맡기는 파일 작업 모드가 추가됐어요</div>'
+    +'</div></div>'
+    +'<div class="ccasNote">💡 실제 화면에는 날짜별 상세 내역이 이어져요. 새 기능이 보이면 이 설명서도 같이 업데이트하면 돼요!</div>';},
+   v:'변경 로그 화면입니다. 발송 베타, 프로젝트 통합, 아티팩트 갤러리 개편, 예정됨, 코워크 등 새로 생긴 기능을 확인할 수 있어요.'},
+  learn:{t:'자세히 알아보기',mk:function(){
+   return '<div class="ccasPlain"><h3>자세히 알아보기</h3><div class="sub">Claude를 더 잘 쓰는 공식 자료들이에요.</div>'
+    +'<div class="ccasCards">'
+    +'<div class="ccasCard"><b>📖 사용 가이드</b><div class="p">기능별 공식 사용법 모음</div><button data-ln="1">보기</button></div>'
+    +'<div class="ccasCard"><b>💡 프롬프트 팁</b><div class="p">일 잘 시키는 질문법</div><button data-ln="2">보기</button></div>'
+    +'<div class="ccasCard"><b>🆕 새 기능 소개</b><div class="p">최신 기능 활용 사례</div><button data-ln="3">보기</button></div>'
+    +'</div></div>'
+    +'<div class="ccasNote">💡 실제로는 Claude 공식 안내 페이지로 이동해요. 지금 보고 계신 이 설명서가 바로 리비안디자인판 사용 가이드!</div>';},
+   v:'자세히 알아보기 화면입니다. 사용 가이드와 프롬프트 팁, 새 기능 소개 같은 공식 자료로 이동할 수 있어요.'},
+  logout:{t:'로그아웃',mk:function(){
+   return '<div class="ccasConfirm"><h3>로그아웃하시겠어요?</h3><p>로그아웃해도 대화와 프로젝트는 계정에 안전하게 남아 있어요.<br>다시 로그인하면 그대로 이어집니다.</p>'
+    +'<div class="btns"><button class="ccTb" data-lo="c">취소</button><button class="ccasSend" data-lo="y">로그아웃</button></div></div>'
+    +'<div class="ccasNote" style="max-width:420px;margin:14px auto 0">💡 여기는 교육용이라 실제로 로그아웃되지 않아요. 실제 화면에서는 로그인 화면으로 이동합니다.</div>';},
+   v:'로그아웃 확인 화면입니다. 로그아웃해도 대화와 프로젝트는 계정에 남아 있고, 다시 로그인하면 그대로 이어져요.'}
+ };
+ /* ── DOM 구축 ── */
+ var HTML=''
+ +'<div id="ccPrjOv" class="ccOv" role="dialog" aria-modal="true">'
+ +'<div class="ccTopbar"><button class="ccTb back" id="ccpjBack">← 첫 화면</button><span class="lbl">프로젝트</span><span class="sp"></span>'
+ +'<button class="ccTb" id="ccpjInfo">ℹ️ 설명</button><button class="ccTb" id="ccpjVoice">🔊 듣기</button><button class="ccTb" id="ccpjX">✕</button></div>'
+ +'<div class="ccRow">'+sbHTML('projects')
+ +'<div class="ccpjBody"><div class="ccpjHead"><h1>프로젝트</h1><span class="sp"></span>'
+ +'<input id="ccpjSearch" placeholder="프로젝트 검색"><button class="ccarSearchBtn" id="ccpjSBtn">🔍</button>'
+ +'<button class="ccpjSort" id="ccpjSort">정렬 기준 <b style="color:#f0eee9">마지막 업데이트</b> ⌄</button>'
+ +'<button class="ccpjNew" id="ccpjNewBtn">새 프로젝트</button></div>'
+ +'<div class="ccpjBanner" id="ccpjBanner"><span class="tag">새로 생성</span>Chat과 Cowork에서 만든 프로젝트가 이제 한 곳에 모였습니다.<span class="x" id="ccpjBanX">✕</span></div>'
+ +'<div class="ccpjGrid" id="ccpjGrid"></div>'
+ +'<div class="ccarEdu" style="margin-top:24px">💡 <b>프로젝트</b>는 현장·업무별 작업방이에요. 카드를 클릭하면 프로젝트 안으로 들어가고, <b>새 프로젝트</b>를 누르면 실제와 똑같은 생성 화면이 열려요. 오른쪽 위 <b>ℹ️ 설명</b>에서 자세한 사용법을 볼 수 있어요.</div>'
+ +'</div></div></div>'
+ +'<div id="ccPrjNew"><div class="ccpnBox"><h2>프로젝트 생성<span class="x" id="ccpnX">✕</span></h2>'
+ +'<label>무엇을 작업 중이신가요?</label><input id="ccpnName" placeholder="프로젝트 이름 지정">'
+ +'<label>어떤 목표를 달성하려고 하시나요?</label><textarea id="ccpnGoal" placeholder="프로젝트, 목표, 주제 등을 설명해주세요."></textarea>'
+ +'<div class="ccpnFolder" id="ccpnFolder">🗂 폴더 사용</div>'
+ +'<div class="ccpnBtns"><button class="c" id="ccpnCancel">취소</button><button class="m" id="ccpnMake">프로젝트 만들기</button></div></div></div>'
+ +'<div id="ccPrjIn"><div class="ccTopbar"><button class="ccTb back" id="ccpiBack">← 프로젝트</button><span class="lbl" id="ccpiTitle"></span><span class="sp"></span>'
+ +'<button class="ccTb" id="ccpiVoice">🔊 듣기</button><button class="ccTb" id="ccpiX">✕</button></div>'
+ +'<div class="ccpiBody"><div class="ccpiWrap" id="ccpiWrap"></div></div></div>'
+ +'<div id="ccExpl"><div class="ccexTop"><b id="ccexT"></b><span class="sp"></span><button class="ccTb" id="ccexVoice">🔊 듣기</button><button class="ccTb" id="ccexX">✕</button></div><div class="ccexBody" id="ccexB"></div></div>'
+ +'<div id="ccAcSub"><div class="ccTopbar"><button class="ccTb back" id="ccasBack">← 계정 메뉴</button><span class="lbl" id="ccasT"></span><span class="sp"></span>'
+ +'<button class="ccTb" id="ccasVoice">🔊 듣기</button><button class="ccTb" id="ccasX">✕</button></div>'
+ +'<div class="ccasBody"><div class="ccasWrap" id="ccasWrap"></div></div></div>'
+ +'<div id="ccr3Toast"></div>';
+ var host=document.createElement('div'); host.innerHTML=HTML;
+ while(host.firstElementChild) document.body.appendChild(host.firstElementChild);
+ toastEl=document.getElementById('ccr3Toast');
+ var prjOv=document.getElementById('ccPrjOv'), prjNew=document.getElementById('ccPrjNew'),
+     prjIn=document.getElementById('ccPrjIn'), expl=document.getElementById('ccExpl'),
+     acSub=document.getElementById('ccAcSub'), grid=document.getElementById('ccpjGrid'),
+     srch=document.getElementById('ccpjSearch');
+ var q3='';
+ function renderPrj(){
+  var list=PROJECTS.filter(function(p){return !q3||p.t.toLowerCase().indexOf(q3)>=0;});
+  grid.innerHTML=list.map(function(p){
+   return '<div class="ccpjCard" data-i="'+PROJECTS.indexOf(p)+'"><div class="t">'+p.t+(p.pin?'<span class="pin">📌</span>':'')+'</div>'
+    +(p.d?'<div class="d">'+p.d+'</div>':'')+'<div class="dt">'+p.dt+'</div></div>';
+  }).join('')||'<div style="grid-column:1/-1;color:#8a877f;font-size:13px;text-align:center;padding:30px 0">검색 결과가 없어요.</div>';
+ }
+ renderPrj();
+ function closePrjAll(){prjOv.classList.remove('on');prjNew.classList.remove('on');prjIn.classList.remove('on');expl.classList.remove('on');try{speechSynthesis.cancel();}catch(e){}}
+ function closeV2(){['ccDispOv','ccArtOv','ccArtView','ccAcMenu','ccAcLang'].forEach(function(id){var e=document.getElementById(id);if(e)e.classList.remove('on');});document.body.classList.remove('ccacOpen');}
+ function openPrj(){closeV2();closePrjAll();acSub.classList.remove('on');prjOv.classList.add('on');}
+ function openExpl(key){var d=EXPL[key];if(!d)return;document.getElementById('ccexT').textContent=d.t;document.getElementById('ccexB').innerHTML=d.h;expl._v=d.v;expl.classList.add('on');}
+ /* 프로젝트 컨트롤 */
+ document.getElementById('ccpjBack').onclick=closePrjAll;
+ document.getElementById('ccpjX').onclick=closePrjAll;
+ document.getElementById('ccpjInfo').onclick=function(){openExpl('projects');};
+ document.getElementById('ccpjVoice').onclick=function(){speak(EXPL.projects.v);};
+ document.getElementById('ccpjSBtn').onclick=function(ev){ev.stopPropagation();srch.classList.toggle('on');if(srch.classList.contains('on'))srch.focus();};
+ srch.addEventListener('input',function(){q3=srch.value.trim().toLowerCase();renderPrj();});
+ document.getElementById('ccpjSort').onclick=function(){say('교육용 화면이에요 — 실제로는 마지막 업데이트순/이름순 정렬을 바꿉니다');};
+ document.getElementById('ccpjBanX').onclick=function(){document.getElementById('ccpjBanner').style.display='none';};
+ document.getElementById('ccpjNewBtn').onclick=function(){prjNew.classList.add('on');};
+ document.getElementById('ccpnX').onclick=function(){prjNew.classList.remove('on');};
+ document.getElementById('ccpnCancel').onclick=function(){prjNew.classList.remove('on');};
+ document.getElementById('ccpnFolder').onclick=function(){say('교육용 화면이에요 — 실제로는 내 컴퓨터 폴더를 골라 프로젝트에 연결합니다 🗂');};
+ document.getElementById('ccpnMake').onclick=function(){
+  var n=document.getElementById('ccpnName').value.trim()||'예시 프로젝트';
+  var g=document.getElementById('ccpnGoal').value.trim();
+  PROJECTS.unshift({t:n,d:g||undefined,dt:'방금 전'});
+  renderPrj();prjNew.classList.remove('on');
+  document.getElementById('ccpnName').value='';document.getElementById('ccpnGoal').value='';
+  say('✅ "'+n+'" 프로젝트가 생겼어요! (교육용 — 실제로도 이렇게 목록 맨 앞에 나타나요)');
+ };
+ grid.addEventListener('click',function(ev){
+  var c=ev.target.closest('.ccpjCard');if(!c)return;
+  var p=PROJECTS[+c.getAttribute('data-i')];
+  document.getElementById('ccpiTitle').textContent=p.t;
+  document.getElementById('ccpiWrap').innerHTML='<h2>'+p.t+'</h2>'
+   +'<div class="ccpiDesc">'+(p.d||'이 프로젝트의 목표 설명이 여기에 보여요. (카드에 설명이 없던 프로젝트예요)')+'</div>'
+   +'<div class="ccpiChat"><div class="ph">이 프로젝트에서 새 채팅 시작…</div><div class="row"><span>＋</span><span class="sp"></span><span class="up">↑</span></div></div>'
+   +'<div class="ccpiCols">'
+   +'<div class="ccpiBox"><b>📎 프로젝트 지식(파일)</b><div class="it">도면·견적서·참고 문서를 넣어 두면 Claude가 참고해요</div><div class="it">＋ 파일 추가</div></div>'
+   +'<div class="ccpiBox"><b>💬 최근 대화</b><div class="it">이 프로젝트 안의 대화가 여기에 쌓여요</div><div class="it">＋ 새 채팅</div></div>'
+   +'</div>'
+   +'<div class="ccpiSteps"><b>💡 이 화면 사용 순서</b>'
+   +'<div class="st"><i>1</i>위 입력창에 일 시키기 — 예: "이 현장 진행보고 초안 써줘"</div>'
+   +'<div class="st"><i>2</i>프로젝트 지식에 도면·견적서 파일 넣기</div>'
+   +'<div class="st"><i>3</i>Claude가 지침+파일을 기억한 채로 답해요</div>'
+   +'<div class="st"><i>4</i>대화가 왼쪽에 쌓여 언제든 이어서 작업</div></div>';
+  prjIn.classList.add('on');
+ });
+ document.getElementById('ccpiBack').onclick=function(){prjIn.classList.remove('on');};
+ document.getElementById('ccpiX').onclick=closePrjAll;
+ document.getElementById('ccpiVoice').onclick=function(){speak('프로젝트 안 화면입니다. 위 입력창에서 이 프로젝트 주제로 바로 일을 시키고, 프로젝트 지식에 도면과 견적서 같은 파일을 넣어 두면 클로드가 기억한 채로 답해요.');};
+ /* 설명 패널 */
+ document.getElementById('ccexX').onclick=function(){expl.classList.remove('on');};
+ document.getElementById('ccexVoice').onclick=function(){if(expl._v)speak(expl._v);};
+ /* 아티팩트·발송 상단바에 ℹ️ 설명 버튼 주입 */
+ function injectInfo(ovId,key){
+  var ov=document.getElementById(ovId);if(!ov)return;
+  var bar=ov.querySelector('.ccTopbar');if(!bar||bar.querySelector('.ccInfoBtn'))return;
+  var b=document.createElement('button');b.className='ccTb ccInfoBtn';b.textContent='ℹ️ 설명';
+  b.onclick=function(){openExpl(key);};
+  var voice=bar.querySelector('button[id$="Voice"]');
+  bar.insertBefore(b,voice||null);
+ }
+ injectInfo('ccArtOv','library'); injectInfo('ccDispOv','sendbeta');
+ /* 오버레이 사이드바 이동(v3) */
+ function nav3(go){
+  if(go==='projects'){openPrj();return;}
+  if(go==='sendbeta'||go==='library'){closePrjAll();setTimeout(function(){var el=document.querySelector('.side [data-k="'+go+'"]');if(el)el.click();},60);return;}
+  if(go==='account'){closePrjAll();setTimeout(function(){var el=document.querySelector('.side [data-k="account"]');if(el)el.click();},60);return;}
+  if(go==='newchat'||go==='reserve'||go==='gpts'){closePrjAll();setTimeout(function(){var el=document.querySelector('.side [data-k="'+go+'"]');if(el)el.click();},80);return;}
+  if(go==='code'){say('교육용 화면이에요 — 실제로는 Claude Code(코딩 모드)로 전환됩니다 💻');return;}
+  say('교육용 화면이에요 — 실제로는 해당 대화·메뉴가 열립니다');
+ }
+ prjOv.addEventListener('click',function(ev){
+  var g=ev.target.closest('[data-go3]');
+  if(g){ev.stopPropagation();nav3(g.getAttribute('data-go3'));}
+ });
+ /* 계정 메뉴 항목 → 하위 화면 (v2 토스트 핸들러보다 먼저 가로챔) */
+ var menu=document.getElementById('ccAcMenu');
+ function openSub(key){
+  var s=SUB[key];if(!s)return;
+  menu.classList.remove('on');document.body.classList.remove('ccacOpen');
+  var lg=document.getElementById('ccAcLang');if(lg)lg.classList.remove('on');
+  document.getElementById('ccasT').textContent=s.t;
+  document.getElementById('ccasWrap').innerHTML=s.mk();
+  acSub._v=s.v; acSub.classList.add('on');
+ }
+ if(menu){
+  menu.addEventListener('click',function(ev){
+   var it=ev.target.closest('.ccacIt');if(!it)return;
+   var a=it.getAttribute('data-a');
+   if(a&&a!=='lang'&&SUB[a]){ev.stopPropagation();ev.preventDefault();openSub(a);}
+  },true);
+ }
+ document.getElementById('ccasBack').onclick=function(){acSub.classList.remove('on');
+  var el=document.querySelector('.side [data-k="account"]');if(el)el.click();};
+ document.getElementById('ccasX').onclick=function(){acSub.classList.remove('on');};
+ document.getElementById('ccasVoice').onclick=function(){if(acSub._v)speak(acSub._v);};
+ /* 하위 화면 내부 클릭 */
+ acSub.addEventListener('click',function(ev){
+  var st=ev.target.closest('[data-set]');
+  if(st){var tab=st.getAttribute('data-set');
+   acSub.querySelectorAll('.ccasNav .it').forEach(function(i){i.classList.remove('on');});
+   st.classList.add('on');
+   document.getElementById('ccasCont').innerHTML=setCont(tab);return;}
+  var th=ev.target.closest('.ccasTheme span');
+  if(th){th.parentNode.querySelectorAll('span').forEach(function(s){s.classList.remove('on');});th.classList.add('on');
+   say('교육용 화면이에요 — 실제로는 밝은/어두운 테마로 바뀝니다 🎨');return;}
+  if(ev.target.id==='ccasFbSend'){var v=document.getElementById('ccasFb');
+   say(v&&v.value.trim()?'✅ 피드백이 전송됐어요 (교육용) — 소중한 의견 감사합니다!':'내용을 먼저 적어 주세요 ✍️');return;}
+  var lo=ev.target.closest('[data-lo]');
+  if(lo){if(lo.getAttribute('data-lo')==='y'){say('교육용 화면이에요 — 실제로는 로그인 화면으로 이동합니다. 여기서는 아무 일도 일어나지 않아요 ⎋');}
+   else{acSub.classList.remove('on');var el=document.querySelector('.side [data-k="account"]');if(el)el.click();}return;}
+  var b=ev.target.closest('[data-app],[data-pl],[data-hp],[data-gf],[data-ln]');
+  if(b){
+   if(b.hasAttribute('data-app'))say('교육용 화면이에요 — 실제로는 설치 파일 다운로드/스토어가 열립니다 ⬇');
+   else if(b.hasAttribute('data-pl'))say('교육용 화면이에요 — 실제로는 플랜 변경(결제) 화면이 열립니다 💳');
+   else if(b.hasAttribute('data-hp'))say('교육용 화면이에요 — 실제로는 해당 도움말 문서가 열립니다 📖');
+   else if(b.hasAttribute('data-gf'))say(b.getAttribute('data-gf')==='send'?'🎁 교육용 화면이에요 — 실제로는 결제 후 상대 이메일로 선물이 발송됩니다':'이용권을 선택했어요 — 아래에 받는 사람 이메일을 적고 선물 보내기!');
+   else say('교육용 화면이에요 — 실제로는 공식 안내 페이지가 열립니다 📖');
+  }
+ });
+ /* 홈 사이드바 프로젝트 클릭 → 프로젝트 갤러리 */
+ document.addEventListener('click',function(e){
+  var el=e.target.closest&&e.target.closest('.side [data-k="projects"]');
+  if(el){e.stopPropagation();e.preventDefault();openPrj();}
+ },true);
+
+ setInterval(function(){
+  var on=['ccDispOv','ccArtOv','ccArtView','ccPrjOv','ccPrjIn','ccAcSub'].some(function(id){var e=document.getElementById(id);return e&&e.classList.contains('on');});
+  document.body.classList.toggle('ccOvOpen',on);
+ },300);
+})();
+</script>
 </body>
 </html>
