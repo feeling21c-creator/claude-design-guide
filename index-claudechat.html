@@ -2924,9 +2924,181 @@ body.ccOvOpen #rdMoreBtn3, body.ccOvOpen div.help, body.ccOvOpen #bgmBtn{display
  },true);
 
  setInterval(function(){
-  var on=['ccDispOv','ccArtOv','ccArtView','ccPrjOv','ccPrjIn','ccAcSub'].some(function(id){var e=document.getElementById(id);return e&&e.classList.contains('on');});
+  var on=['ccDispOv','ccArtOv','ccArtView','ccPrjOv','ccPrjIn','ccAcSub','ccRsvOv','ccGptOv'].some(function(id){var e=document.getElementById(id);return e&&e.classList.contains('on');});
   document.body.classList.toggle('ccOvOpen',on);
  },300);
+})();
+</script>
+
+<!-- ccreal v4 add : 예정됨(예약 작업) + 사용자 지정(스킬·커넥터·플러그인) 화면 -->
+<style id="ccr4Css">
+.ccrsBody{flex:1;overflow:auto;padding:20px 26px 80px;min-width:0}
+.ccrsWrap{max-width:900px;margin:0 auto}
+.ccrsHead{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.ccrsHead h1{font-size:23px;font-weight:700;color:#f5f3ef;margin:0}
+.ccrsHead .sp{flex:1}
+.ccrsNew{border:1px solid #e8e5de;background:#faf9f5;border-radius:8px;padding:7px 14px;font-size:12.5px;font-weight:600;color:#1c1c1a;cursor:pointer}
+.ccrsSub{color:#a5a29b;font-size:12.5px;margin:8px 0 18px;line-height:1.7}
+.ccrsItem{display:flex;align-items:center;gap:14px;background:#2b2a28;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:14px 16px;margin-bottom:10px;cursor:pointer}
+.ccrsItem:hover{border-color:rgba(255,255,255,.2)}
+.ccrsItem .ic{font-size:18px}
+.ccrsItem .tx{flex:1;min-width:0}
+.ccrsItem .tx b{font-size:13.5px;color:#f0eee9;display:block}
+.ccrsItem .tx span{font-size:11.5px;color:#8a877f}
+.ccrsItem .next{font-size:11px;color:#8db4f8;flex:0 0 auto}
+.ccrsTgl{width:36px;height:20px;border-radius:10px;background:#4a8556;position:relative;flex:0 0 auto;transition:background .15s}
+.ccrsTgl::after{content:'';position:absolute;top:2px;left:18px;width:16px;height:16px;border-radius:50%;background:#fff;transition:left .15s}
+.ccrsTgl.off{background:#55534e}
+.ccrsTgl.off::after{left:2px}
+.ccrsRun{background:#242322;border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:14px 16px;margin:6px 0 14px;font-size:12.5px;color:#c9c7c2;line-height:1.7;display:none}
+.ccrsRun.on{display:block}
+.ccrsRun .stp{margin:6px 0;opacity:0;animation:ccr4in .4s forwards}
+.ccrsRun .stp i{font-style:normal;color:#7ee787;margin-right:6px}
+@keyframes ccr4in{to{opacity:1}}
+/* 사용자 지정 */
+.ccgpTabs{display:flex;gap:4px;margin:16px 0 14px}
+.ccgpTab{border:none;background:transparent;color:#a5a29b;font-size:13px;padding:6px 12px;border-radius:8px;cursor:pointer}
+.ccgpTab.on{background:rgba(255,255,255,.12);color:#f5f3ef;font-weight:600}
+.ccgpGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px}
+.ccgpCard{background:#2b2a28;border:1px solid rgba(255,255,255,.09);border-radius:12px;padding:16px}
+.ccgpCard b{font-size:13.5px;color:#f0eee9}
+.ccgpCard .p{font-size:12px;color:#a5a29b;line-height:1.65;margin:8px 0 12px}
+.ccgpCard button{border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);color:#ececec;border-radius:8px;padding:7px 12px;font-size:12px;cursor:pointer}
+.ccgpCard button.onb{background:rgba(69,133,86,.25);border-color:rgba(69,133,86,.5);color:#9fd6ab}
+@media (max-width:700px){ .ccrsBody{padding:14px 12px 100px} .ccrsHead h1{font-size:19px} .ccrsItem{flex-wrap:wrap} }
+</style>
+<script id="ccr4Js">
+(function(){
+ if(window.__ccr4)return; window.__ccr4=true;
+ function speak(t){try{speechSynthesis.cancel();var u=new SpeechSynthesisUtterance(t);u.lang='ko-KR';u.rate=1.05;speechSynthesis.speak(u);}catch(e){}}
+ var toast=document.getElementById('ccr3Toast');
+ function say(m){toast.textContent=m;toast.style.display='block';clearTimeout(say._t);say._t=setTimeout(function(){toast.style.display='none';},3000);}
+ function sb(active){
+  var host=document.createElement('div');
+  var src=document.querySelector('#ccPrjOv .ccSb');
+  host.innerHTML=src?src.outerHTML:'';
+  var el=host.firstElementChild;
+  if(el){el.querySelectorAll('.ccSbIt').forEach(function(i){i.classList.remove('on');
+   if(i.getAttribute('data-go3')===active)i.classList.add('on');});}
+  return host.innerHTML;
+ }
+ var HTML=''
+ +'<div id="ccRsvOv" class="ccOv"><div class="ccTopbar"><button class="ccTb back" id="ccrsBack">← 첫 화면</button><span class="lbl">예정됨</span><span class="sp"></span>'
+ +'<button class="ccTb" id="ccrsInfo">ℹ️ 설명</button><button class="ccTb" id="ccrsVoice">🔊 듣기</button><button class="ccTb" id="ccrsX">✕</button></div>'
+ +'<div class="ccRow"><div id="ccrsSbSlot"></div>'
+ +'<div class="ccrsBody"><div class="ccrsWrap">'
+ +'<div class="ccrsHead"><h1>예정됨</h1><span class="sp"></span><button class="ccrsNew" id="ccrsNewBtn">＋ 새 예약 작업</button></div>'
+ +'<div class="ccrsSub">정해 둔 시간이 되면 Claude가 <b style="color:#d5d2cc">알아서 혼자 일하고 결과를 남겨 두는</b> 예약 작업이에요. 카드를 클릭하면 실행 과정을 볼 수 있어요.</div>'
+ +'<div id="ccrsList"></div>'
+ +'<div class="ccarEdu">💡 <b>예정됨</b> 화면은 데스크톱 앱 전용이라 실제 화면과 배치가 조금 다를 수 있어요. 사용 방법은 동일합니다 — 작업 이름·시간을 정해 두면 그 시간마다 Claude가 자동 실행돼요.</div>'
+ +'</div></div></div></div>'
+ +'<div id="ccGptOv" class="ccOv"><div class="ccTopbar"><button class="ccTb back" id="ccgpBack">← 첫 화면</button><span class="lbl">사용자 지정</span><span class="sp"></span>'
+ +'<button class="ccTb" id="ccgpInfo">ℹ️ 설명</button><button class="ccTb" id="ccgpVoice">🔊 듣기</button><button class="ccTb" id="ccgpX">✕</button></div>'
+ +'<div class="ccRow"><div id="ccgpSbSlot"></div>'
+ +'<div class="ccrsBody"><div class="ccrsWrap">'
+ +'<div class="ccrsHead"><h1>사용자 지정</h1></div>'
+ +'<div class="ccrsSub">Claude를 <b style="color:#d5d2cc">리비안디자인 맞춤 도구</b>로 만드는 곳이에요 — 스킬(작업 매뉴얼)·커넥터(앱 연결)·플러그인(기능 묶음).</div>'
+ +'<div class="ccgpTabs"><button class="ccgpTab on" data-gt="sk">스킬</button><button class="ccgpTab" data-gt="cn">커넥터</button><button class="ccgpTab" data-gt="pl">플러그인</button></div>'
+ +'<div class="ccgpGrid" id="ccgpGrid"></div>'
+ +'<div class="ccarEdu" style="margin-top:20px">💡 <b>사용자 지정</b> 화면은 데스크톱 앱 전용이라 실제 배치와 조금 다를 수 있어요. 개념은 같아요 — 스킬은 "일하는 방법", 커넥터는 "연결된 앱", 플러그인은 "그 둘의 묶음 패키지".</div>'
+ +'</div></div></div></div>';
+ var host=document.createElement('div'); host.innerHTML=HTML;
+ while(host.firstElementChild) document.body.appendChild(host.firstElementChild);
+ document.getElementById('ccrsSbSlot').outerHTML=sb('reserve');
+ document.getElementById('ccgpSbSlot').outerHTML=sb('gpts');
+ var rsv=document.getElementById('ccRsvOv'), gpt=document.getElementById('ccGptOv');
+ /* 예약 작업 데이터 */
+ var TASKS=[
+  {ic:'📰',t:'AI 뉴스 브리핑',s:'매일 아침 7:00 · 새 채팅으로 결과 도착',n:'다음 실행: 내일 07:00',on:1,
+   run:['<i>✓</i>최신 AI·인테리어 뉴스 수집','<i>✓</i>리비안디자인 관련도 순으로 5개 선별','<i>✓</i>한 줄 요약 + 활용 아이디어 작성','<i>✓</i>아침 7시, 새 대화로 브리핑 도착 📬']},
+  {ic:'📋',t:'주간 현장 보고 초안',s:'매주 금요일 17:00 · 프로젝트에 저장',n:'다음 실행: 금요일 17:00',on:1,
+   run:['<i>✓</i>이번 주 현장 대화·업무일지 읽기','<i>✓</i>공정별 진행률 정리','<i>✓</i>고객 보고용 초안 작성','<i>✓</i>프로젝트에 저장 — 검토만 하면 끝 ✅']},
+  {ic:'📷',t:'인스타 콘텐츠 아이디어',s:'매주 월요일 9:00',n:'일시중지됨',on:0,
+   run:['<i>✓</i>최근 시공 사진·트렌드 확인','<i>✓</i>릴스 주제 3개 + 캡션 초안 작성']}
+ ];
+ function renderT(){
+  document.getElementById('ccrsList').innerHTML=TASKS.map(function(t,i){
+   return '<div class="ccrsItem" data-i="'+i+'"><span class="ic">'+t.ic+'</span><span class="tx"><b>'+t.t+'</b><span>'+t.s+'</span></span>'
+    +'<span class="next">'+(t.on?t.n:'일시중지됨')+'</span><span class="ccrsTgl'+(t.on?'':' off')+'" data-tg="'+i+'"></span></div>'
+    +'<div class="ccrsRun" id="ccrsRun'+i+'"><b style="color:#f0eee9">▶ 실행되면 이렇게 진행돼요</b>'
+    +t.run.map(function(s,j){return '<div class="stp" style="animation-delay:'+(0.2+j*0.35)+'s">'+s+'</div>';}).join('')+'</div>';
+  }).join('');
+ }
+ renderT();
+ function closeR(){rsv.classList.remove('on');gpt.classList.remove('on');try{speechSynthesis.cancel();}catch(e){}}
+ function openRsv(){['ccDispOv','ccArtOv','ccArtView','ccPrjOv','ccPrjIn','ccAcSub','ccAcMenu','ccAcLang'].forEach(function(id){var e=document.getElementById(id);if(e)e.classList.remove('on');});document.body.classList.remove('ccacOpen');closeR();rsv.classList.add('on');}
+ function openGpt(){['ccDispOv','ccArtOv','ccArtView','ccPrjOv','ccPrjIn','ccAcSub','ccAcMenu','ccAcLang'].forEach(function(id){var e=document.getElementById(id);if(e)e.classList.remove('on');});document.body.classList.remove('ccacOpen');closeR();gpt.classList.add('on');}
+ document.getElementById('ccrsBack').onclick=closeR;
+ document.getElementById('ccrsX').onclick=closeR;
+ document.getElementById('ccgpBack').onclick=closeR;
+ document.getElementById('ccgpX').onclick=closeR;
+ document.getElementById('ccrsVoice').onclick=function(){speak('예정됨 화면입니다. 정해 둔 시간이 되면 클로드가 알아서 혼자 일하는 예약 작업 목록이에요. 매일 아침 뉴스 브리핑, 매주 금요일 현장 보고 초안처럼 반복 업무를 맡겨 두면, 그 시간마다 자동으로 실행되고 결과가 도착합니다.');};
+ document.getElementById('ccgpVoice').onclick=function(){speak('사용자 지정 화면입니다. 스킬은 제안서 쓰는 법 같은 나만의 작업 매뉴얼, 커넥터는 지메일과 캘린더 같은 앱 연결, 플러그인은 그 둘을 묶은 패키지예요. 여기서 클로드를 리비안디자인 맞춤 도구로 만듭니다.');};
+ document.getElementById('ccrsInfo').onclick=function(){say('예정됨 = 예약 작업. ＋ 새 예약 작업 → 무엇을·언제 정하기 → 그 시간마다 자동 실행 → 결과가 새 채팅/프로젝트로 도착!');};
+ document.getElementById('ccgpInfo').onclick=function(){say('스킬 = 일하는 방법 저장 · 커넥터 = 앱 연결 · 플러그인 = 묶음 패키지. 설정 → 사용자 지정에서도 같은 화면을 열 수 있어요.');};
+ document.getElementById('ccrsNewBtn').onclick=function(){
+  TASKS.unshift({ic:'🆕',t:'월말 결산 정리',s:'매월 말일 18:00 · 방금 만든 예약',n:'다음 실행: 이번 달 말일 18:00',on:1,
+   run:['<i>✓</i>이번 달 견적·지출 대화 모으기','<i>✓</i>현장별 정산표 초안 작성','<i>✓</i>대표 검토용으로 저장']});
+  renderT();say('✅ 새 예약 작업이 생겼어요! (교육용) 실제로는 무엇을·언제 할지 적는 창이 먼저 열려요');
+ };
+ document.getElementById('ccrsList').addEventListener('click',function(ev){
+  var tg=ev.target.closest('.ccrsTgl');
+  if(tg){ev.stopPropagation();var i=+tg.getAttribute('data-tg');TASKS[i].on=TASKS[i].on?0:1;renderT();
+   say(TASKS[i].on?'▶ 예약이 다시 켜졌어요':'⏸ 예약이 일시중지됐어요 — 언제든 다시 켤 수 있어요');return;}
+  var it=ev.target.closest('.ccrsItem');
+  if(it){var i=+it.getAttribute('data-i');var r=document.getElementById('ccrsRun'+i);
+   var was=r.classList.contains('on');
+   document.querySelectorAll('.ccrsRun').forEach(function(x){x.classList.remove('on');});
+   if(!was){r.classList.remove('on');void r.offsetWidth;r.classList.add('on');}}
+ });
+ /* 사용자 지정 탭 */
+ var GP={
+  sk:[{b:'📑 리비안 제안서 스킬',p:'"제안서 써줘" 하면 회사 양식·순서 그대로 작성',on:1},
+      {b:'📷 릴스 기획 스킬',p:'뷰티샵·인테리어 릴스 콘티를 회사 기준으로',on:1},
+      {b:'＋ 새 스킬 만들기',p:'자주 시키는 일의 순서·양식을 저장해 두면 매번 그대로 일해요',mk:1}],
+  cn:[{b:'📧 Gmail',p:'메일을 읽고 답장 초안을 써요',on:1},
+      {b:'📅 Google 캘린더',p:'일정 확인·미팅 등록',on:1},
+      {b:'📝 Notion',p:'업무일지·문서를 읽고 써요',on:0},
+      {b:'＋ 커넥터 추가',p:'더 많은 앱을 연결할 수 있어요',mk:1}],
+  pl:[{b:'🏠 인테리어 실무 팩',p:'제안서·견적·현장보고 스킬 묶음 (예시)',on:0},
+      {b:'＋ 플러그인 찾아보기',p:'필요한 묶음을 검색해 설치해요',mk:1}]
+ };
+ var gtab='sk';
+ function renderG(){
+  document.getElementById('ccgpGrid').innerHTML=GP[gtab].map(function(c,i){
+   return '<div class="ccgpCard"><b>'+c.b+'</b><div class="p">'+c.p+'</div>'
+    +(c.mk?'<button data-gp="mk">시작하기</button>':'<button class="'+(c.on?'onb':'')+'" data-gp="tg" data-i="'+i+'">'+(c.on?'✓ 사용 중':'연결하기')+'</button>')+'</div>';
+  }).join('');
+ }
+ renderG();
+ gpt.addEventListener('click',function(ev){
+  var t=ev.target.closest('.ccgpTab');
+  if(t){gpt.querySelectorAll('.ccgpTab').forEach(function(b){b.classList.remove('on');});t.classList.add('on');gtab=t.getAttribute('data-gt');renderG();return;}
+  var b=ev.target.closest('[data-gp]');
+  if(b){if(b.getAttribute('data-gp')==='mk'){say('교육용 화면이에요 — 실제로는 만들기/검색 화면이 열립니다 ✨');}
+   else{var i=+b.getAttribute('data-i');GP[gtab][i].on=GP[gtab][i].on?0:1;renderG();
+    say(GP[gtab][i].on?'✅ 연결됐어요 (교육용)':'연결을 해제했어요 (교육용)');}return;}
+  var g=ev.target.closest('[data-go3]');
+  if(g){ev.stopPropagation();nav4(g.getAttribute('data-go3'),'gpts');}
+ });
+ function nav4(go,self){
+  if(go===self)return;
+  if(go==='reserve'){openRsv();return;}
+  if(go==='gpts'){openGpt();return;}
+  if(go==='code'){say('교육용 화면이에요 — 실제로는 Claude Code(코딩 모드)로 전환됩니다 💻');return;}
+  if(go==='toast'){say('교육용 화면이에요 — 실제로는 해당 대화·메뉴가 열립니다');return;}
+  closeR();setTimeout(function(){var el=document.querySelector('.side [data-k="'+go+'"]');if(el)el.click();},70);
+ }
+ rsv.addEventListener('click',function(ev){
+  var g=ev.target.closest('[data-go3]');
+  if(g){ev.stopPropagation();nav4(g.getAttribute('data-go3'),'reserve');}
+ });
+ document.addEventListener('click',function(e){
+  var r=e.target.closest&&e.target.closest('.side [data-k="reserve"]');
+  if(r){e.stopPropagation();e.preventDefault();openRsv();return;}
+  var g=e.target.closest&&e.target.closest('.side [data-k="gpts"]');
+  if(g){e.stopPropagation();e.preventDefault();openGpt();}
+ },true);
 })();
 </script>
 </body>
