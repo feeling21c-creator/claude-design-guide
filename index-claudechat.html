@@ -2046,5 +2046,413 @@ img{-webkit-user-drag:none;user-drag:none;pointer-events:auto}
   else init();
 })();
 </script>
+
+
+
+
+
+
+
+<!-- ccreal v2 : 발송/아티팩트/계정 실제 화면 재현 (실제 사이드바 포함) -->
+<style id="ccrlCss">
+.ccOv{position:fixed;inset:0;z-index:2600;background:#262624;display:none;flex-direction:column;color:#ececec;font-family:"Pretendard",system-ui,sans-serif}
+.ccOv.on{display:flex}
+.ccTopbar{display:flex;align-items:center;gap:10px;padding:8px 14px;flex:0 0 auto;border-bottom:1px solid rgba(255,255,255,.06)}
+.ccTb{border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.05);border-radius:8px;padding:6px 11px;font-size:12px;color:#ececec;cursor:pointer;flex:0 0 auto}
+.ccTb.back{background:#2383e2;border-color:#2383e2;color:#fff;font-weight:700}
+.ccTopbar .lbl{font-size:13px;color:#c9c7c2}
+.ccTopbar .sp{flex:1}
+@media (min-width:641px){ .ccTopbar{padding-right:248px} }
+.ccRow{flex:1;display:flex;min-height:0}
+/* ── 실제 사이드바 재현 ── */
+.ccSb{flex:0 0 236px;background:#1e1d1b;border-right:1px solid rgba(255,255,255,.06);display:flex;flex-direction:column;font-size:12.5px;color:#b5b2ac;min-height:0}
+.ccSbScroll{flex:1;overflow:auto;padding:10px 8px 4px}
+.ccSbSeg{display:flex;gap:4px;background:#161514;border-radius:9px;padding:3px;margin:0 2px 10px}
+.ccSbSeg b{flex:1;text-align:center;padding:6px 0;border-radius:7px;font-size:12px;font-weight:600;color:#8a877f;cursor:pointer}
+.ccSbSeg b.on{background:#2f2e2b;color:#f0eee9}
+.ccSbIt{display:flex;align-items:center;gap:9px;padding:6.5px 9px;border-radius:8px;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ccSbIt:hover{background:rgba(255,255,255,.05)}
+.ccSbIt.on{background:#3a3936;color:#f0eee9}
+.ccSbIt .i{width:15px;text-align:center;font-size:12px;opacity:.85;flex:0 0 auto}
+.ccSbIt .beta{font-size:9.5px;background:rgba(201,100,66,.25);color:#e0885f;border-radius:5px;padding:1px 5px;margin-left:2px}
+.ccSbH{display:flex;align-items:center;font-size:11px;color:#7a776f;padding:12px 9px 4px}
+.ccSbH .sp{flex:1}
+.ccSbH .plus{cursor:pointer;font-size:13px}
+.ccSbRec{display:block;padding:5px 9px;border-radius:7px;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#a5a29b;font-size:12px}
+.ccSbRec:hover{background:rgba(255,255,255,.05)}
+.ccSbView{padding:7px 9px;color:#8a877f;font-size:11.5px;cursor:pointer}
+.ccSbFoot{flex:0 0 auto;border-top:1px solid rgba(255,255,255,.07);padding:6px 8px}
+.ccSbFoot .ccSbIt{font-size:12.5px}
+.ccSbFoot .mx{color:#f0eee9;font-weight:700}
+/* ── 발송 본문 ── */
+.ccdpBody{flex:1;overflow:auto;display:flex;flex-direction:column;align-items:center;padding:26px 16px 60px;min-width:0}
+.ccPhone{width:100%;max-width:340px;background:#8d8b88;border-radius:42px;padding:9px;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+.ccScr{background:#f7f2ea;border-radius:34px;overflow:hidden;display:flex;flex-direction:column;min-height:470px}
+.ccHd{display:flex;align-items:center;padding:14px 14px 6px;position:relative}
+.ccHam{width:38px;height:38px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;color:#333;box-shadow:0 1px 4px rgba(0,0,0,.08)}
+.ccHdT{position:absolute;left:0;right:0;text-align:center}
+.ccHdT b{color:#1c1c1a;font-size:17px}
+.ccOn{display:inline-flex;align-items:center;gap:5px;background:#e8f2e4;color:#3a6b34;font-size:10.5px;border-radius:10px;padding:2px 8px;margin-top:3px}
+.ccOn::before{content:'';width:6px;height:6px;border-radius:50%;background:#4a9a3f}
+.ccChat{flex:1;display:flex;flex-direction:column;justify-content:flex-end;gap:10px;padding:14px}
+.ccBub{max-width:86%;border-radius:16px;padding:12px 14px;font-size:13.5px;line-height:1.5}
+.ccBub.me{align-self:flex-end;background:#c96442;color:#fff}
+.ccBub.ai{align-self:flex-start;background:#fff;color:#2a2a28;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.ccIn{margin:0 10px 12px;background:#fbf7f0;border:1px solid #eee5d6;border-radius:18px;padding:12px 12px 10px}
+.ccIn .ph2{color:#8a8578;font-size:14px}
+.ccIn .row{display:flex;align-items:center;margin-top:12px}
+.ccIn .plus{color:#6b675e;font-size:20px}
+.ccIn .up{margin-left:auto;width:34px;height:34px;border-radius:50%;background:#e89a7d;color:#fff;display:flex;align-items:center;justify-content:center;font-size:16px}
+.ccH1{font-size:27px;font-weight:700;color:#f5f3ef;margin:34px 0 10px;text-align:center}
+.ccSub{color:#b5b2ac;font-size:14px;text-align:center;max-width:440px;line-height:1.7}
+.ccPair{margin-top:22px;background:#fff;color:#1c1c1a;border:none;border-radius:999px;padding:12px 0;width:100%;max-width:440px;font-size:14.5px;font-weight:600;cursor:pointer}
+.ccNote{margin-top:16px;color:#8a877f;font-size:11.5px;text-align:center;max-width:460px;line-height:1.8}
+.ccNote a{color:#7fa8e8}
+.ccEdu{margin-top:26px;max-width:460px;background:rgba(35,131,226,.1);border:1px solid rgba(35,131,226,.35);border-radius:12px;padding:12px 14px;font-size:12.5px;line-height:1.7;color:#cfe0f5}
+/* ── 아티팩트 본문 ── */
+.ccarBody{flex:1;overflow:auto;padding:20px 26px 70px;min-width:0}
+.ccarHead{display:flex;align-items:center;gap:10px;flex-wrap:wrap;max-width:1060px;margin:0 auto}
+.ccarHead h1{font-size:23px;font-weight:700;color:#f5f3ef;margin:0;letter-spacing:-.3px}
+.ccarHead .sp{flex:1}
+.ccarSearchBtn{width:34px;height:34px;border-radius:8px;border:none;background:transparent;color:#b5b2ac;font-size:15px;cursor:pointer}
+.ccarSearchBtn:hover{background:rgba(255,255,255,.07)}
+#ccarSearch{display:none;background:#1f1e1c;border:1px solid rgba(255,255,255,.18);border-radius:8px;color:#ececec;font-size:13px;padding:7px 10px;width:170px}
+#ccarSearch.on{display:block}
+.ccarFilter{display:flex;align-items:center;gap:6px;border:1px solid rgba(255,255,255,.14);background:transparent;border-radius:8px;padding:7px 12px;font-size:12.5px;color:#d5d2cc;cursor:pointer;position:relative}
+.ccarNew{display:flex;align-items:center;gap:6px;border:1px solid #e8e5de;background:#faf9f5;border-radius:8px;padding:7px 13px;font-size:12.5px;font-weight:600;color:#1c1c1a;cursor:pointer;position:relative}
+.ccarDrop{position:absolute;top:calc(100% + 6px);right:0;min-width:170px;background:#30302e;border:1px solid rgba(255,255,255,.12);border-radius:10px;box-shadow:0 10px 34px rgba(0,0,0,.5);padding:6px;display:none;z-index:5}
+.ccarDrop.on{display:block}
+.ccarDrop div{padding:8px 10px;border-radius:7px;font-size:12.5px;color:#e5e2dc;text-align:left;font-weight:400;cursor:pointer}
+.ccarDrop div:hover{background:rgba(255,255,255,.08)}
+.ccarTabs{display:flex;gap:4px;margin:16px auto 14px;max-width:1060px}
+.ccarTab{border:none;background:transparent;color:#a5a29b;font-size:13px;padding:6px 12px;border-radius:8px;cursor:pointer}
+.ccarTab.on{background:rgba(255,255,255,.12);color:#f5f3ef;font-weight:600}
+.ccarGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:16px;max-width:1060px;margin:0 auto}
+.ccarCard{background:#30302e;border:1px solid rgba(255,255,255,.07);border-radius:12px;overflow:hidden;cursor:pointer;transition:transform .12s, border-color .12s}
+.ccarCard:hover{transform:translateY(-2px);border-color:rgba(255,255,255,.2)}
+.ccarThumb{height:128px;position:relative;overflow:hidden;background:#232220}
+.ccarThumb.codec{display:flex;align-items:center;justify-content:center}
+.ccarThumb.codec b{font-family:ui-monospace,monospace;font-size:22px;color:#8a877f;font-weight:600}
+.ccarThumb.darkui{background:#191817}
+.ccarThumb.darkui .tb{position:absolute;left:8px;right:8px;top:8px;height:10px;border-radius:3px;background:rgba(255,255,255,.12)}
+.ccarThumb.darkui .b1{position:absolute;left:8px;top:24px;width:56%;height:34px;border-radius:4px;background:rgba(255,255,255,.09)}
+.ccarThumb.darkui .b2{position:absolute;right:8px;top:24px;width:34%;height:56px;border-radius:4px;background:rgba(201,100,66,.4)}
+.ccarThumb.darkui .b3{position:absolute;left:8px;top:64px;width:56%;height:22px;border-radius:4px;background:rgba(255,255,255,.07)}
+.ccarThumb.darkui .b4{position:absolute;left:8px;right:8px;top:94px;height:26px;border-radius:4px;background:rgba(255,255,255,.05)}
+.ccarThumb.darkui2 .tb{background:rgba(126,231,135,.35)}
+.ccarThumb.darkui2 .b2{background:rgba(126,231,135,.25)}
+.ccarThumb.lightdoc{background:#f6f3ec}
+.ccarThumb.lightdoc i{position:absolute;left:12px;height:7px;border-radius:3px;background:#d8d2c4}
+.ccarThumb.lightdoc i:nth-child(1){top:14px;width:46%;background:#c96442;opacity:.75}
+.ccarThumb.lightdoc i:nth-child(2){top:32px;width:72%}
+.ccarThumb.lightdoc i:nth-child(3){top:48px;width:64%}
+.ccarThumb.lightdoc i:nth-child(4){top:64px;width:76%}
+.ccarThumb.lightdoc i:nth-child(5){top:80px;width:56%}
+.ccarThumb.lightdoc i:nth-child(6){top:96px;width:70%}
+.ccarThumb.lightlist{background:#fbfaf7}
+.ccarThumb.lightlist s{position:absolute;left:10px;right:10px;height:18px;border-radius:4px;background:#efece4;text-decoration:none}
+.ccarThumb.lightlist s:nth-child(1){top:12px}.ccarThumb.lightlist s:nth-child(2){top:36px}
+.ccarThumb.lightlist s:nth-child(3){top:60px}.ccarThumb.lightlist s:nth-child(4){top:84px}.ccarThumb.lightlist s:nth-child(5){top:108px}
+.ccarThumb.lightcards{background:#efe9dd}
+.ccarThumb.lightcards u{position:absolute;width:28%;height:34px;border-radius:5px;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.08);text-decoration:none}
+.ccarThumb.lightcards u:nth-child(1){left:8px;top:14px}.ccarThumb.lightcards u:nth-child(2){left:38%;top:14px}
+.ccarThumb.lightcards u:nth-child(3){right:8px;top:14px}.ccarThumb.lightcards u:nth-child(4){left:8px;top:58px}
+.ccarThumb.lightcards u:nth-child(5){left:38%;top:58px}.ccarThumb.lightcards u:nth-child(6){right:8px;top:58px}
+.ccarInfo{padding:11px 12px 12px}
+.ccarInfo .t{font-size:13px;font-weight:600;color:#f0eee9;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.ccarInfo .m{margin-top:5px;font-size:11px;color:#8a877f;display:flex;align-items:center;gap:5px}
+.ccarEmpty{max-width:1060px;margin:40px auto;text-align:center;color:#8a877f;font-size:13.5px;line-height:1.8}
+.ccarEdu{max-width:1060px;margin:26px auto 0;background:rgba(35,131,226,.1);border:1px solid rgba(35,131,226,.35);border-radius:12px;padding:12px 14px;font-size:12.5px;line-height:1.7;color:#cfe0f5}
+#ccArtView{position:fixed;inset:0;z-index:2650;background:#262624;display:none;flex-direction:column}
+#ccArtView.on{display:flex}
+.ccavBody{flex:1;overflow:auto;padding:22px 18px 70px;display:flex;justify-content:center}
+.ccavDoc{width:100%;max-width:760px;background:#fdfcf8;color:#2a2a28;border-radius:12px;padding:26px 28px;min-height:380px;box-shadow:0 16px 50px rgba(0,0,0,.45)}
+.ccavDoc h2{margin:0 0 8px;font-size:20px;color:#1c1c1a}
+.ccavDoc .sub{color:#8a8578;font-size:12px;margin-bottom:18px}
+.ccavDoc .ln{height:11px;border-radius:5px;background:#eee7d9;margin:10px 0;opacity:0;animation:ccavIn .5s forwards}
+.ccavDoc .ln.w60{width:60%}.ccavDoc .ln.w85{width:85%}.ccavDoc .ln.w75{width:75%}.ccavDoc .ln.w90{width:90%}
+.ccavDoc .box{height:84px;border-radius:9px;background:linear-gradient(135deg,#e8eefc,#dbe7f7);margin:16px 0;opacity:0;animation:ccavIn .5s forwards}
+@keyframes ccavIn{to{opacity:1}}
+.ccavNote{margin-top:14px;font-size:12px;color:#7a94b8;background:rgba(35,131,226,.08);border:1px solid rgba(35,131,226,.25);border-radius:9px;padding:9px 11px;line-height:1.6}
+.ccavTop .t{font-size:13px;font-weight:700;color:#f0eee9;max-width:40vw;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ccavTop .pill{font-size:10.5px;border:1px solid rgba(255,255,255,.18);border-radius:10px;padding:2px 8px;color:#b5b2ac}
+/* ── 계정 메뉴 ── */
+#ccAcMenu{position:fixed;left:12px;bottom:52px;z-index:2800;width:262px;background:#30302e;border:1px solid rgba(255,255,255,.12);border-radius:12px;box-shadow:0 14px 44px rgba(0,0,0,.55);padding:6px;display:none;font-family:"Pretendard",system-ui,sans-serif;color:#ececec}
+#ccAcMenu.on{display:block}
+body.ccacOpen #p2-startBtn{visibility:hidden !important}
+.ccacMail{display:flex;align-items:center;gap:8px;padding:9px 12px 7px;font-size:12.5px;color:#9a978f}
+.ccacMail .sp{flex:1}
+.ccacMail button{border:none;background:transparent;color:#8a877f;font-size:13px;cursor:pointer;padding:2px}
+.ccacIt{display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:8px;font-size:13.5px;color:#e5e2dc;cursor:pointer;position:relative}
+.ccacIt:hover{background:rgba(255,255,255,.08)}
+.ccacIt .ic{width:17px;text-align:center;font-size:13px;color:#b5b2ac;filter:grayscale(1);opacity:.9}
+.ccacIt .kb{margin-left:auto;font-size:11px;color:#8a877f}
+.ccacIt .ar{margin-left:auto;font-size:12px;color:#8a877f}
+.ccacHr{height:1px;background:rgba(255,255,255,.09);margin:5px 8px}
+#ccAcLang{position:fixed;z-index:2810;width:170px;background:#30302e;border:1px solid rgba(255,255,255,.12);border-radius:11px;box-shadow:0 14px 44px rgba(0,0,0,.55);padding:6px;display:none}
+#ccAcLang.on{display:block}
+#ccAcLang .ccacIt .ck{margin-left:auto;color:#c96442;font-weight:700}
+/* ── 공용 토스트 ── */
+.ccrlToast{position:fixed;left:50%;bottom:96px;transform:translateX(-50%);background:#2a2a28;border:1px solid #444;color:#eee;font-size:12.5px;border-radius:10px;padding:10px 16px;z-index:2890;display:none;max-width:86vw;text-align:center;line-height:1.6}
+@media (max-width:700px){
+ .ccSb{display:none}
+ .ccdpBody{padding:16px 12px 90px}
+ .ccH1{font-size:21px}
+ .ccarBody{padding:14px 12px 100px}
+ .ccarHead h1{font-size:19px}
+ .ccarGrid{grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:10px}
+ .ccarThumb{height:92px}
+ #ccarSearch{width:130px}
+ .ccavBody{padding:14px 10px 90px}
+ .ccavDoc{padding:18px 16px}
+ #ccAcMenu{left:8px;right:8px;width:auto;bottom:calc(64px + env(safe-area-inset-bottom,0px));max-height:62vh;overflow:auto}
+}
+</style>
+<script id="ccrlJs">
+(function(){
+ if(window.__ccrl)return; window.__ccrl=true;
+ function speak(t){try{speechSynthesis.cancel();var u=new SpeechSynthesisUtterance(t);u.lang='ko-KR';u.rate=1.05;speechSynthesis.speak(u);}catch(e){}}
+ var RECENTS=['클로드 디자인 인트랙티브 사용 설명서','루카스 아카데미 홈페이지 구축','뷰티 산업에서 루카스 브랜드 구축하기','홍보 영상 제작 방법','리비안 대시보드 달력 연동 기능','컴퓨터 견적서 확인','Lucas Group Master Blueprint 2035','Mobbin MCP 연결','루카스를 위한 회사명 제안','리비안디자인 AI 스튜디오와 LAS 비교','미가메디컬 프로젝트 진행 상황','리비안 대시보드 거래처 정보 섹션 추가','콘텐츠 기록 위치','AI 뉴스 브리핑 7월 29일','Lucas 법인 회사 설립 계획','AI SaaS 제품 소개','이지은 대표 설문지 102문항 분석','루카스 설정 최적화 및 토큰 소모량 분석','인스타그램 콘텐츠 위험 표현 검수','구글 AI 스튜디오, 캔바, 노션 가이드북 제작'];
+ function sbHTML(active){
+  function it(k,i,t,extra){return '<div class="ccSbIt'+(active===k?' on':'')+'" data-go="'+k+'"><span class="i">'+i+'</span>'+t+(extra||'')+'</div>';}
+  return '<div class="ccSb"><div class="ccSbScroll">'
+   +'<div class="ccSbSeg"><b class="on">🏠 홈</b><b data-go="code">&lt;/&gt; Code</b></div>'
+   +it('newchat','＋','새로 생성')
+   +it('projects','🗂','프로젝트')
+   +it('library','✦','아티팩트')
+   +it('reserve','◷','예정됨')
+   +it('sendbeta','📤','발송','<span class="beta">베타</span>')
+   +it('gpts','🛠','사용자 지정')
+   +'<div class="ccSbH">프로젝트<span class="sp"></span><span class="plus" data-go="toast">＋</span></div>'
+   +'<div class="ccSbRec" data-go="toast">🧩 클로드와 GPT 연결해서 동시에 일하기</div>'
+   +'<div class="ccSbH" data-go="toast">고정됨 ›</div>'
+   +'<div class="ccSbH">최근 항목<span class="sp"></span><span data-go="toast">⇅</span></div>'
+   +RECENTS.map(function(t){return '<div class="ccSbRec" data-go="toast">'+t+'</div>';}).join('')
+   +'<div class="ccSbView" data-go="toast">View all conversations</div>'
+   +'</div><div class="ccSbFoot">'
+   +'<div class="ccSbIt" data-go="toast"><span class="i">◑</span>디자인</div>'
+   +'<div class="ccSbIt" data-go="account"><span class="i">Ⓡ</span>Rucas · <b class="mx">Max</b></div>'
+   +'</div></div>';
+ }
+ var HTML=''
+ /* ── 발송 ── */
+ +'<div id="ccDispOv" class="ccOv" role="dialog" aria-modal="true">'
+ +'<div class="ccTopbar"><button class="ccTb back" id="ccdpBack">← 첫 화면</button><span class="lbl">발송</span><span class="sp"></span>'
+ +'<button class="ccTb" id="ccdpVoice">🔊 듣기</button><button class="ccTb" id="ccdpX">✕</button></div>'
+ +'<div class="ccRow">'+sbHTML('sendbeta')
+ +'<div class="ccdpBody">'
+ +'<div class="ccPhone"><div class="ccScr">'
+ +'<div class="ccHd"><span class="ccHam">☰</span><div class="ccHdT"><b>Dispatch</b><br><span class="ccOn">Online</span></div></div>'
+ +'<div class="ccChat">'
+ +'<div class="ccBub me">Can you open the Acme landing page proposal in my downloads and give me the key points? I have like 15 min before I need to present it!</div>'
+ +'<div class="ccBub ai">On it — pulling up the deck now.</div>'
+ +'</div>'
+ +'<div class="ccIn"><div class="ph2">Chat with Cowork</div><div class="row"><span class="plus">＋</span><span class="up">↑</span></div></div>'
+ +'</div></div>'
+ +'<div class="ccH1">어디서나 하나의 대화</div>'
+ +'<div class="ccSub">소파에서 출퇴근길까지, Claude에게 작업을 맡기고 중단한 곳부터 바로 이어가세요.</div>'
+ +'<button class="ccPair" id="ccdpPair">휴대폰 연결하기</button>'
+ +'<div class="ccNote">Claude가 휴대폰에서 보낸 작업을 완료하기 위해 데스크톱(파일, 앱, 브라우저)에 액세스합니다. 보안 위험이 있을 수 있습니다. 본인이 소유하고 신뢰하는 기기만 페어링하세요. <a>안전하게 사용하는 방법 알아보기</a></div>'
+ +'<div class="ccEdu">💡 <b>발송(베타)</b>은 폰의 Claude 앱에서 시킨 일을 <b>데스크톱의 Claude가 대신 처리</b>하게 이어주는 기능이에요. 예: 이동 중에 "다운로드의 제안서 열어서 요점 정리해줘"라고 보내면, 사무실 컴퓨터가 파일을 열어 처리합니다. 휴대폰 연결하기를 누르면 실제 앱에서는 QR 페어링이 시작돼요.</div>'
+ +'</div></div></div>'
+ /* ── 아티팩트 ── */
+ +'<div id="ccArtOv" class="ccOv" role="dialog" aria-modal="true">'
+ +'<div class="ccTopbar"><button class="ccTb back" id="ccarBack">← 첫 화면</button><span class="lbl">아티팩트</span><span class="sp"></span>'
+ +'<button class="ccTb" id="ccarVoice">🔊 듣기</button><button class="ccTb" id="ccarX">✕</button></div>'
+ +'<div class="ccRow">'+sbHTML('library')
+ +'<div class="ccarBody">'
+ +'<div class="ccarHead"><h1>아티팩트</h1><span class="sp"></span>'
+ +'<input id="ccarSearch" placeholder="아티팩트 검색"><button class="ccarSearchBtn" id="ccarSBtn" aria-label="검색">🔍</button>'
+ +'<button class="ccarFilter" id="ccarFBtn">필터 기준 전체 <span style="font-size:10px">⌄</span>'
+ +'<div class="ccarDrop" id="ccarFDrop"><div data-f="all">전체</div><div data-f="web">웹앱·사이트</div><div data-f="doc">문서</div></div></button>'
+ +'<button class="ccarNew" id="ccarNBtn">새 아티팩트 <span style="font-size:10px">⌄</span>'
+ +'<div class="ccarDrop" id="ccarNDrop"><div data-n="blank">빈 아티팩트 만들기</div><div data-n="file">파일에서 만들기</div></div></button></div>'
+ +'<div class="ccarTabs"><button class="ccarTab on" data-tb="all">전체</button><button class="ccarTab" data-tb="mine">내 것</button><button class="ccarTab" data-tb="shared">나와 공유됨</button></div>'
+ +'<div class="ccarGrid" id="ccarGrid"></div>'
+ +'<div class="ccarEmpty" id="ccarEmpty" style="display:none">아직 나와 공유된 아티팩트가 없어요.<br>다른 사람이 아티팩트를 공유하면 여기에 표시됩니다.</div>'
+ +'<div class="ccarEdu">💡 <b>아티팩트</b>는 Claude가 만들어 준 문서·웹앱·코드 결과물을 모아 두는 보관함이에요. 카드를 클릭하면 열리고, <b>새 아티팩트</b>로 직접 만들 수도 있어요. 🔒는 비공개, 🌐는 링크로 게시된 아티팩트라는 뜻입니다.</div>'
+ +'</div></div></div>'
+ /* ── 아티팩트 뷰어 ── */
+ +'<div id="ccArtView"><div class="ccTopbar ccavTop"><button class="ccTb back" id="ccavBack">← 아티팩트</button><span class="t" id="ccavT"></span><span class="pill" id="ccavP"></span><span class="sp"></span>'
+ +'<button class="ccTb" id="ccavCopy">복사</button><button class="ccTb" id="ccavPub">게시</button><button class="ccTb" id="ccavX">✕</button></div>'
+ +'<div class="ccavBody"><div class="ccavDoc" id="ccavDoc"></div></div></div>'
+ /* ── 계정 메뉴 ── */
+ +'<div id="ccAcMenu" role="menu">'
+ +'<div class="ccacMail">feeling21c@gmail.com<span class="sp"></span><button id="ccacVoice" aria-label="음성 설명">🔊</button></div>'
+ +'<div class="ccacHr"></div>'
+ +'<div class="ccacIt" data-a="settings"><span class="ic">⚙</span>설정<span class="kb">Ctrl+,</span></div>'
+ +'<div class="ccacIt" data-a="lang"><span class="ic">🌐</span>언어<span class="ar">›</span></div>'
+ +'<div class="ccacIt" data-a="help"><span class="ic">❓</span>도움 받기</div>'
+ +'<div class="ccacIt" data-a="feedback"><span class="ic">✳</span>피드백 제공</div>'
+ +'<div class="ccacHr"></div>'
+ +'<div class="ccacIt" data-a="plans"><span class="ic">☑</span>모든 요금제 보기</div>'
+ +'<div class="ccacIt" data-a="apps"><span class="ic">⬇</span>앱 및 확장 프로그램 받기</div>'
+ +'<div class="ccacIt" data-a="gift"><span class="ic">🎁</span>Claude 선물하기</div>'
+ +'<div class="ccacIt" data-a="changelog"><span class="ic">📝</span>변경 로그 보기</div>'
+ +'<div class="ccacIt" data-a="learn"><span class="ic">ⓘ</span>자세히 알아보기<span class="ar">›</span></div>'
+ +'<div class="ccacHr"></div>'
+ +'<div class="ccacIt" data-a="logout"><span class="ic">⎋</span>로그아웃</div>'
+ +'</div>'
+ +'<div id="ccAcLang"><div class="ccacIt" data-l="ko">한국어<span class="ck">✓</span></div><div class="ccacIt" data-l="en">English</div><div class="ccacIt" data-l="ja">日本語</div></div>'
+ +'<div class="ccrlToast" id="ccrlToast"></div>';
+ var host=document.createElement('div'); host.innerHTML=HTML;
+ while(host.firstElementChild) document.body.appendChild(host.firstElementChild);
+ var dispOv=document.getElementById('ccDispOv'), artOv=document.getElementById('ccArtOv'),
+     view=document.getElementById('ccArtView'), menu=document.getElementById('ccAcMenu'),
+     lang=document.getElementById('ccAcLang'), toast=document.getElementById('ccrlToast'),
+     grid=document.getElementById('ccarGrid'), empty=document.getElementById('ccarEmpty'),
+     search=document.getElementById('ccarSearch');
+ function say(msg){toast.textContent=msg;toast.style.display='block';clearTimeout(say._t);say._t=setTimeout(function(){toast.style.display='none';},2800);}
+ function closeMenus(){menu.classList.remove('on');lang.classList.remove('on');document.body.classList.remove('ccacOpen');}
+ function closeAll(){dispOv.classList.remove('on');artOv.classList.remove('on');view.classList.remove('on');closeMenus();try{speechSynthesis.cancel();}catch(e){}}
+ function openDisp(){closeAll();dispOv.classList.add('on');}
+ function openArt(){closeAll();artOv.classList.add('on');}
+ /* ── 아티팩트 데이터 (실제 화면 기준) ── */
+ var CARDS=[
+  {t:'LAS_전체작업내용_20260809.md',th:'codec',lock:1,d:'지난주에 편집됨',kind:'doc',desc:'LAS 프로젝트의 전체 작업 내용을 정리한 마크다운 문서입니다.'},
+  {t:'Claude Design Interactive Manual',th:'darkui',d:'2주 전에 생성됨',kind:'web',desc:'클로드 디자인 인터랙티브 사용 설명서 웹앱입니다.'},
+  {t:'Claude Design Course',th:'darkui',d:'2주 전에 생성됨',kind:'web',desc:'클로드 디자인 교육 코스 페이지입니다.'},
+  {t:'Claude Design Hub',th:'darkui darkui2',d:'2주 전에 편집됨',kind:'web',desc:'클로드 디자인 가이드 허브 홈 화면입니다.'},
+  {t:'Claude Design Screen Tour',th:'darkui',d:'2주 전에 편집됨',kind:'web',desc:'클로드 디자인 화면 투어 페이지입니다.'},
+  {t:'Claude Design Dashboard',th:'lightcards',d:'2주 전에 생성됨',kind:'web',desc:'클로드 디자인 대시보드 화면입니다.'},
+  {t:'Claude Design Manual',th:'lightdoc',d:'2주 전에 생성됨',kind:'web',desc:'클로드 디자인 사용 설명서 페이지입니다.'},
+  {t:'Rivian Claude Manual',th:'lightdoc',d:'2주 전에 생성됨',kind:'web',desc:'리비안 클로드 매뉴얼 페이지입니다.'},
+  {t:'오늘 저녁 뭐 먹지?',th:'codec',glob:1,d:'2주 전에 생성됨',kind:'web',desc:'저녁 메뉴를 추천해 주는 미니 웹앱입니다. 🌐는 링크로 게시(공개)됐다는 뜻이에요.'},
+  {t:'Rivian Claude Setup Reference',th:'lightlist',d:'2주 전에 생성됨',kind:'doc',desc:'리비안 클로드 초기 설정 참고 문서입니다.'},
+  {t:'LAS 설계 백서 v2.0 — Lucas AI Studio Design Whitepaper',th:'codec',lock:1,d:'4주 전에 편집됨',kind:'doc',desc:'LAS 시스템 설계 백서 2.0 문서입니다.'},
+  {t:'LAS 완전 정복 — 정의·사용법·최대 활용 전략',th:'codec',lock:1,d:'4주 전에 편집됨',kind:'doc',desc:'LAS 완전 정복 가이드 문서입니다.'}
+ ];
+ var tab='all', filt='all', q='';
+ function thumb(c){
+  if(/codec/.test(c.th)) return '<div class="ccarThumb codec"><b>&lt;/&gt;</b></div>';
+  if(/darkui/.test(c.th)) return '<div class="ccarThumb '+c.th+'"><span class="tb"></span><span class="b1"></span><span class="b2"></span><span class="b3"></span><span class="b4"></span></div>';
+  if(c.th==='lightdoc') return '<div class="ccarThumb lightdoc"><i></i><i></i><i></i><i></i><i></i><i></i></div>';
+  if(c.th==='lightlist') return '<div class="ccarThumb lightlist"><s></s><s></s><s></s><s></s><s></s></div>';
+  return '<div class="ccarThumb lightcards"><u></u><u></u><u></u><u></u><u></u><u></u></div>';
+ }
+ function render(){
+  if(tab==='shared'){grid.style.display='none';empty.style.display='block';return;}
+  empty.style.display='none';grid.style.display='grid';
+  var list=CARDS.filter(function(c){
+   if(filt!=='all' && c.kind!==filt) return false;
+   if(q && c.t.toLowerCase().indexOf(q)<0) return false;
+   return true;
+  });
+  grid.innerHTML=list.map(function(c){
+   return '<div class="ccarCard" data-i="'+CARDS.indexOf(c)+'">'+thumb(c)
+    +'<div class="ccarInfo"><div class="t">'+c.t+'</div><div class="m">'
+    +(c.lock?'<span>🔒 ·</span>':'')+(c.glob?'<span>🌐 ·</span>':'')
+    +'<span>'+c.d+'</span></div></div></div>';
+  }).join('');
+  if(!list.length){grid.innerHTML='<div style="grid-column:1/-1;color:#8a877f;font-size:13px;text-align:center;padding:30px 0">검색 결과가 없어요.</div>';}
+ }
+ render();
+ /* ── 발송 컨트롤 ── */
+ document.getElementById('ccdpBack').onclick=closeAll;
+ document.getElementById('ccdpX').onclick=closeAll;
+ document.getElementById('ccdpVoice').onclick=function(){speak('발송 베타 화면입니다. 휴대폰의 클로드 앱에서 시킨 일을 데스크톱 클로드가 이어받아 처리하는 기능이에요. 어디서나 하나의 대화. 휴대폰 연결하기를 누르면 실제 앱에서는 큐알 페어링이 시작됩니다.');};
+ document.getElementById('ccdpPair').onclick=function(){say('교육용 화면이에요 — 실제 앱에서는 QR 페어링이 시작됩니다 📱');};
+ /* ── 아티팩트 컨트롤 ── */
+ document.getElementById('ccarBack').onclick=closeAll;
+ document.getElementById('ccarX').onclick=closeAll;
+ document.getElementById('ccarVoice').onclick=function(){speak('아티팩트 갤러리 화면입니다. 클로드가 만들어 준 문서와 웹앱 결과물이 카드로 모여 있어요. 전체, 내 것, 나와 공유됨 탭으로 나눠 볼 수 있고, 카드를 클릭하면 아티팩트가 열립니다. 오른쪽 위 새 아티팩트 버튼으로 직접 만들 수도 있어요.');};
+ document.getElementById('ccarSBtn').onclick=function(ev){ev.stopPropagation();search.classList.toggle('on');if(search.classList.contains('on'))search.focus();};
+ search.addEventListener('input',function(){q=search.value.trim().toLowerCase();render();});
+ var fb=document.getElementById('ccarFBtn'), fd=document.getElementById('ccarFDrop'),
+     nb=document.getElementById('ccarNBtn'), nd=document.getElementById('ccarNDrop');
+ fb.addEventListener('click',function(ev){ev.stopPropagation();nd.classList.remove('on');fd.classList.toggle('on');});
+ nb.addEventListener('click',function(ev){ev.stopPropagation();fd.classList.remove('on');nd.classList.toggle('on');});
+ fd.addEventListener('click',function(ev){var t=ev.target.closest('[data-f]');if(!t)return;ev.stopPropagation();filt=t.getAttribute('data-f');
+  fb.childNodes[0].nodeValue='필터 기준 '+t.textContent+' ';fd.classList.remove('on');render();});
+ nd.addEventListener('click',function(ev){var t=ev.target.closest('[data-n]');if(!t)return;ev.stopPropagation();nd.classList.remove('on');
+  say(t.getAttribute('data-n')==='blank'?'교육용 화면이에요 — 실제로는 빈 아티팩트 편집기가 열립니다 ✏️':'교육용 화면이에요 — 실제로는 파일을 올려 아티팩트로 변환합니다 📄');});
+ artOv.addEventListener('click',function(){fd.classList.remove('on');nd.classList.remove('on');});
+ artOv.querySelector('.ccarTabs').addEventListener('click',function(ev){
+  var t=ev.target.closest('.ccarTab');if(!t)return;
+  artOv.querySelectorAll('.ccarTab').forEach(function(b){b.classList.remove('on');});
+  t.classList.add('on');tab=t.getAttribute('data-tb');render();
+ });
+ grid.addEventListener('click',function(ev){
+  var card=ev.target.closest('.ccarCard');if(!card)return;
+  var c=CARDS[+card.getAttribute('data-i')];
+  document.getElementById('ccavT').textContent=c.t;
+  document.getElementById('ccavP').textContent=c.glob?'🌐 게시됨':'🔒 비공개';
+  var doc=document.getElementById('ccavDoc');
+  doc.innerHTML='<h2>'+c.t+'</h2><div class="sub">'+c.d+' · '+(c.glob?'링크로 게시됨':'비공개')+'</div>'
+   +'<div class="ln w60" style="animation-delay:.15s"></div><div class="ln w90" style="animation-delay:.3s"></div>'
+   +'<div class="ln w85" style="animation-delay:.45s"></div>'
+   +(c.kind==='web'?'<div class="box" style="animation-delay:.6s"></div>':'<div class="ln w75" style="animation-delay:.6s"></div>')
+   +'<div class="ln w85" style="animation-delay:.75s"></div><div class="ln w60" style="animation-delay:.9s"></div>'
+   +'<div class="ccavNote">💡 '+c.desc+' 실제 화면에서는 이 자리에 아티팩트 내용이 그대로 열리고, 이어서 수정 요청도 할 수 있어요.</div>';
+  view.classList.add('on');
+ });
+ document.getElementById('ccavBack').onclick=function(){view.classList.remove('on');};
+ document.getElementById('ccavX').onclick=closeAll;
+ document.getElementById('ccavCopy').onclick=function(){say('교육용 화면이에요 — 실제로는 아티팩트 내용이 클립보드에 복사됩니다 📋');};
+ document.getElementById('ccavPub').onclick=function(){say('교육용 화면이에요 — 실제로는 공개 링크가 만들어져 누구나 볼 수 있게 됩니다 🌐');};
+ /* ── 오버레이 내부 사이드바 이동 ── */
+ function sbNav(go){
+  if(go==='sendbeta'){openDisp();return;}
+  if(go==='library'){openArt();return;}
+  if(go==='account'){lang.classList.remove('on');menu.classList.toggle('on');document.body.classList.toggle('ccacOpen',menu.classList.contains('on'));return;}
+  if(go==='newchat'||go==='projects'||go==='reserve'||go==='gpts'){
+   closeAll();
+   setTimeout(function(){var el=document.querySelector('.side [data-k="'+go+'"]');if(el)el.click();},80);return;}
+  if(go==='code'){say('교육용 화면이에요 — 실제로는 Claude Code(코딩 모드)로 전환됩니다 💻');return;}
+  say('교육용 화면이에요 — 실제로는 해당 대화·메뉴가 열립니다');
+ }
+ [dispOv,artOv].forEach(function(ov){
+  ov.addEventListener('click',function(ev){
+   var g=ev.target.closest('[data-go]');
+   if(g){ev.stopPropagation();sbNav(g.getAttribute('data-go'));}
+  });
+ });
+ /* ── 계정 메뉴 ── */
+ var EDU={
+  settings:'교육용 화면이에요 — 실제로는 설정 화면(프로필·기능·연결앱 관리)이 열립니다 ⚙ 단축키 Ctrl+, 로도 열 수 있어요',
+  help:'교육용 화면이에요 — 실제로는 Claude 도움말 센터가 열립니다',
+  feedback:'교육용 화면이에요 — 실제로는 피드백 보내기 창이 열립니다',
+  plans:'교육용 화면이에요 — 실제로는 Free·Pro·Max 요금제 비교 화면이 열립니다',
+  apps:'교육용 화면이에요 — 실제로는 데스크톱 앱·모바일 앱·크롬 확장 다운로드 페이지가 열립니다',
+  gift:'교육용 화면이에요 — 실제로는 Claude 이용권을 선물하는 화면이 열립니다',
+  changelog:'교육용 화면이에요 — 실제로는 새 기능 업데이트 내역(변경 로그)이 열립니다',
+  learn:'교육용 화면이에요 — 실제로는 Claude 활용법 안내 페이지로 이동합니다',
+  logout:'교육용 화면이에요 — 실제로는 계정에서 로그아웃됩니다. 여기서는 아무 일도 일어나지 않아요'
+ };
+ document.getElementById('ccacVoice').onclick=function(ev){ev.stopPropagation();
+  speak('계정 메뉴입니다. 왼쪽 아래 내 이름을 클릭하면 열려요. 설정, 언어 변경, 도움 받기, 피드백 제공, 요금제 보기, 앱 받기, 클로드 선물하기, 변경 로그, 로그아웃까지 계정과 관련된 모든 기능이 이 메뉴에 모여 있습니다.');};
+ menu.addEventListener('click',function(ev){
+  var it=ev.target.closest('.ccacIt');if(!it)return;ev.stopPropagation();
+  var a=it.getAttribute('data-a');
+  if(a==='lang'){
+   var r=it.getBoundingClientRect();
+   lang.style.left=Math.min(r.right+6,window.innerWidth-180)+'px';
+   lang.style.top=Math.max(10,Math.min(r.top-8,window.innerHeight-160))+'px';
+   lang.classList.toggle('on');return;
+  }
+  lang.classList.remove('on');
+  say(EDU[a]||'교육용 화면이에요');
+ });
+ lang.addEventListener('click',function(ev){
+  var it=ev.target.closest('.ccacIt');if(!it)return;ev.stopPropagation();
+  lang.classList.remove('on');
+  say(it.getAttribute('data-l')==='ko'?'이미 한국어로 사용 중이에요 ✓':'교육용 화면이에요 — 실제로는 인터페이스 언어가 바뀝니다 🌐');
+ });
+ /* ── 홈 사이드바 → 오버레이 라우팅 ── */
+ document.addEventListener('click',function(e){
+  var el=e.target.closest&&e.target.closest('.side [data-k]');
+  if(el){
+   var k=el.getAttribute('data-k');
+   if(k==='sendbeta'){e.stopPropagation();e.preventDefault();openDisp();return;}
+   if(k==='library'){e.stopPropagation();e.preventDefault();openArt();return;}
+   if(k==='account'){e.stopPropagation();e.preventDefault();
+    lang.classList.remove('on');
+    var on=menu.classList.toggle('on');
+    document.body.classList.toggle('ccacOpen',on);return;}
+  }
+  if(menu.classList.contains('on') && !menu.contains(e.target) && !lang.contains(e.target)) closeMenus();
+ },true);
+})();
+</script>
 </body>
 </html>
