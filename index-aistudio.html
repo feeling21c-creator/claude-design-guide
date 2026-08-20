@@ -1895,5 +1895,396 @@ img{-webkit-user-drag:none;user-drag:none;pointer-events:auto}
  }}catch(e){}
 })();
 </script>
+
+
+<!-- asreal v1 : Google AI Studio 실제 화면 재현 (Playground·전 메뉴) -->
+<style id="asrCss">
+#asHomeOv{position:fixed;left:0;right:0;bottom:0;top:96px;z-index:900;background:#131314;display:none;color:#e3e3e3;font-family:"Pretendard",system-ui,sans-serif;font-size:13px}
+#asHomeOv.on{display:flex}
+.asNav{flex:0 0 168px;background:#1b1b1c;border-right:1px solid rgba(255,255,255,.06);display:flex;flex-direction:column;min-height:0}
+.asNavScroll{flex:1;overflow:auto;padding:12px 8px}
+.asBrand{font-size:14px;font-weight:600;color:#e3e3e3;padding:2px 8px 12px}
+.asBrand span{font-weight:400}
+.asHd{font-size:9.5px;letter-spacing:1px;color:#8e918f;padding:10px 10px 4px}
+.asIt{display:flex;align-items:center;gap:9px;padding:7px 10px;border-radius:8px;cursor:pointer;color:#c4c7c5;font-size:12.5px}
+.asIt:hover{background:rgba(255,255,255,.06)}
+.asIt.on{background:#2d2f31;color:#e3e3e3}
+.asIt .i{width:15px;text-align:center;font-size:12px;opacity:.85}
+.asIt .ar{margin-left:auto;font-size:11px;color:#8e918f}
+.asNavFoot{flex:0 0 auto;padding:8px}
+.asIcons{display:flex;gap:4px;margin-bottom:8px}
+.asIcons span{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px;color:#c4c7c5;cursor:pointer;border:1px solid transparent}
+.asIcons span:hover{background:rgba(255,255,255,.07)}
+.asAcct{display:flex;align-items:center;gap:7px;padding:6px 8px;border-radius:8px;cursor:pointer;font-size:11.5px;color:#c4c7c5}
+.asAcct:hover{background:rgba(255,255,255,.06)}
+.asAcct .av2{width:20px;height:20px;border-radius:50%;background:linear-gradient(135deg,#4a7a5a,#2a4a6a);flex:0 0 auto}
+.asAcct .pro{margin-left:auto;font-size:9.5px;border:1px solid rgba(255,255,255,.25);border-radius:6px;padding:1px 6px;color:#c4c7c5}
+.asMain{flex:1;display:flex;flex-direction:column;min-width:0;min-height:0}
+.asTopbar{display:flex;align-items:center;gap:10px;padding:8px 14px;border-bottom:1px solid rgba(255,255,255,.05);flex:0 0 auto}
+.asTopbar .lbl{font-size:13px;color:#e3e3e3}
+.asTopbar .sp{flex:1}
+.asTb{border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.04);border-radius:8px;padding:5px 10px;font-size:11.5px;color:#e3e3e3;cursor:pointer}
+@media (min-width:641px){ .asTopbar{padding-right:240px} }
+.asCenter{flex:1;overflow:auto;padding:20px 22px 30px;min-height:0}
+.asHero{max-width:860px;margin:30px auto 0}
+.asHeroHd{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.asHeroHd h1{font-size:30px;font-weight:400;color:#e3e3e3;margin:0}
+.asHeroHd .sp{flex:1}
+.asSeg{display:flex;background:#1f2020;border-radius:9px;padding:3px}
+.asSeg b{padding:5px 14px;border-radius:7px;font-size:11.5px;font-weight:600;color:#8e918f;cursor:pointer}
+.asSeg b.on{background:#3a3c3e;color:#e3e3e3}
+.asCards{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px;margin-top:20px}
+.asCard{background:#1e1f20;border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:14px;cursor:pointer}
+.asCard:hover,.asCard.on{border-color:rgba(255,255,255,.25);background:#232425}
+.asCard .ci2{width:26px;height:26px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;margin-bottom:10px}
+.asCard b{font-size:13px;color:#e3e3e3;display:block}
+.asCard p{font-size:11.5px;color:#9aa0a6;line-height:1.6;margin:7px 0 0}
+/* 우측 Run settings */
+.asRun{flex:0 0 232px;border-left:1px solid rgba(255,255,255,.06);overflow:auto;padding:12px 14px;font-size:11.5px;color:#c4c7c5}
+.asRun .rHd{display:flex;align-items:center;gap:8px;font-size:12px;color:#e3e3e3;margin-bottom:10px}
+.asRun .rHd .sp{flex:1}
+.asRunCard{background:#1e1f20;border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:10px 12px;margin-bottom:10px}
+.asRunCard b{font-size:12px;color:#e3e3e3}
+.asRunCard p{font-size:10.5px;color:#9aa0a6;line-height:1.6;margin:5px 0 0}
+.asMdlChip{display:inline-flex;align-items:center;gap:5px;border:1px solid rgba(255,255,255,.14);border-radius:8px;padding:3px 9px;font-size:11px;margin-top:7px;cursor:pointer}
+.asMdlChip .dot{width:6px;height:6px;border-radius:50%;background:#7ee787}
+.asSecHd{font-size:11px;color:#8e918f;margin:14px 0 8px;display:flex;align-items:center}
+.asSecHd .sp{flex:1}
+.asTglRow{display:flex;align-items:center;gap:8px;padding:6px 0;font-size:11.5px}
+.asTglRow small{display:block;font-size:9.5px;color:#8e918f}
+.asTglRow .sp{flex:1}
+.asTgl{width:32px;height:18px;border-radius:9px;background:#8ab4f8;position:relative;cursor:pointer;flex:0 0 auto}
+.asTgl::after{content:'';position:absolute;top:2px;left:16px;width:14px;height:14px;border-radius:50%;background:#131314}
+.asTgl.off{background:#5f6368}
+.asTgl.off::after{left:2px}
+.asEnvRow{display:flex;align-items:center;padding:5px 0;font-size:11px}
+.asEnvRow .sp{flex:1}
+.asEnvRow .lnkc{color:#8ab4f8;cursor:pointer}
+.asPill{display:inline-flex;background:#2d2f31;border-radius:7px;padding:2px}
+.asPill b{padding:2px 9px;border-radius:6px;font-size:10.5px;color:#8e918f;cursor:pointer;font-weight:600}
+.asPill b.on{background:#e3e3e3;color:#131314}
+/* 하단 composer */
+.asComp{flex:0 0 auto;padding:10px 14px 14px}
+.asWarn{max-width:860px;margin:0 auto 8px;background:#1e1f20;border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:9px 12px;font-size:11px;color:#c4c7c5;line-height:1.6}
+.asWarn .lk2{color:#8ab4f8;cursor:pointer;margin-right:10px}
+.asWarn .cap{border:1px solid rgba(255,255,255,.18);border-radius:7px;padding:2px 8px;cursor:pointer}
+.asInBox{max-width:860px;margin:0 auto;background:#1e1f20;border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:11px 13px}
+.asInBox .ph3{font-size:12.5px;color:#8e918f}
+.asChips{display:flex;align-items:center;gap:6px;margin-top:10px;flex-wrap:wrap}
+.asChip{display:inline-flex;align-items:center;gap:5px;background:#2d2f31;border-radius:8px;padding:4px 9px;font-size:10.5px;color:#c4c7c5;cursor:pointer}
+.asChip .x2{color:#8e918f;cursor:pointer}
+.asChips .sp{flex:1}
+.asRunBtn{border:none;background:#3a3c3e;color:#9aa0a6;border-radius:8px;padding:6px 12px;font-size:11.5px;cursor:pointer}
+/* 서브 화면 */
+#asSub{position:fixed;inset:0;z-index:1250;background:#131314;display:none;flex-direction:column;color:#e3e3e3;font-family:"Pretendard",system-ui,sans-serif}
+#asSub.on{display:flex}
+.asSubBody{flex:1;overflow:auto;padding:22px 18px 100px;display:flex;justify-content:center}
+.asSubWrap{width:100%;max-width:860px}
+.asSubWrap h2{font-size:21px;font-weight:400;margin:0 0 4px}
+.asBread{font-size:11px;color:#8e918f;margin-bottom:16px}
+.asList .li2{display:flex;align-items:center;gap:10px;background:#1e1f20;border:1px solid rgba(255,255,255,.07);border-radius:11px;padding:12px 14px;margin-bottom:8px;cursor:pointer;font-size:13px}
+.asList .li2:hover{border-color:rgba(255,255,255,.2)}
+.asList .li2 small{display:block;font-size:11px;color:#8e918f;margin-top:2px}
+.asList .li2 .sp{flex:1}
+.asEdu{max-width:860px;margin:18px auto 0;background:rgba(138,180,248,.08);border:1px solid rgba(138,180,248,.28);border-radius:12px;padding:12px 14px;font-size:12.5px;line-height:1.7;color:#c6dafc}
+.asGalBan{background:linear-gradient(90deg,#20242e,#1c2a24);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:18px;margin-bottom:16px}
+.asGalBan b{font-size:16px;color:#e3e3e3}
+.asGalBan p{font-size:12px;color:#9aa0a6;line-height:1.7;margin:8px 0 12px;max-width:520px}
+.asGalChips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.asGalChip{border:1px solid rgba(255,255,255,.14);border-radius:16px;padding:5px 12px;font-size:11px;color:#c4c7c5;cursor:pointer}
+.asGalChip.on{background:#e3e3e3;color:#131314;font-weight:700}
+.asGalGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
+.asGalCard{background:#1e1f20;border:1px solid rgba(255,255,255,.07);border-radius:12px;overflow:hidden;cursor:pointer}
+.asGalCard .th3{height:100px}
+.asGalCard .bd3{padding:10px 12px}
+.asGalCard b{font-size:12.5px;color:#e3e3e3}
+.asGalCard p{font-size:10.5px;color:#9aa0a6;line-height:1.55;margin:5px 0 0}
+.asCode{background:#0d1117;border:1px solid rgba(255,255,255,.1);border-radius:11px;padding:13px 15px;font-family:ui-monospace,monospace;font-size:11.5px;color:#c9d1d9;line-height:1.8;position:relative}
+.asCode .cp2{position:absolute;right:10px;top:8px;cursor:pointer;color:#8e918f}
+.asCode .k{color:#ff7b72}.asCode .s{color:#a5d6ff}.asCode .f{color:#d2a8ff}
+.asGenLog{max-width:860px;margin:10px auto 0;display:none}
+.asGenLog.on{display:block}
+.asGenLog .u2{background:#2d2f31;border-radius:12px;padding:9px 12px;font-size:12px;max-width:70%;margin-left:auto;margin-bottom:10px;color:#e3e3e3}
+.asGenLog .s2{font-size:11.5px;color:#9aa0a6;margin:5px 0;opacity:0;animation:asIn .4s forwards}
+.asGenLog .s2 i{font-style:normal;color:#7ee787;margin-right:6px}
+@keyframes asIn{to{opacity:1}}
+.asMenu{position:fixed;z-index:1460;background:#2d2f31;border:1px solid rgba(255,255,255,.1);border-radius:14px;box-shadow:0 12px 40px rgba(0,0,0,.55);padding:8px;display:none;min-width:250px;max-height:70vh;overflow:auto}
+.asMenu.on{display:block}
+.asMenu .mi2{padding:9px 12px;border-radius:9px;font-size:12.5px;color:#e3e3e3;cursor:pointer}
+.asMenu .mi2:hover{background:rgba(255,255,255,.07)}
+.asMenu .mi2 small{display:block;font-size:10.5px;color:#9aa0a6;margin-top:3px;line-height:1.5}
+.asMenu .sep3{height:1px;background:rgba(255,255,255,.08);margin:6px 8px}
+.asMenu .btn3{display:block;width:100%;border:1px solid rgba(255,255,255,.2);background:transparent;color:#e3e3e3;border-radius:18px;padding:8px 0;font-size:12px;cursor:pointer;margin:6px 0;text-align:center}
+#asToast{position:fixed;left:50%;bottom:96px;transform:translateX(-50%);background:#2d2f31;border:1px solid #4a4d51;color:#e3e3e3;font-size:12.5px;border-radius:10px;padding:10px 16px;z-index:1470;display:none;max-width:88vw;text-align:center;line-height:1.6}
+body.asSubOpen #p2-startBtn,body.asSubOpen #msnPill,body.asSubOpen #rdDockBg,body.asSubOpen #rdMoreBtn3,body.asSubOpen div.help,body.asSubOpen #bgmBtn{display:none !important}
+@media (min-width:701px){ body.asHomeOn #p2-startBtn,body.asHomeOn #msnPill,body.asHomeOn #bgmBtn,body.asHomeOn div.help{display:none !important} }
+@media (max-width:960px){ .asRun{display:none} }
+@media (max-width:700px){
+ #asHomeOv{top:88px}
+ .asComp{padding-bottom:calc(74px + env(safe-area-inset-bottom,0px))}
+ .asNav{display:none}
+ .asHeroHd h1{font-size:21px}
+ .asCards{grid-template-columns:1fr 1fr}
+ .asCenter{padding:14px 10px 20px}
+}
+</style>
+<script id="asrJs">
+(function(){
+ if(window.__asr)return; window.__asr=true;
+ function speak(t){try{speechSynthesis.cancel();var u=new SpeechSynthesisUtterance(t);u.lang='ko-KR';u.rate=1.05;speechSynthesis.speak(u);}catch(e){}}
+ var toast;
+ function say(m){toast.textContent=m;toast.style.display='block';clearTimeout(say._t);say._t=setTimeout(function(){toast.style.display='none';},3400);}
+ var AGENTS=[
+  ['A','#c9a227','Antigravity Preview','A general-purpose autonomous agent running in a remote, Google-hosted Linux environment.','무엇이든 시키는 만능 자율 에이전트 — 구글 리눅스 컴퓨터에서 실제로 코드를 돌려요'],
+  ['📻','#7a4a8c','AI Talk Radio','Transforms a text source into a polished, simulated radio show with hosts, callers, and background music.','글을 진행자·전화 연결·배경음악이 있는 라디오 방송으로 만들어요'],
+  ['🎧','#3a6a8c','Customer Support','Scans a website to build a custom knowledge base and answer support questions using that content.','사이트를 읽어 그 내용으로 고객 문의에 답하는 상담원을 만들어요'],
+  ['📊','#2a7a4a','Data Analyst','Delivers interactive business intelligence and data analysis using the Microsoft Northwind dataset.','데이터를 분석해 움직이는 차트 보고서를 만들어요'],
+  ['📄','#8c3a3a','Document Processor','Reconciles expenses and invoices, verifies vendors, and creates interactive HTML slideshow reports.','지출·청구서를 대조하고 거래처를 검증해 보고서로 만들어요 — 견적 검증에 활용!'],
+  ['🔧','#8c6a2a','Repo Maintainer','Analyzes your codebase to identify issues, answer questions, and generate bug-fixing patches.','코드 저장소를 분석해 문제를 찾고 고쳐요 (개발용)']
+ ];
+ var MODELS=[
+  ['Gemini 3.7 Flash','신규 · 가장 유능한 Flash — 복잡한 코딩·에이전트 작업·안정적 다단계 실행',1],
+  ['Gemini 3.5 Flash Lite','가장 빠르고 저렴 — 대량 처리용',0],
+  ['Gemini 3.1 Pro','최고 성능 — 깊은 추론·대형 작업',0],
+  ['Gemini Omni Flash','영상 생성 — 대화하며 단계별 편집',0],
+  ['Nano Banana 2 Lite','초고속·저비용 이미지 생성',0]
+ ];
+ var MYAPPS=['AI Workshop for Esthetic Salons','Promotional Video for Esthetic Clinic','Korean Skincare Routine Video','Premium Skincare Routine Promotion','Skincare Texture Transformation Video'];
+ function runHTML(){
+  return '<div class="asRun"><div class="rHd">Run settings<span class="sp"></span><span class="asTb" data-as="getcode">&lt;/&gt; Get code</span></div>'
+  +'<div class="asRunCard"><b id="asAgTitle">Antigravity Agent Preview</b><p id="asAgDesc">A general-purpose autonomous agent running in a remote, Google-hosted Linux environment.</p>'
+  +'<div style="font-size:10px;color:#8e918f;margin-top:8px">Selected model</div><span class="asMdlChip" data-as="model"><span class="dot"></span><b id="asMdlName" style="font-size:11px">Gemini 3.7 Flash</b> ›</span></div>'
+  +'<div class="asRunCard" data-as="sysins" style="cursor:pointer"><b>System instructions</b><p>Optional tone and style instructions for the model</p></div>'
+  +'<div class="asSecHd">Tools<span class="sp"></span>⌃</div>'
+  +'<div class="asTglRow"><span>Code execution<small>에이전트가 코드를 직접 실행</small></span><span class="sp"></span><span class="asTgl" data-as="tgl"></span></div>'
+  +'<div class="asTglRow"><span>Grounding with Google Search<small>Source: G Google Search — 검색으로 사실 확인</small></span><span class="sp"></span><span class="asTgl" data-as="tgl"></span></div>'
+  +'<div class="asTglRow"><span>URL context<small>링크 내용을 읽어 참고</small></span><span class="sp"></span><span class="asTgl" data-as="tgl"></span></div>'
+  +'<div class="asTglRow"><span>Filesystem tools<small>파일 만들고 수정</small></span><span class="sp"></span><span class="asTgl off" data-as="tgl"></span></div>'
+  +'<div class="asSecHd">Environment<span class="sp"></span>⌃</div>'
+  +'<div style="font-size:10px;color:#8e918f;line-height:1.6;margin-bottom:8px">Each execution spins up an isolated environment where your agent can run code and manage files. <span style="color:#8ab4f8">Learn more</span></div>'
+  +'<div class="asEnvRow">Type<span class="sp"></span><span class="asPill"><b class="on" data-as="env">New</b><b data-as="env">Existing</b></span></div>'
+  +'<div class="asEnvRow">Sources<span class="sp"></span><span class="lnkc" data-as="src">Add sources</span></div>'
+  +'<div class="asEnvRow">Network<span class="sp"></span><span class="lnkc" data-as="net">Add rules</span></div></div>';
+ }
+ var HTML=''
+ +'<div id="asHomeOv">'
+ +'<div class="asNav"><div class="asNavScroll">'
+ +'<div class="asBrand"><b>Google</b> <span>AI Studio</span> <span style="color:#8e918f;font-size:10px">⌄</span></div>'
+ +'<div class="asHd">EXPLORE</div>'
+ +'<div class="asIt on" data-nav="pg"><span class="i">🎛</span>Playground</div>'
+ +'<div class="asIt" data-nav="history"><span class="i">🕐</span>History</div>'
+ +'<div class="asHd">BUILD</div>'
+ +'<div class="asIt" data-nav="newapp"><span class="i">＋</span>New app</div>'
+ +'<div class="asIt" data-nav="myapps"><span class="i">▦</span>My apps</div>'
+ +'<div class="asIt" data-nav="gallery"><span class="i">🖼</span>Gallery</div>'
+ +'<div class="asHd">MANAGE</div>'
+ +'<div class="asIt" data-nav="dash"><span class="i">◔</span>Dashboard<span class="ar">›</span></div>'
+ +'<div class="asIt" data-nav="docs"><span class="i">▤</span>Documentation<span class="ar">↗</span></div>'
+ +'</div><div class="asNavFoot">'
+ +'<div class="asIcons"><span data-as="bell">🔔</span><span data-as="set2">⚙</span><span data-as="srch2">🔍</span><span data-as="key">🔑</span></div>'
+ +'<div class="asAcct" data-as="acct"><span class="av2"></span>feeling21c@gm…<span class="pro">PRO</span></div>'
+ +'</div></div>'
+ +'<div class="asMain"><div class="asTopbar"><span class="lbl">Playground</span><span class="sp"></span>'
+ +'<span class="asTb" data-as="info">ℹ️ 설명</span><span class="asTb" data-as="voice">🔊 듣기</span><span class="asTb" data-as="getcode">&lt;/&gt; Get code</span></div>'
+ +'<div class="asCenter"><div class="asHero">'
+ +'<div class="asHeroHd"><h1 id="asH1">Build with Agents</h1><span class="sp"></span>'
+ +'<span class="asSeg"><b data-seg="models">Models</b><b class="on" data-seg="agents">Agents</b></span></div>'
+ +'<div class="asCards" id="asCards"></div>'
+ +'<div class="asGenLog" id="asGen"></div>'
+ +'<div class="asEdu" id="asEduBox">💡 <b>Playground(놀이터)</b>가 AI 스튜디오의 첫 화면이에요. 오른쪽 위 <b>Models|Agents</b>로 두 모드를 오가요 — <b>Models</b>는 모델과 직접 대화·생성, <b>Agents</b>는 일을 통째로 맡기는 자율 에이전트 6종. 카드를 클릭하면 각 에이전트가 뭘 하는지 나오고, 아래 입력창에 일을 적고 <b>Run</b>을 누르면 실행 과정을 볼 수 있어요.</div>'
+ +'</div></div>'
+ +'<div class="asComp"><div class="asWarn">💡 This agent can execute code, take real actions, and use large number of tokens. You can stop the agent at any time.<br><span class="lk2">Learn more</span><span class="cap" data-as="cap">Set up token cap</span></div>'
+ +'<div class="asInBox"><div class="ph3" id="asPh">Start typing a prompt to see what our agents can do</div>'
+ +'<div class="asChips"><span class="asChip">🛠 Tools</span><span class="asChip">&lt;/&gt; Code execution <span class="x2" data-as="chipx">✕</span></span><span class="asChip">G Grounding with Google Search <span class="x2" data-as="chipx">✕</span></span><span class="asChip">🔗 URL context ›</span><span class="sp"></span><span class="asChip" data-as="mic">🎤</span><span class="asChip" data-as="plus2">⊕</span><button class="asRunBtn" data-as="run">Run Ctrl ↵</button></div></div></div>'
+ +'</div>'+runHTML()+'</div>'
+ /* 서브 화면 */
+ +'<div id="asSub"><div class="asTopbar" style="border-bottom:1px solid rgba(255,255,255,.06)"><span class="asTb" id="asSubBack" style="background:#2383e2;border-color:#2383e2;font-weight:700">← Playground</span><span class="lbl" id="asSubT"></span><span class="sp"></span><span class="asTb" id="asSubVoice">🔊 듣기</span><span class="asTb" id="asSubX">✕</span></div>'
+ +'<div class="asSubBody"><div class="asSubWrap"><h2 id="asSubH"></h2><div class="asBread" id="asSubB"></div><div id="asSubC"></div></div></div></div>'
+ /* 팝업들 */
+ +'<div class="asMenu" id="asAcctMenu"><div style="text-align:center;padding:8px 0 2px;font-size:14px"><b style="color:#4285f4">G</b><b style="color:#ea4335">o</b><b style="color:#fbbc04">o</b><b style="color:#4285f4">g</b><b style="color:#34a853">l</b><b style="color:#ea4335">e</b></div>'
+ +'<div style="display:flex;align-items:center;gap:9px;padding:9px 12px"><span class="av2" style="width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#4a7a5a,#2a4a6a);display:inline-block"></span><span style="font-size:12px">도마뱀<br><span style="color:#9aa0a6;font-size:11px">feeling21c@gmail.com</span></span><span style="margin-left:auto;font-size:9.5px;border:1px solid rgba(255,255,255,.25);border-radius:6px;padding:1px 6px">PRO</span></div>'
+ +'<button class="btn3" data-am="Link an API key|API 키를 계정에 연결해요 — 종량제(쓴 만큼 결제)로 더 많이 쓸 때 필요">Link an API key</button>'
+ +'<button class="btn3" data-am="멤버십 관리|PRO 멤버십 결제·해지를 관리해요">멤버십 관리</button>'
+ +'<button class="btn3" data-am="계정 전환|다른 구글 계정으로 바꿔 로그인해요">계정 전환</button>'
+ +'<button class="btn3" data-am="로그아웃|계정에서 나가요 — 여기는 교육용이라 아무 일도 안 일어나요">로그아웃</button>'
+ +'<div style="text-align:center;font-size:10px;color:#8e918f;padding:6px 0">개인정보처리방침 · 서비스 약관</div></div>'
+ +'<div class="asMenu" id="asBellMenu">'
+ +'<div class="mi2"><b>✦ Gemini 3.7 Flash is now available</b><small>Our latest and most capable Flash model, built for complex coding, agentic workflows, and reliable multi-step execution is now available.</small><button class="btn3" data-as="tryit">Try in Playground →</button></div>'
+ +'<div class="sep3"></div>'
+ +'<div class="mi2"><b>✦ Gemini 3.5 Flash Lite is now available</b><small>Our fastest, most cost-effective 3.5 model for high-throughput execution is now available.</small><button class="btn3" data-as="tryit">Try in Playground →</button></div>'
+ +'<div class="sep3"></div>'
+ +'<div class="mi2"><b>▷ Create video with Gemini Omni Flash</b><small>Create next-generation video with Gemini Omni Flash. Bring text and images to life as stunning video, with conversational editing.</small></div>'
+ +'<div style="font-size:10.5px;color:#8e918f;padding:6px 12px">🔔 = 새 모델·새 기능 소식이 오는 곳이에요</div></div>'
+ +'<div class="asMenu" id="asMdlMenu">'+MODELS.map(function(m){return '<div class="mi2" data-mdl2="'+m[0]+'"><b>'+m[0]+(m[2]?' <span style="font-size:9px;background:#8ab4f8;color:#131314;border-radius:5px;padding:1px 5px">현재</span>':'')+'</b><small>'+m[1]+'</small></div>';}).join('')+'</div>'
+ +'<div id="asToast"></div>';
+ var host=document.createElement('div'); host.innerHTML=HTML;
+ while(host.firstElementChild) document.body.appendChild(host.firstElementChild);
+ toast=document.getElementById('asToast');
+ var home=document.getElementById('asHomeOv'), sub=document.getElementById('asSub');
+ var seg='agents';
+ function renderCards(){
+  var c=document.getElementById('asCards');
+  document.getElementById('asH1').textContent=seg==='agents'?'Build with Agents':'Explore Google models';
+  if(seg==='agents'){
+   c.innerHTML=AGENTS.map(function(a,i){return '<div class="asCard'+(i===0?' on':'')+'" data-ag="'+i+'"><span class="ci2" style="background:'+a[1]+'">'+a[0]+'</span><b>'+a[2]+'</b><p>'+a[3]+'</p></div>';}).join('');
+  }else{
+   var M=[['★','#6a5acd','Featured','Gemini 3.7 Flash · 3.1 Pro — 최신 대표 모델들'],['💬','#2a7a4a','Code and Chat','대화·코딩용 Gemini 모델'],['🖼','#c9a227','Image','Nano Banana 2 — 이미지 생성'],['🎬','#8c3a3a','Video','Gemini Omni Flash · Veo — 영상 생성']];
+   c.innerHTML=M.map(function(a){return '<div class="asCard" data-mc="'+a[2]+'"><span class="ci2" style="background:'+a[1]+'">'+a[0]+'</span><b>'+a[2]+'</b><p>'+a[3]+'</p></div>';}).join('');
+  }
+ }
+ renderCards();
+ function closeMenus(){document.querySelectorAll('.asMenu').forEach(function(m){m.classList.remove('on');});}
+ function popup(id,x,y){closeMenus();var m=document.getElementById(id);
+  m.style.left=Math.min(x,innerWidth-280)+'px';
+  m.style.top='auto';m.style.bottom=Math.max(10,innerHeight-y)+'px';
+  if(innerWidth<=700){m.style.left='8px';m.style.right='8px';m.style.bottom='90px';}
+  m.classList.add('on');}
+ /* 서브 화면 콘텐츠 */
+ function galCard(bg,t,p){return '<div class="asGalCard" data-as="galapp"><div class="th3" style="background:'+bg+'"></div><div class="bd3"><b>'+t+'</b><p>'+p+'</p></div></div>';}
+ var SUBS={
+  history:{t:'History',b:'왼쪽 메뉴 EXPLORE → History',
+   h:'<div class="asList">'+['리비안 디자인 AI 스튜디오 A·B 처리','에스테틱 AI','LAS 접근 방법','Google AI Studio Veo 3.1 활용 가이드','미가메디칼 운영 컨트롤타워 웹앱'].map(function(t){return '<div class="li2" data-as="hist">🕐 <span>'+t+'<small>Playground 프롬프트 기록</small></span><span class="sp"></span>›</div>';}).join('')+'</div>'
+   +'<div class="asEdu">💡 <b>History</b> = Playground에서 실행했던 프롬프트 기록이에요. 클릭하면 그때 설정(모델·도구)까지 그대로 다시 열려서 이어서 실험할 수 있어요.</div>',
+   v:'히스토리 화면입니다. 플레이그라운드에서 실행했던 프롬프트 기록이 쌓이고, 클릭하면 그때 설정 그대로 다시 열려요.'},
+  newapp:{t:'New app',b:'왼쪽 메뉴 BUILD → New app',
+   h:'<div class="asList"><div class="li2" style="cursor:default"><span>💬 앱을 말로 설명하면 AI Studio가 <b>코드째로 만들어</b> 줘요</span></div></div>'
+   +'<div class="asInBox" style="max-width:none"><div class="ph3">예: 에스테틱샵 예약 문의를 받아 정리하는 웹앱 만들어줘</div><div class="asChips"><span class="sp"></span><button class="asRunBtn" data-as="buildapp" style="background:#8ab4f8;color:#131314;font-weight:700">Build</button></div></div>'
+   +'<div class="asGenLog" id="asBuildLog"></div>'
+   +'<div class="asEdu">💡 <b>New app</b> = 코딩 없이 말로 웹앱을 만드는 곳. 완성되면 <b>My apps</b>에 저장되고 링크로 공유할 수 있어요. 루카스님의 뷰티샵 앱 5개가 다 여기서 만든 것!</div>',
+   v:'뉴 앱 화면입니다. 만들고 싶은 앱을 말로 설명하고 빌드를 누르면 에이아이 스튜디오가 코드째로 만들어 줘요.'},
+  myapps:{t:'My apps',b:'왼쪽 메뉴 BUILD → My apps',
+   h:'<div class="asList">'+MYAPPS.map(function(t,i){return '<div class="li2" data-as="myapp">▦ <span>'+t+'<small>내가 만든 앱 · 열기/편집/공유</small></span><span class="sp"></span>›</div>';}).join('')+'</div>'
+   +'<div class="asEdu">💡 <b>My apps</b> = 내가 만든 앱 보관함. 실제로 만들어 둔 에스테틱 워크숍·홍보 영상 앱 5개가 이렇게 보여요. 클릭하면 열어서 수정하거나 링크로 공유합니다.</div>',
+   v:'마이 앱스 화면입니다. 내가 만든 앱 다섯 개가 보관되어 있고, 클릭해서 수정하거나 공유할 수 있어요.'},
+  gallery:{t:'Gallery',b:'왼쪽 메뉴 BUILD → Gallery',
+   h:'<div class="asGalBan"><b>Nano Banana 2 Lite and Gemini Omni Flash are here</b><p>Introducing Nano Banana 2 Lite for ultra-fast, cost-efficient image generation, and Gemini Omni Flash for powerful video creation with conversational, step-by-step editing</p><button class="asRunBtn" data-as="startb" style="background:#e3e3e3;color:#131314;font-weight:700">Start building</button></div>'
+   +'<div class="asGalChips"><span class="asGalChip on">★ Featured</span><span class="asGalChip">▦ All apps</span><span class="asGalChip">Gemini 3</span><span class="asGalChip">Nano Banana</span><span class="asGalChip">Games and Visualizations</span><span class="asGalChip">GenMedia</span><span class="asGalChip">Multimodal understanding</span><span class="asGalChip">Tools and MCP</span><span class="asGalChip">MediaPipe</span></div>'
+   +'<div style="font-size:13px;font-weight:600;margin-bottom:10px">Nano Banana 2 Lite and Gemini Omni Flash</div>'
+   +'<div class="asGalGrid">'
+   +galCard('radial-gradient(circle at 50% 40%, #cfd8ea, #8090b0)','Anywhere','An interactive 3D spherical gallery of images using WebGL. Free drag-to-rotate, momentum scrolling, deep zoom.')
+   +galCard('linear-gradient(135deg,#e8e2d4,#c8bfa8)','Space Lift','Redesign your room in clicks using Gemini image generation. Swipe through styled interior design variations of your own space.')
+   +galCard('linear-gradient(135deg,#3a5a2a,#c96a2a)','Omni Product Studio','Turn product photos into cinematic vibe reels with Gemini Omni Flash and Nano Banana Flash Lite.')
+   +'</div>'
+   +'<div class="asEdu">💡 <b>Gallery</b> = 남들이 만든 앱 구경+가져다 쓰기. 칩으로 분야를 고르고, 카드를 클릭하면 바로 실행하거나 <b>리믹스</b>(내 것으로 복사해 수정)할 수 있어요. <b>Space Lift</b>는 방 사진으로 인테리어 시안을 넘겨 보는 앱 — 리비안디자인 상담에 바로 활용!</div>',
+   v:'갤러리 화면입니다. 다른 사람들이 만든 앱을 구경하고 리믹스해서 내 것으로 만들 수 있어요. 스페이스 리프트는 방 사진으로 인테리어 시안을 바꿔 보는 앱이라 상담에 바로 쓸 수 있습니다.'},
+  dash:{t:'Dashboard',b:'왼쪽 메뉴 MANAGE → Dashboard',
+   h:'<div class="asList">'
+   +'<div class="li2" data-as="dashk">🔑 <span>API keys<small>내 API 키 관리 — 키는 비밀번호처럼 보관!</small></span><span class="sp"></span>›</div>'
+   +'<div class="li2" data-as="dashu">📊 <span>Usage & Billing<small>사용량·요금 그래프 (금액은 개인정보라 여기선 가림)</small></span><span class="sp"></span>›</div>'
+   +'<div class="li2" data-as="dashp">📁 <span>Projects<small>구글 클라우드 프로젝트 연결</small></span><span class="sp"></span>›</div></div>'
+   +'<div class="asEdu">💡 <b>Dashboard</b> = 개발자 관리실. API 키(프로그램에서 Gemini를 부르는 열쇠)와 사용량·요금을 여기서 봐요. 앱을 외부에 배포할 때만 필요 — 평소엔 안 들어와도 돼요.</div>',
+   v:'대시보드 화면입니다. 에이피아이 키와 사용량, 요금을 관리하는 개발자 관리실이에요.'},
+  key:{t:'API 키',b:'왼쪽 아래 🔑 아이콘',
+   h:'<div class="asList"><div class="li2" style="cursor:default">🔑 <span>AIza••••••••••••••••<small>기본 키 · 생성됨 (보안상 가려 두었어요)</small></span><span class="sp"></span><button class="asRunBtn" data-as="copykey">복사</button></div></div>'
+   +'<button class="asRunBtn" data-as="newkey" style="background:#8ab4f8;color:#131314;font-weight:700">＋ API 키 만들기</button>'
+   +'<div class="asEdu">💡 <b>API 키</b> = 내가 만든 앱·프로그램이 Gemini를 사용할 때 쓰는 <b>열쇠</b>예요. LAS(루카스 AI 스튜디오)가 Veo로 영상을 만들 때 이 키를 써요. ⚠️ 키가 유출되면 남이 내 요금으로 쓸 수 있으니 절대 공개 금지!</div>',
+   v:'에이피아이 키 화면입니다. 내 프로그램이 제미나이를 쓸 때 필요한 열쇠를 만들고 관리해요. 유출되면 안 되니 꼭 비밀로 보관하세요.'}
+ };
+ function openSub(key){
+  var d=SUBS[key];if(!d)return;
+  closeMenus();
+  document.getElementById('asSubT').textContent=d.t;
+  document.getElementById('asSubH').textContent=d.t;
+  document.getElementById('asSubB').textContent='실제 위치: '+d.b;
+  document.getElementById('asSubC').innerHTML=d.h;
+  sub._v=d.v;sub.classList.add('on');document.body.classList.add('asSubOpen');
+  home.querySelectorAll('.asIt').forEach(function(i){i.classList.remove('on');});
+  var nav=home.querySelector('.asIt[data-nav="'+key+'"]');if(nav)nav.classList.add('on');
+ }
+ function closeSub(){sub.classList.remove('on');document.body.classList.remove('asSubOpen');
+  home.querySelectorAll('.asIt').forEach(function(i){i.classList.remove('on');});
+  home.querySelector('.asIt[data-nav="pg"]').classList.add('on');}
+ document.getElementById('asSubBack').onclick=closeSub;
+ document.getElementById('asSubX').onclick=closeSub;
+ document.getElementById('asSubVoice').onclick=function(){if(sub._v)speak(sub._v);};
+ /* 실행 시뮬 */
+ function runSim(){
+  var g=document.getElementById('asGen');g.classList.add('on');
+  g.innerHTML='<div class="u2">에스테틱샵 신규 고객 상담 데이터를 표로 정리하고 차트로 보여줘</div>'
+   +'<div class="s2" style="animation-delay:.2s"><i>✓</i>Antigravity 에이전트 시작 — 격리된 리눅스 환경 생성</div>'
+   +'<div class="s2" style="animation-delay:1s"><i>✓</i>Python 코드 작성·실행 (Code execution)</div>'
+   +'<div class="s2" style="animation-delay:1.8s"><i>✓</i>Google 검색으로 업계 평균 대조 (Grounding)</div>'
+   +'<div class="s2" style="animation-delay:2.6s"><i>✓</i>표+차트 완성 — 결과 파일 생성</div>'
+   +'<div class="s2" style="animation-delay:3.3s"><i>✓</i>완료! 실제 화면에서는 여기에 표와 차트가 그려져요 📊</div>';
+ }
+ function buildSim(){
+  var g=document.getElementById('asBuildLog');if(!g)return;g.classList.add('on');
+  g.innerHTML='<div class="u2">에스테틱샵 예약 문의를 받아 정리하는 웹앱 만들어줘</div>'
+   +'<div class="s2" style="animation-delay:.2s"><i>✓</i>Gemini 3.7 Flash가 앱 구조 설계</div>'
+   +'<div class="s2" style="animation-delay:1s"><i>✓</i>화면·코드 생성 중 (React)</div>'
+   +'<div class="s2" style="animation-delay:1.8s"><i>✓</i>미리보기 실행</div>'
+   +'<div class="s2" style="animation-delay:2.5s"><i>✓</i>완성! My apps에 저장됐어요 — 링크로 공유 가능 🎉</div>';
+ }
+ /* 클릭 라우팅 */
+ document.body.addEventListener('click',function(ev){
+  var t;
+  if(t=ev.target.closest('#asHomeOv .asSeg b')){home.querySelectorAll('.asSeg b').forEach(function(x){x.classList.remove('on');});t.classList.add('on');seg=t.getAttribute('data-seg');renderCards();
+   say(seg==='agents'?'🤖 Agents 모드 — 일을 통째로 맡기는 자율 에이전트 6종':'🧠 Models 모드 — 모델을 골라 직접 대화·생성');return;}
+  if(t=ev.target.closest('#asHomeOv .asCard[data-ag]')){home.querySelectorAll('.asCard').forEach(function(x){x.classList.remove('on');});t.classList.add('on');
+   var a=AGENTS[+t.getAttribute('data-ag')];
+   document.getElementById('asAgTitle').textContent=a[2];
+   document.getElementById('asAgDesc').textContent=a[3];
+   say('🤖 '+a[2]+' — '+a[4]);return;}
+  if(t=ev.target.closest('#asHomeOv .asCard[data-mc]')){say('🧠 '+t.getAttribute('data-mc')+' — 이 계열 모델 목록이 펼쳐져요. 우측 Selected model ›에서 바꿀 수 있어요');return;}
+  if(t=ev.target.closest('[data-as="run"]')){runSim();return;}
+  if(t=ev.target.closest('[data-as="buildapp"]')){buildSim();return;}
+  if(t=ev.target.closest('[data-as="tgl"]')){t.classList.toggle('off');say(t.classList.contains('off')?'도구를 껐어요 — 에이전트가 이 능력을 못 써요':'도구를 켰어요 — 에이전트가 이 능력을 쓸 수 있어요');return;}
+  if(t=ev.target.closest('[data-as="model"]')){var r=t.getBoundingClientRect();popup('asMdlMenu',r.left-260,r.top);return;}
+  if(t=ev.target.closest('[data-mdl2]')){closeMenus();var n=t.getAttribute('data-mdl2');document.getElementById('asMdlName').textContent=n;say('🧠 '+n+' 선택 — 우측 패널의 Selected model이 바뀌었어요');return;}
+  if(t=ev.target.closest('[data-as="sysins"]')){say('📝 System instructions — 에이전트의 말투·규칙을 적는 곳. 예: "모든 보고서는 한국어로, 결론부터"');return;}
+  if(t=ev.target.closest('[data-as="env"]')){t.parentNode.querySelectorAll('b').forEach(function(x){x.classList.remove('on');});t.classList.add('on');say(t.textContent==='New'?'🆕 매번 새 환경에서 실행':'♻️ 기존 환경 이어서 사용 — 파일이 유지돼요');return;}
+  if(t=ev.target.closest('[data-as="src"]')){say('📎 Add sources — 에이전트가 참고할 파일·데이터를 넣어요');return;}
+  if(t=ev.target.closest('[data-as="net"]')){say('🌐 Add rules — 에이전트가 접속할 수 있는 사이트를 제한해요 (보안)');return;}
+  if(t=ev.target.closest('[data-as="getcode"]')){
+   document.getElementById('asSubT').textContent='Get code';
+   document.getElementById('asSubH').textContent='Get code';
+   document.getElementById('asSubB').textContent='실제 위치: 우측 상단 </> Get code';
+   document.getElementById('asSubC').innerHTML='<div class="asCode"><span class="cp2" data-as="copycode">⧉</span><span class="k">from</span> google <span class="k">import</span> genai<br><br>client = genai.<span class="f">Client</span>()<br>response = client.models.<span class="f">generate_content</span>(<br>&nbsp;&nbsp;model=<span class="s">"gemini-3.7-flash"</span>,<br>&nbsp;&nbsp;contents=<span class="s">"에스테틱샵 상담 데이터를 표로 정리"</span>)<br><span class="f">print</span>(response.text)</div>'
+    +'<div class="asEdu">💡 <b>Get code</b> = 지금 Playground에서 설정한 그대로를 <b>파이썬 코드로 복사</b>해 주는 기능. 실험해 보고 → 코드로 받아 → 내 프로그램(LAS 등)에 붙이는 흐름이에요. ⧉를 누르면 복사!</div>';
+   sub._v='겟 코드 화면입니다. 플레이그라운드에서 설정한 그대로를 파이썬 코드로 복사해서 내 프로그램에 붙일 수 있어요.';
+   sub.classList.add('on');document.body.classList.add('asSubOpen');return;}
+  if(t=ev.target.closest('[data-as="bell"]')){var r=t.getBoundingClientRect();popup('asBellMenu',r.left,r.top);return;}
+  if(t=ev.target.closest('[data-as="acct"]')){var r=t.getBoundingClientRect();popup('asAcctMenu',r.left,r.top);return;}
+  if(t=ev.target.closest('[data-am]')){closeMenus();var s=t.getAttribute('data-am').split('|');say('👤 '+s[0]+' — '+s[1]+' (교육용)');return;}
+  if(t=ev.target.closest('[data-as="tryit"]')){closeMenus();say('▶ Try in Playground — 그 모델이 선택된 채로 Playground가 열려요 (교육용)');return;}
+  if(t=ev.target.closest('[data-as="key"]')){openSub('key');return;}
+  if(t=ev.target.closest('[data-as="set2"]')){say('⚙ 설정 — 테마(라이트/다크)·자동 저장을 바꿔요 (교육용)');return;}
+  if(t=ev.target.closest('[data-as="srch2"]')){say('🔍 검색 — 내 프롬프트·앱을 이름으로 찾아요 (교육용)');return;}
+  if(t=ev.target.closest('[data-as="cap"]')){say('🎚 Set up token cap — 에이전트가 쓸 수 있는 토큰(비용) 상한을 정해요. 폭주 방지!');return;}
+  if(t=ev.target.closest('[data-as="chipx"]')){var c=t.closest('.asChip');if(c)c.remove();say('도구 칩을 뺐어요 — 이번 실행에서 그 도구를 안 써요');return;}
+  if(t=ev.target.closest('[data-as="mic"]')){say('🎤 음성으로 프롬프트를 말할 수 있어요 (교육용)');return;}
+  if(t=ev.target.closest('[data-as="plus2"]')){say('⊕ 파일·이미지를 첨부해요 (교육용)');return;}
+  if(t=ev.target.closest('[data-as="info"]')){say('💡 왼쪽=메뉴, 가운데=Models|Agents 놀이터, 오른쪽=Run settings(모델·도구), 아래=프롬프트+Run. 전부 눌러 보세요!');return;}
+  if(t=ev.target.closest('[data-as="voice"]')){speak('구글 에이아이 스튜디오 플레이그라운드입니다. 가운데에서 모델스와 에이전트 모드를 오가고, 오른쪽 런 세팅스에서 모델과 도구를 정한 뒤, 아래 입력창에 일을 적고 런을 누르면 에이전트가 코드를 실행하며 일하는 과정을 볼 수 있어요.');return;}
+  if(t=ev.target.closest('[data-as="hist"]')){say('🕐 클릭하면 그때 프롬프트·설정 그대로 다시 열려요 (교육용)');return;}
+  if(t=ev.target.closest('[data-as="myapp"]')){say('▦ 앱이 열려요 — 수정하거나 링크 공유 (교육용)');return;}
+  if(t=ev.target.closest('[data-as="galapp"]')){say('🖼 앱 실행/리믹스 화면이 열려요 — 리믹스하면 내 것으로 복사돼 수정 가능 (교육용)');return;}
+  if(t=ev.target.closest('[data-as="startb"]')){say('▶ Start building — 새 모델로 바로 만들기 시작 (교육용)');return;}
+  if(t=ev.target.closest('[data-as="copykey"],[data-as="copycode"]')){say('⧉ 복사됐어요 (교육용)');return;}
+  if(t=ev.target.closest('[data-as="newkey"]')){say('🔑 새 API 키가 생성돼요 — 생성 직후 한 번만 전체가 보이니 바로 안전한 곳에 저장! (교육용)');return;}
+  if(t=ev.target.closest('[data-as="dashk"],[data-as="dashu"],[data-as="dashp"]')){say('교육용 — 실제로는 Google Cloud 관리 페이지가 열려요');return;}
+  if(t=ev.target.closest('#asHomeOv .asIt')){var nav=t.getAttribute('data-nav');
+   if(nav==='pg'){closeSub();return;}
+   if(nav==='docs'){say('▤ Documentation — 공식 개발 문서 사이트(ai.google.dev)가 새 탭으로 열려요 (교육용)');return;}
+   openSub(nav);return;}
+  if(!ev.target.closest('.asMenu'))closeMenus();
+ });
+ /* 홈 탭 연동 */
+ function syncHome(){
+  var homeTab=document.querySelector('.tab[data-tab="home"]');
+  var on=homeTab&&homeTab.classList.contains('on');
+  var gateVisible=!!document.getElementById('__g__')||(function(){var i=document.getElementById('introov');return i&&getComputedStyle(i).display!=='none';})();
+  home.classList.toggle('on',!!on&&!gateVisible);
+  document.body.classList.toggle('asHomeOn',!!on&&!gateVisible);
+  if(on){var tb=document.querySelector('.tabs');if(tb){var r=tb.getBoundingClientRect();home.style.top=Math.max(60,r.bottom+2)+'px';}}
+  if(!on){closeSub();}
+ }
+ document.addEventListener('click',function(e){
+  if(e.target.closest&&e.target.closest('.tab'))setTimeout(syncHome,60);
+ });
+ setInterval(syncHome,700);
+})();
+</script>
+
 </body>
 </html>
