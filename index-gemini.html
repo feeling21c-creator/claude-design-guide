@@ -243,7 +243,15 @@ a{color:var(--accent-ink)}
   <div class="schat">이미지 기반 피부관리샵 홍보 영상 제작</div>
   <div class="schat">메이크업샵 홍보영상 제작 요청</div>
   <div class="schat">Instagram Carousel Design Request</div>
+  <div class="schat">Design Request for Instagram Carousel</div>
   <div class="schat">4장 사진으로 8초 철거 영상 제작</div>
+  <div class="schat">이미지 첨부 최대 장수 및 용량</div>
+  <div class="schat">AI 영상 플랫폼 비교 설명 영상 제작</div>
+  <div class="schat">루카스 캐릭터 영상 제작 요청</div>
+  <div class="schat">Veo 3 플랫폼 비교 교육 영상 제작</div>
+  <div class="schat">아이패드 바탕화면 바로가기 만들기</div>
+  <div class="schat">Veo 대량 생성, API 종량제 전환</div>
+  <div class="schat">요금제 및 크레딧 사용량 확인</div>
   <div class="sfoot"><div class="sitem ix" data-k="account"><span class="i">🦎</span> 도마뱀 <span style="opacity:.5;font-size:11px">Pro</span><span class="sp" style="flex:1"></span><span style="opacity:.6">⚙</span></div></div>
  </aside>
  <div class="sbackdrop" id="sbackdrop"></div>
@@ -279,7 +287,7 @@ a{color:var(--accent-ink)}
 <section class="view on" id="v-home">
    <div class="ghome">
     <div class="gglow"></div>
-    <div class="ghi">마뱀님, 시작해 볼까요?</div>
+    <div class="ghi">마뱀님, 무엇을 도와드릴까요?</div>
     <div class="gin">
      <span class="plus ix" data-k="plus" data-pop="plus" role="button">＋</span>
      <span class="ph ix" id="ph" data-k="input" role="button">Gemini에게 물어보기</span>
@@ -1802,6 +1810,285 @@ img{-webkit-user-drag:none;user-drag:none;pointer-events:auto}
   window.addEventListener('resize', function(){ if (MOB()) ensure(); });
   if (document.readyState==='loading') document.addEventListener('DOMContentLoaded', init);
   else init();
+})();
+</script>
+
+<!-- gmreal v1 : Gemini 실제 화면 재현 (이미지/동영상/라이브러리/검색/Spark/모델·＋·⚙ 메뉴) -->
+<style id="gmrCss">
+.gmOv{position:fixed;inset:0;z-index:2600;background:#1b1c1d;display:none;flex-direction:column;color:#e8eaed;font-family:"Pretendard",system-ui,sans-serif}
+.gmOv.on{display:flex}
+.gmTop{display:flex;align-items:center;gap:10px;padding:8px 14px;flex:0 0 auto;border-bottom:1px solid rgba(255,255,255,.06)}
+.gmTb{border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.05);border-radius:8px;padding:6px 11px;font-size:12px;color:#e8eaed;cursor:pointer}
+.gmTb.back{background:#1a73e8;border-color:#1a73e8;color:#fff;font-weight:700}
+.gmTop .lbl{font-size:13px;color:#bdc1c6}
+.gmTop .sp{flex:1}
+@media (min-width:641px){ .gmTop{padding-right:248px} }
+.gmBody{flex:1;overflow:auto;padding:26px 16px 100px;display:flex;flex-direction:column;align-items:center}
+.gmH1{font-size:26px;font-weight:500;color:#f1f3f4;margin:6px 0 8px;text-align:center}
+.gmSub{color:#9aa0a6;font-size:13px;text-align:center;max-width:560px;line-height:1.7}
+.gmComp{width:100%;max-width:640px;background:#282a2c;border-radius:26px;padding:14px 16px;margin-top:20px}
+.gmComp .ph{color:#9aa0a6;font-size:14px}
+.gmComp .row{display:flex;align-items:center;gap:10px;margin-top:12px}
+.gmComp .row .sp{flex:1}
+.gmChip{display:inline-flex;align-items:center;gap:5px;background:#37393b;border-radius:9px;padding:4px 10px;font-size:12px;color:#e8eaed}
+.gmMdl{font-size:12.5px;color:#bdc1c6;cursor:pointer}
+.gmIcon{color:#9aa0a6;cursor:pointer}
+.gmTplGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;max-width:640px;width:100%;margin-top:22px}
+.gmTpl{position:relative;height:88px;border-radius:16px;overflow:hidden;cursor:pointer;border:2px solid transparent}
+.gmTpl.on{border-color:#8ab4f8}
+.gmTpl .bg2{position:absolute;inset:0}
+.gmTpl span{position:absolute;left:10px;bottom:8px;font-size:12px;font-weight:600;color:#fff;text-shadow:0 1px 4px rgba(0,0,0,.7)}
+.gmGen{width:100%;max-width:640px;margin-top:20px;display:none}
+.gmGen.on{display:block}
+.gmGen .bub{background:#1a73e8;color:#fff;border-radius:16px;padding:10px 14px;font-size:13px;max-width:80%;margin-left:auto;margin-bottom:12px}
+.gmGen .st{font-size:12.5px;color:#bdc1c6;margin:6px 0;opacity:0;animation:gmIn .4s forwards}
+.gmGen .st i{font-style:normal;color:#81c995;margin-right:6px}
+@keyframes gmIn{to{opacity:1}}
+.gmCanvas{margin-top:12px;border-radius:14px;overflow:hidden;opacity:0;animation:gmIn .6s forwards}
+.gmEdu{margin-top:24px;max-width:640px;background:rgba(138,180,248,.1);border:1px solid rgba(138,180,248,.3);border-radius:12px;padding:12px 14px;font-size:12.5px;line-height:1.7;color:#c6dafc}
+/* 라이브러리 */
+.gmLibWrap{width:100%;max-width:840px}
+.gmLibWrap h2{font-size:21px;font-weight:500;margin:0 0 18px}
+.gmLibWrap h3{font-size:14px;font-weight:600;margin:18px 0 10px;color:#e8eaed}
+.gmLibEmpty{text-align:center;color:#9aa0a6;font-size:12.5px;padding:22px 0;border:1px dashed rgba(255,255,255,.14);border-radius:12px}
+.gmMedia{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px}
+.gmM{position:relative;height:110px;border-radius:10px;overflow:hidden;cursor:pointer}
+.gmM .tag2{position:absolute;left:6px;bottom:6px;width:20px;height:14px;border-radius:4px;background:rgba(0,0,0,.55);color:#fff;font-size:8px;display:flex;align-items:center;justify-content:center}
+/* 검색 */
+.gmSrchBox{width:100%;max-width:640px;background:#282a2c;border-radius:14px;padding:12px 16px;display:flex;gap:10px;align-items:center}
+.gmSrchBox input{flex:1;background:transparent;border:none;outline:none;color:#e8eaed;font-size:14px;font-family:inherit}
+.gmSrchList{width:100%;max-width:640px;margin-top:14px}
+.gmSrchIt{padding:11px 14px;border-radius:10px;font-size:13px;color:#e8eaed;cursor:pointer}
+.gmSrchIt:hover{background:rgba(255,255,255,.06)}
+/* Spark */
+.gmSparkSide{position:absolute;left:0;top:0;bottom:0;width:180px;background:#202124;border-right:1px solid rgba(255,255,255,.06);padding:14px 10px;font-size:12.5px;color:#bdc1c6}
+.gmSparkSide .it2{display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:8px;cursor:pointer}
+.gmSparkSide .it2:hover{background:rgba(255,255,255,.06)}
+.gmSparkSide .hd2{font-size:10.5px;color:#7f8388;padding:12px 10px 4px}
+.gmSparkMain{margin-left:180px;flex:1;overflow:auto;padding:40px 20px 100px;display:flex;flex-direction:column;align-items:center}
+@media (max-width:700px){ .gmSparkSide{display:none} .gmSparkMain{margin-left:0} }
+.gmRec{width:100%;max-width:640px;margin-top:22px}
+.gmRec .hd3{font-size:12px;color:#9aa0a6;margin-bottom:8px}
+.gmRecIt{background:#282a2c;border-radius:12px;padding:12px 14px;cursor:pointer;margin-bottom:8px;position:relative}
+.gmRecIt b{font-size:13px;color:#f1f3f4;display:block}
+.gmRecIt span{font-size:11.5px;color:#9aa0a6}
+.gmRecIt .dot2{position:absolute;right:12px;top:14px;width:6px;height:6px;border-radius:50%;background:#8ab4f8}
+.gmSug{width:100%;max-width:640px;margin-top:18px}
+.gmSugIt{border-left:3px solid #8ab4f8;padding:6px 12px;margin-bottom:12px;cursor:pointer}
+.gmSugIt b{font-size:13px;color:#f1f3f4;display:block}
+.gmSugIt span{font-size:11.5px;color:#9aa0a6}
+/* 메뉴 팝업 공용 */
+.gmMenu{position:fixed;z-index:2800;background:#282a2c;border:1px solid rgba(255,255,255,.1);border-radius:14px;box-shadow:0 12px 40px rgba(0,0,0,.55);padding:8px;display:none;min-width:230px;max-height:70vh;overflow:auto}
+.gmMenu.on{display:block}
+.gmMenu .mi{display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:8px;font-size:13px;color:#e8eaed;cursor:pointer;white-space:nowrap}
+.gmMenu .mi:hover{background:rgba(255,255,255,.07)}
+.gmMenu .mi .ic2{width:16px;text-align:center;font-size:13px;opacity:.85}
+.gmMenu .mi .ar2{margin-left:auto;color:#9aa0a6;font-size:11px}
+.gmMenu .mi .nw{margin-left:auto;font-size:9.5px;background:#1a73e8;color:#fff;border-radius:5px;padding:1px 5px}
+.gmMenu .mi .ck2{margin-left:auto;color:#8ab4f8}
+.gmMenu .sep2{height:1px;background:rgba(255,255,255,.08);margin:6px 8px}
+.gmMenu .sub2{font-size:10.5px;color:#7f8388;padding:4px 12px;line-height:1.5}
+.gmMenu .mi small{display:block;font-size:10.5px;color:#9aa0a6;margin-top:2px}
+#gmToast{position:fixed;left:50%;bottom:96px;transform:translateX(-50%);background:#282a2c;border:1px solid #4a4d51;color:#e8eaed;font-size:12.5px;border-radius:10px;padding:10px 16px;z-index:2890;display:none;max-width:88vw;text-align:center;line-height:1.6}
+body.gmOvOpen #rdDockBg,body.gmOvOpen #p2-startBtn,body.gmOvOpen #msnPill,body.gmOvOpen #rdMoreBtn3,body.gmOvOpen div.help,body.gmOvOpen #bgmBtn{display:none !important}
+@media (max-width:700px){ .gmBody{padding:16px 10px 110px} .gmH1{font-size:20px} .gmTplGrid{grid-template-columns:repeat(2,1fr)} }
+</style>
+<script id="gmrJs">
+(function(){
+ if(window.__gmr)return; window.__gmr=true;
+ function speak(t){try{speechSynthesis.cancel();var u=new SpeechSynthesisUtterance(t);u.lang='ko-KR';u.rate=1.05;speechSynthesis.speak(u);}catch(e){}}
+ var toast;
+ function say(m){toast.textContent=m;toast.style.display='block';clearTimeout(say._t);say._t=setTimeout(function(){toast.style.display='none';},3200);}
+ var VIDTPL=['작은 세상','밀본 애니메이션','8비트 어드벤처','로고 공개','둘러보기','제품 쇼케이스','봉제 인형으로 만든 세상','말하는 동물','스토리북','생일 파티 풍선','팝업 카드','파티 초대장','종이접기','모자이크','먹거리 생산 도시','비디오 게임','기념일','철거 비포·애프터'];
+ var GRADS=['#5b3a8c,#1f2a56','#2a6d4f,#123','#8c2f5b,#331','#6d5a2a,#221','#2a5b8c,#112','#8c5b2a,#210','#3a8c6d,#031','#5b8c2a,#120','#8c2a2a,#200','#2a8c8c,#022','#6d2a8c,#201','#8c6d2a,#211'];
+ function grad(i){var g=GRADS[i%GRADS.length].split(',');return 'linear-gradient(135deg,'+g[0]+','+g[1]+')';}
+ var HTML=''
+ /* 이미지 만들기 */
+ +'<div id="gmImgOv" class="gmOv"><div class="gmTop"><button class="gmTb back" data-gm="close">← 첫 화면</button><span class="lbl">이미지</span><span class="sp"></span><button class="gmTb" data-info="img">ℹ️ 설명</button><button class="gmTb" data-voice="img">🔊 듣기</button><button class="gmTb" data-gm="close">✕</button></div>'
+ +'<div class="gmBody"><div style="font-size:26px">🍌</div><div class="gmH1">이미지 만들기</div>'
+ +'<div class="gmSub">템플릿을 사용해 보거나 채팅으로 아이디어를 설명하세요. Nano Banana 2로 이미지를 만드세요</div>'
+ +'<div class="gmComp"><div class="ph" id="gmImgPh">이미지를 설명하세요</div><div class="row"><span class="gmIcon" data-plus="1">＋</span><span class="gmChip">🖼 이미지</span><span class="sp"></span><span class="gmIcon" data-send="img">➤</span><span class="gmIcon">🎤</span></div></div>'
+ +'<div class="gmGen" id="gmImgGen"></div>'
+ +'<div class="gmEdu">💡 <b>이미지</b> 화면이에요. "부산 신축 아파트 거실, 우드톤 미니멀 인테리어 사진처럼"이라고 적고 ➤를 누르면 <b>Nano Banana 2</b> 모델이 이미지를 만들어요. 만든 이미지는 <b>라이브러리</b>에 자동 저장!</div>'
+ +'</div></div>'
+ /* 동영상 만들기 */
+ +'<div id="gmVidOv" class="gmOv"><div class="gmTop"><button class="gmTb back" data-gm="close">← 첫 화면</button><span class="lbl">동영상</span><span class="sp"></span><button class="gmTb" data-info="vid">ℹ️ 설명</button><button class="gmTb" data-voice="vid">🔊 듣기</button><button class="gmTb" data-gm="close">✕</button></div>'
+ +'<div class="gmBody"><div style="font-size:24px">🎬</div><div class="gmH1">동영상 만들기</div>'
+ +'<div class="gmSub">템플릿을 사용해 보거나 채팅으로 동영상을 설명하세요. Omni 모델로 만듭니다.</div>'
+ +'<div class="gmTplGrid" id="gmVidTpl"></div>'
+ +'<div class="gmComp"><div class="ph">동영상을 설명하세요</div><div class="row"><span class="gmIcon" data-plus="1">＋</span><span class="gmChip">🎬 동영상</span><span class="sp"></span><span class="gmChip" data-gm="ratio">가로 모드(16:9) ⌄</span><span class="gmIcon" data-send="vid">➤</span><span class="gmIcon">🎤</span></div></div>'
+ +'<div class="gmGen" id="gmVidGen"></div>'
+ +'<div class="gmEdu">💡 <b>동영상</b> 화면이에요. 템플릿을 고르거나 "시공 전후 8초 비교 영상"처럼 설명하고 ➤. <b>Omni 모델</b>이 만들고, 완성본은 라이브러리에 저장돼요. 인테리어 비포·애프터, 뷰티샵 홍보 릴스에 바로 활용!</div>'
+ +'</div></div>'
+ /* 라이브러리 */
+ +'<div id="gmLibOv" class="gmOv"><div class="gmTop"><button class="gmTb back" data-gm="close">← 첫 화면</button><span class="lbl">라이브러리</span><span class="sp"></span><button class="gmTb" data-info="lib">ℹ️ 설명</button><button class="gmTb" data-voice="lib">🔊 듣기</button><button class="gmTb" data-gm="close">✕</button></div>'
+ +'<div class="gmBody"><div class="gmLibWrap"><h2>라이브러리</h2>'
+ +'<h3>문서</h3><div class="gmLibEmpty">🗂<br>내가 만든 문서가 여기에 표시됩니다</div>'
+ +'<h3>미디어</h3><div class="gmMedia" id="gmMedia"></div>'
+ +'<div class="gmEdu" style="max-width:none">💡 <b>라이브러리</b>는 Gemini로 만든 이미지·동영상·문서가 자동으로 모이는 보관함이에요. 지금 보이는 건 실제로 만들어 둔 홍보 영상·아바타 영상·인포그래픽들(교육용으로 도식화). 썸네일을 누르면 크게 보고 내려받을 수 있어요.</div>'
+ +'</div></div></div>'
+ /* 채팅 검색 */
+ +'<div id="gmSrchOv" class="gmOv"><div class="gmTop"><button class="gmTb back" data-gm="close">← 첫 화면</button><span class="lbl">채팅 검색</span><span class="sp"></span><button class="gmTb" data-gm="close">✕</button></div>'
+ +'<div class="gmBody"><div class="gmSrchBox">🔍<input id="gmSrchIn" placeholder="채팅 검색"></div>'
+ +'<div class="gmSrchList" id="gmSrchList"></div>'
+ +'<div class="gmEdu">💡 지난 대화를 제목으로 찾아요. 위에 입력하면 <b>실시간으로 걸러집니다</b> — "Veo"라고 쳐 보세요!</div>'
+ +'</div></div>'
+ /* Spark */
+ +'<div id="gmSparkOv" class="gmOv"><div class="gmTop"><button class="gmTb back" data-gm="close">← 첫 화면</button><span class="lbl">Spark <span style="font-size:9px;border:1px solid #9aa0a6;border-radius:4px;padding:0 4px">베타</span></span><span class="sp"></span><button class="gmTb" data-info="spark">ℹ️ 설명</button><button class="gmTb" data-voice="spark">🔊 듣기</button><button class="gmTb" data-gm="close">✕</button></div>'
+ +'<div style="flex:1;display:flex;position:relative;min-height:0">'
+ +'<div class="gmSparkSide"><div class="it2" data-gm="sptoast">📝 작업</div><div class="hd2">맞춤설정</div><div class="it2" data-gm="sptoast">🕐 일정</div><div class="it2" data-gm="sptoast">📋 기능</div><div class="it2" data-gm="sptoast">🔗 연결된 앱</div></div>'
+ +'<div class="gmSparkMain"><div class="gmH1">업무에 Spark를 활용해 보세요</div>'
+ +'<div class="gmComp" style="margin-top:14px"><div class="ph">작업을 설명하세요</div><div class="row"><span class="gmIcon">＋</span><span class="sp"></span><span class="gmIcon" data-send="spark">➤</span><span class="gmIcon">🎤</span></div></div>'
+ +'<div class="gmRec"><div class="hd3">최근</div><div id="gmSparkList"><div class="gmRecIt" data-gm="sptoast"><b>Gemini Spark 설정</b><span>Spark 공동작업을 위한 요청 사항이 생성되었습니다.</span><span class="dot2"></span></div></div><div style="font-size:12px;color:#8ab4f8;cursor:pointer" data-gm="sptoast">모든 작업 ›</div></div>'
+ +'<div class="gmSug"><div class="hd3" style="font-size:12px;color:#9aa0a6;margin-bottom:8px">추천</div>'
+ +'<div class="gmSugIt" data-sp="받은편지함 정리"><b>받은편지함 정리</b><span>뉴스레터를 요약하거나 보관처리하고 이메일 목록에서 수신 거부하세요.</span></div>'
+ +'<div class="gmSugIt" data-sp="주제에 대한 심층 분석"><b>주제에 대한 심층 분석</b><span>목표에 맞게 형식이 지정된 조사 결과를 인용된 소스와 함께 가져오세요.</span></div>'
+ +'<div class="gmSugIt" data-sp="맞춤 뉴스 요약 받기"><b>맞춤 뉴스 요약 받기</b><span>관심 있는 뉴스를 자세히 살펴보고 후속 기사를 받아 보세요.</span></div></div>'
+ +'<div class="gmEdu">💡 <b>Spark(베타)</b>는 Gemini에게 <b>반복 업무를 통째로 맡기는 작업 비서</b>예요. "매일 아침 받은편지함 정리해줘"처럼 작업을 만들어 두면 알아서 돌아가요. 추천 카드를 눌러 보세요!</div>'
+ +'</div></div></div>'
+ /* 메뉴 3종 + 토스트 */
+ +'<div class="gmMenu" id="gmMdlMenu">'
+ +'<div class="mi" data-mdl="3.5 Flash-Lite"><span>3.5 Flash-Lite</span><small></small><span class="ar2">가장 빠른 답변 제공</span></div>'
+ +'<div class="mi" data-mdl="3.7 Flash">✓ <span>3.7 Flash</span><span class="ar2">무엇이든 도움을 받으세요</span><span class="nw">신규</span></div>'
+ +'<div class="mi" data-mdl="3.1 Pro"><span>3.1 Pro</span><span class="ar2">고급 추론</span></div>'
+ +'<div class="sep2"></div>'
+ +'<div class="mi" data-mdl="확장된 사고 모델"><span>확장된 사고 모델</span><span class="ar2">복잡한 문제 해결</span></div></div>'
+ +'<div class="gmMenu" id="gmPlusMenu">'
+ +'<div class="mi" data-pm="file"><span class="ic2">📎</span>파일 업로드</div>'
+ +'<div class="mi" data-pm="drive"><span class="ic2">🔺</span>Drive에서 파일 추가</div>'
+ +'<div class="mi" data-pm="more1"><span class="ic2">⋯</span>업로드 더보기<span class="ar2">›</span></div>'
+ +'<div class="sep2"></div>'
+ +'<div class="mi" data-pm="img"><span class="ic2">🖼</span>이미지 만들기</div>'
+ +'<div class="mi" data-pm="vid"><span class="ic2">🎬</span>동영상 만들기</div>'
+ +'<div class="mi" data-pm="music"><span class="ic2">🎵</span>음악 만들기</div>'
+ +'<div class="mi" data-pm="canvas"><span class="ic2">📋</span>Canvas</div>'
+ +'<div class="mi" data-pm="deep"><span class="ic2">🔎</span>Deep Research</div>'
+ +'<div class="mi" data-pm="guide"><span class="ic2">🎓</span>가이드 학습</div>'
+ +'<div class="mi" data-pm="more2"><span class="ic2">⋯</span>도구 더보기<span class="ar2">›</span></div></div>'
+ +'<div class="gmMenu" id="gmSetMenu">'
+ +'<div class="mi" data-st="설정|테마·계정 등 Gemini 전체 설정 화면이 열려요"><span class="ic2">⚙</span>설정</div>'
+ +'<div class="mi" data-st="개인 인텔리전스|내 Gmail·캘린더 정보를 참고해 더 똑똑하게 답하는 기능이에요"><span class="ic2">👤</span>개인 인텔리전스</div>'
+ +'<div class="mi" data-st="Gemini로 메모리 가져오기|다른 AI에서 쓰던 기억을 Gemini로 옮겨와요"><span class="ic2">🧠</span>Gemini로 메모리 가져오기</div>'
+ +'<div class="mi" data-st="사용량 한도|오늘 얼마나 썼는지, 한도가 얼마나 남았는지 확인해요"><span class="ic2">🔄</span>사용량 한도</div>'
+ +'<div class="mi" data-st="예약된 작업|정해 둔 시간에 Gemini가 알아서 실행하는 작업 목록이에요"><span class="ic2">🕐</span>예약된 작업</div>'
+ +'<div class="mi" data-st="기능|새 기능(베타)을 켜고 꺼요"><span class="ic2">📋</span>기능</div>'
+ +'<div class="mi" data-st="Gems|나만의 맞춤 Gemini(젬)를 만들고 관리해요 — 예: 견적서 전문 젬"><span class="ic2">💎</span>Gems</div>'
+ +'<div class="mi" data-st="내 공개 링크|내가 공유한 대화 링크를 관리해요"><span class="ic2">🔗</span>내 공개 링크</div>'
+ +'<div class="mi" data-st="테마|라이트/다크/시스템 테마를 바꿔요"><span class="ic2">🎨</span>테마<span class="ar2">›</span></div>'
+ +'<div class="mi" data-st="Gemini Spark 신청|반복 업무 자동화 Spark 베타를 신청해요"><span class="ic2">✨</span>Gemini Spark 신청</div>'
+ +'<div class="mi" data-st="구독 관리|Pro 구독 결제·해지를 관리해요"><span class="ic2">ⓘ</span>구독 관리</div>'
+ +'<div class="mi" data-st="Google AI Ultra로 업그레이드|더 높은 한도의 Ultra 요금제로 올려요"><span class="ic2">💠</span>Google AI Ultra(으)로 업그레이드</div>'
+ +'<div class="mi" data-st="Gemini Notebook|자료를 넣고 분석하는 NotebookLM으로 이동해요"><span class="ic2">📓</span>Gemini Notebook</div>'
+ +'<div class="mi" data-st="의견 보내기|Google에 피드백을 보내요"><span class="ic2">💬</span>의견 보내기</div>'
+ +'<div class="mi" data-st="도움말|사용법 도움말 센터가 열려요"><span class="ic2">❓</span>도움말<span class="ar2">›</span></div>'
+ +'<div class="sep2"></div><div class="sub2">대한민국 부산광역시 · IP 주소 기반<br>위치 업데이트</div></div>'
+ +'<div id="gmToast"></div>';
+ var host=document.createElement('div'); host.innerHTML=HTML;
+ while(host.firstElementChild) document.body.appendChild(host.firstElementChild);
+ toast=document.getElementById('gmToast');
+ var OVS=['gmImgOv','gmVidOv','gmLibOv','gmSrchOv','gmSparkOv'];
+ function closeAll(){OVS.forEach(function(id){document.getElementById(id).classList.remove('on');});closeMenus();try{speechSynthesis.cancel();}catch(e){}}
+ function open(id){closeAll();document.getElementById(id).classList.add('on');}
+ function closeMenus(){document.querySelectorAll('.gmMenu').forEach(function(m){m.classList.remove('on');});}
+ /* 동영상 템플릿 */
+ document.getElementById('gmVidTpl').innerHTML=VIDTPL.map(function(t,i){
+  return '<div class="gmTpl" data-vt="'+i+'"><div class="bg2" style="background:'+grad(i)+'"></div><span>'+t+'</span></div>';}).join('');
+ /* 라이브러리 미디어(도식화 썸네일 17) */
+ var MK=['🎬 홍보 영상','🧑‍💼 아바타 브리핑','🎬 Veo 3 비교','📊 인포그래픽','🏠 인테리어 컷','🎬 릴스 초안','🧑‍💼 발표 영상','📱 SNS 카드','🎬 철거 비포애프터','🖼 무드보드','🎬 스킨케어 영상','🧸 캐릭터 애니','📊 요금 비교표','🎬 로고 공개','🖼 제품 컷','🎬 회의 장면','🖼 썸네일'];
+ document.getElementById('gmMedia').innerHTML=MK.map(function(t,i){
+  return '<div class="gmM" data-md="'+t+'" style="background:'+grad(i+3)+'"><span style="position:absolute;left:8px;top:8px;font-size:11px;color:#fff;text-shadow:0 1px 3px #000">'+t+'</span><span class="tag2">▶</span></div>';}).join('');
+ /* 검색 리스트 */
+ var CHATS=['Korean Office Worker\'s AI Vision','AI 홍보 영상 제작 프롬프트 제안','위험보다 확실한 근거 우선','Google AI Studio Veo 3.1 활용 가이드','이미지 기반 피부관리샵 홍보 영상 제작','메이크업샵 홍보영상 제작 요청','Instagram Carousel Design Request','Design Request for Instagram Carousel','4장 사진으로 8초 철거 영상 제작','이미지 첨부 최대 장수 및 용량','AI 영상 플랫폼 비교 설명 영상 제작','루카스 캐릭터 영상 제작 요청','Veo 3 플랫폼 비교 교육 영상 제작','아이패드 바탕화면 바로가기 만들기','이전 대화 내용 확인 요청','Veo 대량 생성, API 종량제 전환','요금제 및 크레딧 사용량 확인','Cute Character Animation Scene Request','제미나이 개인 인텔리전스 설정 오류 해결'];
+ function renderSrch(q){document.getElementById('gmSrchList').innerHTML=CHATS.filter(function(c){return !q||c.toLowerCase().indexOf(q)>=0;}).map(function(c){return '<div class="gmSrchIt" data-gm="chat">💬 '+c+'</div>';}).join('')||'<div style="color:#9aa0a6;font-size:12.5px;padding:16px">검색 결과가 없어요</div>';}
+ renderSrch('');
+ document.getElementById('gmSrchIn').addEventListener('input',function(){renderSrch(this.value.trim().toLowerCase());});
+ /* 생성 시뮬 */
+ function gen(kind){
+  var box=document.getElementById(kind==='img'?'gmImgGen':'gmVidGen');
+  var ask=kind==='img'?'부산 신축 아파트 거실, 우드톤 미니멀 인테리어':'거실 리모델링 비포 애프터 8초 영상';
+  box.classList.add('on');
+  box.innerHTML='<div class="bub">'+ask+'</div>'
+   +'<div class="st" style="animation-delay:.2s"><i>✓</i>'+(kind==='img'?'Nano Banana 2':'Omni')+' 모델로 생성 중…</div>'
+   +'<div class="st" style="animation-delay:1s"><i>✓</i>구도·조명 잡는 중</div>'
+   +'<div class="st" style="animation-delay:1.8s"><i>✓</i>완성! 라이브러리에 저장됐어요 📥</div>'
+   +'<div class="gmCanvas" style="animation-delay:2.2s;height:'+(kind==='img'?'200':'160')+'px;background:linear-gradient(135deg,#7a5c3e,#3e2f21);display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px">'+(kind==='img'?'🖼 생성된 이미지 (교육용 예시)':'▶ 생성된 8초 영상 (교육용 예시)')+'</div>';
+ }
+ /* 공용 클릭 */
+ document.body.addEventListener('click',function(ev){
+  var t;
+  if(t=ev.target.closest('[data-gm="close"]')){closeAll();return;}
+  if(t=ev.target.closest('[data-send]')){gen(t.getAttribute('data-send')==='vid'?'vid':t.getAttribute('data-send')==='img'?'img':'img');
+   if(t.getAttribute('data-send')==='spark'){say('✅ 작업이 만들어졌어요 (교육용) — 실제로는 Spark가 이 일을 알아서 반복 실행해요');}return;}
+  if(t=ev.target.closest('.gmTpl')){document.querySelectorAll('.gmTpl').forEach(function(x){x.classList.remove('on');});t.classList.add('on');
+   say('🎬 "'+t.textContent.trim()+'" 템플릿 선택 — 이 스타일로 만들려면 아래 ➤ 전송!');return;}
+  if(t=ev.target.closest('.gmM')){say('▶ '+t.getAttribute('data-md')+' — 교육용 화면이에요. 실제로는 크게 열려 재생·다운로드할 수 있어요');return;}
+  if(t=ev.target.closest('[data-gm="chat"]')){say('교육용 화면이에요 — 실제로는 이 대화가 열립니다 💬');return;}
+  if(t=ev.target.closest('[data-gm="sptoast"]')){say('교육용 화면이에요 — Spark 베타의 메뉴예요. 작업·일정·연결된 앱을 관리합니다');return;}
+  if(t=ev.target.closest('.gmSugIt')){var n=t.getAttribute('data-sp');
+   var list=document.getElementById('gmSparkList');
+   var d=document.createElement('div');d.className='gmRecIt';d.innerHTML='<b>'+n+'</b><span>방금 만든 작업 — Spark가 알아서 반복 실행해요</span><span class="dot2"></span>';
+   list.prepend(d);say('✅ "'+n+'" 작업이 만들어졌어요! (교육용)');return;}
+  if(t=ev.target.closest('[data-gm="ratio"]')){say('가로(16:9)/세로(9:16) 비율을 골라요 — 릴스는 세로!');return;}
+  if(t=ev.target.closest('[data-info]')){var k=t.getAttribute('data-info');
+   var M={img:'이미지 = 말로 그림 만들기(Nano Banana 2). 1·설명 적기 2·➤ 3·라이브러리에 저장. 인테리어 컨셉컷·SNS 카드에 활용!',
+    vid:'동영상 = 말로 영상 만들기(Omni). 템플릿 선택 → 설명 → ➤. 비포애프터·홍보 릴스 제작!',
+    lib:'라이브러리 = 만든 이미지·영상·문서 보관함. 자동 저장되고 다시 열어 내려받아요.',
+    spark:'Spark = 반복 업무 자동화 비서(베타). 작업을 만들어 두면 알아서 실행!'};
+   say('💡 '+M[k]);return;}
+  if(t=ev.target.closest('[data-voice]')){var k=t.getAttribute('data-voice');
+   var V={img:'이미지 만들기 화면입니다. 만들고 싶은 그림을 말로 설명하고 전송하면 나노 바나나 투 모델이 이미지를 만들어 라이브러리에 저장해요.',
+    vid:'동영상 만들기 화면입니다. 템플릿을 고르거나 영상을 말로 설명하면 옴니 모델이 만들어요. 가로 세로 비율도 고를 수 있어요.',
+    lib:'라이브러리 화면입니다. 제미나이로 만든 이미지와 동영상, 문서가 자동으로 모여요.',
+    spark:'스파크 베타 화면입니다. 받은편지함 정리나 뉴스 요약 같은 반복 업무를 작업으로 만들어 두면 제미나이가 알아서 실행합니다.'};
+   speak(V[k]);return;}
+  /* 모델 항목 */
+  if(t=ev.target.closest('#gmMdlMenu .mi')){ev.stopPropagation();closeMenus();
+   var n=t.getAttribute('data-mdl');
+   var chip=document.querySelector('.mdl.ix[data-k="model"]');
+   var D={'3.5 Flash-Lite':'가장 빠르고 가벼워요 — 간단한 질문용','3.7 Flash':'기본 추천(신규) — 무엇이든 균형 있게','3.1 Pro':'고급 추론 — 복잡한 기획·분석','확장된 사고 모델':'가장 깊게 생각 — 어려운 문제 해결'};
+   if(chip)chip.innerHTML='<span class="d">●</span> '+(n==='확장된 사고 모델'?'사고':n.replace('3.5 ','').replace('3.7 ','').replace('3.1 ',''))+' ⌄';
+   say('🧠 '+n+' 선택 — '+D[n]);return;}
+  if(t=ev.target.closest('#gmPlusMenu .mi')){ev.stopPropagation();closeMenus();
+   var a=t.getAttribute('data-pm');
+   if(a==='img'){open('gmImgOv');return;}
+   if(a==='vid'){open('gmVidOv');return;}
+   var P={file:'교육용 — 실제로는 내 컴퓨터 파일(도면·사진·PDF)을 올려요 📎',drive:'교육용 — 구글 드라이브의 파일을 바로 불러와요 🔺',music:'교육용 — 음악을 만들어요 🎵',canvas:'Canvas = 문서·코드를 옆 창에서 같이 편집하는 모드예요 📋',deep:'Deep Research = 여러 자료를 스스로 조사해 보고서로 정리해 줘요 🔎',guide:'가이드 학습 = 모르는 주제를 단계별로 가르쳐 줘요 🎓',more1:'교육용 — 카메라·스크린샷 등 더 많은 업로드 방법',more2:'교육용 — 더 많은 도구 목록이 열려요'};
+   say(P[a]||'교육용 화면이에요');return;}
+  if(t=ev.target.closest('#gmSetMenu .mi')){ev.stopPropagation();closeMenus();
+   var s=t.getAttribute('data-st').split('|');say('⚙ '+s[0]+' — '+s[1]+' (교육용)');return;}
+  if(!ev.target.closest('.gmMenu'))closeMenus();
+ });
+ /* 라우팅 (capture) */
+ window.addEventListener('click',function(e){
+  var s;
+  if(s=e.target.closest&&e.target.closest('.side [data-k="timage"]')){e.stopPropagation();e.preventDefault();open('gmImgOv');return;}
+  if(s=e.target.closest&&e.target.closest('.side [data-k="tstudy"]')){e.stopPropagation();e.preventDefault();open('gmVidOv');return;}
+  if(s=e.target.closest&&e.target.closest('.side [data-k="library"]')){e.stopPropagation();e.preventDefault();open('gmLibOv');return;}
+  if(s=e.target.closest&&e.target.closest('.side [data-k="search"]')){e.stopPropagation();e.preventDefault();open('gmSrchOv');setTimeout(function(){document.getElementById('gmSrchIn').focus();},80);return;}
+  if(s=e.target.closest&&e.target.closest('.side [data-k="account"]')){e.stopPropagation();e.preventDefault();
+   var m=document.getElementById('gmSetMenu');closeMenus();
+   m.style.left='180px';m.style.bottom='16px';m.style.top='auto';
+   if(window.innerWidth<=700){m.style.left='8px';m.style.right='8px';}
+   m.classList.add('on');return;}
+  if(s=e.target.closest&&e.target.closest('.cwb[data-cw="work"]')){e.stopPropagation();e.preventDefault();open('gmSparkOv');return;}
+  var mc=e.target.closest&&e.target.closest('#v-home .mdl[data-k="model"]');
+  if(mc){e.stopPropagation();e.preventDefault();
+   var m2=document.getElementById('gmMdlMenu');closeMenus();
+   var r=mc.getBoundingClientRect();
+   m2.style.left=Math.min(r.left,innerWidth-260)+'px';m2.style.top=(r.bottom+8)+'px';m2.style.bottom='auto';
+   m2.classList.add('on');return;}
+  var pc=e.target.closest&&e.target.closest('#v-home .plus[data-k="plus"]');
+  if(pc){e.stopPropagation();e.preventDefault();
+   var m3=document.getElementById('gmPlusMenu');closeMenus();
+   var r2=pc.getBoundingClientRect();
+   m3.style.left=Math.min(r2.left,innerWidth-260)+'px';m3.style.top=Math.max(10,r2.top-420)+'px';m3.style.bottom='auto';
+   if(window.innerWidth<=700){m3.style.left='8px';m3.style.top='auto';m3.style.bottom='90px';}
+   m3.classList.add('on');return;}
+ },true);
+ setInterval(function(){
+  var on=OVS.some(function(id){var e=document.getElementById(id);return e&&e.classList.contains('on');});
+  document.body.classList.toggle('gmOvOpen',on);
+ },300);
 })();
 </script>
 </body>
