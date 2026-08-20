@@ -1986,7 +1986,7 @@ body.gmOvOpen #rdDockBg,body.gmOvOpen #p2-startBtn,body.gmOvOpen #msnPill,body.g
  var host=document.createElement('div'); host.innerHTML=HTML;
  while(host.firstElementChild) document.body.appendChild(host.firstElementChild);
  toast=document.getElementById('gmToast');
- var OVS=['gmImgOv','gmVidOv','gmLibOv','gmSrchOv','gmSparkOv'];
+ var OVS=['gmImgOv','gmVidOv','gmLibOv','gmSrchOv','gmSparkOv','gmSetSub'];
  function closeAll(){OVS.forEach(function(id){document.getElementById(id).classList.remove('on');});closeMenus();try{speechSynthesis.cancel();}catch(e){}}
  function open(id){closeAll();document.getElementById(id).classList.add('on');}
  function closeMenus(){document.querySelectorAll('.gmMenu').forEach(function(m){m.classList.remove('on');});}
@@ -2089,6 +2089,182 @@ body.gmOvOpen #rdDockBg,body.gmOvOpen #p2-startBtn,body.gmOvOpen #msnPill,body.g
   var on=OVS.some(function(id){var e=document.getElementById(id);return e&&e.classList.contains('on');});
   document.body.classList.toggle('gmOvOpen',on);
  },300);
+})();
+</script>
+
+<!-- gmset v1 : ⚙ 메뉴 전 항목 → 실제 내용 하위 화면 -->
+<style id="gmsCss">
+#gmSetSub{position:fixed;inset:0;z-index:2700;background:#1b1c1d;display:none;flex-direction:column;color:#e8eaed;font-family:"Pretendard",system-ui,sans-serif}
+#gmSetSub.on{display:flex}
+.gmsBody{flex:1;overflow:auto;padding:22px 16px 110px;display:flex;flex-direction:column;align-items:center}
+.gmsWrap{width:100%;max-width:760px}
+.gmsWrap h2{font-size:20px;font-weight:500;margin:0 0 4px}
+.gmsBread{font-size:11px;color:#9aa0a6;margin-bottom:16px}
+.gmsCard{background:#282a2c;border-radius:14px;padding:14px 16px;margin-bottom:10px}
+.gmsRow{display:flex;align-items:center;gap:10px;padding:9px 0;font-size:13px;color:#e8eaed;border-bottom:1px solid rgba(255,255,255,.06)}
+.gmsRow:last-child{border-bottom:none}
+.gmsRow .sp{flex:1}
+.gmsRow small{display:block;font-size:11px;color:#9aa0a6;margin-top:2px}
+.gmsTgl{width:36px;height:20px;border-radius:10px;background:#8ab4f8;position:relative;cursor:pointer;flex:0 0 auto}
+.gmsTgl::after{content:'';position:absolute;top:2px;left:18px;width:16px;height:16px;border-radius:50%;background:#1b1c1d}
+.gmsTgl.off{background:#5f6368}
+.gmsTgl.off::after{left:2px}
+.gmsBar{height:6px;border-radius:3px;background:#3c4043;overflow:hidden;margin:8px 0 4px}
+.gmsBar i{display:block;height:100%;background:#8ab4f8}
+.gmsBtn{border:none;background:#8ab4f8;color:#1b1c1d;border-radius:9px;padding:9px 16px;font-size:12.5px;font-weight:700;cursor:pointer}
+.gmsBtn.gh{background:transparent;border:1px solid rgba(255,255,255,.2);color:#e8eaed}
+.gmsGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px}
+.gmsGem{background:#282a2c;border-radius:14px;padding:12px;cursor:pointer;border:1px solid transparent}
+.gmsGem:hover{border-color:rgba(255,255,255,.2)}
+.gmsGem .gi{width:26px;height:26px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px;margin-bottom:8px}
+.gmsGem b{font-size:12.5px;color:#f1f3f4;display:block}
+.gmsGem span{font-size:10.5px;color:#9aa0a6;line-height:1.5;display:block;margin-top:4px;max-height:48px;overflow:hidden}
+.gmsGem .xp{font-size:9px;border:1px solid #9aa0a6;border-radius:6px;padding:0 5px;color:#bdc1c6;margin-left:4px}
+.gmsLabs{background:linear-gradient(90deg,#3b2b56,#243b63);border-radius:12px;padding:12px 14px;font-size:12px;color:#dfe3ff;line-height:1.7;margin-bottom:14px}
+.gmsH3{font-size:13.5px;font-weight:600;margin:16px 0 8px;display:flex;align-items:center;gap:8px}
+.gmsH3 .sp{flex:1}
+.gmsEmpty{text-align:center;color:#9aa0a6;font-size:12px;padding:16px;border-radius:12px;background:#232527}
+.gmsSteps{background:rgba(129,201,149,.08);border:1px solid rgba(129,201,149,.3);border-radius:12px;padding:12px 14px;font-size:12.5px;color:#c8e6c9;line-height:1.8;margin-top:14px}
+.gmsSteps i{font-style:normal;color:#81c995;font-weight:700;margin-right:6px}
+.gmsTheme{display:flex;gap:10px}
+.gmsTheme .tcard{flex:1;border-radius:12px;padding:12px;cursor:pointer;border:2px solid transparent;text-align:center;font-size:12px}
+.gmsTheme .tcard.on{border-color:#8ab4f8}
+</style>
+<script id="gmsJs">
+(function(){
+ if(window.__gms)return; window.__gms=true;
+ function speak(t){try{speechSynthesis.cancel();var u=new SpeechSynthesisUtterance(t);u.lang='ko-KR';u.rate=1.05;speechSynthesis.speak(u);}catch(e){}}
+ var toast=document.getElementById('gmToast');
+ function say(m){toast.textContent=m;toast.style.display='block';clearTimeout(say._t);say._t=setTimeout(function(){toast.style.display='none';},3200);}
+ function steps(arr){return '<div class="gmsSteps"><b style="color:#a5d6a7">▶ 사용 순서</b><br>'+arr.map(function(s,i){return '<i>'+(i+1)+'</i>'+s;}).join('<br>')+'</div>';}
+ function tglRow(t,sub,on){return '<div class="gmsRow"><span>'+t+(sub?'<small>'+sub+'</small>':'')+'</span><span class="sp"></span><span class="gmsTgl'+(on?'':' off')+'" data-gs="tgl"></span></div>';}
+ var GEMS_PRE=[['📖','Storybook<span class="xp">실험 버전</span>','주제, 대상 독자 연령(선택 가능), 그림의 스타일(선택 가능)을 기반으로 어린이 또는 어른을 위한 그림책을 만들어요','#2d4a3e'],
+  ['💡','브레인스토밍 도우미','손쉽게 영감을 얻으세요. 모임, 선물, 비즈니스 등을 위한 신선한 아이디어를 받아 보세요','#4a3a2d'],
+  ['💼','커리어 컨설턴트','커리어를 발전시켜 나가세요. 역량을 강화하고 목표를 달성하기 위한 상세한 계획을 세워요','#4a2d3e'],
+  ['💻','코딩 파트너','코딩 실력을 한 단계 높여 보세요. 도움을 받아 프로젝트를 빌드하고 진행하세요','#2d3a4a']];
+ var GEMS_LABS=[['🍳','Recipe Genie','Transform your fridge leftovers into delicious meals'],['📣','Marketing Maven','Brainstorms with you on content and marketing strategy'],['🌍','Claymation Explainer','Turn any topic into an animated claymation infographic'],['❓','Learning with YouTube','Turn your YouTube video into a quiz to help you learn']];
+ var SUBG={
+  '설정':{h:'<div class="gmsCard">'
+    +tglRow('다크 모드','화면을 어둡게/밝게',1)
+    +'<div class="gmsRow"><span>앱<small>Gmail·Drive·캘린더·YouTube·지도 연결 관리</small></span><span class="sp"></span>›</div>'
+    +'<div class="gmsRow"><span>Gemini 앱 활동<small>대화 기록 저장·자동 삭제 기간 설정</small></span><span class="sp"></span>›</div>'
+    +'<div class="gmsRow"><span>언어<small>한국어</small></span><span class="sp"></span>›</div></div>'
+    +'<div class="gmsCard" style="font-size:12px;color:#9aa0a6;line-height:1.7">ⓘ 실제로는 이 항목을 누르면 <b style="color:#e8eaed">Google 계정 설정 페이지</b>가 새 탭으로 열려요. 여기서 다크 모드, 연결 앱, 대화 기록 보관 기간을 관리합니다.</div>'
+    +steps(['⚙ → 설정 클릭','바꿀 항목 선택(다크 모드·앱·활동)','변경은 자동 저장 — 끝!']),
+   v:'설정 화면입니다. 다크 모드, 지메일과 드라이브 같은 앱 연결, 대화 기록 보관 기간, 언어를 관리해요.'},
+  '개인 인텔리전스':{h:'<div class="gmsCard">'
+    +tglRow('Gmail 참조','메일 내용을 참고해 답해요',1)
+    +tglRow('캘린더 참조','내 일정을 알고 답해요',1)
+    +tglRow('Drive 문서 참조','내 문서를 찾아 참고해요',0)+'</div>'
+    +'<div class="gmsCard" style="font-size:12.5px;line-height:1.7">💡 <b>개인 인텔리전스</b> = Gemini가 <b>내 구글 데이터(메일·일정·문서)</b>를 참고해서 나에게 맞게 답하는 기능이에요.<br>예: "다음 주에 현장 미팅 가능한 날 찾아줘" → 내 캘린더를 직접 보고 답해요.</div>'
+    +steps(['토글을 켜기','대화에서 그냥 물어보기 — "어제 온 견적 메일 요약해줘"','Gemini가 내 데이터를 보고 맞춤 답변']),
+   v:'개인 인텔리전스는 제미나이가 내 지메일과 캘린더, 문서를 참고해 나에게 맞게 답하는 기능입니다.'},
+  'Gemini로 메모리 가져오기':{h:'<div class="gmsCard" style="font-size:12.5px;line-height:1.8">다른 AI(ChatGPT 등)에서 쓰던 <b>기억(메모리)</b>을 Gemini로 옮겨오는 기능이에요.<br><br><b>1</b> · 다른 AI에서 메모리 내보내기(복사)<br><b>2</b> · 여기에 붙여넣기<br><b>3</b> · Gemini가 자동 정리해 기억</div>'
+    +'<div class="gmsCard"><div style="font-size:12px;color:#9aa0a6;margin-bottom:8px">붙여넣기 예시</div><div style="background:#1b1c1d;border-radius:9px;padding:10px;font-size:12px;color:#bdc1c6">"나는 리비안디자인 대표 루카스. 인테리어·뷰티샵 마케팅 업무. 답변은 결론부터…"</div><div style="margin-top:10px"><button class="gmsBtn" data-gs="import">가져오기</button></div></div>',
+   v:'다른 에이아이에서 쓰던 기억을 제미나이로 옮겨오는 기능입니다. 내보낸 내용을 붙여넣고 가져오기를 누르면 돼요.'},
+  '사용량 한도':{h:'<div class="gmsCard"><div style="font-size:12.5px">오늘 사용량 <span style="color:#9aa0a6">(Pro)</span></div><div class="gmsBar"><i style="width:34%"></i></div><div style="font-size:11px;color:#9aa0a6">34% 사용 · 자정에 재설정 (수치는 예시 — 실제 화면에서 확인)</div></div>'
+    +'<div class="gmsCard">'
+    +'<div class="gmsRow"><span>이미지 생성<small>Nano Banana 2</small></span><span class="sp"></span><span style="font-size:11px;color:#9aa0a6">여유</span></div>'
+    +'<div class="gmsRow"><span>동영상 생성<small>Omni / Veo</small></span><span class="sp"></span><span style="font-size:11px;color:#9aa0a6">일일 한도 있음</span></div>'
+    +'<div class="gmsRow"><span>Deep Research</span><span class="sp"></span><span style="font-size:11px;color:#9aa0a6">여유</span></div></div>'
+    +steps(['⚙ → 사용량 한도','기능별 남은 양 확인','한도 도달 시 내일 자정 후 다시 사용 (급하면 Ultra 업그레이드)']),
+   v:'사용량 한도 화면입니다. 이미지와 동영상 생성 같은 기능별로 오늘 얼마나 썼는지 확인해요.'},
+  '예약된 작업':{h:'<div class="gmsCard" id="gmsTasks">'
+    +'<div class="gmsRow"><span>📰 매일 아침 AI 뉴스 브리핑<small>매일 07:00 · 결과가 채팅으로 도착</small></span><span class="sp"></span><span class="gmsTgl" data-gs="tgl"></span></div>'
+    +'<div class="gmsRow"><span>📷 주간 콘텐츠 아이디어<small>매주 월 09:00</small></span><span class="sp"></span><span class="gmsTgl off" data-gs="tgl"></span></div></div>'
+    +'<button class="gmsBtn" data-gs="newtask">＋ 새 예약 작업</button>'
+    +steps(['대화에서 "매일 아침 7시에 AI 뉴스 요약해줘"라고 말하기','Gemini가 예약 작업으로 등록','여기서 켜고 끄고 관리']),
+   v:'예약된 작업 화면입니다. 정해 둔 시간에 제미나이가 알아서 실행하는 작업을 관리해요.'},
+  '기능':{h:'<div class="gmsCard">'
+    +tglRow('실험실 미리보기 기능','새 기능을 먼저 써 봐요',1)
+    +tglRow('Canvas','문서·코드 나란히 편집',1)
+    +tglRow('Deep Research','자동 심층 조사',1)+'</div>'
+    +steps(['⚙ → 기능','쓰고 싶은 기능 켜기','＋ 메뉴에 바로 나타나요']),
+   v:'기능 화면입니다. 캔버스와 딥 리서치 같은 기능을 켜고 꺼요.'},
+  'Gems':{h:'<div class="gmsLabs">🧪 <b>Google Labs가 제공하는 새로운 유형의 Gem, AI 앱을 빌드하세요</b><br>Google Labs에서 AI 미니 앱과 맞춤 워크플로를 만들고 공유하세요. 사전 제작된 Gem으로 시작하거나 리믹스하여 나만의 Gem으로 만들어 보세요.</div>'
+    +'<div class="gmsH3">Gems made by Labs 🧪<span class="sp"></span><span style="font-size:11px;color:#8ab4f8">Show more</span></div>'
+    +'<div class="gmsGrid">'+GEMS_LABS.map(function(g){return '<div class="gmsGem" data-gs="gem"><div class="gi" style="background:#3c4043">'+g[0]+'</div><b>'+g[1]+'</b><span>'+g[2]+'</span></div>';}).join('')+'</div>'
+    +'<div class="gmsH3">Gem 관리자 — Google 사전 제작<span class="sp"></span><span style="font-size:11px;color:#8ab4f8">자세히 보기</span></div>'
+    +'<div class="gmsGrid">'+GEMS_PRE.map(function(g){return '<div class="gmsGem" data-gs="gem"><div class="gi" style="background:'+g[3]+'">'+g[0]+'</div><b>'+g[1]+'</b><span>'+g[2]+'</span></div>';}).join('')+'</div>'
+    +'<div class="gmsH3">내 Gems ⓘ<span class="sp"></span><button class="gmsBtn" data-gs="newgem">＋ 새 Gem</button></div>'
+    +'<div class="gmsEmpty" id="gmsMyGems">💎 Gems를 만들면 여기에 표시됩니다</div>'
+    +steps(['새 Gem 클릭','이름+지침 적기 — "리비안 견적 도우미: 인테리어 견적 항목을 표로 정리"','저장하면 사이드바에서 언제든 그 전문가와 대화']),
+   v:'젬스 화면입니다. 젬은 나만의 맞춤 제미나이예요. 구글이 만들어 둔 스토리북, 브레인스토밍 도우미, 커리어 컨설턴트, 코딩 파트너를 바로 쓰거나, 새 젬으로 리비안 견적 도우미 같은 나만의 전문가를 만들 수 있어요.'},
+  '내 공개 링크':{h:'<div class="gmsCard"><div class="gmsRow"><span>🔗 AI 홍보 영상 제작 프롬프트 제안<small>공유일: 최근</small></span><span class="sp"></span><button class="gmsBtn gh" data-gs="dellink">삭제</button></div></div>'
+    +'<div class="gmsCard" style="font-size:12.5px;line-height:1.7">💡 대화를 <b>공유 → 공개 링크 만들기</b> 하면 여기에 쌓여요. 링크만 알면 누구나 그 대화를 볼 수 있으니, 고객 정보가 든 대화는 공유하지 마세요!</div>',
+   v:'내 공개 링크 화면입니다. 공유한 대화 링크를 확인하고 삭제할 수 있어요.'},
+  '테마':{h:'<div class="gmsCard"><div class="gmsTheme">'
+    +'<div class="tcard" data-gs="theme" style="background:#f1f3f4;color:#202124">☀ 라이트</div>'
+    +'<div class="tcard on" data-gs="theme" style="background:#1b1c1d;color:#e8eaed;border-color:#8ab4f8">🌙 다크</div>'
+    +'<div class="tcard" data-gs="theme" style="background:linear-gradient(90deg,#f1f3f4 50%,#1b1c1d 50%);color:#9aa0a6">🖥 시스템</div>'
+    +'</div></div>'+steps(['⚙ → 테마','원하는 모드 클릭','바로 적용 — 시스템은 컴퓨터 설정을 따라가요']),
+   v:'테마 화면입니다. 라이트, 다크, 시스템 세 가지 중 골라요.'},
+  'Gemini Spark 신청':{h:'<div class="gmsCard" style="text-align:center;padding:22px"><div style="font-size:26px">✨</div><div style="font-size:15px;font-weight:600;margin:8px 0">Gemini Spark 베타</div><div style="font-size:12.5px;color:#9aa0a6;line-height:1.7">받은편지함 정리·뉴스 요약 같은 <b style="color:#e8eaed">반복 업무를 통째로 맡기는</b> 작업 비서예요.</div><div style="margin-top:14px"><button class="gmsBtn" data-gs="spark">신청하기</button></div></div>',
+   v:'제미나이 스파크 신청 화면입니다. 반복 업무 자동화 베타를 신청해요.'},
+  '구독 관리':{h:'<div class="gmsCard"><div style="font-size:14px;font-weight:600">Google AI Pro <span style="font-size:10px;border:1px solid #8ab4f8;color:#8ab4f8;border-radius:5px;padding:1px 6px">사용 중</span></div><div style="font-size:12px;color:#9aa0a6;margin-top:6px;line-height:1.7">더 많은 사용량 + 이미지·영상 생성 + 2TB 저장공간. 매월 자동 갱신.</div><div style="margin-top:12px"><button class="gmsBtn gh" data-gs="subs">플랜 관리</button></div></div>'
+    +'<div class="gmsCard" style="font-size:11.5px;color:#9aa0a6">🔒 결제일·금액은 개인정보라 가려 두었어요. 실제 화면(Google One)에서 확인합니다.</div>',
+   v:'구독 관리 화면입니다. 구글 에이아이 프로 구독의 결제와 해지를 관리해요.'},
+  'Google AI Ultra로 업그레이드':{h:'<div class="gmsGrid" style="grid-template-columns:1fr 1fr">'
+    +'<div class="gmsCard" style="margin:0"><b style="font-size:13px">Pro (지금)</b><div style="font-size:11.5px;color:#9aa0a6;margin-top:6px;line-height:1.7">일반 업무 충분 · 이미지/영상 일일 한도</div></div>'
+    +'<div class="gmsCard" style="margin:0;border:1px solid #8ab4f8"><b style="font-size:13px">Ultra</b><div style="font-size:11.5px;color:#9aa0a6;margin-top:6px;line-height:1.7">최고 한도 · Veo 영상 우선 생성 · 최신 모델 우선</div></div></div>'
+    +'<div class="gmsCard" style="font-size:12px;color:#9aa0a6;margin-top:10px">💡 영상 대량 제작이 많아지면 고려하세요. 요금은 실제 화면에서 확인!</div>',
+   v:'울트라 업그레이드 화면입니다. 영상 생성이 많다면 한도가 큰 울트라를 고려해요.'},
+  'Gemini Notebook':{h:'<div class="gmsCard"><div class="gmsRow"><span>📓 AI Strategies for Small-Scale Beauty…</span><span class="sp"></span>›</div><div class="gmsRow"><span>📓 Restoration and Interior Construc…</span><span class="sp"></span>›</div></div>'
+    +'<div class="gmsCard" style="font-size:12.5px;line-height:1.7">💡 <b>Gemini Notebook(NotebookLM)</b> = 자료(PDF·영상·사이트)를 넣으면 <b>그 자료만으로</b> 답하는 연구 노트예요. 위 두 개가 실제로 만들어 둔 노트북!<br>예: 시공 법규 PDF를 넣고 "결로 방지 기준 알려줘" → 자료 기반으로 정확히 답해요.</div>'
+    +steps(['새 노트북 만들기','도면·법규·계약서 파일 넣기','그 자료에 대해 질문 — 출처까지 표시!']),
+   v:'제미나이 노트북 화면입니다. 자료를 넣으면 그 자료만으로 답하는 연구 노트예요.'},
+  '의견 보내기':{h:'<div class="gmsCard"><textarea style="width:100%;box-sizing:border-box;background:#1b1c1d;border:1px solid rgba(255,255,255,.14);border-radius:9px;color:#e8eaed;font-size:13px;padding:10px;min-height:90px;font-family:inherit" placeholder="예: 한국어 영상 자막 기능이 있으면 좋겠어요" id="gmsFb"></textarea><div style="margin-top:10px"><button class="gmsBtn" data-gs="fb">보내기</button></div></div>',
+   v:'의견 보내기 화면입니다. 구글에 피드백을 전달해요.'},
+  '도움말':{h:'<div class="gmsGrid">'
+    +'<div class="gmsGem" data-gs="help"><div class="gi" style="background:#3c4043">🚀</div><b>시작 가이드</b><span>기본 사용법</span></div>'
+    +'<div class="gmsGem" data-gs="help"><div class="gi" style="background:#3c4043">🖼</div><b>이미지·영상</b><span>생성 기능 도움말</span></div>'
+    +'<div class="gmsGem" data-gs="help"><div class="gi" style="background:#3c4043">💳</div><b>구독·결제</b><span>Pro/Ultra 안내</span></div>'
+    +'<div class="gmsGem" data-gs="help"><div class="gi" style="background:#3c4043">🔧</div><b>문제 해결</b><span>오류·속도</span></div></div>',
+   v:'도움말 화면입니다. 주제별 도움말 문서로 이동해요.'}
+ };
+ var HTML='<div id="gmSetSub" class="gmOv"><div class="gmTop"><button class="gmTb back" id="gmsBack">← 첫 화면</button><span class="lbl" id="gmsT"></span><span class="sp"></span><button class="gmTb" id="gmsVoice">🔊 듣기</button><button class="gmTb" id="gmsX">✕</button></div>'
+  +'<div class="gmsBody"><div class="gmsWrap"><h2 id="gmsH"></h2><div class="gmsBread" id="gmsB"></div><div id="gmsC"></div></div></div></div>';
+ var host=document.createElement('div'); host.innerHTML=HTML;
+ while(host.firstElementChild) document.body.appendChild(host.firstElementChild);
+ var sub=document.getElementById('gmSetSub');
+ function openSub(key){
+  var d=SUBG[key]; if(!d){say('⚙ '+key+' — 교육용 화면이에요');return;}
+  ['gmImgOv','gmVidOv','gmLibOv','gmSrchOv','gmSparkOv'].forEach(function(id){var e=document.getElementById(id);if(e)e.classList.remove('on');});
+  document.querySelectorAll('.gmMenu').forEach(function(m){m.classList.remove('on');});
+  document.getElementById('gmsT').textContent=key;
+  document.getElementById('gmsH').textContent=key;
+  document.getElementById('gmsB').textContent='실제 위치: 왼쪽 아래 ⚙ → '+key;
+  document.getElementById('gmsC').innerHTML=d.h;
+  sub._v=d.v; sub.classList.add('on');
+ }
+ document.getElementById('gmsBack').onclick=function(){sub.classList.remove('on');};
+ document.getElementById('gmsX').onclick=function(){sub.classList.remove('on');};
+ document.getElementById('gmsVoice').onclick=function(){if(sub._v)speak(sub._v);};
+ sub.addEventListener('click',function(ev){
+  var t;
+  if(t=ev.target.closest('[data-gs="tgl"]')){t.classList.toggle('off');say(t.classList.contains('off')?'⏸ 껐어요 (교육용)':'▶ 켰어요 (교육용)');return;}
+  if(t=ev.target.closest('[data-gs="theme"]')){sub.querySelectorAll('.tcard').forEach(function(x){x.classList.remove('on');});t.classList.add('on');say('🎨 '+t.textContent.trim()+' 테마 선택 (교육용 — 실제로는 화면 전체가 바뀌어요)');return;}
+  if(t=ev.target.closest('[data-gs="newgem"]')){var mg=document.getElementById('gmsMyGems');
+   mg.outerHTML='<div class="gmsGrid" ><div class="gmsGem"><div class="gi" style="background:#2d4a3e">📐</div><b>리비안 견적 도우미</b><span>방금 만든 Gem — 인테리어 견적 항목을 표로 정리해 줘요</span></div></div>';
+   say('✅ "리비안 견적 도우미" Gem이 생겼어요! (교육용) 실제로는 이름·지침을 적는 화면이 먼저 열려요');return;}
+  if(t=ev.target.closest('[data-gs="gem"]')){say('💎 '+t.querySelector('b').textContent+' — 클릭하면 이 전문가와 바로 대화가 시작돼요 (교육용)');return;}
+  if(t=ev.target.closest('[data-gs="newtask"]')){var c=document.getElementById('gmsTasks');
+   var d2=document.createElement('div');d2.className='gmsRow';d2.innerHTML='<span>🆕 월말 결산 리마인드<small>매월 말일 18:00 · 방금 만든 예약</small></span><span class="sp"></span><span class="gmsTgl" data-gs="tgl"></span>';
+   c.appendChild(d2);say('✅ 새 예약 작업이 생겼어요! (교육용)');return;}
+  if(t=ev.target.closest('[data-gs="import"]')){say('✅ 메모리를 가져왔어요 (교육용) — 이제 Gemini가 내 배경을 기억한 채로 답해요 🧠');return;}
+  if(t=ev.target.closest('[data-gs="dellink"]')){t.closest('.gmsRow').remove();say('🗑 공개 링크를 삭제했어요 — 이제 그 링크로 아무도 못 봐요 (교육용)');return;}
+  if(t=ev.target.closest('[data-gs="spark"]')){say('✅ Spark 베타 신청 완료! (교육용) — 승인되면 채팅|Spark 토글이 열려요 ✨');return;}
+  if(t=ev.target.closest('[data-gs="subs"]')){say('교육용 — 실제로는 Google One 구독 관리 페이지가 열려요');return;}
+  if(t=ev.target.closest('[data-gs="fb"]')){var v=document.getElementById('gmsFb');say(v&&v.value.trim()?'✅ 의견이 전송됐어요 (교육용) — 감사합니다!':'내용을 먼저 적어 주세요 ✍️');return;}
+  if(t=ev.target.closest('[data-gs="help"]')){say('📖 교육용 — 실제로는 해당 도움말 문서가 열려요');return;}
+ });
+ /* ⚙ 메뉴 항목 → 하위 화면 (기존 토스트 핸들러보다 먼저) */
+ document.addEventListener('click',function(e){
+  var mi=e.target.closest&&e.target.closest('#gmSetMenu .mi');
+  if(mi){e.stopPropagation();e.preventDefault();
+   var key=mi.getAttribute('data-st').split('|')[0];
+   openSub(key);}
+ },true);
 })();
 </script>
 </body>
