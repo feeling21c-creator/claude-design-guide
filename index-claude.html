@@ -1864,6 +1864,7 @@ img{-webkit-user-drag:none;user-drag:none;pointer-events:auto}
 .cdhDrop.on{display:block}
 .cdhDrop div{padding:8px 10px;border-radius:7px;font-size:12.5px;color:#e5e2dc;cursor:pointer;white-space:nowrap}
 .cdhDrop div:hover{background:rgba(255,255,255,.08)}
+.cdhDrop small{display:block;font-size:10px;color:#8a877f;margin-top:2px;font-weight:400;white-space:normal;max-width:220px;line-height:1.5}
 .cdhDrop .ck{color:#c96442;font-weight:700;margin-left:8px}
 /* 템플릿 패널 */
 .cdhTplWrap{max-width:640px;margin:10px auto 0;background:rgba(53,116,240,.06);border:1px solid rgba(53,116,240,.18);border-radius:12px;padding:10px 12px 12px}
@@ -2018,7 +2019,7 @@ body.cdEdOpen #p2-startBtn,body.cdEdOpen #msnPill,body.cdEdOpen #rdDockBg,body.c
  +'<div class="cdhH1">What should we create?</div>'
  +'<div class="cdhComposer"><div class="cdhPh" id="cdPh"></div>'
  +'<div class="cdhRow">'
- +'<span class="cdhSq" id="cdPlus2">＋<span class="cdhDrop" id="cdPlusDrop2"><div data-t="파일 첨부">📎 파일 첨부</div><div data-t="스크린샷 첨부">🖼 스크린샷 첨부</div><div data-t="링크 붙여넣기">🔗 링크 붙여넣기</div></span></span>'
+ +'<span class="cdhSq" id="cdPlus2">＋<span class="cdhDrop" id="cdPlusDrop2"><div data-t="파일 첨부">📎 파일 첨부<small>도면·사진·PDF를 올려 참고하게 해요</small></div><div data-t="스크린샷 첨부">🖼 스크린샷 첨부<small>따라 만들 화면을 캡처로 보여줘요</small></div><div data-t="링크 붙여넣기">🔗 링크 붙여넣기<small>참고할 사이트 주소를 넣어요</small></div></span></span>'
  +'<span class="cdhDs" id="cdDsBtn">Design system ⌄<b id="cdDsVal">None</b><span class="cdhDrop" id="cdDsDrop"></span></span>'
  +'<span class="cdhSq" id="cdCode2">&lt;/&gt;</span>'
  +'<span class="sp"></span>'
@@ -2080,7 +2081,8 @@ body.cdEdOpen #p2-startBtn,body.cdEdOpen #msnPill,body.cdEdOpen #rdDockBg,body.c
   this.textContent=tg.classList.contains('closed')?'CHOOSE A TEMPLATE ⌄':'CHOOSE A TEMPLATE ⌃';};
  /* 디자인 시스템 드롭 */
  var dsDrop=document.getElementById('cdDsDrop');
- dsDrop.innerHTML='<div data-ds="None">None<span class="ck">✓</span></div>'+DSS.map(function(d){return '<div data-ds="'+d[0]+'">'+d[0]+'</div>';}).join('')+'<div data-ds="+">＋ Create design system</div>';
+ var DSDESC={'Modernist':'모던 산세리프 · 빨강 포인트 — SaaS·포트폴리오에 어울려요','Classical':'크림빛 세리프 클래식 — 고급 제안서·브로슈어 느낌','Nocturne':'딥네이비 야간 테마 — 발표 슬라이드에 좋아요','Organic':'베이지·내추럴 그린 — 인테리어·뷰티 브랜드에 딱','Broadsheet':'신문 스타일 블루 — 리포트·뉴스레터용','Industry':'산업적 블루그레이 — 시공·기술 문서용'};
+ dsDrop.innerHTML='<div data-ds="None">None<span class="ck">✓</span><small>디자인 시스템 없이 자유롭게 만들어요</small></div>'+DSS.map(function(d){return '<div data-ds="'+d[0]+'">'+d[0]+'<small>'+DSDESC[d[0]]+'</small></div>';}).join('')+'<div data-ds="+">＋ Create design system<small>로고·색·글꼴을 넣어 우리 회사 전용 시스템 만들기</small></div>';
  function closeDrops(){document.querySelectorAll('.cdhDrop').forEach(function(d){d.classList.remove('on');});}
  document.getElementById('cdDsBtn').addEventListener('click',function(ev){ev.stopPropagation();var was=dsDrop.classList.contains('on');closeDrops();if(!was)dsDrop.classList.add('on');});
  dsDrop.addEventListener('click',function(ev){var t=ev.target.closest('[data-ds]');if(!t)return;ev.stopPropagation();closeDrops();
