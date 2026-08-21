@@ -2219,5 +2219,189 @@ body.cdEdOpen #p2-startBtn,body.cdEdOpen #msnPill,body.cdEdOpen #rdDockBg,body.c
  setInterval(syncHome,700);
 })();
 </script>
+
+<!-- cdr2 : 클로드 디자인 신기준(한글 주인공 + 전 클릭 시뮬) -->
+<style id="cdr2Css">
+.cdhDrop small{font-size:12px !important;color:#9fc0ff !important;line-height:1.6}
+.cdhTpl small{font-size:11.5px !important;color:#cde0ff !important}
+#cdKoHero{font-size:13.5px;color:#cde0ff;margin:10px 0 2px;text-align:center;line-height:1.7}
+.cdhTab small{display:block;font-size:10px;color:#9fc0ff;font-weight:400;margin-top:2px}
+#cdKoLegend{font-size:12px;color:#9fc0ff;margin:8px 2px;line-height:1.7}
+.cdKoSub{display:block;font-size:12.5px;color:#cde0ff;margin-top:6px;line-height:1.7;font-weight:500}
+.cdeCtxBtn small{display:block;font-size:10.5px;color:#9fc0ff;font-weight:400;margin-top:2px}
+.cdxAtt{font-size:12px;color:#7ee787;background:rgba(126,231,135,.08);border:1px solid rgba(126,231,135,.3);border-radius:8px;padding:7px 10px;margin-top:8px;line-height:1.6}
+#cdAtt2{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+#cdAtt2 .chip{display:inline-flex;align-items:center;gap:5px;background:#2b2a26;border:1px solid #4a4840;border-radius:8px;padding:4px 9px;font-size:11.5px;color:#e8e4da;cursor:default}
+#cdAtt2 .chip b{cursor:pointer;color:#8a877f}
+.cdr2Pan{position:fixed;z-index:1480;background:#201f1c;border:1px solid #4a4840;border-radius:14px;box-shadow:0 16px 50px rgba(0,0,0,.6);padding:16px;display:none;color:#e8e4da;font-family:"Pretendard",system-ui,sans-serif;max-width:min(430px,92vw)}
+.cdr2Pan.on{display:block}
+.cdr2Pan h3{margin:0 0 4px;font-size:15px}
+.cdr2Pan .ko{font-size:12.5px;color:#cde0ff;line-height:1.7;margin:6px 0 10px}
+.cdr2Pan .row{display:flex;align-items:center;gap:9px;background:#2b2a26;border:1px solid #4a4840;border-radius:10px;padding:9px 11px;margin-bottom:7px;font-size:13px;cursor:pointer}
+.cdr2Pan .row:hover{border-color:#8a877f}
+.cdr2Pan .row small{display:block;font-size:11px;color:#9fc0ff;margin-top:2px}
+.cdr2Pan .btn{border:none;background:#c96442;color:#fff;border-radius:9px;padding:9px 16px;font-size:13px;font-weight:700;cursor:pointer}
+.cdr2Pan .x{position:absolute;right:12px;top:10px;cursor:pointer;color:#8a877f;font-size:15px}
+.cdr2Pan .pal{display:inline-flex;gap:3px;margin-right:8px}
+.cdr2Pan .pal i{width:16px;height:16px;border-radius:4px}
+.cdr2Pan code{display:block;background:#141312;border:1px solid #3a3934;border-radius:9px;padding:11px;font-size:11.5px;color:#c9d1d9;line-height:1.8;font-family:ui-monospace,monospace;margin:8px 0}
+#cdhCont.gridv .cdhTblHd{display:none}
+#cdhCont.gridv .cdhPrj{display:inline-flex !important;flex-direction:column;align-items:flex-start;width:200px;vertical-align:top;margin:0 10px 10px 0;border:1px solid #3a3934;border-radius:12px;padding:12px !important;gap:6px}
+#cdSaveOk{color:#7ee787;font-weight:700}
+@media (max-width:700px){ #cdHomeOv{bottom:calc(66px + env(safe-area-inset-bottom,0px)) !important} }
+body.cdHomeOn #acadToast,body.cdHomeOn #cmMenu,body.cdHomeOn #cmSub,body.cdHomeOn #cmHint,body.cdHomeOn #tip,body.cdHomeOn #pop{display:none !important}
+</style>
+<script id="cdr2Js">
+(function(){
+ if(window.__cdr2)return; window.__cdr2=true;
+ function $(id){return document.getElementById(id);}
+ var toast=$('cdToast');
+ function say(m){if(!toast)return;toast.textContent=m;toast.style.display='block';clearTimeout(say._t);say._t=setTimeout(function(){toast.style.display='none';},3600);}
+ /* ---------- 패널 3종 ---------- */
+ var pans=document.createElement('div');
+ pans.innerHTML=''
+ +'<div class="cdr2Pan" id="cdDsNew"><span class="x" data-cd2="close">✕</span><h3>Create design system</h3><div class="ko">= 우리 회사 전용 <b>색·글꼴 세트</b> 만들기. 색 조합을 하나 고르고 만들기를 누르면, 앞으로 만드는 모든 디자인이 이 스타일로 통일돼요.</div>'
+ +'<div class="row" data-pal="리비안 코랄"><span class="pal"><i style="background:#c96442"></i><i style="background:#e8b09a"></i><i style="background:#3a2e28"></i></span><span>리비안 코랄<small>따뜻한 코랄 — 뷰티·인테리어 브랜드에 딱</small></span></div>'
+ +'<div class="row" data-pal="딥 그린"><span class="pal"><i style="background:#2a5a3a"></i><i style="background:#9ac8a8"></i><i style="background:#1a2a20"></i></span><span>딥 그린<small>차분한 그린 — 자연·힐링 컨셉</small></span></div>'
+ +'<div class="row" data-pal="모노 블랙"><span class="pal"><i style="background:#111"></i><i style="background:#888"></i><i style="background:#eee"></i></span><span>모노 블랙<small>무채색 — 고급 포트폴리오</small></span></div>'
+ +'<button class="btn" data-cd2="dsmake">만들기</button></div>'
+ +'<div class="cdr2Pan" id="cdCodePan"><span class="x" data-cd2="close">✕</span><h3>&lt;/&gt; 코드 보기</h3><div class="ko">= 지금 디자인을 <b>웹사이트 코드(HTML)</b>로 받는 기능. 개발자에게 넘기거나 바로 배포할 수 있어요.</div>'
+ +'<code>&lt;section class="hero"&gt;<br>&nbsp;&nbsp;&lt;h1&gt;리비안 인테리어 아카데미&lt;/h1&gt;<br>&nbsp;&nbsp;&lt;button&gt;수강 신청&lt;/button&gt;<br>&lt;/section&gt;</code>'
+ +'<button class="btn" data-cd2="copycode">⧉ 코드 복사</button></div>'
+ +'<div class="cdr2Pan" id="cdSharePan"><span class="x" data-cd2="close">✕</span><h3>↗ Share (공유)</h3><div class="ko">= 이 디자인을 <b>링크 하나로</b> 다른 사람에게 보여 주는 기능. 카톡으로 보내면 상대방 폰에서 바로 열려요.</div>'
+ +'<div class="row" style="cursor:default"><span style="font-size:12px;color:#9aa0a6">claude.ai/design/share/rvn-academy…</span><span style="flex:1"></span><button class="btn" data-cd2="copylink" style="padding:6px 12px">복사</button></div>'
+ +'<div class="row" data-cd2="perm1"><span>👁 보기만 가능<small>상대방이 구경만 할 수 있어요 (추천)</small></span></div>'
+ +'<div class="row" data-cd2="perm2"><span>✏️ 편집 가능<small>상대방이 직접 고칠 수도 있어요</small></span></div></div>'
+ +'<div class="cdr2Pan" id="cdAvaMenu"><span class="x" data-cd2="close">✕</span><h3>계정</h3>'
+ +'<div class="row" style="cursor:default">🦎 <span>Rucas<small>feeling21c@gmail.com · Max 요금제</small></span></div>'
+ +'<div class="row" data-cd2="avaset"><span>⚙ 설정<small>자세한 계정 관리는 ①클로드 설명서에 있어요</small></span></div>'
+ +'<div class="row" data-cd2="avaout"><span>로그아웃<small>교육용이라 아무 일도 안 일어나요</small></span></div></div>';
+ while(pans.firstElementChild) document.body.appendChild(pans.firstElementChild);
+ function openPan(id,x,y){document.querySelectorAll('.cdr2Pan').forEach(function(p){p.classList.remove('on');});
+  var p=$(id);p.style.left=Math.min(Math.max(10,x),innerWidth-Math.min(440,innerWidth*.92)-10)+'px';p.style.top=Math.min(y,innerHeight-320)+'px';p.classList.add('on');}
+ function closePans(){document.querySelectorAll('.cdr2Pan').forEach(function(p){p.classList.remove('on');});}
+ /* ---------- 가독성: 한글 주인공 ---------- */
+ function once(fn){var d=false;return function(){if(d)return;d=true;fn();};}
+ var beautify=once(function(){
+  var h1=document.querySelector('#cdHomeOv .cdhH1');
+  if(h1&&!$('cdKoHero')){var k=document.createElement('div');k.id='cdKoHero';k.innerHTML='= <b>"무엇을 만들까요?"</b> — 아래 입력창에 말로 적거나, 템플릿을 골라 시작해요';h1.after(k);}
+  document.querySelectorAll('#cdHomeOv .cdhTab').forEach(function(t){
+   if(t.querySelector('small'))return;
+   var m={'prj':'내 프로젝트','ds':'우리 브랜드 스타일','tpl':'템플릿'}[t.getAttribute('data-ct')];
+   if(m){var s=document.createElement('small');s.textContent=m;t.appendChild(s);}});
+  var cont=$('cdhCont');
+  if(cont&&!$('cdKoLegend')){var lg=document.createElement('div');lg.id='cdKoLegend';
+   lg.textContent='Name=이름 · Last viewed=마지막 본 날 · All owners=만든 사람 · Access=공유 권한 · ⋯=관리 메뉴 · ☆=즐겨찾기';
+   cont.before(lg);}
+  var ctx=document.querySelector('#cdEdOv .cdeCtx');
+  if(ctx&&!ctx.querySelector('.cdKoSub')){var sb=ctx.querySelector('.sub');
+   if(sb){var k2=document.createElement('span');k2.className='cdKoSub';k2.innerHTML='= <b>자료를 먼저 주면 디자인이 더 정확해져요</b> — 버튼을 눌러 자료를 붙여 보세요';sb.after(k2);}}
+  var CXKO={'Design system':'우리 색·글꼴 세트','Screenshot':'따라 만들 참고 화면','Codebase':'개발 코드 연결','Figma':'피그마 파일 가져오기'};
+  document.querySelectorAll('.cdeCtxBtn').forEach(function(b){
+   if(b.querySelector('small'))return;
+   var s=document.createElement('small');s.textContent=CXKO[b.getAttribute('data-cx')]||'';b.appendChild(s);});
+ });
+ setInterval(beautify._done?null:function(){try{beautify();}catch(e){}},800); beautify();
+ setInterval(function(){var ov=document.getElementById('cdHomeOv');document.body.classList.toggle('cdHomeOn',!!ov&&ov.classList.contains('on'));},700);
+ /* ---------- onclick 재바인딩 (나중 스크립트가 이김) ---------- */
+ var starOnly=false;
+ function applyStar(){
+  document.querySelectorAll('#cdhCont .cdhPrj').forEach(function(r){
+   var st=r.querySelector('[data-st]');
+   var starred=st&&st.textContent.indexOf('★')>-1;
+   r.style.display=(starOnly&&!starred)?'none':'';});
+ }
+ var stBtn=$('cdStarAll');
+ if(stBtn)stBtn.onclick=function(){starOnly=!starOnly;stBtn.style.color=starOnly?'#f2c14e':'#8a877f';stBtn.textContent=starOnly?'★':'☆';applyStar();
+  say(starOnly?'★ 즐겨찾기만 보는 중 — 다시 누르면 전체 보기':'전체 프로젝트를 봐요');};
+ var gv=$('cdGridVw');
+ if(gv)gv.onclick=function(){var c=$('cdhCont');var on=c.classList.toggle('gridv');
+  var vw=gv.parentNode;vw.querySelectorAll('span').forEach(function(s){s.classList.remove('on');});(on?gv:vw.firstElementChild).classList.add('on');
+  say(on?'▦ 카드(격자) 보기로 바뀌었어요':'☰ 목록 보기로 돌아왔어요');};
+ var cb=$('cdCode2'); if(cb)cb.onclick=function(ev){ev.stopPropagation();var r=cb.getBoundingClientRect();openPan('cdCodePan',r.left-180,r.bottom+8);};
+ var av=$('cdAva'); if(av)av.onclick=function(ev){ev.stopPropagation();var r=av.getBoundingClientRect();openPan('cdAvaMenu',r.left-260,r.bottom+8);};
+ var av2=$('cdeShare'); if(av2)av2.onclick=function(ev){ev.stopPropagation();var r=av2.getBoundingClientRect();openPan('cdSharePan',r.left-300,r.bottom+8);};
+ /* ---------- window-capture: 구 토스트 핸들러보다 먼저 가로채기 ---------- */
+ var curPi=null;
+ window.addEventListener('click',function(ev){
+  var t;
+  if(t=ev.target.closest('[data-cd2="close"]')){closePans();return;}
+  if(t=ev.target.closest('[data-cd2="copycode"]')){say('⧉ 코드가 복사됐어요 — 메모장·편집기에 붙여넣기 하면 바로 웹페이지! (교육용)');return;}
+  if(t=ev.target.closest('[data-cd2="copylink"]')){say('🔗 링크가 복사됐어요 — 카톡으로 보내면 상대방이 바로 봐요 (교육용)');return;}
+  if(t=ev.target.closest('[data-cd2="perm1"]')){closePans();say('👁 보기 전용으로 공유 — 상대방은 구경만 할 수 있어요');return;}
+  if(t=ev.target.closest('[data-cd2="perm2"]')){closePans();say('✏️ 편집 가능으로 공유 — 함께 고칠 수 있어요. 모르는 사람에게는 보기 전용 추천!');return;}
+  if(t=ev.target.closest('[data-cd2="avaset"]')){closePans();say('⚙ 계정 설정은 ①클로드 설명서에 자세히 있어요 — 여기서는 디자인에 집중!');return;}
+  if(t=ev.target.closest('[data-cd2="avaout"]')){closePans();say('로그아웃돼요 (교육용이라 유지) — 다시 로그인하면 프로젝트 전부 그대로!');return;}
+  if(t=ev.target.closest('#cdDsNew [data-pal]')){ev.stopPropagation();
+   document.querySelectorAll('#cdDsNew .row[data-pal]').forEach(function(r){r.style.borderColor='#4a4840';});
+   t.style.borderColor='#c96442';$('cdDsNew')._pal=t.getAttribute('data-pal');return;}
+  if(t=ev.target.closest('[data-cd2="dsmake"]')){ev.stopPropagation();
+   var nm=$('cdDsNew')._pal||'리비안 코랄';closePans();
+   var drop=$('cdDsDrop');
+   if(drop&&!drop.querySelector('[data-ds="'+nm+'"]')){var d=document.createElement('div');d.setAttribute('data-ds',nm);
+    d.innerHTML=nm+'<small>방금 만든 우리 회사 전용 시스템</small>';drop.appendChild(d);}
+   var val=$('cdDsVal');if(val)val.textContent=nm;
+   say('🎨 「'+nm+'」 디자인 시스템 완성! 컴포저의 Design system이 바뀌었고, 목록에도 추가됐어요');return;}
+  /* + Create design system (드롭 안) / Create design system 버튼 */
+  if(t=ev.target.closest('[data-ds="+"]')){ev.stopPropagation();ev.preventDefault();
+   document.querySelectorAll('.cdhDrop').forEach(function(d){d.classList.remove('on');});
+   openPan('cdDsNew',innerWidth/2-215,140);return;}
+  if(t=ev.target.closest('#cdCreateDs')){ev.stopPropagation();openPan('cdDsNew',innerWidth/2-215,140);return;}
+  /* 첨부 3종 + 빠른 모델 (구 data-t 토스트 대체) */
+  if(t=ev.target.closest('[data-t]')){ev.stopPropagation();
+   var v=t.getAttribute('data-t');
+   document.querySelectorAll('.cdhDrop').forEach(function(d){d.classList.remove('on');});
+   if(v==='빠른 모델'){var mb=document.querySelector('#cdMdl b');if(mb)mb.textContent='빠른 모델';
+    say('⚡ 빠른 모델 선택 — 가벼운 작업은 빠르게! 중요한 디자인은 Opus 5로 돌려 두세요');return;}
+   var comp=document.querySelector('#cdHomeOv .cdhComposer');
+   if(comp){var att=$('cdAtt2');if(!att){att=document.createElement('div');att.id='cdAtt2';comp.appendChild(att);}
+    var names={'파일 첨부':'📎 매장도면.pdf','스크린샷 첨부':'🖼 참고화면.png','링크 붙여넣기':'🔗 rivian-design.com'};
+    var chip=document.createElement('span');chip.className='chip';chip.innerHTML=(names[v]||v)+' <b>✕</b>';
+    chip.querySelector('b').onclick=function(){chip.remove();};att.appendChild(chip);}
+   say('✓ '+v+' 완료 — 입력창 아래 칩이 생겼어요. 이 자료를 참고해 디자인해 줘요');return;}
+  /* Access 권한: 실제 표시 변경 */
+  if(t=ev.target.closest('[data-acc]')){ev.stopPropagation();
+   var cur=t.textContent.indexOf('편집')>-1;
+   t.textContent=cur?'👁 보기 가능':'✏️ 편집 가능';
+   say(cur?'👁 이 프로젝트는 이제 「보기만 가능」 — 링크 받은 사람이 구경만 해요':'✏️ 「편집 가능」으로 변경 — 링크 받은 사람이 함께 고칠 수 있어요');return;}
+  /* ⋯ 메뉴: 대상 행 기억 */
+  if(t=ev.target.closest('[data-dots]')){var row=t.closest('.cdhPrj');curPi=row;return;}
+  if(t=ev.target.closest('#cdhMenu div')){ev.stopPropagation();
+   var mm=$('cdhMenu');mm.classList.remove('on');
+   var label=t.textContent.trim(), row=curPi;
+   if(!row){say('행을 다시 선택해 주세요');return;}
+   var nameEl=row.querySelector('.c1')||row.firstElementChild;
+   if(label==='이름 바꾸기'){var b=nameEl.querySelector('b')||nameEl;
+    b.childNodes.forEach(function(n){if(n.nodeType===3&&n.textContent.trim()){n.textContent=n.textContent.replace(/\s*$/,'')+' (새 이름)';}});
+    if(!/새 이름/.test(nameEl.textContent))nameEl.append(' (새 이름)');
+    say('✏️ 이름이 바뀌었어요 — 실제로는 원하는 이름을 입력해요');return;}
+   if(label==='복제'){var cp=row.cloneNode(true);
+    var n2=cp.querySelector('.c1')||cp.firstElementChild;n2.prepend('Copy of ');
+    row.after(cp);say('📋 복제 완료! 바로 아래에 사본이 생겼어요 — 원본은 그대로 두고 사본으로 실험해요');return;}
+   if(label==='템플릿으로 만들기'){say('📐 이 프로젝트가 템플릿으로 저장됐어요 — Templates 탭에서 골라 재사용! (교육용)');
+    var tb=document.querySelector('.cdhTab[data-ct="tpl"]');if(tb)tb.click();return;}
+   if(label==='삭제'){row.style.transition='opacity .4s';row.style.opacity='0';
+    setTimeout(function(){row.remove();},420);
+    say('🗑 삭제됐어요 — 실제로는 휴지통에서 30일 안에 복구할 수 있어요');return;}
+   return;}
+  /* Start with context 버튼: 첨부 상태 변화 */
+  if(t=ev.target.closest('.cdeCtxBtn')){ev.stopPropagation();
+   var cx=t.getAttribute('data-cx');
+   if(!t._att){t._att=1;t.style.borderColor='#7ee787';
+    var ctx=t.closest('.cdeCtx');
+    var d=document.createElement('div');d.className='cdxAtt';
+    var M={'Design system':'✓ 디자인 시스템 첨부 — 우리 색·글꼴로 통일해서 만들어요','Screenshot':'✓ 스크린샷 첨부 — 이 화면과 비슷한 분위기로 만들어요','Codebase':'✓ 코드베이스 연결 — 기존 사이트 구조에 맞춰 만들어요','Figma':'✓ Figma 파일 연결 — 피그마 디자인을 이어받아 만들어요'};
+    d.textContent=M[cx]||('✓ '+cx+' 첨부됨');ctx.appendChild(d);}
+   say('✓ '+cx+' 첨부 완료 — 아래에 첨부 표시가 생겼어요. 이제 지시를 보내면 이 자료를 참고해요');return;}
+  /* Save: 실제 상태 변화 */
+  if(t=ev.target.closest('.cdeTool[data-tl="save"]')){ev.stopPropagation();
+   if(t._sv)return;t._sv=1;var org=t.textContent;t.innerHTML='<span id="cdSaveOk">Saved ✓</span>';
+   say('💾 저장 완료! 실제로는 클라우드에 저장돼 어디서든 이어서 작업해요');
+   setTimeout(function(){t.textContent=org;t._sv=0;},1800);return;}
+  if(!ev.target.closest('.cdr2Pan'))closePans();
+ },true);
+})();
+</script>
+
 </body>
 </html>

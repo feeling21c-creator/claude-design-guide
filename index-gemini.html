@@ -2267,5 +2267,100 @@ body.gmOvOpen #rdDockBg,body.gmOvOpen #p2-startBtn,body.gmOvOpen #msnPill,body.g
  },true);
 })();
 </script>
+
+<!-- gm2 : 제미니 신기준 — 잔여 토스트 클릭 전부 화면·시뮬화 -->
+<style id="gm2Css">
+#gm2Sub{position:fixed;inset:0;z-index:1905;background:#1b1c1d;display:none;flex-direction:column;color:#e3e3e3;font-family:"Pretendard",system-ui,sans-serif}
+#gm2Sub.on{display:flex}
+#gm2Sub .tb{display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid rgba(255,255,255,.07)}
+#gm2Sub .bk{background:#1a73e8;border:none;color:#fff;border-radius:9px;padding:7px 13px;font-size:13px;font-weight:700;cursor:pointer}
+#gm2Sub .tt{font-size:14px;font-weight:600}
+#gm2Sub .bd{flex:1;overflow:auto;padding:20px 16px 90px;display:flex;justify-content:center}
+#gm2Sub .wr{width:100%;max-width:760px}
+#gm2Sub h2{font-size:20px;font-weight:500;margin:0 0 4px}
+#gm2Sub .br{font-size:11.5px;color:#9aa0a6;margin-bottom:16px}
+.gm2Li{display:flex;align-items:center;gap:10px;background:#242628;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:12px 14px;margin-bottom:8px;font-size:13.5px;cursor:pointer}
+.gm2Li small{display:block;font-size:12px;color:#a8c7fa;margin-top:3px;line-height:1.6}
+.gm2Li .sp{flex:1}
+.gm2Edu{background:rgba(138,180,248,.09);border:1px solid rgba(138,180,248,.3);border-radius:12px;padding:13px 15px;font-size:14px;line-height:1.85;color:#c6dafc;margin-top:16px}
+.gm2Bub{background:#2d2f31;border-radius:14px;padding:10px 14px;font-size:13.5px;max-width:75%;margin-left:auto;margin-bottom:10px}
+.gm2Ans{background:#242628;border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:12px 14px;font-size:13px;line-height:1.8;margin-bottom:10px;color:#c8cdd2}
+.gm2Btn{border:none;background:#8ab4f8;color:#131314;border-radius:10px;padding:10px 16px;font-size:13.5px;font-weight:700;cursor:pointer}
+.gm2View{height:240px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:40px;margin-bottom:12px;color:#fff}
+</style>
+<script id="gm2Js">
+(function(){
+ if(window.__gm2)return; window.__gm2=true;
+ function speak(t){try{speechSynthesis.cancel();var u=new SpeechSynthesisUtterance(t);u.lang='ko-KR';u.rate=1.05;speechSynthesis.speak(u);}catch(e){}}
+ var toast=null;
+ function say(m){toast=toast||document.getElementById('gmToast')||(function(){var d=document.createElement('div');d.id='gm2Toast';d.style.cssText='position:fixed;left:50%;bottom:96px;transform:translateX(-50%);background:#2d2f31;border:1px solid #4a4d51;color:#e3e3e3;font-size:13px;border-radius:10px;padding:10px 16px;z-index:2000;display:none;max-width:88vw;text-align:center';document.body.appendChild(d);return d;})();
+  toast.textContent=m;toast.style.display='block';clearTimeout(say._t);say._t=setTimeout(function(){toast.style.display='none';},3600);}
+ var sub=document.createElement('div');sub.id='gm2Sub';
+ sub.innerHTML='<div class="tb"><button class="bk" id="gm2Bk">← 돌아가기</button><span class="tt" id="gm2T"></span><span style="flex:1"></span><button class="bk" style="background:#3a3c3e" id="gm2V">🔊 듣기</button><button class="bk" style="background:#3a3c3e" id="gm2X">✕</button></div>'
+ +'<div class="bd"><div class="wr"><h2 id="gm2H"></h2><div class="br" id="gm2B"></div><div id="gm2C"></div></div></div>';
+ document.body.appendChild(sub);
+ function openSub(t,b,html,voice){document.getElementById('gm2T').textContent=t;document.getElementById('gm2H').textContent=t;
+  document.getElementById('gm2B').textContent='실제 위치: '+b;document.getElementById('gm2C').innerHTML=html;
+  sub._v=voice||'';sub.classList.add('on');document.body.classList.add('gmOvOpen');}
+ function closeSub(){sub.classList.remove('on');document.body.classList.remove('gmOvOpen');}
+ document.getElementById('gm2Bk').onclick=closeSub;
+ document.getElementById('gm2X').onclick=closeSub;
+ document.getElementById('gm2V').onclick=function(){if(sub._v)speak(sub._v);};
+ window.addEventListener('click',function(ev){
+  var t;
+  /* 대화 항목 → 대화 복원 화면 */
+  if(t=ev.target.closest('[data-gm="chat"]')){ev.stopPropagation();
+   var nm=(t.textContent||'대화').trim().slice(0,40);
+   openSub('대화 열기','최근 대화 / 검색 결과 클릭',
+    '<div class="gm2Bub">'+nm+'</div>'
+    +'<div class="gm2Ans">💎 그때 제미나이가 답했던 내용이 그대로 이어져요. 스크롤을 올리면 처음부터 다시 볼 수 있고, 아래 입력창에 이어서 물어보면 <b style="color:#e3e3e3">맥락을 기억한 채로</b> 대답해요.</div>'
+    +'<button class="gm2Btn" data-gm2="chatgo">▶ 이어서 대화하기</button>'
+    +'<div class="gm2Edu">💡 대화는 <b>자동 저장</b>돼요. 어제 하던 견적 상담, 지난주 기획 — 클릭 한 번으로 그 지점부터 계속. 처음부터 다시 설명할 필요가 없어요.</div>',
+    '대화가 다시 열렸어요. 이어서 물어보면 맥락을 기억한 채로 대답해요.');return;}
+  if(t=ev.target.closest('[data-gm2="chatgo"]')){closeSub();say('✓ 대화가 이어졌어요 — 입력창에 이어서 물어보면 앞 내용을 기억한 채 답해요');return;}
+  /* 미디어 항목 → 뷰어 */
+  if(t=ev.target.closest('.gmM')){ev.stopPropagation();
+   var md=t.getAttribute('data-md')||'미디어';
+   openSub(md,'라이브러리 → 미디어 클릭',
+    '<div class="gm2View" style="background:linear-gradient(135deg,#3a4a6a,#6a3a5a)">▶</div>'
+    +'<div style="display:flex;gap:8px;flex-wrap:wrap"><button class="gm2Btn" data-gm2="mplay">▶ 재생</button><button class="gm2Btn" style="background:#3a3c3e;color:#e3e3e3" data-gm2="mdl">⬇ 다운로드</button><button class="gm2Btn" style="background:#3a3c3e;color:#e3e3e3" data-gm2="msh">↗ 공유</button></div>'
+    +'<div class="gm2Edu">💡 내가 만든 이미지·영상은 전부 <b>라이브러리</b>에 모여요. 크게 보고, 다운로드해서 인스타에 올리고, 링크로 공유 — 여기서 다 해요.</div>',
+    '미디어 뷰어입니다. 재생, 다운로드, 공유를 할 수 있어요.');return;}
+  if(t=ev.target.closest('[data-gm2="mplay"]')){say('▶ 재생돼요 (교육용) — 실제로는 여기서 영상이 바로 재생!');return;}
+  if(t=ev.target.closest('[data-gm2="mdl"]')){say('⬇ 내 컴퓨터·폰에 저장돼요 — 인스타 릴스에 바로 올리면 끝! (교육용)');return;}
+  if(t=ev.target.closest('[data-gm2="msh"]')){say('↗ 공유 링크가 복사됐어요 (교육용)');return;}
+  /* 도움말 문서 */
+  if(t=ev.target.closest('[data-gs="help"]')){ev.stopPropagation();
+   var hn=(t.textContent||'도움말').trim().slice(0,30);
+   openSub(hn,'⚙ → 도움말 → 문서 클릭',
+    '<div class="gm2Ans"><b style="color:#e3e3e3">'+hn+'</b><br><br>실제로는 여기에 구글 공식 도움말 문서가 열려요. 핵심만 한글로 정리하면:<br>· 궁금한 건 그냥 <b style="color:#e3e3e3">말로 물어보는 게</b> 제일 빨라요 — "제미나이야, 이미지 어떻게 만들어?"<br>· 문제가 생기면 ⚙ → 의견 보내기로 신고할 수 있어요</div>'
+    +'<div class="gm2Edu">💡 이 한글 설명서가 도움말의 핵심을 이미 담고 있으니, 영어 문서는 안 봐도 괜찮아요!</div>',
+    '도움말 문서 화면입니다. 궁금한 것은 제미나이에게 그냥 말로 물어보는 것이 가장 빠릅니다.');return;}
+  /* 구독 관리 */
+  if(t=ev.target.closest('[data-gs="subs"]')){ev.stopPropagation();
+   openSub('구독 관리','⚙ → 구독 관리 (실제로는 Google One 페이지)',
+    '<div class="gm2Li" style="cursor:default">💎 <span><b>Google AI Pro</b><small>월 ₩●●,●●● · 다음 결제 9월 12일 (금액은 개인정보라 가렸어요)</small></span></div>'
+    +'<div class="gm2Li" style="cursor:default">📦 <span><b>포함 혜택</b><small>제미나이 고급 모델 · 영상 생성 · 2TB 저장공간 · NotebookLM 확장</small></span></div>'
+    +'<button class="gm2Btn" style="background:#3a3c3e;color:#e3e3e3" data-gm2="unsub">구독 해지 (시뮬)</button>'
+    +'<div class="gm2Edu">💡 결제·해지는 <b>Google One</b>에서 관리돼요. 해지해도 결제일까지는 그대로 쓸 수 있어요.</div>',
+    '구독 관리 화면입니다. 구글 원에서 결제와 해지를 관리해요.');return;}
+  if(t=ev.target.closest('[data-gm2="unsub"]')){say('해지 절차가 나와요 (교육용) — 실제로는 결제일까지 계속 사용 가능');return;}
+  /* Spark 메뉴 */
+  if(t=ev.target.closest('[data-gm="sptoast"]')){ev.stopPropagation();
+   openSub('Spark 메뉴','Spark 화면 우측 상단 메뉴',
+    '<div class="gm2Li" style="cursor:default">📋 <span><b>내 작업</b><small>Spark가 반복 실행 중인 자동 작업 목록</small></span></div>'
+    +'<div class="gm2Li" style="cursor:default">🗓 <span><b>일정</b><small>작업이 언제 도는지 시간표로 봐요</small></span></div>'
+    +'<div class="gm2Li" style="cursor:default">🔌 <span><b>연결된 앱</b><small>Gmail·캘린더 등 Spark가 쓰는 앱 연결 관리</small></span></div>'
+    +'<div class="gm2Edu">💡 <b>Spark</b> = 시키지 않아도 알아서 반복해 주는 비서. "매주 월요일 아침 예약 현황 정리해 줘" 같은 일을 맡겨 두는 곳이에요.</div>',
+    '스파크 메뉴입니다. 자동 작업 목록, 일정, 연결된 앱을 관리해요.');return;}
+  /* 비율 토글: 실제 상태 변화 */
+  if(t=ev.target.closest('[data-gm="ratio"]')){ev.stopPropagation();
+   var cur=t.textContent.indexOf('16:9')>-1;
+   t.textContent=cur?'9:16 세로':'16:9 가로';
+   say(cur?'📱 세로(9:16)로 바뀌었어요 — 인스타 릴스·쇼츠용!':'🖥 가로(16:9)로 바뀌었어요 — 유튜브·발표용!');return;}
+ },true);
+})();
+</script>
+
 </body>
 </html>
