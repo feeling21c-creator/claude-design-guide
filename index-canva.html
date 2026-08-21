@@ -1835,5 +1835,395 @@ img{-webkit-user-drag:none;user-drag:none;pointer-events:auto}
  put('rd6','Recent design','최근 작업 (이어가기)','리비안 쇼룸 배너예요. 크기를 바꿔 다른 매체에도 써요.');
 })();
 </script>
+<!-- cvreal v1 : Canva 실제 화면 재현 (신기준: 한글 주인공 + 전 클릭 시뮬) -->
+<style id="cvrCss">
+#cvHomeOv{position:fixed;left:0;right:0;bottom:0;top:96px;z-index:1255;background:#fff;display:none;color:#0d1216;font-family:"Pretendard",system-ui,sans-serif;font-size:13px}
+#cvHomeOv.on{display:flex}
+.cvNav{flex:0 0 74px;background:#f4f2f7;border-right:1px solid #e8e4ef;display:flex;flex-direction:column;align-items:center;padding:10px 0;gap:2px}
+.cvNavScroll{flex:1;overflow:auto;display:flex;flex-direction:column;align-items:center;gap:2px;width:100%}
+.cvNi{width:64px;padding:7px 0;border-radius:10px;text-align:center;cursor:pointer;color:#41475a}
+.cvNi:hover{background:#e9e4f2}
+.cvNi.on{color:#7b2ff2}
+.cvNi .ic{font-size:17px;display:block}
+.cvNi b{font-size:10px;font-weight:600;display:block;margin-top:2px}
+.cvNi small{display:block;font-size:8.5px;color:#8a90a6;line-height:1.25;margin-top:1px}
+.cvNi.mk .ic{width:30px;height:30px;line-height:30px;border-radius:50%;background:linear-gradient(135deg,#8b3dff,#4ac3ff);color:#fff;margin:0 auto}
+.cvNavFoot{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;gap:8px;padding-top:8px}
+.cvBell{font-size:16px;cursor:pointer}
+.cvAva{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#4a7a5a,#2a4a6a);cursor:pointer}
+.cvMain{flex:1;display:flex;flex-direction:column;min-width:0;min-height:0;overflow:auto}
+.cvHero{background:linear-gradient(120deg,#e8f2ff,#efe6ff 55%,#e6f0ff);padding:34px 20px 22px;text-align:center}
+.cvHero h1{margin:0;font-size:27px;font-weight:800;background:linear-gradient(90deg,#6a30d9,#2f6bd9);-webkit-background-clip:text;background-clip:text;color:transparent}
+.cvHeroKo{font-size:13px;color:#41475a;margin-top:8px;line-height:1.7}
+.cvSegs{display:inline-flex;gap:6px;margin-top:12px}
+.cvSeg{border:1px solid #d8d2e6;background:#fff;border-radius:16px;padding:5px 13px;font-size:12px;cursor:pointer;color:#41475a}
+.cvSeg.on{background:#2b2547;color:#fff;border-color:#2b2547}
+.cvSearch{max-width:560px;margin:14px auto 0;background:#fff;border:2px solid #b9a8e8;border-radius:14px;padding:11px 15px;display:flex;gap:9px;align-items:center;box-shadow:0 8px 24px rgba(90,50,180,.08)}
+.cvSearch input{border:none;outline:none;flex:1;font:inherit;font-size:13.5px;background:transparent}
+.cvBody{padding:16px 22px 40px;max-width:1080px;margin:0 auto;width:100%;box-sizing:border-box}
+.cvCats{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;padding:14px 8px 6px}
+.cvCat{width:72px;text-align:center;cursor:pointer}
+.cvCat .ci{width:40px;height:40px;border-radius:50%;margin:0 auto;display:flex;align-items:center;justify-content:center;font-size:17px;color:#fff}
+.cvCat b{display:block;font-size:10.5px;font-weight:600;color:#2b2f3d;margin-top:5px}
+.cvCat small{display:block;font-size:9px;color:#7a80f2;line-height:1.3;margin-top:1px}
+.cvSecHd{font-size:15.5px;font-weight:800;margin:20px 0 10px;display:flex;align-items:center}
+.cvSecHd .sp{flex:1}
+.cvSecHd span{font-size:11.5px;color:#6a5acd;cursor:pointer;font-weight:600}
+.cvHl{display:flex;gap:10px;flex-wrap:wrap}
+.cvHlC{width:172px;height:96px;border-radius:12px;padding:10px 12px;box-sizing:border-box;font-size:11.5px;font-weight:700;cursor:pointer;color:#123}
+.cvGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(128px,1fr));gap:12px}
+.cvD{cursor:pointer}
+.cvD .th{height:90px;border-radius:10px;border:1px solid #e4e0ee;display:flex;align-items:center;justify-content:center;font-size:22px;color:#fff}
+.cvD b{display:block;font-size:11px;font-weight:600;color:#2b2f3d;margin-top:6px;line-height:1.35;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cvD small{display:block;font-size:9.5px;color:#8a90a6}
+.cvEdu{background:#f2edff;border:1px solid #d8c8ff;border-radius:12px;padding:13px 15px;font-size:14px;line-height:1.85;color:#3a2a6a;margin-top:18px}
+/* 서브 화면 */
+#cvSub{position:fixed;inset:0;z-index:1320;background:#fff;display:none;flex-direction:column;color:#0d1216;font-family:"Pretendard",system-ui,sans-serif}
+#cvSub.on{display:flex}
+.cvTb{display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid #eee}
+.cvBk{background:#7b2ff2;border:none;color:#fff;border-radius:9px;padding:7px 13px;font-size:13px;font-weight:700;cursor:pointer}
+.cvTt{font-size:14px;font-weight:700}
+.cvSubBody{flex:1;overflow:auto;padding:20px 16px 90px;display:flex;justify-content:center}
+.cvWr{width:100%;max-width:860px}
+.cvWr h2{font-size:21px;font-weight:800;margin:0 0 4px}
+.cvBr{font-size:11.5px;color:#8a90a6;margin-bottom:16px}
+.cvLi{display:flex;align-items:center;gap:10px;background:#f7f5fb;border:1px solid #e8e4f2;border-radius:12px;padding:12px 14px;margin-bottom:8px;font-size:13.5px;cursor:pointer}
+.cvLi:hover{border-color:#b9a8e8}
+.cvLi small{display:block;font-size:12px;color:#6a5acd;margin-top:3px;line-height:1.6}
+.cvLi .sp{flex:1}
+.cvBtn{border:none;background:#7b2ff2;color:#fff;border-radius:10px;padding:10px 16px;font-size:13.5px;font-weight:700;cursor:pointer}
+.cvBtn.gr{background:#eee9f8;color:#3a2a6a}
+/* 에디터 시뮬 */
+.cvEdWrap{display:flex;gap:12px;flex-wrap:wrap}
+.cvEdTools{flex:0 0 64px;display:flex;flex-direction:column;gap:6px}
+.cvEdTool{background:#f4f2f7;border:1px solid #e8e4ef;border-radius:10px;padding:8px 4px;text-align:center;font-size:10px;cursor:pointer;color:#41475a}
+.cvEdTool .i{display:block;font-size:15px}
+.cvEdTool.on{border-color:#7b2ff2;color:#7b2ff2}
+.cvCanvas{flex:1;min-width:260px;background:#f0eef5;border-radius:14px;padding:22px;display:flex;justify-content:center}
+.cvPage{width:min(320px,100%);background:#fff;border-radius:8px;box-shadow:0 10px 30px rgba(40,20,90,.15);padding:18px;box-sizing:border-box;min-height:300px}
+.cvEl{opacity:0;transform:translateY(8px);animation:cvIn .5s forwards;border-radius:8px}
+@keyframes cvIn{to{opacity:1;transform:none}}
+.cvGenLog .g{font-size:13px;color:#41475a;margin:7px 0;opacity:0;animation:cvIn .4s forwards}
+.cvGenLog .g i{font-style:normal;color:#18a058;margin-right:6px}
+.cvGenLog .g em{font-style:normal;display:block;color:#6a5acd;font-size:12.5px;margin:3px 0 5px 19px;line-height:1.6}
+.cvGenLog .u{background:#efe9fb;border-radius:12px;padding:9px 13px;font-size:13px;max-width:75%;margin-left:auto;margin-bottom:10px}
+/* 만들기 모달 */
+#cvMk{position:fixed;inset:0;z-index:1330;background:rgba(20,15,40,.5);display:none;align-items:center;justify-content:center;padding:16px}
+#cvMk.on{display:flex}
+.cvMkCard{background:#fff;border-radius:16px;max-width:760px;width:100%;max-height:86vh;overflow:auto;padding:20px 22px;position:relative}
+.cvMkCard .x{position:absolute;right:14px;top:12px;cursor:pointer;font-size:16px;color:#8a90a6}
+.cvMkCard h3{margin:0 0 4px;font-size:18px;font-weight:800}
+.cvMkKo{font-size:12.5px;color:#6a5acd;line-height:1.7;margin-bottom:12px}
+.cvMkGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.cvMkIt{border:1px solid #e8e4f2;border-radius:12px;padding:11px 12px;cursor:pointer}
+.cvMkIt:hover{border-color:#7b2ff2}
+.cvMkIt b{font-size:12.5px;display:block}
+.cvMkIt small{display:block;font-size:11px;color:#6a5acd;margin-top:3px;line-height:1.5}
+/* 메뉴/토스트 */
+.cvMenu{position:fixed;z-index:1460;background:#fff;border:1px solid #e4e0ee;border-radius:14px;box-shadow:0 14px 44px rgba(30,15,70,.2);padding:8px;display:none;min-width:250px;max-height:70vh;overflow:auto;color:#0d1216}
+.cvMenu.on{display:block}
+.cvMenu .mi{padding:9px 12px;border-radius:9px;font-size:13px;cursor:pointer}
+.cvMenu .mi:hover{background:#f4f0fb}
+.cvMenu .mi small{display:block;font-size:11px;color:#6a5acd;margin-top:2px;line-height:1.5}
+.cvMenu .sep{height:1px;background:#eee;margin:6px 8px}
+#cvToast{position:fixed;left:50%;bottom:96px;transform:translateX(-50%);background:#2b2547;color:#fff;font-size:13px;border-radius:10px;padding:10px 16px;z-index:1470;display:none;max-width:88vw;text-align:center;line-height:1.6}
+body.cvSubOpen #p2-startBtn,body.cvSubOpen #msnPill,body.cvSubOpen #rdDockBg,body.cvSubOpen #rdMoreBtn3,body.cvSubOpen div.help,body.cvSubOpen #bgmBtn,body.cvSubOpen #acadToast,body.cvSubOpen #msnPop,body.cvSubOpen #cmMenu,body.cvSubOpen #cmSub,body.cvSubOpen #cmHint,body.cvSubOpen #tip,body.cvSubOpen #pop{display:none !important}
+body.cvHomeOn #cmMenu,body.cvHomeOn #cmSub,body.cvHomeOn #cmHint,body.cvHomeOn #tip,body.cvHomeOn #pop{display:none !important}
+@media (min-width:701px){ body.cvHomeOn #p2-startBtn,body.cvHomeOn #msnPill,body.cvHomeOn #bgmBtn,body.cvHomeOn div.help,body.cvHomeOn #acadToast,body.cvHomeOn #msnPop{display:none !important} }
+@media (max-width:960px){ .cvCats{gap:8px} }
+@media (max-width:700px){
+ #cvHomeOv{top:88px;bottom:calc(66px + env(safe-area-inset-bottom,0px))}
+ .cvNav{flex:0 0 58px}
+ .cvNi{width:52px}
+ .cvNi small{display:none}
+ .cvHero h1{font-size:19px}
+ .cvHl .cvHlC{width:47%}
+}
+</style>
+<script id="cvrJs">
+(function(){
+ if(window.__cvr)return; window.__cvr=true;
+ function speak(t){try{speechSynthesis.cancel();var u=new SpeechSynthesisUtterance(t);u.lang='ko-KR';u.rate=1.05;speechSynthesis.speak(u);}catch(e){}}
+ var toast;
+ function say(m){toast.textContent=m;toast.style.display='block';clearTimeout(say._t);say._t=setTimeout(function(){toast.style.display='none';},3600);}
+ var DESIGNS=[
+  ['이미지 2번 빈칸 글 삽입 디자인','멀티 디자인 · 1개월 전','#7fb3d9'],
+  ['RIVIAN Design Showroom Ba…','1080×1350px · 1개월 전','#31577a'],
+  ['인스타그램 게시물 · RIVIAN DE…','인스타그램 게시물 · 1개월 전','#8a6f5c'],
+  ['리비안 디자인 3F 쇼룸 오픈','Instagram Reels · 2개월 전','#4a7a5a'],
+  ['White and Black Modern Ope…','포스터 · 1개월 전','#b9b3a8'],
+  ['Red Modern Real Estate Agen…','멀티 디자인 · 1개월 전','#b34a3a'],
+  ['드레스룸 포트폴리오','모바일 동영상 · 2개월 전','#6a5acd'],
+  ['안개꽃과 초 사진 인테리어 소품…','스토리 · 2개월 전','#8c7a9a']
+ ];
+ var CATS=[
+  ['템플릿','#6a5acd','수천 개 디자인 틀'],['Magic Layers','#8b3dff','AI 레이어 편집 New'],['프레젠테이션','#e2543a','발표 자료'],['SNS','#e23a6c','인스타·페북 게시물'],
+  ['동영상','#c93af2','영상 편집'],['프린트 스토어','#7a4ae2','인쇄 주문'],['Docs','#2a9ad9','문서 작성'],['화이트보드','#18a058','아이디어 보드'],
+  ['시트','#2a7ad9','표 계산'],['코드','#5a3ae2','앱 만들기'],['웹사이트','#3a6ae2','홈페이지'],['이메일','#3a4ae2','메일 디자인'],
+  ['사진','#8a7a6a','사진 편집'],['맞춤형 크기','#41475a','원하는 크기로'],['업로드','#41475a','내 파일 올리기'],['더 보기','#8a90a6','전체 기능']
+ ];
+ var AICHATS=['글꼴/문구를 2번 이미지…','2번 이미지 빈칸에 넣을…','이미지 빈칸에 어울리는…','리비안 디자인 3F 쇼룸 오…','고급 드레스룸 붙박이장…'];
+ function heroHTML(){
+  return '<div class="cvHero"><h1>오늘은 무엇을 만들어 볼까요?</h1>'
+  +'<div class="cvHeroKo">= 캔바의 첫 화면이에요. <b>검색</b>하거나, 아래 <b>아이콘</b>을 누르거나, <b>내 디자인</b>을 이어서 만들어요.</div>'
+  +'<div class="cvSegs"><span class="cvSeg on" data-cv="seghome">🏠 홈</span><span class="cvSeg" data-cv="segtpl">▤ 템플릿</span></div>'
+  +'<div class="cvSearch">🔍<input id="cvQ" placeholder="무엇이든 검색하세요 (쳐 보세요: 카페)"></div></div>';
+ }
+ var HTML=''
+ +'<div id="cvHomeOv">'
+ +'<div class="cvNav"><div class="cvNavScroll">'
+ +'<div class="cvNi mk" data-nav="make"><span class="ic">＋</span><b>만들기</b><small>새 디자인 시작</small></div>'
+ +'<div class="cvNi on" data-nav="home"><span class="ic">🏠</span><b>홈</b><small>첫 화면</small></div>'
+ +'<div class="cvNi" data-nav="proj"><span class="ic">📁</span><b>프로젝트</b><small>내 디자인 보관함</small></div>'
+ +'<div class="cvNi" data-nav="tpl"><span class="ic">▤</span><b>템플릿</b><small>디자인 틀 구경</small></div>'
+ +'<div class="cvNi" data-nav="brand"><span class="ic">👑</span><b>브랜드 센터</b><small>우리 로고·색 등록</small></div>'
+ +'<div class="cvNi" data-nav="ai"><span class="ic">✨</span><b>Canva AI</b><small>말로 디자인 만들기</small></div>'
+ +'<div class="cvNi" data-nav="print"><span class="ic">🖨</span><b>프린트 스토어</b><small>인쇄물 주문</small></div>'
+ +'<div class="cvNi" data-nav="more"><span class="ic">⋯</span><b>더 보기</b><small>나머지 기능</small></div>'
+ +'</div><div class="cvNavFoot"><span class="cvBell" data-cv="bell">🔔</span><span class="cvAva" data-cv="acct"></span></div></div>'
+ +'<div class="cvMain">'+heroHTML()
+ +'<div class="cvBody">'
+ +'<div class="cvCats">'+CATS.map(function(c,i){return '<div class="cvCat" data-cat="'+i+'"><span class="ci" style="background:'+c[1]+'">'+(['▤','✦','📊','❤','▶','🛍','📄','🗒','▦','</>','🌐','✉','🖼','⤢','⇧','⋯'][i]||'•')+'</span><b>'+c[0]+'</b><small>'+c[2]+'</small></div>';}).join('')+'</div>'
+ +'<div class="cvSecHd">하이라이트<span class="sp"></span></div>'
+ +'<div class="cvHl">'
+ +'<div class="cvHlC" data-hl="여름 템플릿 모음" style="background:linear-gradient(135deg,#bfe6ff,#8fd0f0)">휴무 공지부터 포스터까지<br>핫한 여름 템플릿 모음 ›</div>'
+ +'<div class="cvHlC" data-hl="보고서 템플릿 모음" style="background:linear-gradient(135deg,#1e3a2f,#2a5a44);color:#dff">목적에 맞게 골라 쓰는<br>보고서 템플릿 모음 ›</div>'
+ +'<div class="cvHlC" data-hl="사진→영상" style="background:linear-gradient(135deg,#dff0ff,#bcd8f0)">한 장의 사진이<br>움직이는 영상으로 ›</div>'
+ +'<div class="cvHlC" data-hl="브랜드 템플릿" style="background:linear-gradient(135deg,#20242e,#3a2530);color:#fdd">스파이더맨:<br>브랜드 뉴 데이 템플릿 ›</div></div>'
+ +'<div class="cvSecHd">이어서 디자인해 보세요<span class="sp"></span><span data-cv="viewall">모두 보기</span></div>'
+ +'<div class="cvGrid" id="cvDGrid">'+DESIGNS.map(function(d,i){return '<div class="cvD" data-d="'+i+'"><div class="th" style="background:'+d[2]+'">🎨</div><b>'+d[0]+'</b><small>'+d[1]+'</small></div>';}).join('')+'</div>'
+ +'<div class="cvEdu">💡 <b>캔바 사용 순서</b>: ① 왼쪽 <b>＋만들기</b> 또는 검색으로 시작 → ② 템플릿 골라 글자·사진만 바꾸기 → ③ 오른쪽 위 공유·다운로드. 디자인을 몰라도 템플릿이 다 해 줘요. <b>내 디자인 카드</b>를 눌러 에디터 시뮬레이션을 구경해 보세요!</div>'
+ +'</div></div></div>'
+ /* 서브 */
+ +'<div id="cvSub"><div class="cvTb"><button class="cvBk" id="cvSubBk">← 홈</button><span class="cvTt" id="cvSubT"></span><span style="flex:1"></span><button class="cvBk" style="background:#eee9f8;color:#3a2a6a" id="cvSubV">🔊 듣기</button><button class="cvBk" style="background:#eee9f8;color:#3a2a6a" id="cvSubX">✕</button></div>'
+ +'<div class="cvSubBody"><div class="cvWr"><h2 id="cvSubH"></h2><div class="cvBr" id="cvSubB"></div><div id="cvSubC"></div></div></div></div>'
+ /* 만들기 모달 */
+ +'<div id="cvMk"><div class="cvMkCard"><span class="x" data-cv="mkx">✕</span><h3>디자인 만들기</h3>'
+ +'<div class="cvMkKo">= 무엇을 만들지 고르는 창이에요. <b>크기 걱정은 끝</b> — 인스타용·전단지용 크기가 이미 맞춰져 있어요.</div>'
+ +'<div style="font-size:12.5px;font-weight:800;margin:4px 0 8px">빠른 작업</div>'
+ +'<div class="cvMkGrid">'
+ +[['Magic Layers','사진을 층으로 나눠 편집 (New)'],['화면 녹화','컴퓨터 화면을 영상으로 녹화'],['Canva 코드','말로 미니앱 만들기 (New)'],['Magic Write','AI가 글을 대신 써 줘요'],['동영상 배경 제거','영상 속 배경 지우기']].map(function(m){return '<div class="cvMkIt" data-mk="'+m[0]+'"><b>'+m[0]+'</b><small>'+m[1]+'</small></div>';}).join('')
+ +'</div><div style="font-size:12.5px;font-weight:800;margin:14px 0 8px">Canva의 인기 디자인</div>'
+ +'<div class="cvMkGrid">'
+ +[['프레젠테이션','발표 자료 · 16:9'],['인스타그램 게시물 (4:5)','피드용 세로 사진'],['전단지 (세로형 A4)','매장 홍보 전단'],['Instagram Reels','릴스 세로 영상'],['가로형 동영상','유튜브용 16:9'],['모바일 동영상','쇼츠·릴스 9:16'],['문서 (A4 세로형)','안내문·보고서'],['YouTube 썸네일','영상 표지']].map(function(m){return '<div class="cvMkIt" data-mkd="'+m[0]+'"><b>'+m[0]+'</b><small>'+m[1]+'</small></div>';}).join('')
+ +'</div></div></div>'
+ /* 팝업 */
+ +'<div class="cvMenu" id="cvAcctMenu">'
+ +'<div class="mi" style="cursor:default"><b>🦎 도마뱀</b><small>feeling21c@gmail.com</small></div><div class="sep"></div>'
+ +[['내 계정','이메일·비밀번호 관리'],['설정','언어·알림 설정'],['테마','밝게/어둡게 바꾸기'],['도움말 및 리소스','사용법 안내'],['요금제','무료/Pro 확인·변경'],['구매 내역','결제 기록 (금액은 가림)'],['데스크톱 앱에서 열기','컴퓨터 앱으로 전환'],['로그아웃','계정에서 나가기 — 디자인은 안전']].map(function(m){return '<div class="mi" data-am="'+m[0]+'"><b>'+m[0]+'</b><small>= '+m[1]+'</small></div>';}).join('')+'</div>'
+ +'<div class="cvMenu" id="cvBellMenu">'
+ +'<div class="mi" style="cursor:default"><b>🔔 알림</b><small>= 팀 댓글·공유·캔바 소식이 오는 곳</small></div><div class="sep"></div>'
+ +'<div class="mi" data-cv="ntf"><b>✨ Magic Layers 출시</b><small>사진을 층으로 나눠 편집하는 새 기능이 나왔어요</small></div>'
+ +'<div class="mi" data-cv="ntf"><b>🎨 여름 템플릿 업데이트</b><small>시즌 템플릿 200종이 추가됐어요</small></div></div>'
+ +'<div id="cvToast"></div>';
+ var host=document.createElement('div'); host.innerHTML=HTML;
+ while(host.firstElementChild) document.body.appendChild(host.firstElementChild);
+ toast=document.getElementById('cvToast');
+ var home=document.getElementById('cvHomeOv'), sub=document.getElementById('cvSub'), mk=document.getElementById('cvMk');
+ function closeMenus(){document.querySelectorAll('.cvMenu').forEach(function(m){m.classList.remove('on');});}
+ function popup(id,x,y){closeMenus();var m=document.getElementById(id);
+  m.style.left=Math.min(Math.max(8,x),innerWidth-280)+'px';m.style.top='auto';m.style.bottom=Math.max(10,innerHeight-y)+'px';
+  if(innerWidth<=700){m.style.left='8px';m.style.right='8px';m.style.bottom='90px';}
+  m.classList.add('on');}
+ function openSub(t,b,html,voice){closeMenus();mk.classList.remove('on');
+  document.getElementById('cvSubT').textContent=t;document.getElementById('cvSubH').textContent=t;
+  document.getElementById('cvSubB').textContent='실제 위치: '+b;document.getElementById('cvSubC').innerHTML=html;
+  sub._v=voice||'';sub.classList.add('on');document.body.classList.add('cvSubOpen');
+  var sb=sub.querySelector('.cvSubBody');if(sb)sb.scrollTop=0;}
+ function closeSub(){sub.classList.remove('on');document.body.classList.remove('cvSubOpen');}
+ document.getElementById('cvSubBk').onclick=closeSub;
+ document.getElementById('cvSubX').onclick=closeSub;
+ document.getElementById('cvSubV').onclick=function(){if(sub._v)speak(sub._v);};
+ /* 에디터 시뮬 */
+ function edHTML(title){
+  return '<div class="cvEdWrap"><div class="cvEdTools">'
+  +[['▤','디자인'],['✦','요소'],['T','텍스트'],['⇧','업로드'],['✏','그리기']].map(function(t,i){return '<div class="cvEdTool'+(i===0?' on':'')+'" data-cv="edtool" data-tn="'+t[1]+'"><span class="i">'+t[0]+'</span>'+t[1]+'</div>';}).join('')
+  +'</div><div class="cvCanvas"><div class="cvPage" id="cvPage">'
+  +'<div class="cvEl" style="animation-delay:.15s;height:26px;background:#efe9fb;width:70%"></div>'
+  +'<div class="cvEl" style="animation-delay:.35s;height:90px;background:linear-gradient(135deg,#d9c8f5,#b9a8e8);margin-top:10px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800" id="cvHeroEl">'+title+'</div>'
+  +'<div class="cvEl" style="animation-delay:.55s;height:12px;background:#f0eef5;margin-top:10px"></div>'
+  +'<div class="cvEl" style="animation-delay:.7s;height:12px;background:#f0eef5;margin-top:6px;width:80%"></div>'
+  +'<div class="cvEl" style="animation-delay:.9s;height:30px;background:#7b2ff2;margin-top:14px;width:46%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px;font-weight:700">예약 문의 ›</div>'
+  +'</div></div></div>'
+  +'<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px">'
+  +'<button class="cvBtn" data-cv="edtalk">💬 말로 수정: "배경을 분홍으로"</button>'
+  +'<button class="cvBtn gr" data-cv="eddl">⬇ 다운로드</button>'
+  +'<button class="cvBtn gr" data-cv="edsh">↗ 공유</button></div>'
+  +'<div class="cvEdu">💡 <b>에디터</b> = 디자인을 고치는 화면. 왼쪽 도구에서 요소·글자를 골라 넣고, 다 되면 <b>공유/다운로드</b>. <b>말로 수정</b> 버튼을 눌러 보세요 — 배경색이 진짜 바뀌어요!</div>';
+ }
+ /* 클릭 라우팅 */
+ window.addEventListener('click',function(ev){
+  var t;
+  if(!home.classList.contains('on')&&!sub.classList.contains('on')&&!mk.classList.contains('on'))return;
+  if(t=ev.target.closest('[data-cv="mkx"]')){mk.classList.remove('on');return;}
+  if(t=ev.target.closest('#cvHomeOv .cvNi[data-nav]')){var nav=t.getAttribute('data-nav');
+   home.querySelectorAll('.cvNi').forEach(function(n){n.classList.remove('on');});t.classList.add('on');
+   if(nav==='make'){mk.classList.add('on');return;}
+   if(nav==='home'){closeSub();return;}
+   if(nav==='proj'){
+    openSub('프로젝트','왼쪽 메뉴 → 프로젝트',
+     '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px">'+['모든 프로젝트','최근 디자인','내 프로젝트','나와 공유됨','오프라인 사용 가능'].map(function(x,i){return '<span class="cvSeg'+(i===0?' on':'')+'" data-cv="prjseg">'+x+'</span>';}).join('')+'</div>'
+     +'<div class="cvLi" style="cursor:default">📂 <span>폴더: 업로드 항목<small>올린 사진·파일이 모이는 폴더</small></span></div>'
+     +'<div class="cvGrid">'+DESIGNS.map(function(d,i){return '<div class="cvD" data-d="'+i+'"><div class="th" style="background:'+d[2]+'">🎨</div><b>'+d[0]+'</b><small>'+d[1]+'</small></div>';}).join('')+'</div>'
+     +'<button class="cvBtn gr" data-cv="trash" style="margin-top:12px">🗑 휴지통</button>'
+     +'<div class="cvEdu">💡 <b>프로젝트</b> = 내가 만든 디자인 전부가 모이는 보관함. 카드를 누르면 이어서 편집해요. 위 탭으로 최근 것만·공유받은 것만 걸러 봐요.</div>',
+     '프로젝트 화면입니다. 내가 만든 디자인이 전부 보관되고, 카드를 누르면 이어서 편집할 수 있어요.');return;}
+   if(nav==='tpl'){
+    openSub('템플릿','왼쪽 메뉴 → 템플릿',
+     '<div class="cvGrid">'+[['카페 오픈 포스터','#c9a227'],['뷰티샵 가격표','#e23a6c'],['인테리어 포트폴리오','#31577a'],['세일 인스타 게시물','#7b2ff2'],['개업 초대장','#18a058'],['명함','#41475a'],['메뉴판','#8a6f5c'],['이벤트 릴스','#c93af2']].map(function(d){return '<div class="cvD" data-tp="'+d[0]+'"><div class="th" style="background:'+d[1]+'">▤</div><b>'+d[0]+'</b><small>무료 템플릿 · 클릭하면 이 틀로 시작</small></div>';}).join('')+'</div>'
+     +'<div class="cvEdu">💡 <b>템플릿</b> = 전문가가 미리 만들어 둔 디자인 틀. 골라서 <b>글자·사진만 바꾸면 끝</b>. 리비안 홍보물도 "인테리어 포트폴리오" 틀에서 시작하면 10분!</div>',
+     '템플릿 화면입니다. 전문가가 만든 틀을 골라 글자와 사진만 바꾸면 디자인이 완성돼요.');return;}
+   if(nav==='brand'){
+    openSub('브랜드 센터','왼쪽 메뉴 → 브랜드 센터',
+     '<div class="cvLi" style="cursor:default">👑 <span><b>브랜드 키트</b><small>리비안 로고·브랜드 색·글꼴을 등록해 두는 곳</small></span></div>'
+     +'<div class="cvLi" data-cv="brandadd">🎨 <span><b>브랜드 색 등록</b><small>클릭하면 리비안 블루가 등록돼요 (시뮬)</small></span><span class="sp"></span><button class="cvBtn" style="padding:7px 12px">등록</button></div>'
+     +'<div id="cvBrandDone"></div>'
+     +'<div class="cvEdu">💡 <b>브랜드 센터</b> = 우리 회사 로고·색·글꼴 금고. 한 번 등록하면 모든 디자인에서 클릭 한 번으로 우리 브랜드 색이 나와요. 직원 누가 만들어도 통일!</div>',
+     '브랜드 센터입니다. 회사 로고와 색을 등록해 두면 모든 디자인이 브랜드에 맞게 통일돼요.');return;}
+   if(nav==='ai'){
+    openSub('Canva AI','왼쪽 메뉴 → Canva AI',
+     '<div style="display:flex;gap:14px;flex-wrap:wrap"><div style="flex:0 0 190px">'
+     +'<div class="cvLi" data-cv="ainew" style="padding:9px 12px">✏️ <span>새로운 대화</span></div>'
+     +'<div style="font-size:10.5px;color:#8a90a6;margin:6px 0 4px">그 이전</div>'
+     +AICHATS.map(function(c){return '<div class="cvLi" data-aichat="'+c+'" style="padding:8px 11px;font-size:12px">💬 <span>'+c+'</span></div>';}).join('')
+     +'</div><div style="flex:1;min-width:250px">'
+     +'<div style="text-align:center;font-size:20px;font-weight:800;margin:14px 0;background:linear-gradient(90deg,#6a30d9,#2f6bd9);-webkit-background-clip:text;background-clip:text;color:transparent">오늘은 무엇을 만들어 볼까요?</div>'
+     +'<div class="cvSearch" style="margin:0 0 8px"><span>＋</span><input id="cvAiQ" placeholder="만들고 싶은 것을 설명해 보세요" readonly> 🎤</div>'
+     +'<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px">'+['디자인','이미지','Docs','코드','동영상 클립'].map(function(c){return '<span class="cvSeg" data-aichip="'+c+'">'+c+'</span>';}).join('')+'</div>'
+     +'<button class="cvBtn" data-cv="airun">▶ 시켜 보기: "3층 쇼룸 오픈 인스타 게시물 만들어줘"</button>'
+     +'<div class="cvGenLog" id="cvAiLog" style="margin-top:12px"></div>'
+     +'</div></div>'
+     +'<div class="cvEdu">💡 <b>Canva AI</b> = 말로 시키면 디자인·이미지·문서를 만들어 주는 채팅. 왼쪽엔 예전 대화가 저장돼 있어요(루카스님 실제 기록). <b>▶ 시켜 보기</b>를 눌러 만들어지는 과정을 구경하세요!</div>',
+     '캔바 에이아이 화면입니다. 말로 시키면 디자인을 만들어 줘요. 시켜 보기 버튼을 눌러 과정을 구경해 보세요.');return;}
+   if(nav==='print'){
+    openSub('프린트 스토어','왼쪽 메뉴 → 프린트 스토어',
+     '<div class="cvLi" style="cursor:default">🖨 <span><b>명함 · 전단지 · 포스터 · 스티커</b><small>만든 디자인을 실제 인쇄물로 주문 — 집·매장으로 배송</small></span></div>'
+     +'<div class="cvLi" data-cv="printgo">📦 <span><b>주문 시뮬레이션</b><small>전단지 A4 · 100장 → 결제 → 3일 뒤 배송 (금액은 가림)</small></span><span class="sp"></span><button class="cvBtn" style="padding:7px 12px">주문해 보기</button></div>'
+     +'<div class="cvEdu">💡 <b>프린트 스토어</b> = 디자인을 인쇄소 없이 바로 주문. 매장 오픈 전단지를 캔바에서 만들고 그 자리에서 100장 주문하면 끝!</div>',
+     '프린트 스토어입니다. 만든 디자인을 실제 인쇄물로 주문하면 집이나 매장으로 배송돼요.');return;}
+   if(nav==='more'){
+    openSub('더 보기','왼쪽 메뉴 → 더 보기',
+     [['📤 승인','팀 디자인을 검토·승인하는 기능 (팀용)'],['📊 콘텐츠 플래너','SNS 예약 발행 달력'],['🧩 앱','캔바에 붙이는 확장 기능들'],['🗑 휴지통','지운 디자인 30일 보관']].map(function(m){return '<div class="cvLi" data-more="'+m[0]+'">'+m[0].split(' ')[0]+' <span><b>'+m[0].split(' ').slice(1).join(' ')+'</b><small>= '+m[1]+'</small></span></div>';}).join('')
+     +'<div class="cvEdu">💡 자주 안 쓰는 기능은 여기 모여 있어요. 눌러 보면 각각 설명이 나와요.</div>',
+     '더 보기 메뉴입니다. 승인, 콘텐츠 플래너, 앱, 휴지통 기능이 모여 있어요.');return;}
+   return;}
+  if(t=ev.target.closest('[data-cv="seghome"],[data-cv="segtpl"]')){
+   document.querySelectorAll('#cvHomeOv .cvSegs .cvSeg').forEach(function(s){s.classList.remove('on');});t.classList.add('on');
+   if(t.getAttribute('data-cv')==='segtpl'){var el=home.querySelector('.cvNi[data-nav="tpl"]');if(el)el.click();}
+   else say('🏠 홈 화면이에요');
+   return;}
+  if(t=ev.target.closest('#cvHomeOv .cvCat')){var c=CATS[+t.getAttribute('data-cat')];
+   if(c[0]==='업로드'){openSub('업로드','홈 → 업로드',
+    '<div class="cvLi" data-cv="upgo">⇧ <span><b>파일 올리기</b><small>내 사진·영상·PDF를 캔바로 가져와요</small></span><span class="sp"></span><button class="cvBtn" style="padding:7px 12px">올려 보기</button></div><div id="cvUpList"></div>'
+    +'<div class="cvEdu">💡 현장 사진을 올려서 포트폴리오·게시물에 바로 쓰는 흐름이에요.</div>','업로드 화면입니다. 내 사진과 파일을 캔바로 가져와요.');return;}
+   openSub(c[0],'홈 → '+c[0]+' 아이콘',
+    '<div class="cvLi" style="cursor:default">'+(c[0]==='코드'?'</>':'✦')+' <span><b>'+c[0]+'</b><small>= '+c[2]+'</small></span></div>'
+    +'<div class="cvGrid">'+[1,2,3,4].map(function(i){return '<div class="cvD" data-tp="'+c[0]+' 예시 '+i+'"><div class="th" style="background:'+c[1]+'">▤</div><b>'+c[0]+' 템플릿 '+i+'</b><small>클릭하면 이 틀로 에디터가 열려요</small></div>';}).join('')+'</div>'
+    +'<div class="cvEdu">💡 <b>'+c[0]+'</b> — '+c[2]+'. 템플릿을 누르면 바로 에디터로 들어가요.</div>',
+    c[0]+' 화면입니다. 템플릿을 고르면 바로 편집 화면으로 들어가요.');return;}
+  if(t=ev.target.closest('[data-hl]')){openSub(t.getAttribute('data-hl'),'홈 → 하이라이트 배너',
+   '<div class="cvGrid">'+[1,2,3,4].map(function(i){return '<div class="cvD" data-tp="'+t.getAttribute('data-hl')+' '+i+'"><div class="th" style="background:#8a90c6">▤</div><b>추천 템플릿 '+i+'</b><small>클릭하면 이 틀로 시작</small></div>';}).join('')+'</div>'
+   +'<div class="cvEdu">💡 <b>하이라이트</b> = 캔바가 시즌마다 골라 주는 추천 모음이에요.</div>','추천 템플릿 모음입니다.');return;}
+  if(t=ev.target.closest('[data-d]')){var d=DESIGNS[+t.getAttribute('data-d')];
+   openSub(d[0],'홈/프로젝트 → 내 디자인 클릭',edHTML(d[0]),'에디터 화면입니다. 왼쪽 도구로 요소를 넣고, 말로 수정 버튼을 누르면 배경색이 실제로 바뀌어요.');return;}
+  if(t=ev.target.closest('[data-tp]')){openSub(t.getAttribute('data-tp'),'템플릿 클릭 → 에디터',edHTML(t.getAttribute('data-tp')),'템플릿으로 에디터가 열렸어요. 글자와 사진만 바꾸면 완성입니다.');return;}
+  if(t=ev.target.closest('[data-mkd]')){mk.classList.remove('on');openSub(t.getAttribute('data-mkd'),'＋만들기 → '+t.getAttribute('data-mkd'),edHTML(t.getAttribute('data-mkd')),'새 디자인 에디터가 열렸어요.');return;}
+  if(t=ev.target.closest('[data-mk]')){mk.classList.remove('on');var n=t.getAttribute('data-mk');
+   openSub(n,'＋만들기 → 빠른 작업 → '+n,
+   '<div class="cvGenLog"><div class="u">'+n+' 실행해 줘</div>'
+   +'<div class="g" style="animation-delay:.2s"><i>✓</i>① 기능 실행<em>→ '+({'Magic Layers':'사진이 배경/인물/소품 층으로 나뉘어요','화면 녹화':'화면이 녹화되기 시작해요','Canva 코드':'말로 설명한 미니앱 코드를 만들어요','Magic Write':'AI가 초안 글을 써 줘요','동영상 배경 제거':'영상 배경이 지워져요'}[n]||'기능이 실행돼요')+'</em></div>'
+   +'<div class="g" style="animation-delay:1.1s"><i>✓</i>② 완료! 결과가 에디터에 들어가요<em>→ 이어서 편집하면 끝</em></div></div>'
+   +'<div class="cvEdu">💡 <b>'+n+'</b> — 빠른 작업은 자주 쓰는 AI 기능 지름길이에요.</div>',n+' 실행 과정입니다.');return;}
+  if(t=ev.target.closest('[data-cv="airun"]')){
+   var g=document.getElementById('cvAiLog');if(!g)return;
+   g.innerHTML='<div class="u">3층 쇼룸 오픈 인스타 게시물 만들어줘</div>'
+   +'<div class="g" style="animation-delay:.2s"><i>✓</i>① 요청 이해 — "인스타 4:5 게시물, 쇼룸 오픈 홍보"<em>→ 크기·목적을 알아서 정해요</em></div>'
+   +'<div class="g" style="animation-delay:1.1s"><i>✓</i>② 시안 4개 생성 중<em>→ 색·글꼴이 다른 후보를 만들어요</em></div>'
+   +'<div class="g" style="animation-delay:2s"><i>✓</i>③ 완성! 아래에서 골라요 👇</div>'
+   +'<div class="cvGrid" style="margin-top:10px">'+['#31577a','#b34a3a','#7b2ff2','#18a058'].map(function(c,i){return '<div class="cvD" data-tp="쇼룸 오픈 시안 '+(i+1)+'" style="opacity:0;animation:cvIn .5s '+(2.4+i*0.2)+'s forwards"><div class="th" style="background:'+c+'">3F</div><b>시안 '+(i+1)+'</b><small>클릭하면 에디터로</small></div>';}).join('')+'</div>';
+   var sb=sub.querySelector('.cvSubBody');if(sb)setTimeout(function(){sb.scrollTo({top:sb.scrollHeight,behavior:'smooth'});},600);
+   speak('캔바 에이아이가 시안 네 개를 만들었어요. 마음에 드는 것을 골라 에디터에서 다듬으면 됩니다.');return;}
+  if(t=ev.target.closest('[data-aichat]')){openSub('대화 열기','Canva AI → 예전 대화 클릭',
+   '<div class="cvGenLog"><div class="u">'+t.getAttribute('data-aichat')+'</div>'
+   +'<div class="g" style="animation-delay:.2s"><i>✓</i>그때 대화와 만들던 시안을 불러왔어요<em>→ 이어서 "글자 더 크게" 하고 시키면 계속 다듬어져요</em></div></div>'
+   +'<button class="cvBtn" data-cv="aichatgo" style="margin-top:8px">▶ 이어서 작업하기</button>'
+   +'<div class="cvEdu">💡 AI 대화도 저장돼요 — 어제 만들던 시안을 이어서 수정!</div>','예전 대화를 불러왔어요. 이어서 작업할 수 있습니다.');return;}
+  if(t=ev.target.closest('[data-cv="aichatgo"]')){closeSub();say('✓ 이어서 작업해요 — Canva AI 화면에서 계속 시키면 됩니다 (교육용)');return;}
+  if(t=ev.target.closest('[data-aichip]')){say('🎯 「'+t.getAttribute('data-aichip')+'」 모드 — 이 종류의 결과물을 만들어 달라고 지정하는 칩이에요');return;}
+  if(t=ev.target.closest('[data-cv="ainew"]')){say('✏️ 새 대화 시작 — 오른쪽 입력창에 만들 것을 설명하면 돼요 (교육용)');return;}
+  if(t=ev.target.closest('[data-cv="edtalk"]')){var el=document.getElementById('cvHeroEl');
+   if(el){el.style.background='linear-gradient(135deg,#f5b8d0,#e8739f)';}
+   say('💬 "배경을 분홍으로" → 바뀌었죠? 이렇게 말로 수정하는 게 캔바 AI 편집이에요');return;}
+  if(t=ev.target.closest('[data-cv="eddl"]')){say('⬇ PNG/PDF/영상으로 저장돼요 — 인스타엔 PNG, 인쇄엔 PDF 추천 (교육용)');return;}
+  if(t=ev.target.closest('[data-cv="edsh"]')){say('↗ 링크 복사 — 카톡으로 보내면 상대방이 바로 봐요. 편집 권한도 줄 수 있어요 (교육용)');return;}
+  if(t=ev.target.closest('[data-cv="edtool"]')){document.querySelectorAll('.cvEdTool').forEach(function(x){x.classList.remove('on');});t.classList.add('on');
+   say('🛠 '+t.getAttribute('data-tn')+' 도구 — '+({'디자인':'다른 템플릿으로 갈아입혀요','요소':'도형·아이콘·사진을 넣어요','텍스트':'글자를 넣어요','업로드':'내 사진을 넣어요','그리기':'펜으로 직접 그려요'}[t.getAttribute('data-tn')]||''));return;}
+  if(t=ev.target.closest('[data-cv="brandadd"]')){var dn=document.getElementById('cvBrandDone');
+   if(dn&&!dn.textContent){dn.innerHTML='<div class="cvLi" style="cursor:default;border-color:#7b2ff2">✓ <span><b>리비안 블루 #2E6F9E 등록됨</b><small>이제 색 고르기에서 맨 위에 나와요</small></span><span style="width:26px;height:26px;border-radius:6px;background:#2E6F9E"></span></div>';}
+   say('✓ 브랜드 색이 등록됐어요 — 모든 디자인에서 클릭 한 번!');return;}
+  if(t=ev.target.closest('[data-cv="printgo"]')){say('📦 주문 완료 (시뮬) — 실제로는 결제 후 3일 내 배송돼요');return;}
+  if(t=ev.target.closest('[data-cv="upgo"]')){var ul=document.getElementById('cvUpList');
+   if(ul){var d2=document.createElement('div');d2.className='cvLi';d2.style.cursor='default';d2.innerHTML='🖼 <span>현장사진_3층쇼룸.jpg<small>방금 올린 파일 — 이제 어떤 디자인에든 넣을 수 있어요</small></span>';ul.appendChild(d2);}
+   say('✓ 업로드 완료! 파일이 목록에 추가됐어요');return;}
+  if(t=ev.target.closest('[data-more]')){say('ℹ️ '+t.getAttribute('data-more')+' — 카드에 적힌 설명 그대로예요. 실제 화면에서 눌러 보세요 (교육용)');return;}
+  if(t=ev.target.closest('[data-cv="prjseg"]')){document.querySelectorAll('#cvSubC .cvSeg').forEach(function(s){s.classList.remove('on');});t.classList.add('on');
+   say('🗂 「'+t.textContent.trim()+'」 필터 — 실제 화면에선 목록이 이 기준으로 걸러져요');return;}
+  if(t=ev.target.closest('[data-cv="trash"]')){openSub('휴지통','프로젝트 → 휴지통',
+   '<div class="cvLi" style="cursor:default">🗑 <span>지운 디자인이 30일 보관돼요<small>실수로 지워도 여기서 복구!</small></span></div>'
+   +'<div class="cvEdu">💡 30일 안엔 뭐든 되살릴 수 있어요. 30일 지나면 완전 삭제.</div>','휴지통입니다. 지운 디자인을 30일 안에 복구할 수 있어요.');return;}
+  if(t=ev.target.closest('[data-cv="viewall"]')){var el=home.querySelector('.cvNi[data-nav="proj"]');if(el)el.click();return;}
+  if(t=ev.target.closest('[data-cv="bell"]')){var r=t.getBoundingClientRect();popup('cvBellMenu',r.left-220,r.top);return;}
+  if(t=ev.target.closest('[data-cv="acct"]')){var r=t.getBoundingClientRect();popup('cvAcctMenu',r.left,r.top);return;}
+  if(t=ev.target.closest('[data-cv="ntf"]')){closeMenus();say('🔔 알림을 눌렀어요 — 실제로는 해당 기능·템플릿으로 이동해요 (교육용)');return;}
+  if(t=ev.target.closest('#cvAcctMenu [data-am]')){closeMenus();var n=t.getAttribute('data-am');
+   openSub(n,'계정 메뉴 → '+n,
+    '<div class="cvLi" style="cursor:default">👤 <span><b>'+n+'</b><small>'+(t.querySelector('small')?t.querySelector('small').textContent:'')+'</small></span></div>'
+    +(n==='요금제'?'<div class="cvLi" style="cursor:default">⭐ <span><b>Canva Pro</b><small>월 ₩●●,●●● (가림) — 프리미엄 템플릿·배경제거·브랜드 키트 포함</small></span></div>':'')
+    +(n==='테마'?['밝게 ✓','어둡게','시스템'].map(function(x){return '<div class="cvLi" data-cv="thpick"><span>'+x+'</span></div>';}).join(''):'')
+    +'<div class="cvEdu">💡 계정 관련 기능이에요. 교육용이라 실제 변경은 되지 않지만, 실제 화면 위치와 하는 일은 동일해요.</div>',
+    n+' 화면입니다.');return;}
+  if(t=ev.target.closest('[data-cv="thpick"]')){document.querySelectorAll('#cvSubC [data-cv="thpick"] span').forEach(function(s){s.textContent=s.textContent.replace(' ✓','');});
+   t.querySelector('span').textContent+=' ✓';say('🎨 테마 선택 (교육용) — 실제로는 화면 색이 바뀌어요');return;}
+  if(!ev.target.closest('.cvMenu'))closeMenus();
+ },true);
+ /* 검색 시뮬 */
+ document.addEventListener('input',function(ev){
+  if(ev.target&&ev.target.id==='cvQ'){
+   var q=ev.target.value.trim();var g=document.getElementById('cvDGrid');if(!g)return;
+   if(q){g.innerHTML=[1,2,3,4].map(function(i){return '<div class="cvD" data-tp="'+q+' 템플릿 '+i+'"><div class="th" style="background:#6a5acd">🔍</div><b>'+q+' 템플릿 '+i+'</b><small>검색 결과 · 클릭하면 에디터</small></div>';}).join('');}
+   else{g.innerHTML=DESIGNS.map(function(d,i){return '<div class="cvD" data-d="'+i+'"><div class="th" style="background:'+d[2]+'">🎨</div><b>'+d[0]+'</b><small>'+d[1]+'</small></div>';}).join('');}
+  }
+ },true);
+ /* 홈 탭 연동 */
+ function syncHome(){
+  var homeTab=document.querySelector('.tab[data-tab="home"]');
+  var on=homeTab&&homeTab.classList.contains('on');
+  var gate=!!document.getElementById('__g__')||(function(){var i=document.getElementById('introov');return i&&getComputedStyle(i).display!=='none';})();
+  home.classList.toggle('on',!!on&&!gate);
+  document.body.classList.toggle('cvHomeOn',!!on&&!gate);
+  if(on){var tb=document.querySelector('.tabs');if(tb){var r=tb.getBoundingClientRect();home.style.top=Math.max(60,Math.min(r.bottom+2,150))+'px';}}
+  if(!on){closeSub();}
+ }
+ document.addEventListener('click',function(e){if(e.target.closest&&e.target.closest('.tab'))setTimeout(syncHome,60);});
+ setInterval(syncHome,700);
+})();
+</script>
+
+
+<!-- mobfix v1 : 모바일 전수 수정 — 드로어/가이드 독 겹침·상단바 짤림·배경 스크롤 잠금 -->
+<style id="mobFixCss">
+@media (max-width:700px){
+  #drawer{top:0 !important;bottom:calc(58px + env(safe-area-inset-bottom,0px)) !important;height:auto !important}
+  #guidebd{top:0 !important;bottom:calc(58px + env(safe-area-inset-bottom,0px)) !important;height:auto !important}
+  #drawer *,#guidebd *{max-width:100%}
+  .asTopbar{flex-wrap:nowrap !important;overflow-x:auto;gap:6px !important;padding:6px 8px !important}
+  .asTopbar .lbl{font-size:11px !important;flex:0 0 auto}
+  .asTb{white-space:nowrap;font-size:10.5px !important;padding:4px 8px !important;flex:0 0 auto}
+  .cvTb,.ntTb2{flex-wrap:nowrap !important;overflow-x:auto}
+  .cvBk,.ntBk{white-space:nowrap;font-size:11.5px !important;padding:6px 10px !important;flex:0 0 auto}
+}
+body.asHomeOn,body.cdHomeOn,body.cvHomeOn,body.ntHomeOn{overflow:hidden !important}
+@media (min-width:701px){ #cvSub .cvTb{padding-right:190px} }
+</style>
 </body>
 </html>
