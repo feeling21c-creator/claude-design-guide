@@ -237,12 +237,12 @@ a{color:var(--accent-ink)}
   <div class="sitem ix" data-k="projects"><span class="i">🏠</span> 리비안 공동작업</div>
   <div class="schat sub" data-nt="dash">📄 리비안 통합 대시보드</div>
   <div class="schat sub" data-nt="diary-lucas">🗓 루카스 업무일지 ( 오늘 한 일)</div>
-  <div class="schat sub" data-nt="diary-park">🗓 박건우 업무일지 ( 오늘 한 일)</div>
-  <div class="schat sub" data-nt="diary-kim">🗓 김혜원 업무일지 ( 오늘 한 일)</div>
+  <div class="schat sub" data-nt="diary-park">🗓 박OO 업무일지 ( 오늘 한 일)</div>
+  <div class="schat sub" data-nt="diary-kim">🗓 김OO 업무일지 ( 오늘 한 일)</div>
   <div class="schat sub ix" data-k="library">📁 작업 폴더</div>
   <div class="schat sub" data-nt="proc">🏢 프로젝트별 공정과정</div>
   <div class="ssec">개인 페이지</div>
-  <div class="schat ix" data-k="personal">📄 박건우</div>
+  <div class="schat ix" data-k="personal">📄 박OO</div>
   <div class="schat ix" data-k="personal">📄 테스트폴더</div>
   <div class="schat ix" data-k="model">📄 내 Notion AI <span class="aiTag">AI 지침</span></div>
   <div class="schat ix" data-k="personal">🔥 쉽게 쉽게 풀어쓰는 Notion 사…</div>
@@ -341,7 +341,7 @@ a{color:var(--accent-ink)}
       </div>
      </div>
      <div class="ncolR">
-      <div class="callout blue ix" data-k="hist1" role="button"><span class="ci">👥</span><div><b>직원별 이번 주 할 일</b><ul class="wk"><li>루카스 업무일지</li><li>박건우 업무일지</li><li>김혜원 업무일지</li></ul></div></div>
+      <div class="callout blue ix" data-k="hist1" role="button"><span class="ci">👥</span><div><b>직원별 이번 주 할 일</b><ul class="wk"><li>루카스 업무일지</li><li>박OO 업무일지</li><li>김OO 업무일지</li></ul></div></div>
       <div class="callout purple ix" data-k="library" role="button"><span class="ci">📌</span><div><b>리비안 주간계획</b><div style="color:#cdbef0;margin-top:3px">이번 주 핵심 일정과 우선순위를 여기에 정리합니다.</div></div></div>
       <div class="callout green"><span class="ci">✅</span><div><b>오늘 체크리스트</b><div style="color:#bfe6cd;margin-top:3px">날짜가 바뀌면 “오늘 상태”가 자동으로 초기화됩니다.</div></div></div>
       <div class="dbwrap ix" data-k="tcanvas" role="button" style="margin-top:8px">
@@ -2020,7 +2020,7 @@ img{-webkit-user-drag:none;user-drag:none;pointer-events:auto}
    +'<tr><td>🔴 1</td><td>SKF 전기·조명 배선 완료</td><td>루카스</td><td><span class="nst doing">진행 중</span></td></tr>'
    +'<tr><td>🟠 2</td><td>동명대 간판·시트지 발주</td><td>공동</td><td><span class="nst todo">예정</span></td></tr>'
    +'<tr><td>🟡 3</td><td>엔포유 준공 서류</td><td>루카스</td><td><span class="nst todo">예정</span></td></tr>'
-   +'<tr><td>🟢 4</td><td>학원 개강 홍보물 제작</td><td>김혜원</td><td><span class="nst done">완료</span></td></tr>'
+   +'<tr><td>🟢 4</td><td>학원 개강 홍보물 제작</td><td>김OO</td><td><span class="nst done">완료</span></td></tr>'
    +'</tbody></table>'
    +'<div class="ncallout"><span>📅</span><div>이 표는 <b>대시보드 캘린더와 같은 데이터</b>를 다른 보기로 본 것이에요 — 노션의 핵심 개념!</div></div></div>';
  }
@@ -2173,11 +2173,11 @@ img{-webkit-user-drag:none;user-drag:none;pointer-events:auto}
   if(cb){ cb.textContent=cb.classList.toggle('done')?'✓ 연결됨':'연결'; }
  });
  /* ---------- 수신함 ---------- */
- var IN=[['💬','<b>박건우</b>님이 <b>SKF 공사</b> 페이지에 댓글: "전기 자재 내일 입고 예정입니다"','5분 전',0],
-  ['📌','<b>김혜원</b>님이 회원님을 <b>학원 개강 홍보물</b>에 멘션했어요','1시간 전',0],
+ var IN=[['💬','<b>박OO</b>님이 <b>SKF 공사</b> 페이지에 댓글: "전기 자재 내일 입고 예정입니다"','5분 전',0],
+  ['📌','<b>김OO</b>님이 회원님을 <b>학원 개강 홍보물</b>에 멘션했어요','1시간 전',0],
   ['✅','<b>루카스 업무일지</b>의 할 일 2개가 오늘로 예약됐어요','3시간 전',0],
   ['📝','<b>리비안 통합 대시보드</b>가 수정됐어요 — 월간일정 1건 추가','어제',1],
-  ['👥','<b>박건우</b>님이 <b>작업 폴더</b>에 참여했어요','어제',1],
+  ['👥','<b>박OO</b>님이 <b>작업 폴더</b>에 참여했어요','어제',1],
   ['📅','<b>엔포유 준공</b> 일정 리마인더 — 8월 20일','2일 전',1]];
  var inInner='<div class="ntInList"><div class="nth1">📥 수신함</div><div class="ntsub">안 읽은 알림 3개 · 댓글·멘션·업데이트가 여기 모여요. 항목을 누르면 읽음 처리돼요.</div>'
   +IN.map(function(n){return '<div class="ntIn'+(n[3]?' read':'')+'"><span class="dot"></span><span>'+n[0]+'</span><div>'+n[1]+'</div><span class="tm">'+n[2]+'</span></div>';}).join('')+'</div>';
@@ -2194,8 +2194,8 @@ img{-webkit-user-drag:none;user-drag:none;pointer-events:auto}
  /* ---------- 채팅 ---------- */
  var chInner='<div class="ntChatWrap"><div class="nth1">💬 팀 채팅</div><div class="ntsub">노션 안에서 팀원과 바로 대화해요. 아래에 입력하고 보내보세요. (신기능 · 확인 필요)</div>'
   +'<div id="ntChLog">'
-  +'<div class="ntMsg"><span class="av">👷</span><div class="bb"><b>박건우</b> · SKF 전기 배선 60% 진행됐습니다. 분전반은 금요일 마무리 예정.</div></div>'
-  +'<div class="ntMsg"><span class="av">👩</span><div class="bb"><b>김혜원</b> · 학원 개강 홍보물 시안 2종 대시보드에 올렸어요!</div></div>'
+  +'<div class="ntMsg"><span class="av">👷</span><div class="bb"><b>박OO</b> · SKF 전기 배선 60% 진행됐습니다. 분전반은 금요일 마무리 예정.</div></div>'
+  +'<div class="ntMsg"><span class="av">👩</span><div class="bb"><b>김OO</b> · 학원 개강 홍보물 시안 2종 대시보드에 올렸어요!</div></div>'
   +'<div class="ntMsg me"><span class="av">🧑‍💼</span><div class="bb"><b>루카스</b> · 확인했습니다. 동명대 간판 발주 오늘 넣을게요.</div></div>'
   +'</div><div class="ntChatIn"><input id="ntChIn" type="text" placeholder="메시지 입력…"><button id="ntChSend" type="button">보내기</button></div></div>';
  var ch=mkOv('ntChOv','💬 <b>팀 채팅</b>',chInner,'노션 팀 채팅입니다. 페이지를 벗어나지 않고 팀원과 대화해요. 메시지를 입력해보세요.');
@@ -2203,7 +2203,7 @@ img{-webkit-user-drag:none;user-drag:none;pointer-events:auto}
   var log=ch.querySelector('#ntChLog');
   log.insertAdjacentHTML('beforeend','<div class="ntMsg me"><span class="av">🧑‍💼</span><div class="bb"><b>루카스</b> · '+v.replace(/</g,'&lt;')+'</div></div>');
   i.value='';
-  setTimeout(function(){ log.insertAdjacentHTML('beforeend','<div class="ntMsg"><span class="av">👷</span><div class="bb"><b>박건우</b> · 넵, 확인했습니다! 👍</div></div>'); log.lastElementChild.scrollIntoView({behavior:'smooth'}); },900);
+  setTimeout(function(){ log.insertAdjacentHTML('beforeend','<div class="ntMsg"><span class="av">👷</span><div class="bb"><b>박OO</b> · 넵, 확인했습니다! 👍</div></div>'); log.lastElementChild.scrollIntoView({behavior:'smooth'}); },900);
   log.lastElementChild.scrollIntoView({behavior:'smooth'});
  }
  ch.addEventListener('click',function(e){ if(e.target.id==='ntChSend') chSend(); });
@@ -2224,8 +2224,8 @@ img{-webkit-user-drag:none;user-drag:none;pointer-events:auto}
   else if(k==='srch'){ openOv('ntSrOv'); setTimeout(function(){document.getElementById('ntSrIn').focus();},150); }
   else if(k==='chat') openOv('ntChOv');
   else if(k==='diary-lucas') openDiary('루카스');
-  else if(k==='diary-park') openDiary('박건우');
-  else if(k==='diary-kim') openDiary('김혜원');
+  else if(k==='diary-park') openDiary('박OO');
+  else if(k==='diary-kim') openDiary('김OO');
  },true);
  /* INFO 확장 */
  try{ if(typeof INFO!=='undefined'){
@@ -2274,7 +2274,7 @@ img{-webkit-user-drag:none;user-drag:none;pointer-events:auto}
    fn:'나 대신 노션 안에서 일하는 <b>AI 직원</b>이에요. 지침을 한 번 정해두면 반복 업무를 알아서 처리해요.',
    when:'매주 반복되는 정리 업무(업무일지 취합·보고서·회의록 정리)를 자동화하고 싶을 때.',
    say:'이번 주 업무일지 3개를 읽고 주간 현장 보고를 만들어줘.',
-   ans:'루카스·박건우·김혜원 업무일지를 읽고 → 월간일정과 대조 → "주간 현장 보고" 페이지를 만들어줘요.',
+   ans:'루카스·박OO·김OO 업무일지를 읽고 → 월간일정과 대조 → "주간 현장 보고" 페이지를 만들어줘요.',
    refine:['매주 금요일 5시에 자동으로 해줘','예약 실행이 걸려서 매주 금요일마다 보고서가 자동 생성돼요.'],
    steps:['사이드바 에이전트를 눌러요','할 일을 말로 지시해요','결과 페이지를 확인·수정해요','반복은 예약을 걸어요']};
   INFO.newagent={en:'New agent',ko:'새 에이전트 만들기',
@@ -2331,8 +2331,8 @@ img{-webkit-user-drag:none;user-drag:none;pointer-events:auto}
   +'<div class="agMsg me"><span class="av">🧑‍💼</span><div class="bb"><b>루카스</b> · 이번 주 업무일지 3개를 읽고 <b>주간 현장 보고</b>를 만들어줘.</div></div>'
   +'<div class="agMsg"><span class="av">🌀</span><div class="bb">네! 업무일지를 읽고 보고서를 만들게요.</div></div>'
   +'<div class="agStep"><span class="ok">✓</span> 루카스 업무일지 읽는 중…</div>'
-  +'<div class="agStep"><span class="ok">✓</span> 박건우 업무일지 읽는 중…</div>'
-  +'<div class="agStep"><span class="ok">✓</span> 김혜원 업무일지 읽는 중…</div>'
+  +'<div class="agStep"><span class="ok">✓</span> 박OO 업무일지 읽는 중…</div>'
+  +'<div class="agStep"><span class="ok">✓</span> 김OO 업무일지 읽는 중…</div>'
   +'<div class="agStep"><span class="ok">✓</span> 월간일정과 대조 중…</div>'
   +'<div class="agStep"><span class="ok">✓</span> 보고서 작성 중…</div>'
   +'<div class="agResult"><b>📄 주간 현장 보고 (8/11–8/17) — 페이지 생성됨 ✓</b>'
